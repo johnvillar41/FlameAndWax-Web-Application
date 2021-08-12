@@ -56,17 +56,18 @@ namespace FlameAndWax.Data.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<CustomerModel>> FetchAll(int id)
+        public async Task<IEnumerable<CustomerModel>> FetchAll()
         {
+            List<CustomerModel> customers = new List<CustomerModel>();
+
             using SqlConnection connection = new SqlConnection(Constants.Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM CustomerTable";
-            using SqlCommand command = new SqlCommand(queryString, connection);           
+            using SqlCommand command = new SqlCommand(queryString, connection);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                return new List<CustomerModel>
-                {
+                customers.Add(
                     new CustomerModel
                     {
                         CustomerId = int.Parse(reader["CustomerId"].ToString()),
@@ -76,13 +77,13 @@ namespace FlameAndWax.Data.Repositories
                         Password = reader["Password"].ToString(),
                         ProfilePictureLink = reader["ProfilePictureLink"].ToString()
                     }
-                };
+                );
             }
-            return new List<CustomerModel>();
+            return customers;
         }
 
         public async Task Update(CustomerModel data, int id)
-        {             
+        {
             using SqlConnection connection = new SqlConnection(Constants.Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
             var queryString = "UPDATE CustomerTable SET CustomerName = @name, ContactNumber = @number, Username = @username, " +

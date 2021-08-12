@@ -9,6 +9,6 @@ namespace FlameAndWax.Data.Interfaces
         Task Delete(int id);
         Task Update(T data, int id);
         Task<T> Fetch(int id);
-        Task<IEnumerable<T>> FetchAll(int id);
+        Task<IEnumerable<T>> FetchAll();
     }
 }

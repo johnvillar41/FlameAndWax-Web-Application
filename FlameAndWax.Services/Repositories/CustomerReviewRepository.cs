@@ -54,6 +54,7 @@ namespace FlameAndWax.Services.Repositories
                 var productId = int.Parse(reader["ProductId"].ToString());
                 var customerId = int.Parse(reader["CustomerId"].ToString());
                 var reviewScore = int.Parse(reader["ReviewScore"].ToString());
+
                 return new CustomerReviewModel
                 {
                     Product = await _productRepository.Fetch(productId),
@@ -66,14 +67,44 @@ namespace FlameAndWax.Services.Repositories
             return null;
         }
 
-        public Task<IEnumerable<CustomerReviewModel>> FetchAll(int id)
+        public async Task<IEnumerable<CustomerReviewModel>> FetchAll()
         {
-            throw new NotImplementedException();
+            List<CustomerReviewModel> customerReviews = new List<CustomerReviewModel>();
+
+            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "SELECT * FROM CustomerReviewTable";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            while(await reader.ReadAsync())
+            {
+                var productId = int.Parse(reader["ProductId"].ToString());
+                var customerId = int.Parse(reader["CustomerId"].ToString());
+                var reviewScore = int.Parse(reader["ReviewScore"].ToString());
+
+                customerReviews.Add(
+                        new CustomerReviewModel
+                        {
+                            ReviewId = int.Parse(reader["ReviewId"].ToString()),
+                            Product = await _productRepository.Fetch(productId),
+                            Customer = await _customerRepository.Fetch(customerId),                            
+                            ReviewScore = Helpers.ServiceHelper.BuildReviewScore(reviewScore),
+                            ReviewDetail = reader["ReviewDetail"].ToString()
+                        }
+                    );
+            }
+            return customerReviews;
         }
 
-        public Task Update(CustomerReviewModel data, int id)
+        public async Task Update(CustomerReviewModel data, int id)
         {
-            throw new NotImplementedException();
+            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "UPDATE CustomerReviewTable SET ReviewScore = @reviewScore, ReviewDetail = @detail" +
+                "WHERE ReviewId = @id";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@id",id);
+            await command.ExecuteNonQueryAsync();
         }
     }
 }
