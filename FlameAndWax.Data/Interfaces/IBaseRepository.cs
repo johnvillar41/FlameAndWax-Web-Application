@@ -6,6 +6,7 @@ namespace FlameAndWax.Data.Interfaces
     {
         Task Add(T Data);
         Task Delete(int id);
+        Task Update(T data);
         Task Fetch(int id);
         Task<T> FetchAll(int id);
     }
