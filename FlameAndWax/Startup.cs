@@ -1,4 +1,3 @@
-using FlameAndWax.Data.Interfaces;
 using FlameAndWax.Data.Repositories;
 using FlameAndWax.Data.Repositories.Interfaces;
 using FlameAndWax.Services.Repositories;
