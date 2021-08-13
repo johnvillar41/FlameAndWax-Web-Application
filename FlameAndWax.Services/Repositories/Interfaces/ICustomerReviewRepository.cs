@@ -1,6 +1,6 @@
 ﻿using FlameAndWax.Data.Models;
 
-namespace FlameAndWax.Data.Interfaces
+namespace FlameAndWax.Data.Repositories.Interfaces
 {
     public interface ICustomerReviewRepository : IBaseRepository<CustomerReviewModel>
     {

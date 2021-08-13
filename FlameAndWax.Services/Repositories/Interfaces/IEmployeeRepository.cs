@@ -1,7 +1,7 @@
 ﻿using FlameAndWax.Data.Models;
 using System.Threading.Tasks;
 
-namespace FlameAndWax.Data.Interfaces
+namespace FlameAndWax.Data.Repositories.Interfaces
 {
     public interface IEmployeeRepository : IBaseRepository<EmployeeModel>
     {

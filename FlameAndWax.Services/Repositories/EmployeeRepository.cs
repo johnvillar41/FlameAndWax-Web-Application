@@ -1,6 +1,6 @@
 ﻿using FlameAndWax.Data.Constants;
-using FlameAndWax.Data.Interfaces;
 using FlameAndWax.Data.Models;
+using FlameAndWax.Data.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;

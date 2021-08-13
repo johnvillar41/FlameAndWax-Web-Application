@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FlameAndWax.Data.Interfaces
+namespace FlameAndWax.Data.Repositories.Interfaces
 {
     public interface IBaseRepository<T> where T : class
     {

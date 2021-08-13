@@ -4,7 +4,17 @@
     {
         public int OrderDetailId { get; set; }
         public ProductModel Product { get; set; }
-        public double TotalPrice { get; set; }
+        public double TotalPrice
+        {
+            get
+            {
+                return TotalPrice;
+            }
+            set
+            {
+                TotalPrice = Product.ProductPrice * Quantity;
+            }
+        }
         public int Quantity { get; set; }
     }
 }
