@@ -29,6 +29,7 @@ namespace FlameAndWax
             services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
             services.AddSingleton<IOrderDetailRepository, OrderDetailRepository>();
             services.AddSingleton<IOrderRepository, OrderRepository>();
+            services.AddSingleton<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
