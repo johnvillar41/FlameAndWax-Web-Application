@@ -95,6 +95,37 @@ namespace FlameAndWax.Services.Repositories
             return orderDetails;
         }
 
+        public async Task<IEnumerable<OrderDetailModel>> FetchOrderDetails(int orderId)
+        {
+            List<OrderDetailModel> orderDetails = new List<OrderDetailModel>();
+
+            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "SELECT * FROM OrderDetailsTable WHERE OrderId = @orderId";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@orderId", orderId);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            while(await reader.ReadAsync())
+            {
+                var orderDetailId = int.Parse(reader["OrderDetailsId"].ToString());
+                var productId = int.Parse(reader["ProductId"].ToString());
+                var totalPrice = double.Parse(reader["TotalPrice"].ToString());
+                var quantity = int.Parse(reader["Quantity"].ToString());
+
+                var product = await _productRepository.Fetch(productId);
+                orderDetails.Add(
+                        new OrderDetailModel
+                        {
+                            OrderDetailId = orderDetailId,
+                            Product = product,
+                            TotalPrice = totalPrice,
+                            Quantity = quantity
+                        }
+                    );
+            }
+            return orderDetails;
+        }
+
         public async Task Update(OrderDetailModel data, int id)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FlameAndWax.Data.Repositories.Interfaces
+namespace FlameAndWax.Services.Services.Interfaces
 {
-    public interface IOrderDetailRepository : IBaseRepository<OrderDetailModel>
+    public interface ICustomerService : ILoginService<CustomerModel>
     {
         Task<IEnumerable<OrderDetailModel>> FetchOrderDetails(int orderId);
+        Task AddOrderTransaction(OrderModel newOrder);
     }
 }

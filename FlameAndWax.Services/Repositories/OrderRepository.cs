@@ -5,6 +5,7 @@ using FlameAndWax.Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FlameAndWax.Services.Repositories
@@ -29,7 +30,7 @@ namespace FlameAndWax.Services.Repositories
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@customerId", Data.Customer.CustomerId);
             command.Parameters.AddWithValue("@employeeId", Data.Employee.EmployeeId);
-            command.Parameters.AddWithValue("@orderDetailsId", Data.OrderDetails.OrderDetailId);
+            command.Parameters.AddWithValue("@orderDetailsId", Data.OrderDetails.First().OrderDetailId);
             command.Parameters.AddWithValue("@dateNeeded", Data.DateNeeded);
             command.Parameters.AddWithValue("@modeOfPayment", nameof(Data.ModeOfPayment));
             command.Parameters.AddWithValue("@courier", nameof(Data.Courier));
@@ -63,7 +64,7 @@ namespace FlameAndWax.Services.Repositories
 
                 var customer = await _customerRepository.Fetch(customerId);
                 var employee = await _employeeRepository.Fetch(employeeId);
-                var orderDetail = await _orderDetailRepository.Fetch(orderDetailId);
+                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderDetailId);
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
@@ -72,7 +73,7 @@ namespace FlameAndWax.Services.Repositories
                     OrderId = orderId,
                     Customer = customer,
                     Employee = employee,
-                    OrderDetails = orderDetail,
+                    OrderDetails = orderDetails,
                     DateNeeded = DateTime.Parse(reader["DateNeeded"].ToString()),
                     ModeOfPayment = modeOfPayment,
                     Courier = courier
@@ -99,7 +100,7 @@ namespace FlameAndWax.Services.Repositories
 
                 var customer = await _customerRepository.Fetch(customerId);
                 var employee = await _employeeRepository.Fetch(employeeId);
-                var orderDetail = await _orderDetailRepository.Fetch(orderDetailId);
+                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderDetailId);
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
@@ -110,7 +111,7 @@ namespace FlameAndWax.Services.Repositories
                             OrderId = orderId,
                             Customer = customer,
                             Employee = employee,
-                            OrderDetails = orderDetail,
+                            OrderDetails = orderDetails,
                             DateNeeded = DateTime.Parse(reader["DateNeeded"].ToString()),
                             ModeOfPayment = modeOfPayment,
                             Courier = courier
