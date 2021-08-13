@@ -26,6 +26,7 @@ namespace FlameAndWax
             //Dependency Injection
             services.AddSingleton<ICustomerRepository, CustomerRepository>();
             services.AddSingleton<ICustomerReviewRepository, CustomerReviewRepository>();
+            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
