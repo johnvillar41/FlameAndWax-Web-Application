@@ -104,5 +104,15 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@id", data.EmployeeId);
             await command.ExecuteNonQueryAsync();
         }
+
+        public async Task UpdateProfilePicture(string profileLink)
+        {
+            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "UPDATE EmployeesTable SET PhotoLink = @link";                
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@firstName", profileLink);            
+            await command.ExecuteNonQueryAsync();
+        }
     }
 }
