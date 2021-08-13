@@ -16,5 +16,31 @@ namespace FlameAndWax.Services.Helpers
                 default: return Constants.ReviewScore.Meh;
             }
         }
+
+        public static Constants.ModeOfPayment BuildModeOfPayment(string modeOfPayment)
+        {
+            switch (modeOfPayment)
+            {
+                case nameof(Constants.ModeOfPayment.Cash):
+                    return Constants.ModeOfPayment.Cash;
+                case nameof(Constants.ModeOfPayment.Cheque):
+                    return Constants.ModeOfPayment.Cheque;
+                default:
+                    return Constants.ModeOfPayment.Cash;
+            }
+        }
+
+        public static Constants.Courier BuildCourier(string courier)
+        {
+            switch (courier)
+            {
+                case nameof(Constants.Courier.FoodPanda):
+                    return Constants.Courier.FoodPanda;
+                case nameof(Constants.Courier.JNT):
+                    return Constants.Courier.JNT;
+                default:
+                    return Constants.Courier.FoodPanda;
+            }
+        }
     }
 }

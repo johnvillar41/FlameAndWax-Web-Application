@@ -11,11 +11,13 @@
         }
         public enum ModeOfPayment
         {
-
+            Cash,
+            Cheque
         }
         public enum Courier
         {
-
+            FoodPanda,
+            JNT
         }
     }
 }
