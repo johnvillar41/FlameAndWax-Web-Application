@@ -1,10 +1,9 @@
 ﻿using FlameAndWax.Data.Models;
-using System.Threading.Tasks;
+using FlameAndWax.Services.Services.BaseInterface.Interface;
 
 namespace FlameAndWax.Services.Services.Interfaces
 {
-    public interface IEmployeeService : ILoginService<EmployeeModel>
+    public interface IEmployeeService : ILoginBaseService<EmployeeModel>, IEmployeeBaseService
     {
-        
     }
 }
