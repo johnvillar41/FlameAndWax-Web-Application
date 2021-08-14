@@ -178,11 +178,11 @@ namespace FlameAndWax.Services.Services
                     HasError = true,
                     ErrorContent = "Login Credentials has no value"
                 };
-            
 
+            var isLoggedIn = await _customerRepository.LoginCustomerAccount(loginCredentials);
             return new ServiceResult<bool?>
             {
-                Data = true,
+                Data = isLoggedIn,
                 HasError = false,
                 ErrorContent = null
             };
