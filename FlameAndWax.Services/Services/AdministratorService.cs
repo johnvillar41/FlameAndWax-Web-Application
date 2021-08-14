@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace FlameAndWax.Services.Services
 {
-    public class EmployeeService : IEmployeeService
+    public class AdministratorService : IAdministratorService
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IProductRepository _productRepository;
         private readonly IEmployeeRepository _employeeRepository;
-        public EmployeeService(
+        public AdministratorService(
             ICustomerRepository customerRepository,
             IProductRepository productRepository,
             IEmployeeRepository employeeRepository)
@@ -26,9 +26,9 @@ namespace FlameAndWax.Services.Services
             if (customerId == 0)
                 return new ServiceResult<bool?>
                 {
-                    Result = null,
+                    Result = false,
                     HasError = true,
-                    ErrorContent = "Employee Id not defined"
+                    ErrorContent = "Customer Id is not defined!"
                 };
 
             await _customerRepository.ChangeCustomerStatus(customerId, Constants.AccountStatus.Deactivated);
@@ -47,7 +47,7 @@ namespace FlameAndWax.Services.Services
                 {
                     Result = false,
                     HasError = true,
-                    ErrorContent = "Employee Id is not defined!"
+                    ErrorContent = "Employee Id not defined!"
                 };
 
             await _customerRepository.Delete(employeeId);
@@ -83,15 +83,34 @@ namespace FlameAndWax.Services.Services
 
         public async Task<ServiceResult<bool?>> Login(EmployeeModel loginCredentials)
         {
-            var isLoggedIn = await _employeeRepository.Login(loginCredentials);
-            if (isLoggedIn)
+            if (loginCredentials == null)
+                return new ServiceResult<bool?>
+                {
+                    Result = null,
+                    HasError = true,
+                    ErrorContent = "Empty Employee credentials!"
+                };
+
+            await _employeeRepository.Login(loginCredentials);
+            return new ServiceResult<bool?>
+            {
+                Result = true,
+                HasError = false,
+                ErrorContent = null
+            };
+        }
+
+        public async Task<ServiceResult<bool?>> MarkEmployeeAsTerminated(int employeeId = 0)
+        {
+            if (employeeId == 0)
                 return new ServiceResult<bool?>
                 {
                     Result = false,
                     HasError = true,
-                    ErrorContent = "Invalid credentials!"
+                    ErrorContent = "Employee Id is not defined"
                 };
 
+            await _employeeRepository.ModifyEmployeeStatus(employeeId, Constants.AccountStatus.Deactivated);
             return new ServiceResult<bool?>
             {
                 Result = true,
@@ -107,7 +126,7 @@ namespace FlameAndWax.Services.Services
                 {
                     Result = false,
                     HasError = true,
-                    ErrorContent = "Empty Product"
+                    ErrorContent = "Updated product is empty!"
                 };
             if (productId == 0)
                 return new ServiceResult<bool?>
@@ -116,7 +135,7 @@ namespace FlameAndWax.Services.Services
                     HasError = true,
                     ErrorContent = "Product Id is not defined!"
                 };
-            
+
             await _productRepository.Update(updatedProduct, productId);
             return new ServiceResult<bool?>
             {
@@ -132,11 +151,30 @@ namespace FlameAndWax.Services.Services
                 return new ServiceResult<bool?>
                 {
                     Result = false,
-                    HasError = false,
-                    ErrorContent = "Employee data is empty!"
+                    HasError = true,
+                    ErrorContent = "Employee object is empty!"
                 };
 
             await _employeeRepository.Add(registeredCredentials);
+            return new ServiceResult<bool?>
+            {
+                Result = true,
+                HasError = false,
+                ErrorContent = null
+            };
+        }
+
+        public async Task<ServiceResult<bool?>> RemoveEmployee(int employeeId = 0)
+        {
+            if (employeeId == 0)
+                return new ServiceResult<bool?>
+                {
+                    Result = false,
+                    HasError = true,
+                    ErrorContent = "Employee Id is not defined"
+                };
+
+            await _employeeRepository.Delete(employeeId);
             return new ServiceResult<bool?>
             {
                 Result = true,

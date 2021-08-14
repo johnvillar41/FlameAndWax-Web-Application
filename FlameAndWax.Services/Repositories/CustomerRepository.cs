@@ -23,7 +23,7 @@ namespace FlameAndWax.Data.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task ChangeCustomerStatus(int customerId, Constants.Constants.CustomerStatus customerStatus)
+        public async Task ChangeCustomerStatus(int customerId, Constants.Constants.AccountStatus customerStatus)
         {
             using SqlConnection connection = new SqlConnection(Constants.Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();

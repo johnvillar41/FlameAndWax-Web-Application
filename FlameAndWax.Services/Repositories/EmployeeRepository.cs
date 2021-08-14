@@ -96,11 +96,22 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@username", employee.Username);
             command.Parameters.AddWithValue("@username", employee.Password);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-            if(await reader.ReadAsync())
+            if (await reader.ReadAsync())
             {
                 return true;
             }
             return false;
+        }
+
+        public async Task ModifyEmployeeStatus(int employeeId, Constants.AccountStatus accountStatus)
+        {
+            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "UPDATE EmployeesTable SET Status = @status WHERE EmployeeId = @id";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@status", nameof(accountStatus));
+            command.Parameters.AddWithValue("@id", employeeId);
+            await command.ExecuteNonQueryAsync();
         }
 
         /// <summary>

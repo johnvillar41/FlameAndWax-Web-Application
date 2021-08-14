@@ -32,7 +32,7 @@ namespace FlameAndWax.Services.Services
             if (newOrder == null)            
                 return new ServiceResult<Boolean?>
                 {
-                    Data = false,
+                    Result = false,
                     HasError = true,
                     ErrorContent = "OrderModel not defined!"
                 };            
@@ -53,7 +53,7 @@ namespace FlameAndWax.Services.Services
 
             return new ServiceResult<bool?>
             {
-                Data = true,
+                Result = true,
                 HasError = false,
                 ErrorContent = null
             };
@@ -64,7 +64,7 @@ namespace FlameAndWax.Services.Services
             if (customerId == 0)            
                 return new ServiceResult<CustomerModel>
                 {
-                    Data = null,
+                    Result = null,
                     HasError = true,
                     ErrorContent = "Customer Id not defined!"
                 };            
@@ -72,7 +72,7 @@ namespace FlameAndWax.Services.Services
             var customer = await _customerRepository.Fetch(customerId);
             return new ServiceResult<CustomerModel>
             {
-                Data = customer,
+                Result = customer,
                 HasError = false,
                 ErrorContent = null
             };
@@ -83,7 +83,7 @@ namespace FlameAndWax.Services.Services
             var products = await _productRepository.FetchAll();
             return new ServiceResult<IEnumerable<ProductModel>>
             {
-                Data = products,
+                Result = products,
                 HasError = false,
                 ErrorContent = null
             };             
@@ -94,7 +94,7 @@ namespace FlameAndWax.Services.Services
             if (productId == 0)            
                 return new ServiceResult<IEnumerable<CustomerReviewModel>>
                 {
-                    Data = null,
+                    Result = null,
                     HasError = true,
                     ErrorContent = "ProductId not defined!"
                 };
@@ -103,7 +103,7 @@ namespace FlameAndWax.Services.Services
             var customerReviews = await _customerReviewRepository.FetchReviewsOfAProduct(productId);
             return new ServiceResult<IEnumerable<CustomerReviewModel>>
             {
-                Data = customerReviews,
+                Result = customerReviews,
                 HasError = false,
                 ErrorContent = null
             };   
@@ -114,7 +114,7 @@ namespace FlameAndWax.Services.Services
             if (orderId == 0)            
                 return new ServiceResult<IEnumerable<OrderDetailModel>>
                 {
-                    Data = null,
+                    Result = null,
                     HasError = true,
                     ErrorContent = "Order Id not defined!"
                 };
@@ -123,7 +123,7 @@ namespace FlameAndWax.Services.Services
             var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId);
             return new ServiceResult<IEnumerable<OrderDetailModel>>
             {
-                Data = orderDetails,
+                Result = orderDetails,
                 HasError = false,
                 ErrorContent = null
             };
@@ -134,7 +134,7 @@ namespace FlameAndWax.Services.Services
             if (customerId == 0)            
                 return new ServiceResult<IEnumerable<OrderModel>>
                 {
-                    Data = null,
+                    Result = null,
                     HasError = true,
                     ErrorContent = "Customer Id not defined!"
                 };
@@ -143,7 +143,7 @@ namespace FlameAndWax.Services.Services
             var ordersFromCustomer = await _orderRepository.FetchOrdersFromCustomer(customerId);
             return new ServiceResult<IEnumerable<OrderModel>>
             {
-                Data = ordersFromCustomer,
+                Result = ordersFromCustomer,
                 HasError = false,
                 ErrorContent = null
             };
@@ -154,7 +154,7 @@ namespace FlameAndWax.Services.Services
             if(productId == 0)            
                 return new ServiceResult<ProductModel>
                 {
-                    Data = null,
+                    Result = null,
                     HasError = true,
                     ErrorContent = "Product Id not defined!"
                 };
@@ -163,7 +163,7 @@ namespace FlameAndWax.Services.Services
             var productDetail = await _productRepository.Fetch(productId);
             return new ServiceResult<ProductModel>
             {
-                Data = productDetail,
+                Result = productDetail,
                 HasError = false,
                 ErrorContent = null
             };
@@ -174,7 +174,7 @@ namespace FlameAndWax.Services.Services
             if (loginCredentials.Username == null && loginCredentials.Password == null)            
                 return new ServiceResult<bool?>
                 {
-                    Data = null,
+                    Result = null,
                     HasError = true,
                     ErrorContent = "Login Credentials has no value"
                 };
@@ -182,7 +182,7 @@ namespace FlameAndWax.Services.Services
             var isLoggedIn = await _customerRepository.LoginCustomerAccount(loginCredentials);
             return new ServiceResult<bool?>
             {
-                Data = isLoggedIn,
+                Result = isLoggedIn,
                 HasError = false,
                 ErrorContent = null
             };
@@ -193,14 +193,14 @@ namespace FlameAndWax.Services.Services
             if (modifiedAccount == null)            
                 return new ServiceResult<bool?>
                 {
-                    Data = null,
+                    Result = null,
                     HasError = true,
                     ErrorContent = "Modified Account details has no value!"
                 };            
             if (customerId == 0)            
                 return new ServiceResult<bool?>
                 {
-                    Data = null,
+                    Result = null,
                     HasError = true,
                     ErrorContent = "Customer Id is not defined!"
                 };
@@ -209,7 +209,7 @@ namespace FlameAndWax.Services.Services
             await _customerRepository.Update(modifiedAccount, customerId);
             return new ServiceResult<bool?>
             {
-                Data = true,
+                Result = true,
                 HasError = false,
                 ErrorContent = null
             };
@@ -220,7 +220,7 @@ namespace FlameAndWax.Services.Services
             if (registeredCredentials == null)
                 return new ServiceResult<bool?>
                 {
-                    Data = null,
+                    Result = null,
                     HasError = true,
                     ErrorContent = "Registered Data has no value"
                 };
@@ -228,7 +228,7 @@ namespace FlameAndWax.Services.Services
             await _customerRepository.Add(registeredCredentials);
             return new ServiceResult<bool?>
             {
-                Data = true,
+                Result = true,
                 HasError = false,
                 ErrorContent = null
             };
