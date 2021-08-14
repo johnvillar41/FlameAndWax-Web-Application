@@ -20,5 +20,10 @@
             FoodPanda,
             JNT
         }
+        public enum CustomerStatus
+        {
+            Deactivated,
+            Activated
+        }
     }
 }

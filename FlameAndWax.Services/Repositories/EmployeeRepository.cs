@@ -86,6 +86,23 @@ namespace FlameAndWax.Services.Repositories
             }
             return employees;
         }
+
+        public async Task<bool> Login(EmployeeModel employee)
+        {
+            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "SELECT * FROM EmployeesTable WHERE Username = @username AND Password = @password";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@username", employee.Username);
+            command.Parameters.AddWithValue("@username", employee.Password);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if(await reader.ReadAsync())
+            {
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Updates the employee credentials excluding the PhotoLink property
         /// </summary>       
@@ -109,9 +126,9 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "UPDATE EmployeesTable SET PhotoLink = @link";                
+            var queryString = "UPDATE EmployeesTable SET PhotoLink = @link";
             using SqlCommand command = new SqlCommand(queryString, connection);
-            command.Parameters.AddWithValue("@firstName", profileLink);            
+            command.Parameters.AddWithValue("@firstName", profileLink);
             await command.ExecuteNonQueryAsync();
         }
     }

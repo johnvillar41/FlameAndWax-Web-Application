@@ -23,6 +23,17 @@ namespace FlameAndWax.Data.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
+        public async Task ChangeCustomerStatus(int customerId, Constants.Constants.CustomerStatus customerStatus)
+        {
+            using SqlConnection connection = new SqlConnection(Constants.Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "UPDATE CustomerTable SET Status = @status WHERE CustomerId = @id";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@status", nameof(customerStatus));
+            command.Parameters.AddWithValue("@id", customerId);
+            await command.ExecuteNonQueryAsync();
+        }
+
         public async Task Delete(int id)
         {
             using SqlConnection connection = new SqlConnection(Constants.Constants.DB_CONNECTION_STRING);
