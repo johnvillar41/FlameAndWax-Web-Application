@@ -35,6 +35,8 @@ namespace FlameAndWax
 
             //Dependency Injection Services
             services.AddSingleton<ICustomerService, CustomerService>();
+            services.AddSingleton<IEmployeeService, EmployeeService>();
+            services.AddSingleton<IAdministratorService, AdministratorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
