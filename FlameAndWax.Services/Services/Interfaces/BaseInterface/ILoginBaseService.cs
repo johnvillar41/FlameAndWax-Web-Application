@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace FlameAndWax.Services.Services.BaseInterface.Interface
 {
     public interface ILoginBaseService<T> where T : class
     {
-        Task<bool> Login(T loginCredentials);
-        Task Register(T registeredCredentials);
+        Task<ServiceResult<Boolean?>> Login(T loginCredentials);
+        Task<ServiceResult<Boolean?>> Register(T registeredCredentials);
     }
 }
