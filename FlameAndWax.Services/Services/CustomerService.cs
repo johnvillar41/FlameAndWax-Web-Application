@@ -27,10 +27,10 @@ namespace FlameAndWax.Services.Services
             _customerRepository = customerRepository;
             _customerReviewRepository = customerReviewRepository;
         }
-        public async Task<ServiceResult<Boolean?>> AddOrderTransaction(OrderModel newOrder)
+        public async Task<ServiceResult<bool>> AddOrderTransaction(OrderModel newOrder)
         {
             if (newOrder == null)            
-                return new ServiceResult<Boolean?>
+                return new ServiceResult<bool>
                 {
                     Result = false,
                     HasError = true,
@@ -51,7 +51,7 @@ namespace FlameAndWax.Services.Services
                 await _productRepository.ModifyNumberOfUnitsInOrder(orderDetail.Product.ProductId, orderDetail.Quantity);
             }
 
-            return new ServiceResult<bool?>
+            return new ServiceResult<bool>
             {
                 Result = true,
                 HasError = false,
@@ -169,18 +169,18 @@ namespace FlameAndWax.Services.Services
             };
         }
 
-        public async Task<ServiceResult<Boolean?>> Login(CustomerModel loginCredentials)
+        public async Task<ServiceResult<bool>> Login(CustomerModel loginCredentials)
         {
             if (loginCredentials.Username == null && loginCredentials.Password == null)            
-                return new ServiceResult<bool?>
+                return new ServiceResult<bool>
                 {
-                    Result = null,
+                    Result = false,
                     HasError = true,
                     ErrorContent = "Login Credentials has no value"
                 };
 
             var isLoggedIn = await _customerRepository.LoginCustomerAccount(loginCredentials);
-            return new ServiceResult<bool?>
+            return new ServiceResult<bool>
             {
                 Result = isLoggedIn,
                 HasError = false,
@@ -188,26 +188,26 @@ namespace FlameAndWax.Services.Services
             };
         }
 
-        public async Task<ServiceResult<Boolean?>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId = 0)
+        public async Task<ServiceResult<bool>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId = 0)
         {
             if (modifiedAccount == null)            
-                return new ServiceResult<bool?>
+                return new ServiceResult<bool>
                 {
-                    Result = null,
+                    Result = false,
                     HasError = true,
                     ErrorContent = "Modified Account details has no value!"
                 };            
             if (customerId == 0)            
-                return new ServiceResult<bool?>
+                return new ServiceResult<bool>
                 {
-                    Result = null,
+                    Result = false,
                     HasError = true,
                     ErrorContent = "Customer Id is not defined!"
                 };
             
        
             await _customerRepository.Update(modifiedAccount, customerId);
-            return new ServiceResult<bool?>
+            return new ServiceResult<bool>
             {
                 Result = true,
                 HasError = false,
@@ -215,18 +215,18 @@ namespace FlameAndWax.Services.Services
             };
         }
 
-        public async Task<ServiceResult<Boolean?>> Register(CustomerModel registeredCredentials)
+        public async Task<ServiceResult<bool>> Register(CustomerModel registeredCredentials)
         {
             if (registeredCredentials == null)
-                return new ServiceResult<bool?>
+                return new ServiceResult<bool>
                 {
-                    Result = null,
+                    Result = false,
                     HasError = true,
                     ErrorContent = "Registered Data has no value"
                 };
 
             await _customerRepository.Add(registeredCredentials);
-            return new ServiceResult<bool?>
+            return new ServiceResult<bool>
             {
                 Result = true,
                 HasError = false,

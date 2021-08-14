@@ -8,9 +8,9 @@ namespace FlameAndWax.Services.Services.BaseInterface.Interface
 {
     public interface IEmployeeBaseService
     {
-        Task<ServiceResult<Boolean?>> DeactivateCustomerAccount(int customerId);
-        Task<ServiceResult<Boolean?>> DeleteCustomerAccount(int employeeId);
-        Task<ServiceResult<Boolean?>> ModifyProduct(ProductModel updatedProduct, int productId);
+        Task<ServiceResult<Boolean>> DeactivateCustomerAccount(int customerId);
+        Task<ServiceResult<Boolean>> DeleteCustomerAccount(int employeeId);
+        Task<ServiceResult<Boolean>> ModifyProduct(ProductModel updatedProduct, int productId);
 
         Task<ServiceResult<IEnumerable<CustomerModel>>> FetchAllCustomerAccounts();        
         Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts();

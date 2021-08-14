@@ -8,8 +8,8 @@ namespace FlameAndWax.Services.Services.Interfaces
 {
     public interface ICustomerService : ILoginBaseService<CustomerModel>
     {
-        Task<ServiceResult<Boolean?>> AddOrderTransaction(OrderModel newOrder);
-        Task<ServiceResult<Boolean?>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId);
+        Task<ServiceResult<Boolean>> AddOrderTransaction(OrderModel newOrder);
+        Task<ServiceResult<Boolean>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId);
 
         Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId);       
         Task<ServiceResult<ProductModel>> FetchProductDetail(int productId);
