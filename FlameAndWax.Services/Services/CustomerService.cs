@@ -12,16 +12,19 @@ namespace FlameAndWax.Services.Services
         private readonly IOrderRepository _orderRepository;
         private readonly IOrderDetailRepository _orderDetailRepository;
         private readonly ICustomerRepository _customerRepository;
+        private readonly ICustomerReviewRepository _customerReviewRepository;
         public CustomerService(
             IProductRepository productRepository,
             IOrderRepository orderRepository,
             IOrderDetailRepository orderDetailRepository,
-            ICustomerRepository customerRepository)
+            ICustomerRepository customerRepository,
+            ICustomerReviewRepository customerReviewRepository)
         {
             _productRepository = productRepository;
             _orderRepository = orderRepository;
             _orderDetailRepository = orderDetailRepository;
             _customerRepository = customerRepository;
+            _customerReviewRepository = customerReviewRepository;
         }
         public async Task AddOrderTransaction(OrderModel newOrder)
         {
@@ -38,7 +41,7 @@ namespace FlameAndWax.Services.Services
             foreach (var orderDetail in orderDetails)
             {
                 await _orderDetailRepository.Add(orderDetail);
-                //await _productRepository.ModifyNumberOfStocks(orderDetail.Product.ProductId, orderDetail.Quantity);
+                await _productRepository.ModifyNumberOfUnitsInOrder(orderDetail.Product.ProductId, orderDetail.Quantity);
             }
         }
 
@@ -50,44 +53,51 @@ namespace FlameAndWax.Services.Services
             return customer;
         }
 
-        public Task<IEnumerable<ProductModel>> FetchAllProducts()
+        public async Task<IEnumerable<ProductModel>> FetchAllProducts()
         {
-            throw new System.NotImplementedException();
+            return await _productRepository.FetchAll();
         }
 
-        public Task<IEnumerable<CustomerReviewModel>> FetchCustomerReviewsInAProduct(int productId)
+        public async Task<IEnumerable<CustomerReviewModel>> FetchCustomerReviewsInAProduct(int productId = 0)
         {
-            throw new System.NotImplementedException();
+            if (productId == 0) return new List<CustomerReviewModel>();
+            return await _customerReviewRepository.FetchReviewsOfAProduct(productId);             
         }
 
-        public Task<IEnumerable<OrderDetailModel>> FetchOrderDetails(int orderId)
+        public async Task<IEnumerable<OrderDetailModel>> FetchOrderDetails(int orderId = 0)
         {
-            throw new System.NotImplementedException();
+            if (orderId == 0) return new List<OrderDetailModel>();
+            return await _orderDetailRepository.FetchOrderDetails(orderId);
         }
 
-        public Task<IEnumerable<OrderModel>> FetchOrders(int customerId)
+        public async Task<IEnumerable<OrderModel>> FetchOrders(int customerId = 0)
         {
-            throw new System.NotImplementedException();
+            if (customerId == 0) return new List<OrderModel>();
+            return await _orderRepository.FetchOrdersFromCustomer(customerId);
         }
 
-        public Task<ProductModel> FetchProductDetail(int productId)
+        public async Task<ProductModel> FetchProductDetail(int productId)
         {
-            throw new System.NotImplementedException();
+            return await _productRepository.Fetch(productId);
         }
 
-        public Task<bool> Login(CustomerModel loginCredentials)
+        public async Task<bool> Login(CustomerModel loginCredentials)
         {
-            throw new System.NotImplementedException();
+            if (loginCredentials == null) return false;
+            return await _customerRepository.LoginCustomerAccount(loginCredentials);
         }
 
-        public Task ModifyAccountDetails(CustomerModel modifiedAccount, int customerId)
+        public async Task ModifyAccountDetails(CustomerModel modifiedAccount, int customerId = 0)
         {
-            throw new System.NotImplementedException();
+            if (modifiedAccount == null) return;
+            if (customerId == 0) return;
+            await _customerRepository.Update(modifiedAccount, customerId);
         }
 
-        public Task Register(CustomerModel registeredCredentials)
+        public async Task Register(CustomerModel registeredCredentials)
         {
-            throw new System.NotImplementedException();
+            if (registeredCredentials == null) return;
+            await _customerRepository.Add(registeredCredentials);
         }
     }
 }

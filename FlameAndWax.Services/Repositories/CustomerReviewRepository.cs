@@ -95,6 +95,35 @@ namespace FlameAndWax.Services.Repositories
             return customerReviews;
         }
 
+        public async Task<IEnumerable<CustomerReviewModel>> FetchReviewsOfAProduct(int productId)
+        {
+            List<CustomerReviewModel> customerReviews = new List<CustomerReviewModel>();
+
+            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "SELECT * FROM CustomerReviewTable WHERE ProductId = @productId";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@productId", productId);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            while(await reader.ReadAsync())
+            {                
+                var customerId = int.Parse(reader["CustomerId"].ToString());
+                var reviewScore = int.Parse(reader["ReviewScore"].ToString());
+
+                customerReviews.Add(
+                        new CustomerReviewModel
+                        {
+                            ReviewId = int.Parse(reader["ReviewId"].ToString()),
+                            Product = await _productRepository.Fetch(productId),
+                            Customer = await _customerRepository.Fetch(customerId),
+                            ReviewScore = Helpers.ServiceHelper.BuildReviewScore(reviewScore),
+                            ReviewDetail = reader["ReviewDetail"].ToString()
+                        }
+                    );
+            }
+            return customerReviews;
+        }
+
         public async Task Update(CustomerReviewModel data, int id)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);

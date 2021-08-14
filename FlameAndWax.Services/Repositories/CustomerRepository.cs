@@ -31,7 +31,7 @@ namespace FlameAndWax.Data.Repositories
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
-        }       
+        }
 
         public async Task<CustomerModel> Fetch(int id)
         {
@@ -80,6 +80,19 @@ namespace FlameAndWax.Data.Repositories
                 );
             }
             return customers;
+        }
+
+        public async Task<bool> LoginCustomerAccount(CustomerModel loginCustomer)
+        {
+            using SqlConnection connection = new SqlConnection(Constants.Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "SELECT * FROM CustomerTable WHERE Username = @username AND Password = @password";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddRange(new string[] { loginCustomer.Username, loginCustomer.Password });
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if(await reader.ReadAsync())
+                return true;
+            return false;
         }
 
         public async Task Update(CustomerModel data, int id)

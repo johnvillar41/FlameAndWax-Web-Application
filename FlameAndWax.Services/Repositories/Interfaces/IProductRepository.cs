@@ -6,5 +6,6 @@ namespace FlameAndWax.Data.Repositories.Interfaces
     public interface IProductRepository : IBaseRepository<ProductModel>
     {
         Task ModifyNumberOfStocks(int productId, int numberOfStocksToBeSubtracted);
+        Task ModifyNumberOfUnitsInOrder(int productId, int numberOfUnitsToBeAdded);
     }
 }

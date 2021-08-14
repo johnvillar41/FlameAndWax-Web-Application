@@ -121,6 +121,45 @@ namespace FlameAndWax.Services.Repositories
             return orders;
         }
 
+        public async Task<IEnumerable<OrderModel>> FetchOrdersFromCustomer(int customerId)
+        {
+            List<OrderModel> orders = new List<OrderModel>();
+            
+            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "SELECT * FROM OrdersTable WHERE CustomerId = @customerId";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@customerId", customerId);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                var orderId = int.Parse(reader["OrderId"].ToString());                
+                var employeeId = int.Parse(reader["EmployeeId"].ToString());
+                var orderDetailId = int.Parse(reader["OrderDetailsId"].ToString());
+
+                var customer = await _customerRepository.Fetch(customerId);
+                var employee = await _employeeRepository.Fetch(employeeId);
+                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderDetailId);
+
+                var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
+                var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
+
+                orders.Add(
+                        new OrderModel
+                        {
+                            OrderId = orderId,
+                            Customer = customer,
+                            Employee = employee,
+                            OrderDetails = orderDetails,
+                            DateNeeded = DateTime.Parse(reader["DateNeeded"].ToString()),
+                            ModeOfPayment = modeOfPayment,
+                            Courier = courier
+                        }
+                    );
+            }
+            return orders;
+        }
+
         public async Task Update(OrderModel data, int id)
         {
             throw new NotImplementedException();

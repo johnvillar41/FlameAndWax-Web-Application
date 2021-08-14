@@ -98,6 +98,17 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
+        public async Task ModifyNumberOfUnitsInOrder(int productId, int numberOfUnitsToBeAdded)
+        {
+            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "UPDATE ProductsTable SET UnitsOnOrder = @unitOrder WHERE ProductId = @id";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@unitOrder", numberOfUnitsToBeAdded);
+            command.Parameters.AddWithValue("@uniditOrder", productId);
+            await command.ExecuteNonQueryAsync();
+        }
+
         public async Task Update(ProductModel data, int id)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
