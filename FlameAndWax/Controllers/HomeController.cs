@@ -1,4 +1,5 @@
 ﻿using FlameAndWax.Models;
+using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,14 +13,16 @@ namespace FlameAndWax.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ICustomerService _customerService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,ICustomerService customerService)
         {
             _logger = logger;
+            _customerService = customerService;
         }
 
         public IActionResult Index()
-        {
+        {           
             return View();
         }
 
