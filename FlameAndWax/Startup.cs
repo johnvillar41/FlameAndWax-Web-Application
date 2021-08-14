@@ -1,6 +1,8 @@
 using FlameAndWax.Data.Repositories;
 using FlameAndWax.Data.Repositories.Interfaces;
 using FlameAndWax.Services.Repositories;
+using FlameAndWax.Services.Services;
+using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,13 +25,16 @@ namespace FlameAndWax
         {
             services.AddControllersWithViews();
 
-            //Dependency Injection
+            //Dependency Injection Repository
             services.AddSingleton<ICustomerRepository, CustomerRepository>();
             services.AddSingleton<ICustomerReviewRepository, CustomerReviewRepository>();
             services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
             services.AddSingleton<IOrderDetailRepository, OrderDetailRepository>();
             services.AddSingleton<IOrderRepository, OrderRepository>();
             services.AddSingleton<IProductRepository, ProductRepository>();
+
+            //Dependency Injection Services
+            services.AddSingleton<ICustomerService, CustomerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

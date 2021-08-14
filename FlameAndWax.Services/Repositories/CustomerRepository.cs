@@ -31,7 +31,7 @@ namespace FlameAndWax.Data.Repositories
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
-        }
+        }       
 
         public async Task<CustomerModel> Fetch(int id)
         {

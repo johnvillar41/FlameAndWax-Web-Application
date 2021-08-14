@@ -89,6 +89,15 @@ namespace FlameAndWax.Services.Repositories
             return products;
         }
 
+        public async Task ModifyNumberOfStocks(int productId, int numberOfStocksToBeSubtracted)
+        {
+            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "UPDATE ProductsTable SET UnitsInStock = @unitsToBeSubracted WHERE ProductId = @id";
+            using SqlCommand command = new SqlCommand(queryString,connection);
+            await command.ExecuteNonQueryAsync();
+        }
+
         public async Task Update(ProductModel data, int id)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);

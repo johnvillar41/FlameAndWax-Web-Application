@@ -10,7 +10,7 @@ namespace FlameAndWax.Services.Services.BaseInterface.Interface
     {
         Task DeactivateCustomerAccount(int employeeId);
         Task DeleteCustomerAccount(int employeeId);
-        Task UpdateProduct(ProductModel updatedProduct, int productId);
+        Task ModifyProduct(ProductModel updatedProduct, int productId);        
 
         Task<IEnumerable<CustomerModel>> FetchAllCustomerAccounts();
         Task<IEnumerable<ProductModel>> FetchAllProducts();
