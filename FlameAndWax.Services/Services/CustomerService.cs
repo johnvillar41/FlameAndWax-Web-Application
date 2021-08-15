@@ -1,5 +1,6 @@
 ﻿using FlameAndWax.Data.Models;
 using FlameAndWax.Data.Repositories.Interfaces;
+using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -29,13 +30,8 @@ namespace FlameAndWax.Services.Services
         }
         public async Task<ServiceResult<bool>> AddOrderTransaction(OrderModel newOrder)
         {
-            if (newOrder == null)            
-                return new ServiceResult<bool>
-                {
-                    Result = false,
-                    HasError = true,
-                    ErrorContent = "OrderModel not defined!"
-                };            
+            if (newOrder == null)
+                return ServiceHelper.BuildServiceResult<bool>(false, true, "OrderModel not defined!");
 
             await _orderRepository.Add(newOrder);
             /**
@@ -50,188 +46,92 @@ namespace FlameAndWax.Services.Services
                 await _orderDetailRepository.Add(orderDetail);
                 await _productRepository.ModifyNumberOfUnitsInOrder(orderDetail.Product.ProductId, orderDetail.Quantity);
             }
-
-            return new ServiceResult<bool>
-            {
-                Result = true,
-                HasError = false,
-                ErrorContent = null
-            };
+            return ServiceHelper.BuildServiceResult<bool>(true, false, null);
         }
 
         public async Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId = 0)
         {
-            if (customerId == 0)            
-                return new ServiceResult<CustomerModel>
-                {
-                    Result = null,
-                    HasError = true,
-                    ErrorContent = "Customer Id not defined!"
-                };            
+            if (customerId == 0)
+                return ServiceHelper.BuildServiceResult<CustomerModel>(null, true, "Customer Id not defined!");
 
             var customer = await _customerRepository.Fetch(customerId);
-            return new ServiceResult<CustomerModel>
-            {
-                Result = customer,
-                HasError = false,
-                ErrorContent = null
-            };
+            return ServiceHelper.BuildServiceResult<CustomerModel>(customer, false, null);
         }
 
         public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts()
         {
             var products = await _productRepository.FetchAll();
-            return new ServiceResult<IEnumerable<ProductModel>>
-            {
-                Result = products,
-                HasError = false,
-                ErrorContent = null
-            };             
+            return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(products, false, null);
         }
 
         public async Task<ServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int productId = 0)
         {
-            if (productId == 0)            
-                return new ServiceResult<IEnumerable<CustomerReviewModel>>
-                {
-                    Result = null,
-                    HasError = true,
-                    ErrorContent = "ProductId not defined!"
-                };
-            
+            if (productId == 0)
+                return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(null, true, "ProductId not defined!");
+
 
             var customerReviews = await _customerReviewRepository.FetchReviewsOfAProduct(productId);
-            return new ServiceResult<IEnumerable<CustomerReviewModel>>
-            {
-                Result = customerReviews,
-                HasError = false,
-                ErrorContent = null
-            };   
+            return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(customerReviews, false, null);
         }
 
         public async Task<ServiceResult<IEnumerable<OrderDetailModel>>> FetchOrderDetails(int orderId = 0)
         {
-            if (orderId == 0)            
-                return new ServiceResult<IEnumerable<OrderDetailModel>>
-                {
-                    Result = null,
-                    HasError = true,
-                    ErrorContent = "Order Id not defined!"
-                };
-            
+            if (orderId == 0)
+                return ServiceHelper.BuildServiceResult<IEnumerable<OrderDetailModel>>(null, true, "Order Id not defined!");
+
 
             var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId);
-            return new ServiceResult<IEnumerable<OrderDetailModel>>
-            {
-                Result = orderDetails,
-                HasError = false,
-                ErrorContent = null
-            };
+            return ServiceHelper.BuildServiceResult<IEnumerable<OrderDetailModel>>(orderDetails, false, null);
         }
 
         public async Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrders(int customerId = 0)
         {
-            if (customerId == 0)            
-                return new ServiceResult<IEnumerable<OrderModel>>
-                {
-                    Result = null,
-                    HasError = true,
-                    ErrorContent = "Customer Id not defined!"
-                };
-            
+            if (customerId == 0)
+                return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(null, true, "Customer Id not defined!");
+
 
             var ordersFromCustomer = await _orderRepository.FetchOrdersFromCustomer(customerId);
-            return new ServiceResult<IEnumerable<OrderModel>>
-            {
-                Result = ordersFromCustomer,
-                HasError = false,
-                ErrorContent = null
-            };
+            return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(ordersFromCustomer, false, null);
         }
 
         public async Task<ServiceResult<ProductModel>> FetchProductDetail(int productId = 0)
         {
-            if(productId == 0)            
-                return new ServiceResult<ProductModel>
-                {
-                    Result = null,
-                    HasError = true,
-                    ErrorContent = "Product Id not defined!"
-                };
-            
+            if (productId == 0)
+                return ServiceHelper.BuildServiceResult<ProductModel>(null, true, "Product Id not defined!");
+
 
             var productDetail = await _productRepository.Fetch(productId);
-            return new ServiceResult<ProductModel>
-            {
-                Result = productDetail,
-                HasError = false,
-                ErrorContent = null
-            };
+            return ServiceHelper.BuildServiceResult<ProductModel>(productDetail, false, null);
         }
 
         public async Task<ServiceResult<bool>> Login(CustomerModel loginCredentials)
         {
-            if (loginCredentials.Username == null && loginCredentials.Password == null)            
-                return new ServiceResult<bool>
-                {
-                    Result = false,
-                    HasError = true,
-                    ErrorContent = "Login Credentials has no value"
-                };
+            if (loginCredentials.Username == null && loginCredentials.Password == null)
+                return ServiceHelper.BuildServiceResult<bool>(false, true, "Login Credentials has no value");
 
             var isLoggedIn = await _customerRepository.LoginCustomerAccount(loginCredentials);
-            return new ServiceResult<bool>
-            {
-                Result = isLoggedIn,
-                HasError = false,
-                ErrorContent = null
-            };
+            return ServiceHelper.BuildServiceResult<bool>(isLoggedIn, false, null);
         }
 
         public async Task<ServiceResult<bool>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId = 0)
         {
-            if (modifiedAccount == null)            
-                return new ServiceResult<bool>
-                {
-                    Result = false,
-                    HasError = true,
-                    ErrorContent = "Modified Account details has no value!"
-                };            
-            if (customerId == 0)            
-                return new ServiceResult<bool>
-                {
-                    Result = false,
-                    HasError = true,
-                    ErrorContent = "Customer Id is not defined!"
-                };
-            
-       
+            if (modifiedAccount == null)
+                return ServiceHelper.BuildServiceResult<bool>(false, true, "Modified Account details has no value!");
+            if (customerId == 0)
+                return ServiceHelper.BuildServiceResult<bool>(false, true, "Customer Id is not defined!");
+
+
             await _customerRepository.Update(modifiedAccount, customerId);
-            return new ServiceResult<bool>
-            {
-                Result = true,
-                HasError = false,
-                ErrorContent = null
-            };
+            return ServiceHelper.BuildServiceResult<bool>(true, false, null);
         }
 
         public async Task<ServiceResult<bool>> Register(CustomerModel registeredCredentials)
         {
             if (registeredCredentials == null)
-                return new ServiceResult<bool>
-                {
-                    Result = false,
-                    HasError = true,
-                    ErrorContent = "Registered Data has no value"
-                };
+                return ServiceHelper.BuildServiceResult<bool>(false, true, "Registered Data has no value");
 
             await _customerRepository.Add(registeredCredentials);
-            return new ServiceResult<bool>
-            {
-                Result = true,
-                HasError = false,
-                ErrorContent = null
-            };
+            return ServiceHelper.BuildServiceResult<bool>(true, false, null);
         }
     }
 }
