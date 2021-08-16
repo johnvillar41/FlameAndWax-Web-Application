@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+}
+<div class="container text-left">
+    <div class="row">
+        <p>
+            We'd love to hear from you!<br /><br />
+
+            Don't forget that you can talk to us directly by clicking the message icon on the lower right corner of this page.<br /><br />
+
+            Our office hours are Monday to Saturday, 9am to 4pm.<br /><br />
+
+            In case we don't respond immediately (or you are reaching out to use during non-working hours), please be sure to check our FAQ page or send us an email.<br /><br />
+
+            We'll respond as soon as we can! xoxo<br /><br />
+        </p>
+    </div>
+    <div class="row text-center">
+        <div class="col-md-6  mx-auto">
+            <form method="post" asp-action="" asp-controller="">
+                <div class="card p-3 box-shadow" style="background-color: #e4e2da">
+                    <h4 class="text-left">Send us a message!</h4><br />
+                    <input class="form-control" placeholder="Enter Name" /><br />
+                    <input class="form-control" placeholder="Enter Email" /><br />
+                    <input class="form-control" placeholder="Enter PhoneNumber" /><br />
+                    <textarea class="form-control" placeholder="Message" rows="4"></textarea><br />
+
+
+                    <input type="submit" class="btn btn-success btn-block" value="Send" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
