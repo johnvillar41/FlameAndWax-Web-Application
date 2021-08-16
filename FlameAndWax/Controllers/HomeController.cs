@@ -18,5 +18,10 @@ namespace FlameAndWax.Controllers
         {
             return View();
         }       
+
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
     }
 }

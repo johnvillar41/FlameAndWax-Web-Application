@@ -24,6 +24,7 @@ namespace FlameAndWax
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
 
             //Dependency Injection Repository
             services.AddSingleton<ICustomerRepository, CustomerRepository>();
