@@ -11,7 +11,10 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom navbar-light box-shadow mb-3" style="background-color: #e4e2da" ;>
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FlameAndWax</a>
+                <a class="navbar-brand" style="color: #a68245; " asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/icons/flameAndWaxLogo.png" width="37" height="30" class="d-inline-block align-top" alt="">
+                    Flame And Wax
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -31,7 +34,7 @@
                 </div>
             </div>
         </nav>
-    </header>    
+    </header>
     <div class="container">
         <main role="main" class="pb-4">
             @RenderBody()
