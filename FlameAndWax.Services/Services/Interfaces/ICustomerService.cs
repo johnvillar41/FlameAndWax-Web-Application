@@ -10,6 +10,7 @@ namespace FlameAndWax.Services.Services.Interfaces
     {
         Task<ServiceResult<Boolean>> AddOrderTransaction(OrderModel newOrder);
         Task<ServiceResult<Boolean>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId);
+        Task<ServiceResult<Boolean>> SendMessage(MessageModel newMessage);
 
         Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId);       
         Task<ServiceResult<ProductModel>> FetchProductDetail(int productId);

@@ -1,8 +1,21 @@
-﻿@{
+﻿@model FlameAndWax.Data.Models.MessageModel;
+@{
     ViewData["Title"] = "Contact Us";
 }
 <div class="container text-center">
     <div class="row">
+        @if (ViewBag.IsSuccess)
+        {
+        <div class="col-12">
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">Well done!</h4>
+                <p>Aww yeah, you successfully sent a message!</p>
+                <hr>
+                <p class="mb-0">We typically reply within a day or two.</p>
+            </div>
+        </div>
+        }
+
         <div class="col-md-6">
             <p>
                 We'd love to hear from you!<br /><br />
@@ -29,20 +42,20 @@
                     <p>Email here plus icon</p>
                 </div>
             </div>
-        </div>        
+        </div>
         <div class="col-md-6">
-            <form method="post" asp-action="" asp-controller="">
+            <form method="post" asp-action="Index" asp-controller="ContactUs">
                 <div class="card p-3 box-shadow" style="background-color: #e4e2da">
                     <h4 class="text-left">Send us a message!</h4><br />
-                    <input class="form-control" placeholder="Enter Name" /><br />
-                    <input class="form-control" placeholder="Enter Email" /><br />
-                    <input class="form-control" placeholder="Enter PhoneNumber" /><br />
-                    <textarea class="form-control" placeholder="Message" rows="4"></textarea><br />
-                    
-                    <input type="submit" class="btn btn-gold btn-block" value="Send" />                    
+                    <input class="form-control" placeholder="Enter Name" asp-for="@Model.Name" /><br />
+                    <input class="form-control" placeholder="Enter Email" asp-for="@Model.Email" /><br />
+                    <input class="form-control" placeholder="Enter PhoneNumber" asp-for="@Model.PhoneNumber" /><br />
+                    <textarea class="form-control" placeholder="Message" rows="4" asp-for="@Model.Message"></textarea><br />
+
+                    <input type="submit" class="btn btn-gold btn-block" value="Send" />
                 </div>
             </form>
         </div>
-    </div>   
+    </div>
 
 </div>

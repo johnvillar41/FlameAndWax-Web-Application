@@ -1,6 +1,7 @@
 ﻿using FlameAndWax.Data.Models;
 using FlameAndWax.Data.Repositories.Interfaces;
 using FlameAndWax.Services.Helpers;
+using FlameAndWax.Services.Repositories.Interfaces;
 using FlameAndWax.Services.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,18 +16,21 @@ namespace FlameAndWax.Services.Services
         private readonly IOrderDetailRepository _orderDetailRepository;
         private readonly ICustomerRepository _customerRepository;
         private readonly ICustomerReviewRepository _customerReviewRepository;
+        private readonly IMessageRepository _messageRepository;
         public CustomerService(
             IProductRepository productRepository,
             IOrderRepository orderRepository,
             IOrderDetailRepository orderDetailRepository,
             ICustomerRepository customerRepository,
-            ICustomerReviewRepository customerReviewRepository)
+            ICustomerReviewRepository customerReviewRepository,
+            IMessageRepository messageRepository)
         {
             _productRepository = productRepository;
             _orderRepository = orderRepository;
             _orderDetailRepository = orderDetailRepository;
             _customerRepository = customerRepository;
             _customerReviewRepository = customerReviewRepository;
+            _messageRepository = messageRepository;
         }
         public async Task<ServiceResult<bool>> AddOrderTransaction(OrderModel newOrder)
         {
@@ -142,6 +146,14 @@ namespace FlameAndWax.Services.Services
                 return ServiceHelper.BuildServiceResult<bool>(false, true, "Registered Data has no value");
 
             await _customerRepository.Add(registeredCredentials);
+            return ServiceHelper.BuildServiceResult<bool>(true, false, null);
+        }
+
+        public async Task<ServiceResult<bool>> SendMessage(MessageModel newMessage)
+        {
+            if (newMessage == null)
+                return ServiceHelper.BuildServiceResult<bool>(false, true, "Empty Message!");
+            await _messageRepository.Add(newMessage);
             return ServiceHelper.BuildServiceResult<bool>(true, false, null);
         }
     }

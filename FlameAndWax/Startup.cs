@@ -1,6 +1,7 @@
 using FlameAndWax.Data.Repositories;
 using FlameAndWax.Data.Repositories.Interfaces;
 using FlameAndWax.Services.Repositories;
+using FlameAndWax.Services.Repositories.Interfaces;
 using FlameAndWax.Services.Services;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -33,6 +34,7 @@ namespace FlameAndWax
             services.AddSingleton<IOrderDetailRepository, OrderDetailRepository>();
             services.AddSingleton<IOrderRepository, OrderRepository>();
             services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddSingleton<IMessageRepository, MessageRepository>();
 
             //Dependency Injection Services
             services.AddSingleton<ICustomerService, CustomerService>();
