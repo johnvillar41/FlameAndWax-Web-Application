@@ -85,10 +85,15 @@ body {
 }
 
 .btn-gold {
-    background-color: #a68245;    
+    background-color: #a68245;
 }
 
 .btn-gold:hover {
     color: #fff;
-    background-color: #856838;    
+    background-color: #856838;
+}
+
+.carousel-control-next,
+.carousel-control-prev{    
+    background-color:#000000;
 }
