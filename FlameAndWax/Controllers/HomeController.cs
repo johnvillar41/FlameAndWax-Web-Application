@@ -12,16 +12,6 @@ namespace FlameAndWax.Controllers
         public IActionResult Index()
         {           
             return View();
-        }
-
-        public IActionResult ContactUs()
-        {
-            return View();
-        }       
-
-        public IActionResult AboutUs()
-        {
-            return View();
-        }
+        }      
     }
 }

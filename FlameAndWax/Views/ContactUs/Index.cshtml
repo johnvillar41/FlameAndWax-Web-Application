@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+}
+<div class="container text-center">
+    <div class="row">
+        <div class="col-md-6">
+            <p>
+                We'd love to hear from you!<br /><br />
+
+                Don't forget that you can talk to us directly by clicking the message icon on the lower right corner of this page.<br /><br />
+
+                Our office hours are Monday to Saturday, 9am to 4pm.<br /><br />
+
+                In case we don't respond immediately (or you are reaching out to use during non-working hours), please be sure to check our FAQ page or send us an email.<br /><br />
+
+                We'll respond as soon as we can! xoxo<br /><br />
+            </p>
+            <div class="row ">
+                <div class="col-md-3 mx-auto">
+                    <img src="~/images/icons/outline_home_black_36dp.png" />
+                    <p>Address here plus icon</p>
+                </div>
+                <div class="col-md-3 mx-auto">
+                    <img src="~/images/icons/outline_phone_black_36dp.png" />
+                    <p>Phone number here plus icon</p>
+                </div>
+                <div class="col-md-3 mx-auto">
+                    <img src="~/images/icons/outline_email_black_36dp.png" />
+                    <p>Email here plus icon</p>
+                </div>
+            </div>
+        </div>        
+        <div class="col-md-6">
+            <form method="post" asp-action="" asp-controller="">
+                <div class="card p-3 box-shadow" style="background-color: #e4e2da">
+                    <h4 class="text-left">Send us a message!</h4><br />
+                    <input class="form-control" placeholder="Enter Name" /><br />
+                    <input class="form-control" placeholder="Enter Email" /><br />
+                    <input class="form-control" placeholder="Enter PhoneNumber" /><br />
+                    <textarea class="form-control" placeholder="Message" rows="4"></textarea><br />
+                    
+                    <input type="submit" class="btn btn-gold btn-block" value="Send" />                    
+                </div>
+            </form>
+        </div>
+    </div>   
+
+</div>
