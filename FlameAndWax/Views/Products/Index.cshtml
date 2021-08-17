@@ -1,64 +1,39 @@
-﻿@{
+﻿@model IEnumerable<FlameAndWax.Models.ProductViewModel>;
+@{
     ViewData["Title"] = "Products";
 }
 <div class="container">
     <div class="row">
-
         <div class="container">
             <h2>@ViewData["Title"]</h2>
             <div class="row">
-
-                @for (int i = 0; i < 12; i++)
-
+                @foreach (var product in Model)
                 {
-
                     <div class="col-md-4 col-sm-12 p-3 ">
                         <div class="card shadow-lg">
-                            <img class="card-img-top" src="~/images/products/bodycandle.png" alt="Card image cap">
+                            @if (product.PhotoLink.Length == 0)
+                            {
+                                <img class="card-img-top" src="~/images/empty_image.png" style="height:200px;" alt="Card image cap" />
+                            }
+                            else
+                            {
+                                <img class="card-img-top" src="@Url.Content(product.PhotoLink)" style="height: 200px;" alt="Card image cap">
+                            }
                             <div class="card-body">
-                                <h5 class="card-title">Product Name</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <h5 class="card-title">Price</h5>
-                                <h6 class="card-title">Stock</h6>
-                                <button type="button" class="btn btn-gold btn-sm" data-toggle="modal" data-target="#exampleModalCenter">See More</button>
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            
-                                            <div class="modal-body">
-                                                <h6>Product ID</h6>
-                                                <hr/>
-                                                <h5>Product Name</h5>
-                                                <h5>Product Description</h5>
-                                                <h5>Product Price</h5>
-                                                <h5>Quantity per Unit</h5>
-                                                <h5>Unit Price</h5>
-                                                <h5>Units in Stock</h5>
-                                                <h5>Units on Order</h5>
-                                                <br/>
-                                                <button type="button" class="btn btn-gold btn-sm">Back</button>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-
-
+                                <h5 class="card-title">@product.ProductName</h5>
+                                <p class="card-text">@product.ProductDescription</p>
+                                <h5 class="card-title"><strong>PHP</strong>@product.ProductPrice</h5>                                
+                                <a class="btn btn-gold btn-sm"                                  
+                                        asp-route-productId ="@product.ProductId"
+                                        asp-action="Details"
+                                        asp-controller="Products">
+                                See More
+                                </a>                                
                             </div>
-                            
                         </div>
-
-
                     </div>
-                    
                 }
-
-
             </div>
-
         </div>
-
-
     </div>
 </div>

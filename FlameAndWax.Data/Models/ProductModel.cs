@@ -10,5 +10,6 @@
         public double UnitPrice { get; set; }
         public int UnitsInStock { get; set; }
         public int UnitsInOrder { get; set; }
+        public string PhotoLink { get; set; }
     }
 }

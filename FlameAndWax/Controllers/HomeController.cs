@@ -47,10 +47,7 @@ namespace FlameAndWax.Controllers
                             ProductId = newProduct.ProductId,
                             ProductName = newProduct.ProductName,
                             ProductDescription = newProduct.ProductDescription,
-                            ProductPrice = newProduct.ProductPrice,
-                            UnitPrice = newProduct.ProductPrice,
-                            UnitsInStock = newProduct.UnitsInStock,
-                            CustomerReviews = reviewResult.Result
+                            ProductPrice = newProduct.ProductPrice                           
                         }
                     );
             }
