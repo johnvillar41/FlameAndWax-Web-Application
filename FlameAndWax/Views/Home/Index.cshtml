@@ -63,26 +63,24 @@
     <hr />
     <br />
     <h3>New Arrivals</h3>
-    <div class="card">
+    
         <div class="row">
             @foreach (var product in Model)
             {
-                <div class="col-md-4 col-sm-12">
-                    <div class="card shadow-lg">
+                <div class="col-md-3 col-sm-12 p-1">
+                    <div class="card shadow-lg ">
                         <img src="~/images/FooterPic.PNG" class="card-img-top" alt="...">
                         <div class="card-body">
                             <a class="badge badge-danger text-white">New Arrivals</a>
                             <h5 class="card-title">@product.ProductId</h5>
                             <p class="card-text">@product.ProductDescription</p>
-                        </div>
-                        <div class="card-footer">
                             <small class="text-muted"><button class="btn btn-gold">See more</button></small>
-                        </div>
+                        </div>                                 
                     </div>
                 </div>
             }
         </div>
-    </div>
+   
 
     <br />
 
