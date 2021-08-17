@@ -97,3 +97,13 @@ body {
 .carousel-control-prev {
     background-color: #e4e2da;    
 }
+
+.tab{
+    margin-left:40px;
+}
+.p-semi {
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

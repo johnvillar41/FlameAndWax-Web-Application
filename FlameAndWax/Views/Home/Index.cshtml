@@ -24,7 +24,7 @@
                 <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
             </ol>
             <div class="carousel-inner">
-                <div class="carousel-item active">                    
+                <div class="carousel-item active">
                     <img src="~/images/products/bodycandle.png" class="d-block w-100 rounded" alt="...">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>First slide label</h5>
@@ -63,24 +63,25 @@
     <hr />
     <br />
     <h3>New Arrivals</h3>
-    
-        <div class="row">
-            @foreach (var product in Model)
-            {
-                <div class="col-md-3 col-sm-12 p-1">
-                    <div class="card shadow-lg ">
-                        <img src="~/images/FooterPic.PNG" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <a class="badge badge-danger text-white">New Arrivals</a>
-                            <h5 class="card-title">@product.ProductId</h5>
-                            <p class="card-text">@product.ProductDescription</p>
-                            <small class="text-muted"><button class="btn btn-gold">See more</button></small>
-                        </div>                                 
+
+    <div class="row">
+
+        @foreach (var product in Model)
+        {
+            <div class="col-md-6 col-lg-4 p-1">
+                <div class="card shadow-lg">
+                    <img src="@Url.Content(product.PhotoLink)" class="card-img-top" alt="..." style="height:200px;">
+                    <div class="card-body">
+                        <a class="badge badge-danger text-white">New Arrivals</a>
+                        <h5 class="card-title">@product.ProductName</h5>
+                        <p class="card-text p-semi">@product.ProductDescription</p>
+                        <small class="text-muted"><button class="btn btn-gold">See more</button></small>
                     </div>
                 </div>
-            }
-        </div>
-   
+            </div>
+        }
+    </div>
+
 
     <br />
 

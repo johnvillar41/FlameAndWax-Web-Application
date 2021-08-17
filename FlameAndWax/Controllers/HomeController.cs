@@ -47,7 +47,8 @@ namespace FlameAndWax.Controllers
                             ProductId = newProduct.ProductId,
                             ProductName = newProduct.ProductName,
                             ProductDescription = newProduct.ProductDescription,
-                            ProductPrice = newProduct.ProductPrice                           
+                            ProductPrice = newProduct.ProductPrice,
+                            PhotoLink = newProduct.PhotoLink
                         }
                     );
             }

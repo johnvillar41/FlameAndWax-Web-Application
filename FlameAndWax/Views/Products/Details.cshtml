@@ -1,37 +1,43 @@
 ﻿@model FlameAndWax.Models.ProductDetailViewModel;
 
 <div class="container">
-    <div class="jumbotron">
+    <div class="jumbotron" style="background-color:#e4e2da;">
         <div class="row">
-            <h2><strong>@Model.CustomerReviews.Count() Reviews</strong></h2>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card shadow-lg">
-                    <img src="@Url.Content(Model.PhotoLink)" class="card-img-top p-1" alt="Responsive image">
-                </div>
+            <div class="col-12">
+                <h2><strong>@Model.CustomerReviews.Count() Reviews</strong></h2>
             </div>
-            <div class="col-md-6">
-                <ul>
-                    <li>
-                        @Model.ProductId
-                    </li>
-                    <li>
-                        @Model.ProductName
-                    </li>
-                    <li>
-                        @Model.ProductDescription
-                    </li>
-                    <li>
-                        @Model.ProductPrice
-                    </li>
-                    <li>
-                        @Model.UnitPrice
-                    </li>
-                    <li>
-                        @Model.UnitsInStock
-                    </li>
-                </ul>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card shadow-lg">
+                    @if (Model.PhotoLink.Length == 0)
+                    {
+                        <img src="~/images/empty_image.png" class="card-img-top p-1" alt="Responsive image" />
+                    }
+                    else
+                    {
+                        <img src="@Url.Content(Model.PhotoLink)" class="card-img-top p-1" alt="Responsive image">
+                    }
+                </div>
+            </div>            
+            <div class="col-md-4">
+                <h4><strong>@Model.ProductName</strong></h4>
+                <hr />
+                <p><strong>ProductId</strong></p>
+                <p class="tab">@Model.ProductId</p>
+
+                <p><strong>Price</strong></p>
+                <p class="tab">@Model.ProductPrice</p>
+
+                <p><strong>Unit Price</strong></p>
+                <p class="tab">@Model.UnitPrice</p>
+
+                <p><strong>Unit Stock</strong></p>
+                <p class="tab">@Model.UnitsInStock</p>
+
+                <p><strong>Product Description</strong></p>
+                <p class="tab">@Model.ProductDescription</p>
             </div>
         </div>
     </div>
