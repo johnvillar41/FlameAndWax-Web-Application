@@ -64,6 +64,30 @@ namespace FlameAndWax.Controllers
                 };
                 return View("Error", error);
             }
+
+            var customerReviewViewModels = new List<CustomerReviewViewModel>();
+            foreach(var customerReview in customerReviewResult.Result)
+            {
+                var customerViewModel = new CustomerViewModel
+                {
+                    CustomerId = customerReview.Customer.CustomerId,
+                    CustomerName = customerReview.Customer.CustomerName,
+                    ContactNumber = customerReview.Customer.ContactNumber,
+                    ProfilePictureLink = customerReview.Customer.ProfilePictureLink 
+                };
+
+                customerReviewViewModels.Add(
+                        new CustomerReviewViewModel
+                        {
+                            ReviewId = customerReview.ReviewId,
+                            ProductId = customerReview.Product.ProductId,
+                            ReviewDetail = customerReview.ReviewDetail,
+                            ReviewScore = customerReview.ReviewScore,
+                            Customer = customerViewModel
+                        }
+                    );
+            }            
+
             var productDetailModel = new ProductDetailViewModel
             {
                 ProductId = productId,
@@ -73,7 +97,7 @@ namespace FlameAndWax.Controllers
                 PhotoLink = productResult.Result.PhotoLink,
                 UnitPrice = productResult.Result.UnitPrice,
                 UnitsInStock = productResult.Result.UnitsInStock,
-                CustomerReviews = customerReviewResult.Result
+                CustomerReviews = customerReviewViewModels
             };
             return View(productDetailModel);
         }

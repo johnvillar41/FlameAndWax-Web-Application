@@ -1,8 +1,4 @@
-﻿using FlameAndWax.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace FlameAndWax.Models
 {
@@ -16,6 +12,6 @@ namespace FlameAndWax.Models
         public double UnitPrice { get; set; }
         public int UnitsInStock { get; set; }
 
-        public IEnumerable<CustomerReviewModel> CustomerReviews { get; set; }
+        public IEnumerable<CustomerReviewViewModel> CustomerReviews { get; set; }
     }
 }
