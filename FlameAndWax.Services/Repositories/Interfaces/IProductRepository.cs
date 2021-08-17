@@ -1,4 +1,5 @@
 ﻿using FlameAndWax.Data.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FlameAndWax.Data.Repositories.Interfaces
@@ -7,5 +8,6 @@ namespace FlameAndWax.Data.Repositories.Interfaces
     {
         Task ModifyNumberOfStocks(int productId, int numberOfStocksToBeSubtracted);
         Task ModifyNumberOfUnitsInOrder(int productId, int numberOfUnitsToBeAdded);
+        Task<IEnumerable<ProductModel>> FetchNewArrivedProducts();
     }
 }

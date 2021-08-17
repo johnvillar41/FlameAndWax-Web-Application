@@ -18,5 +18,6 @@ namespace FlameAndWax.Services.Services.Interfaces
         Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrders(int customerId);
         Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts();
         Task<ServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int productId);
+        Task<ServiceResult<IEnumerable<ProductModel>>> FetchNewArrivedProducts();
     }
 }

@@ -74,6 +74,17 @@ namespace FlameAndWax.Services.Services
             return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(customerReviews, false, null);
         }
 
+        public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchNewArrivedProducts()
+        {
+            var newArrivals = await _productRepository.FetchNewArrivedProducts();
+            return new ServiceResult<IEnumerable<ProductModel>>
+            {
+                Result = newArrivals,
+                HasError = false,
+                ErrorContent = null
+            };
+        }
+
         public async Task<ServiceResult<IEnumerable<OrderDetailModel>>> FetchOrderDetails(int orderId = 0)
         {
             if (orderId == 0)

@@ -89,6 +89,34 @@ namespace FlameAndWax.Services.Repositories
             return products;
         }
 
+        public async Task<IEnumerable<ProductModel>> FetchNewArrivedProducts()
+        {
+            List<ProductModel> newArrivals = new List<ProductModel>();
+
+            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "SELECT TOP 6 * FROM ProductsTable Order By ProductId DESC;";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            while(await reader.ReadAsync())
+            {
+                newArrivals.Add(
+                        new ProductModel
+                        {
+                            ProductId = int.Parse(reader["ProductId"].ToString()),
+                            ProductName = reader["ProductName"].ToString(),
+                            ProductDescription = reader["ProductDescription"].ToString(),
+                            ProductPrice = double.Parse(reader["ProductPrice"].ToString()),
+                            QuantityPerUnit = int.Parse(reader["QuantityPerUnit"].ToString()),
+                            UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
+                            UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
+                            UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString())
+                        }
+                    );
+            }
+            return newArrivals;
+        }
+
         public async Task ModifyNumberOfStocks(int productId, int numberOfStocksToBeSubtracted)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
