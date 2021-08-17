@@ -3,12 +3,6 @@
 <div class="container">
     <div class="jumbotron" style="background-color:#e4e2da;">
         <div class="row">
-            <div class="col-12">
-                <h2><strong>@Model.CustomerReviews.Count() Reviews</strong></h2>
-            </div>
-        </div>
-        <hr />
-        <div class="row">
             <div class="col-md-8">
                 <div class="card shadow-lg">
                     @if (Model.PhotoLink.Length == 0)
@@ -20,44 +14,64 @@
                         <img src="@Url.Content(Model.PhotoLink)" class="card-img-top p-1" alt="Responsive image">
                     }
                 </div>
-            </div>            
+            </div>
             <div class="col-md-4">
                 <h4><strong>@Model.ProductName</strong></h4>
                 <hr />
-                <p><strong>ProductId</strong></p>
-                <p class="tab">@Model.ProductId</p>
+                <table class="table table-responsive table-bordered text-center">
+                    <thead class="thead-light">
+                        <tr>
+                            <td><p><strong>Product Id</strong></p></td>
+                            <td><p><strong>Unit Price</strong></p></td>
+                            <td><p><strong>Price</strong></p></td>
+                            <td><p><strong>Unit Stock</strong></p></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><p class="tab">@Model.ProductId</p></td>
+                            <td><p class="tab">@Model.UnitPrice</p></td>
+                            <td><p class="tab">@Model.ProductPrice</p></td>
+                            <td><p class="tab">@Model.UnitsInStock</p></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><strong>Description</strong></p>
+                <p>@Model.ProductDescription</p>
+                <a class="btn btn-gold btn-block" asp-route-productId="@Model.ProductId" asp-action="AddToCart" asp-controller="Products">Add To Cart</a>
+            </div>
+        </div>
+        <hr />
+        <div class="card text-center">
+            <div class="row">
+                <div class="col-6">
+                    <h4>Customer Reviews</h4>
+                </div>
 
-                <p><strong>Price</strong></p>
-                <p class="tab">@Model.ProductPrice</p>
+                <div class="col-6">
+                    <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_ur7sluxh.json" background="transparent" speed="1" style="width: 300px; height: 200px;" loop autoplay></lottie-player>
 
-                <p><strong>Unit Price</strong></p>
-                <p class="tab">@Model.UnitPrice</p>
-
-                <p><strong>Unit Stock</strong></p>
-                <p class="tab">@Model.UnitsInStock</p>
-
-                <p><strong>Product Description</strong></p>
-                <p class="tab">@Model.ProductDescription</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        @if (Model.CustomerReviews.Count() == 0)
+                        {
+                            <h1>There are no reviews found!</h1>
+                        }
+                        @foreach (var review in Model.CustomerReviews)
+                        {
+                            <div class="card">
+                                <div class="card-body">
+                                    <p>@review.ReviewDetail</p>
+                                    <p>@review.ReviewScore</p>
+                                    <p>@review.Customer.CustomerName</p>
+                                    <p>@review.ReviewScore.ToString()</p>
+                                    <p>@review.ReviewScore.ToString()</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-12">
-        @if (Model.CustomerReviews.Count() == 0)
-        {
-            <h1>There are no reviews found!</h1>
-        }
-        @foreach (var review in Model.CustomerReviews)
-        {
-            <div class="card">
-                <div class="card-body">
-                    <p>@review.ReviewDetail</p>
-                    <p>@review.ReviewScore</p>
-                    <p>@review.Customer.CustomerName</p>
-                    <p>@review.ReviewScore.ToString()</p>
-                    <p>@review.ReviewScore.ToString()</p>
-                </div>
-            </div>
-        }
-
-    </div>
-</div>
