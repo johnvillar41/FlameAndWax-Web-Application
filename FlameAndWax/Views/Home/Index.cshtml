@@ -1,4 +1,4 @@
-﻿@model List<FlameAndWax.Models.ProductViewModel>;
+﻿@model IEnumerable<FlameAndWax.Models.ProductViewModel>;
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -63,40 +63,28 @@
     <hr />
     <br />
     <h3>New Arrivals</h3>
-    <div class="card-deck">
-        @for (int i = 0; i < 3; i++)
-        {
-            <div class="card shadow-lg">
-                <img src="~/images/FooterPic.PNG" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <a class="badge badge-danger text-white">New Arrivals</a>
-                    <h5 class="card-title">@Model[i].ProductName</h5>
-                    <p class="card-text">@Model[i].ProductDescription</p>
+    <div class="card">
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="col-md-4 col-sm-12">
+                    <div class="card shadow-lg">
+                        <img src="~/images/FooterPic.PNG" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <a class="badge badge-danger text-white">New Arrivals</a>
+                            <h5 class="card-title">@product.ProductId</h5>
+                            <p class="card-text">@product.ProductDescription</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted"><button class="btn btn-gold">See more</button></small>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <small class="text-muted"><button class="btn btn-gold">See more</button></small>
-                </div>
-            </div>
-        }
+            }
+        </div>
     </div>
+
     <br />
-    <div class="card-deck">
-        @for (int i = 2; i < 5; i++)
-        {
-            <div class="card shadow-lg">
-                <img src="~/images/FooterPic.PNG" class="card-img-top" alt="...">
-                <br />
-                <div class="card-body">
-                    <a class="badge badge-danger text-white">New Arrivals</a>
-                    <h5 class="card-title">@Model[i].ProductName</h5>
-                    <p class="card-text">@Model[i].ProductDescription</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted"><button class="btn btn-gold">See more</button></small>
-                </div>
-            </div>
-        }
-    </div>
 
 </div>
 
