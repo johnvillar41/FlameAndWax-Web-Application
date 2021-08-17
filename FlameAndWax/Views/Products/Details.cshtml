@@ -1,5 +1,55 @@
 ﻿@model FlameAndWax.Models.ProductDetailViewModel;
 
 <div class="container">
-    <p>@Model.ProductId</p>
+    <div class="jumbotron">
+        <div class="row">
+            <h2><strong>@Model.CustomerReviews.Count() Reviews</strong></h2>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow-lg">
+                    <img src="@Url.Content(Model.PhotoLink)" class="card-img-top p-1" alt="Responsive image">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <ul>
+                    <li>
+                        @Model.ProductId
+                    </li>
+                    <li>
+                        @Model.ProductName
+                    </li>
+                    <li>
+                        @Model.ProductDescription
+                    </li>
+                    <li>
+                        @Model.ProductPrice
+                    </li>
+                    <li>
+                        @Model.UnitPrice
+                    </li>
+                    <li>
+                        @Model.UnitsInStock
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        @if (Model.CustomerReviews.Count() == 0)
+        {
+            <h1>There are no reviews found!</h1>
+        }
+        @foreach (var review in Model.CustomerReviews)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <p>@review.ReviewDetail</p>
+                    <p>@review.ReviewScore</p>
+                    <p>@review.Customer.CustomerName</p>
+                </div>
+            </div>
+        }
+
+    </div>
 </div>
