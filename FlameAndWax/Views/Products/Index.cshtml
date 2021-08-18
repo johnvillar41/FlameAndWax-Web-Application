@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<FlameAndWax.Models.ProductViewModel>;
+@using FlameAndWax.Data.Constants;
 @{
     ViewData["Title"] = "Products";
 }
@@ -14,9 +15,9 @@
                 Category
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" asp-action="Sort" asp-controller="Products" asp-route-category="Candle">Candle</a>
-                <a class="dropdown-item" asp-action="Sort" asp-controller="Products" asp-route-category="Soap">Soap</a>
-                <a class="dropdown-item" asp-action="Sort" asp-controller="Products" asp-route-category="Diffuser">Diffuser</a>
+                <a class="dropdown-item" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Candle)">Candle</a>
+                <a class="dropdown-item" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Soap)">Soap</a>
+                <a class="dropdown-item" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Diffuser)">Diffuser</a>
             </div>
         </div>
     </div>

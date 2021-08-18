@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<FlameAndWax.Models.ProductViewModel>;
-@{
+@{@using FlameAndWax.Data.Constants;
     ViewData["Title"] = "Home Page";
 }
 
@@ -29,7 +29,7 @@
                     <div class="carousel-caption d-none d-md-block">
                         <h5><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Candles</span></h5>
                         <p><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Nulla vitae elit libero, a pharetra augue mollis interdum.</span></p>
-                        <button class="btn btn-gold">View Category</button>
+                        <a asp-controller="Home" asp-action="ViewCategorizedProducts" asp-route-category="@nameof(Constants.Category.Candle)" class="btn btn-gold">View Category</a>                        
                     </div>
                 </div>
                 <div class="carousel-item">
@@ -37,7 +37,8 @@
                     <div class="carousel-caption d-none d-md-block">
                         <h5><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Soaps</span></h5>
                         <p><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></p>
-                        <button class="btn btn-gold">View Category</button>
+                        <a asp-controller="Home" asp-action="ViewCategorizedProducts" asp-route-category="@nameof(Constants.Category.Soap)" class="btn btn-gold">View Category</a>
+                        
                     </div>
                 </div>
                 <div class="carousel-item">
@@ -45,7 +46,7 @@
                     <div class="carousel-caption d-none d-md-block">
                         <h5><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Diffusers</span></h5>
                         <p><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Praesent commodo cursus magna, vel scelerisque nisl consectetur.</span></p>
-                        <button class="btn btn-gold">View Category</button>
+                        <a asp-controller="Home" asp-action="ViewCategorizedProducts" asp-route-category="@nameof(Constants.Category.Diffuser)" class="btn btn-gold">View Category</a>
                     </div>
                 </div>
             </div>

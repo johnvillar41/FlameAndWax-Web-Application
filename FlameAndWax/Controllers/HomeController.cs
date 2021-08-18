@@ -1,5 +1,6 @@
 ﻿using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
+using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Services;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +56,36 @@ namespace FlameAndWax.Controllers
             }
 
             return View(newProducts);
+        }
+
+        public async Task<IActionResult> ViewCategorizedProducts(string category)
+        {
+            var categorizedProducts = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category));
+            if (categorizedProducts.HasError)
+            {
+                var error = new ErrorViewModel
+                {
+                    ErrorContent = categorizedProducts.ErrorContent
+                };
+                return View("Error", error);
+            }
+
+            List<ProductViewModel> productViewModels = new List<ProductViewModel>();
+            foreach(var product in categorizedProducts.Result)
+            {
+                productViewModels.Add(
+                        new ProductViewModel
+                        {
+                            ProductId = product.ProductId,
+                            ProductName = product.ProductName,
+                            ProductDescription = product.ProductDescription,
+                            ProductPrice = product.ProductPrice,
+                            PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink
+                        }
+                    );
+            }
+            
+            return View("../Products/Index", productViewModels);
         }
 
         public IActionResult SeeMore(int id)
