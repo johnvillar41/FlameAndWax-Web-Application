@@ -103,15 +103,7 @@ namespace FlameAndWax.Controllers
 
             var customerReviewViewModels = new List<CustomerReviewViewModel>();
             foreach (var customerReview in customerReviewResult.Result)
-            {
-                var customerViewModel = new CustomerViewModel
-                {
-                    CustomerId = customerReview.Customer.CustomerId,
-                    CustomerName = customerReview.Customer.CustomerName,
-                    ContactNumber = customerReview.Customer.ContactNumber,
-                    ProfilePictureLink = customerReview.Customer.ProfilePictureLink
-                };
-
+            {                
                 customerReviewViewModels.Add(
                         new CustomerReviewViewModel
                         {
@@ -119,12 +111,18 @@ namespace FlameAndWax.Controllers
                             ProductId = customerReview.Product.ProductId,
                             ReviewDetail = customerReview.ReviewDetail,
                             ReviewScore = customerReview.ReviewScore,
-                            Customer = customerViewModel
+                            Customer = new CustomerViewModel
+                            {
+                                CustomerId = customerReview.Customer.CustomerId,
+                                CustomerName = customerReview.Customer.CustomerName,
+                                ContactNumber = customerReview.Customer.ContactNumber,
+                                ProfilePictureLink = customerReview.Customer.ProfilePictureLink
+                            }
                         }
                     );
             }
-
-            var productDetailModel = new ProductDetailViewModel
+            
+            return View(new ProductDetailViewModel
             {
                 ProductId = productId,
                 ProductName = productResult.Result.ProductName,
@@ -134,8 +132,7 @@ namespace FlameAndWax.Controllers
                 UnitsInStock = productResult.Result.UnitsInStock,
                 CustomerReviews = customerReviewViewModels,
                 ProductGallery = productResult.Result.ProductGallery
-            };
-            return View(productDetailModel);
+            });
         }
     }
 }
