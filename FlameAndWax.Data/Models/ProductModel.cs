@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Data.Models
 {
@@ -12,6 +13,7 @@ namespace FlameAndWax.Data.Models
         public double UnitPrice { get; set; }
         public int UnitsInStock { get; set; }
         public int UnitsInOrder { get; set; }
+        public Category Category { get; set; }
 
         public IEnumerable<ProductGalleryModel> ProductGallery { get; set; }
     }

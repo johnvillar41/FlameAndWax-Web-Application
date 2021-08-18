@@ -25,5 +25,11 @@
             Deactivated,
             Activated
         }
+        public enum Category
+        {
+            Candle,
+            Soap,
+            Diffuser
+        }
     }
 }
