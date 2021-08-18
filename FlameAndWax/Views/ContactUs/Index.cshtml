@@ -4,17 +4,15 @@
 }
 <div class="container text-center">
     <div class="row">
-        @if (ViewBag.IsSuccess)
-        {
+
         <div class="col-12">
-            <div class="alert alert-success" role="alert">
+            <div class="alert alert-success" role="alert" id="success" style="display:none;">
                 <h4 class="alert-heading">Well done!</h4>
                 <p>Aww yeah, you successfully sent a message!</p>
                 <hr>
                 <p class="mb-0">We typically reply within a day or two.</p>
             </div>
         </div>
-        }
 
         <div class="col-md-6">
             <p>
@@ -44,7 +42,8 @@
             </div>
         </div>
         <div class="col-md-6">
-            <form method="post" asp-action="Index" asp-controller="ContactUs">
+            <form method="post" asp-action="Index" asp-controller="ContactUs"
+                  data-ajax="true" data-ajax-complete="completedAlert" data-ajax-loading="#loader">
                 <div class="card p-3 box-shadow" style="background-color: #e4e2da">
                     <h4 class="text-left">Send us a message!</h4><br />
                     <input class="form-control" placeholder="Enter Name" asp-for="@Model.Name" /><br />
@@ -54,8 +53,20 @@
 
                     <input type="submit" class="btn btn-gold btn-block" value="Send" />
                 </div>
+                <div class="spinner-border" role="status" id="loader" style="display:none;">
+                    <span class="sr-only">Loading...</span>
+                </div>
             </form>
+
         </div>
     </div>
 
 </div>
+
+@section scripts{
+    <script>
+        function completedAlert() {
+            alert("Data Sent!");
+        }
+    </script>
+}

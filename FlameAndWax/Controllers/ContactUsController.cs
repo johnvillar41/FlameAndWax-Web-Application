@@ -8,14 +8,13 @@ namespace FlameAndWax.Controllers
 {
     public class ContactUsController : Controller
     {
-        ICustomerService _customerService;
+        private readonly ICustomerService _customerService;
         public ContactUsController(ICustomerService customerService)
         {
             _customerService = customerService;
         }
-        public IActionResult Index(bool isSuccess = false)
-        {
-            ViewBag.IsSuccess = isSuccess;
+        public IActionResult Index()
+        {           
             return View();
         }
 
@@ -31,7 +30,7 @@ namespace FlameAndWax.Controllers
                 };
                 return View("Error", error);
             }
-            return RedirectToAction(nameof(Index), new { isSuccess = true });
+            return RedirectToAction(nameof(Index));
         }
     }
 }
