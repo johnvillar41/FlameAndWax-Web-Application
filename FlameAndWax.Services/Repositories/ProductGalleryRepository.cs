@@ -27,6 +27,11 @@ namespace FlameAndWax.Services.Repositories
             throw new System.NotImplementedException();
         }
 
+        public Task<IEnumerable<ProductGalleryModel>> FetchAllPicturesForProduct(int productId)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Task Update(ProductGalleryModel data, int id)
         {
             throw new System.NotImplementedException();

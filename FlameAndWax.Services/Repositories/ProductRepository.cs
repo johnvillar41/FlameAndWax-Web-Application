@@ -1,6 +1,7 @@
 ﻿using FlameAndWax.Data.Constants;
 using FlameAndWax.Data.Models;
 using FlameAndWax.Data.Repositories.Interfaces;
+using FlameAndWax.Services.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -9,6 +10,11 @@ namespace FlameAndWax.Services.Repositories
 {
     public class ProductRepository : IProductRepository
     {
+        private readonly IProductGalleryRepository _productGalleryRepository;
+        public ProductRepository(IProductGalleryRepository productGalleryRepository)
+        {
+            _productGalleryRepository = productGalleryRepository;
+        }
         public async Task Add(ProductModel Data)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
@@ -55,7 +61,8 @@ namespace FlameAndWax.Services.Repositories
                     QuantityPerUnit = int.Parse(reader["QuantityPerUnit"].ToString()),
                     UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                     UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
-                    UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString())                    
+                    UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
+                    ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(id)
                 };
             }
             return null;
@@ -82,7 +89,8 @@ namespace FlameAndWax.Services.Repositories
                             QuantityPerUnit = int.Parse(reader["QuantityPerUnit"].ToString()),
                             UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                             UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
-                            UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString())                           
+                            UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
+                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString()))
                         }
                     );
             }
@@ -110,7 +118,8 @@ namespace FlameAndWax.Services.Repositories
                             QuantityPerUnit = int.Parse(reader["QuantityPerUnit"].ToString()),
                             UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                             UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
-                            UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString())                            
+                            UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
+                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString()))
                         }
                     );
             }

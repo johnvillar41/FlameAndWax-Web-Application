@@ -30,13 +30,14 @@ namespace FlameAndWax.Controllers
 
             var products = new List<ProductViewModel>();
             foreach (var product in productResult.Result)
-            {               
+            {
                 products.Add(new ProductViewModel
                 {
                     ProductId = product.ProductId,
                     ProductName = product.ProductName,
                     ProductDescription = product.ProductDescription,
-                    ProductPrice = product.ProductPrice             
+                    ProductPrice = product.ProductPrice,
+                    PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink
                 });
             }
             return View(products);

@@ -5,13 +5,16 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="card shadow-lg">
-                    @if (Model.PhotoLink.Length == 0)
+                    @foreach (var photo in Model.ProductGallery)
                     {
-                        <img src="~/images/empty_image.png" class="card-img-top p-1" alt="Responsive image" />
-                    }
-                    else
-                    {
-                        <img src="@Url.Content(Model.PhotoLink)" class="card-img-top p-1" alt="Responsive image">
+                        @if (photo.PhotoLink.Length == 0)
+                        {
+                            <img src="~/images/empty_image.png" class="card-img-top p-1" alt="Responsive image" />
+                        }
+                        else
+                        {
+                            <img src="@Url.Content(photo.PhotoLink)" class="card-img-top p-1" alt="Responsive image">
+                        }
                     }
                 </div>
             </div>
