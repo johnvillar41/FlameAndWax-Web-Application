@@ -1,8 +1,8 @@
 ﻿namespace FlameAndWax.Data.Models
 {
-    public class BookGalleryModel
+    public class ProductGalleryModel
     {
-        public int BookGalleryId { get; set; }
+        public int ProductGalleryId { get; set; }
         public int ProductId { get; set; }
         public string PhotoLink { get; set; }
     }

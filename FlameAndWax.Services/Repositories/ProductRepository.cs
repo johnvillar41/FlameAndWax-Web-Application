@@ -55,8 +55,7 @@ namespace FlameAndWax.Services.Repositories
                     QuantityPerUnit = int.Parse(reader["QuantityPerUnit"].ToString()),
                     UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                     UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
-                    UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
-                    PhotoLink = reader["PhotoLink"].ToString()
+                    UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString())                    
                 };
             }
             return null;
@@ -83,8 +82,7 @@ namespace FlameAndWax.Services.Repositories
                             QuantityPerUnit = int.Parse(reader["QuantityPerUnit"].ToString()),
                             UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                             UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
-                            UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
-                            PhotoLink = reader["PhotoLink"].ToString()
+                            UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString())                           
                         }
                     );
             }
@@ -112,8 +110,7 @@ namespace FlameAndWax.Services.Repositories
                             QuantityPerUnit = int.Parse(reader["QuantityPerUnit"].ToString()),
                             UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                             UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
-                            UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
-                            PhotoLink = reader["PhotoLink"].ToString()
+                            UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString())                            
                         }
                     );
             }

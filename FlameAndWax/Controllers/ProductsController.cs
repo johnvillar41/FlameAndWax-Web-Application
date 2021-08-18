@@ -36,8 +36,7 @@ namespace FlameAndWax.Controllers
                     ProductId = product.ProductId,
                     ProductName = product.ProductName,
                     ProductDescription = product.ProductDescription,
-                    ProductPrice = product.ProductPrice,                    
-                    PhotoLink = product.PhotoLink                    
+                    ProductPrice = product.ProductPrice             
                 });
             }
             return View(products);
@@ -93,8 +92,7 @@ namespace FlameAndWax.Controllers
                 ProductId = productId,
                 ProductName = productResult.Result.ProductName,
                 ProductDescription = productResult.Result.ProductDescription,
-                ProductPrice = productResult.Result.ProductPrice,
-                PhotoLink = productResult.Result.PhotoLink,
+                ProductPrice = productResult.Result.ProductPrice               
                 UnitPrice = productResult.Result.UnitPrice,
                 UnitsInStock = productResult.Result.UnitsInStock,
                 CustomerReviews = customerReviewViewModels

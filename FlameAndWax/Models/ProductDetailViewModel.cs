@@ -12,6 +12,7 @@ namespace FlameAndWax.Models
         public double UnitPrice { get; set; }
         public int UnitsInStock { get; set; }
 
+        public IEnumerable<ProductGalleryModel> MyProperty { get; set; }
         public IEnumerable<CustomerReviewViewModel> CustomerReviews { get; set; }
     }
 }
