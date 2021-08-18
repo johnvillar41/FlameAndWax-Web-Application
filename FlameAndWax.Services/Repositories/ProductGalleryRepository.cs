@@ -35,7 +35,7 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM ProductGalleryModel WHERE ProductId = @id";
+            var queryString = "SELECT * FROM ProductGalleryTable WHERE ProductId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@id", productId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();

@@ -66,14 +66,14 @@ namespace FlameAndWax.Controllers
             }
 
             var customerReviewViewModels = new List<CustomerReviewViewModel>();
-            foreach(var customerReview in customerReviewResult.Result)
+            foreach (var customerReview in customerReviewResult.Result)
             {
                 var customerViewModel = new CustomerViewModel
                 {
                     CustomerId = customerReview.Customer.CustomerId,
                     CustomerName = customerReview.Customer.CustomerName,
                     ContactNumber = customerReview.Customer.ContactNumber,
-                    ProfilePictureLink = customerReview.Customer.ProfilePictureLink 
+                    ProfilePictureLink = customerReview.Customer.ProfilePictureLink
                 };
 
                 customerReviewViewModels.Add(
@@ -86,17 +86,18 @@ namespace FlameAndWax.Controllers
                             Customer = customerViewModel
                         }
                     );
-            }            
+            }
 
             var productDetailModel = new ProductDetailViewModel
             {
                 ProductId = productId,
                 ProductName = productResult.Result.ProductName,
                 ProductDescription = productResult.Result.ProductDescription,
-                ProductPrice = productResult.Result.ProductPrice,             
+                ProductPrice = productResult.Result.ProductPrice,
                 UnitPrice = productResult.Result.UnitPrice,
                 UnitsInStock = productResult.Result.UnitsInStock,
-                CustomerReviews = customerReviewViewModels
+                CustomerReviews = customerReviewViewModels,
+                ProductGallery = productResult.Result.ProductGallery
             };
             return View(productDetailModel);
         }
