@@ -92,7 +92,7 @@ namespace FlameAndWax.Controllers
                 ProductId = productId,
                 ProductName = productResult.Result.ProductName,
                 ProductDescription = productResult.Result.ProductDescription,
-                ProductPrice = productResult.Result.ProductPrice               
+                ProductPrice = productResult.Result.ProductPrice,             
                 UnitPrice = productResult.Result.UnitPrice,
                 UnitsInStock = productResult.Result.UnitsInStock,
                 CustomerReviews = customerReviewViewModels

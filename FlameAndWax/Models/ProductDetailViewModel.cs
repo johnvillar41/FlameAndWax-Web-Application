@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FlameAndWax.Data.Models;
+using System.Collections.Generic;
 
 namespace FlameAndWax.Models
 {
@@ -12,7 +13,7 @@ namespace FlameAndWax.Models
         public double UnitPrice { get; set; }
         public int UnitsInStock { get; set; }
 
-        public IEnumerable<ProductGalleryModel> MyProperty { get; set; }
+        public IEnumerable<ProductGalleryModel> ProductGallery { get; set; }
         public IEnumerable<CustomerReviewViewModel> CustomerReviews { get; set; }
     }
 }
