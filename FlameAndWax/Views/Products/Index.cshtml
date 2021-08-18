@@ -4,36 +4,35 @@
 }
 <div class="container">
     <div class="row">
-        <div class="container">
-            <h2>@ViewData["Title"]</h2>
-            <div class="row">
-                @foreach (var product in Model)
-                {
-                    <div class="col-md-6 col-lg-4 p-1">
-                        <div class="card shadow-lg">
-                            @if (product.PhotoLink.Length == 0)
-                            {
-                                <img class="card-img-top" src="~/images/empty_image.png" style="height:200px;" alt="Card image cap" />
-                            }
-                            else
-                            {
-                                <img class="card-img-top" src="@Url.Content(product.PhotoLink)" style="height: 200px;" alt="Card image cap">
-                            }
-                            <div class="card-body">
-                                <h5 class="card-title">@product.ProductName</h5>
-                                <p class="card-text p-semi">@product.ProductDescription</p>
-                                <h5 class="card-title"><strong>PHP</strong>@product.ProductPrice</h5>                                
-                                <a class="btn btn-gold btn-sm"                                  
-                                        asp-route-productId ="@product.ProductId"
-                                        asp-action="Details"
-                                        asp-controller="Products">
-                                See More
-                                </a>                                
-                            </div>
-                        </div>
+        <h2>@ViewData["Title"]</h2>
+    </div>    
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-6 col-lg-4 p-1">
+                <div class="card shadow-lg">
+                    @if (product.PhotoLink.Length == 0)
+                    {
+                        <img class="card-img-top" src="~/images/empty_image.png" style="height:200px;" alt="Card image cap" />
+                    }
+                    else
+                    {
+                        <img class="card-img-top" src="@Url.Content(product.PhotoLink)" style="height: 200px;" alt="Card image cap">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@product.ProductName</h5>
+                        <p class="card-text p-semi">@product.ProductDescription</p>
+                        <h5 class="card-title"><strong>PHP</strong>@product.ProductPrice</h5>
+                        <a class="btn btn-gold btn-sm"
+                           asp-route-productId="@product.ProductId"
+                           asp-action="Details"
+                           asp-controller="Products">
+                            See More
+                        </a>
                     </div>
-                }
+                </div>
             </div>
-        </div>
+        }
     </div>
+
 </div>

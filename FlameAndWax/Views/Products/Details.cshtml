@@ -17,11 +17,11 @@
             </div>
             <div class="col-md-4">
                 <h4><strong>@Model.ProductName</strong></h4>
+                <p><strong>Product Id: @Model.ProductId</strong></p>
                 <hr />
                 <table class="table table-responsive table-bordered text-center">
                     <thead class="thead-light">
                         <tr>
-                            <td><p><strong>Product Id</strong></p></td>
                             <td><p><strong>Unit Price</strong></p></td>
                             <td><p><strong>Price</strong></p></td>
                             <td><p><strong>Unit Stock</strong></p></td>
@@ -29,7 +29,6 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><p class="tab">@Model.ProductId</p></td>
                             <td><p class="tab">@Model.UnitPrice</p></td>
                             <td><p class="tab">@Model.ProductPrice</p></td>
                             <td><p class="tab">@Model.UnitsInStock</p></td>
@@ -41,37 +40,32 @@
                 <a class="btn btn-gold btn-block" asp-route-productId="@Model.ProductId" asp-action="AddToCart" asp-controller="Products">Add To Cart</a>
             </div>
         </div>
-        <hr />
-        <div class="card text-center">
+        <hr />       
             <div class="row">
                 <div class="col-6">
-                    <h4>Customer Reviews</h4>
-                </div>
-
-                <div class="col-6">
-                    <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_ur7sluxh.json" background="transparent" speed="1" style="width: 300px; height: 200px;" loop autoplay></lottie-player>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-10">
-                        @if (Model.CustomerReviews.Count() == 0)
-                        {
-                            <h1>There are no reviews found!</h1>
-                        }
-                        @foreach (var review in Model.CustomerReviews)
-                        {
-                            <div class="card">
-                                <div class="card-body">
-                                    <p>@review.ReviewDetail</p>
-                                    <p>@review.ReviewScore</p>
-                                    <p>@review.Customer.CustomerName</p>
-                                    <p>@review.ReviewScore.ToString()</p>
-                                    <p>@review.ReviewScore.ToString()</p>
-                                </div>
-                            </div>
-                        }
-                    </div>
+                    <h4>Ratings and Reviews</h4>
+                    <h6>Total of 6 Reviews</h6>
                 </div>
             </div>
-        </div>
+            @for (int i = 0; i < 5; i++)
+            {
+                <div class="row pb-1">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row pl-1 pr-1">
+                                    <p>Customer Name Here</p>
+                                    <p class="ml-auto">@DateTime.Now</p>
+                                </div>                                
+                            </div>
+                            <div class="card-body">
+                                <blockquote class="blockquote mb-0">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>                                  
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }        
     </div>
+</div>
