@@ -6,7 +6,7 @@
     <div class="row">
 
         <div class="col-12">
-            <div class="alert alert-success" role="alert" id="success" style="display:none;">
+            <div class="alert alert-success" role="alert" id="completed" style="display:none;">
                 <h4 class="alert-heading">Well done!</h4>
                 <p>Aww yeah, you successfully sent a message!</p>
                 <hr>
@@ -42,16 +42,17 @@
             </div>
         </div>
         <div class="col-md-6">
-            <form method="post" asp-action="Index" asp-controller="ContactUs"
-                  data-ajax="true" data-ajax-complete="completedAlert" data-ajax-loading="#loader">
+            <form method="post" asp-action="Index" asp-controller="ContactUs" id="myform"               
+                  data-ajax="true" data-ajax-loading="#loader" data-ajax-complete="completed"
+                  data-ajax-method="post">
                 <div class="card p-3 box-shadow" style="background-color: #e4e2da">
                     <h4 class="text-left">Send us a message!</h4><br />
-                    <input class="form-control" placeholder="Enter Name" asp-for="@Model.Name" /><br />
-                    <input class="form-control" placeholder="Enter Email" asp-for="@Model.Email" /><br />
-                    <input class="form-control" placeholder="Enter PhoneNumber" asp-for="@Model.PhoneNumber" /><br />
-                    <textarea class="form-control" placeholder="Message" rows="4" asp-for="@Model.Message"></textarea><br />
+                    <input class="form-control" placeholder="Enter Name" asp-for="@Model.Name" id="name"/><br />
+                    <input class="form-control" placeholder="Enter Email" asp-for="@Model.Email" id="email"/><br />
+                    <input class="form-control" placeholder="Enter PhoneNumber" asp-for="@Model.PhoneNumber" id="phone"/><br />
+                    <textarea class="form-control" placeholder="Message" rows="4" asp-for="@Model.Message" id="message"></textarea><br />
 
-                    <input type="submit" class="btn btn-gold btn-block" value="Send" />
+                    <input type="submit" id="#sendMessage" class="btn btn-gold btn-block" value="Send"/>
                 </div>
                 <div class="spinner-border" role="status" id="loader" style="display:none;">
                     <span class="sr-only">Loading...</span>
@@ -64,9 +65,18 @@
 </div>
 
 @section scripts{
-    <script>
-        function completedAlert() {
-            alert("Data Sent!");
+    <script>       
+        completed = function () {
+            var x = document.getElementById("completed");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+                document.getElementById("name").value = "";
+                document.getElementById("email").value = "";
+                document.getElementById("phone").value = "";
+                document.getElementById("message").value = "";
+            } else {
+                x.style.display = "none";
+            }
         }
     </script>
 }
