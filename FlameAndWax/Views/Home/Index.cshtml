@@ -67,7 +67,7 @@
     <div class="row">
 
         @foreach (var product in Model)
-        {
+        {            
             <div class="col-md-6 col-lg-4 p-1">
                 <div class="card shadow-lg">
                     <img src="@Url.Content(product.PhotoLink)" class="card-img-top" alt="..." style="height:200px;">
@@ -75,16 +75,12 @@
                         <a class="badge badge-danger text-white">New Arrivals</a>
                         <h5 class="card-title">@product.ProductName</h5>
                         <p class="card-text p-semi">@product.ProductDescription</p>
-                        <small class="text-muted"><button class="btn btn-gold">See more</button></small>
+                        <a asp-controller="Home" asp-action="SeeMore" asp-route-id="@product.ProductId" class="btn btn-gold">See More</a>
                     </div>
                 </div>
             </div>
         }
-    </div>
-
-
-    <br />
-
+    </div>    
 </div>
 
 

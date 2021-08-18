@@ -1,5 +1,5 @@
 ﻿@model FlameAndWax.Models.ProductDetailViewModel;
-
+@using FlameAndWax.Data.Models;
 <div class="container">
     <div class="jumbotron" style="background-color:#e4e2da;">
         <div class="row">
@@ -8,10 +8,16 @@
                     <div class="bd-example">
                         <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner">
-                                @foreach (var photo in Model.ProductGallery)
+                                <div class="carousel-item active">
+                                    <img src="@Url.Content(Model.ProductGallery.FirstOrDefault().PhotoLink)" class="d-block w-100 rounded" alt="Responsive image">
+                                </div>
+                                @{
+                                    var productGalleries = Model.ProductGallery as List<ProductGalleryModel>;
+                                }
+                                @for (int i = 1; i < productGalleries.Count(); i++)
                                 {
-                                    <div class="carousel-item active">
-                                        <img src="@Url.Content(photo.PhotoLink)" class="d-block w-100 rounded" alt="Responsive image">                                        
+                                    <div class="carousel-item">
+                                        <img src="@Url.Content(productGalleries[i].PhotoLink)" class="d-block w-100 rounded" alt="Responsive image">
                                     </div>
                                 }
                             </div>

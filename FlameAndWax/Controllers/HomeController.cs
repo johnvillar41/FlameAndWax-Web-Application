@@ -4,6 +4,7 @@ using FlameAndWax.Services.Services;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FlameAndWax.Controllers
@@ -47,12 +48,18 @@ namespace FlameAndWax.Controllers
                             ProductId = newProduct.ProductId,
                             ProductName = newProduct.ProductName,
                             ProductDescription = newProduct.ProductDescription,
-                            ProductPrice = newProduct.ProductPrice                           
+                            ProductPrice = newProduct.ProductPrice,
+                            PhotoLink = newProduct.ProductGallery.FirstOrDefault().PhotoLink
                         }
                     );
             }
 
             return View(newProducts);
+        }
+
+        public IActionResult SeeMore(int id)
+        {
+            return RedirectToAction("Details", "Products", new { productId = id });
         }
     }
 }
