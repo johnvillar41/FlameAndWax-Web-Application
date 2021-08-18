@@ -76,7 +76,7 @@ namespace FlameAndWax.Controllers
                 
             }
 
-            return View(nameof(Index), products);
+            return PartialView("_ProductsPartial", products);
         }
 
         public async Task<IActionResult> Details(int productId)
