@@ -42,8 +42,22 @@ namespace FlameAndWax.Services.Helpers
                 default:
                     return Constants.Courier.FoodPanda;
             }
-        }
+        }        
 
+        public static Constants.Category ConvertStringToConstant(string value)
+        {
+            switch (value)
+            {
+                case nameof(Constants.Category.Soap):
+                    return Constants.Category.Soap;
+                case nameof(Constants.Category.Diffuser):
+                    return Constants.Category.Diffuser;
+                case nameof(Constants.Category.Candle):
+                    return Constants.Category.Candle;
+                default:
+                    return Constants.Category.Soap;
+            }
+        }
         public static ServiceResult<T> BuildServiceResult<T>(T result, bool hasError, string errorContent)
         {
             return new ServiceResult<T>

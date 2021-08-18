@@ -1,6 +1,7 @@
 ﻿using FlameAndWax.Data.Constants;
 using FlameAndWax.Data.Models;
 using FlameAndWax.Data.Repositories.Interfaces;
+using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -19,8 +20,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO ProductsTable(ProductName,ProductDescription,ProductPrice,QuantityPerUnit,UnitPrice,UnitsInStock,UnitsOnOrder)" +
-                "VALUES(@name,@desc,@price,@quantity,@unitprice,@stock,@order)";
+            var queryString = "INSERT INTO ProductsTable(ProductName,ProductDescription,ProductPrice,QuantityPerUnit,UnitPrice,UnitsInStock,UnitsOnOrder,Category)" +
+                "VALUES(@name,@desc,@price,@quantity,@unitprice,@stock,@order,@category)";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@name", Data.ProductName);
             command.Parameters.AddWithValue("@desc", Data.ProductDescription);
@@ -29,6 +30,7 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@unitprice", Data.UnitPrice);
             command.Parameters.AddWithValue("@stock", Data.UnitsInStock);
             command.Parameters.AddWithValue("@order", Data.UnitsInOrder);
+            command.Parameters.AddWithValue("@category", nameof(Data.Category));
             await command.ExecuteNonQueryAsync();
         }
 
@@ -52,6 +54,7 @@ namespace FlameAndWax.Services.Repositories
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if(await reader.ReadAsync())
             {
+                var categoryString = reader["Category"].ToString();
                 return new ProductModel
                 {
                     ProductId = id,
@@ -62,7 +65,8 @@ namespace FlameAndWax.Services.Repositories
                     UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                     UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
                     UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
-                    ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(id)
+                    ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(id),
+                    Category = ServiceHelper.ConvertStringToConstant(categoryString)
                 };
             }
             return null;
@@ -79,6 +83,7 @@ namespace FlameAndWax.Services.Repositories
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while(await reader.ReadAsync())
             {
+                var categoryString = reader["Category"].ToString();
                 products.Add(
                         new ProductModel
                         {
@@ -90,7 +95,8 @@ namespace FlameAndWax.Services.Repositories
                             UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                             UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
                             UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
-                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString()))
+                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString())),
+                            Category = ServiceHelper.ConvertStringToConstant(categoryString)
                         }
                     );
             }
@@ -108,6 +114,7 @@ namespace FlameAndWax.Services.Repositories
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while(await reader.ReadAsync())
             {
+                var categoryString = reader["Category"].ToString();
                 newArrivals.Add(
                         new ProductModel
                         {
@@ -119,7 +126,8 @@ namespace FlameAndWax.Services.Repositories
                             UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                             UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
                             UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
-                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString()))
+                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString())),
+                            Category = ServiceHelper.ConvertStringToConstant(categoryString)
                         }
                     );
             }
@@ -151,7 +159,7 @@ namespace FlameAndWax.Services.Repositories
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
             var queryString = "UPDATE ProductsTable SET ProductName = @name, ProductDescription = @desc, ProductPrice = @price" +
-                "QuantityPerUnit = @qty, UnitPrice = @unitPrice, UnitsInStock = @unitStock, UnitsOnOrder = @unitOrder WHERE " +
+                "QuantityPerUnit = @qty, UnitPrice = @unitPrice, UnitsInStock = @unitStock, UnitsOnOrder = @unitOrder , Category = @category WHERE " +
                 "ProductId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@name", data.ProductName);
@@ -161,6 +169,7 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@unitPrice", data.UnitPrice);
             command.Parameters.AddWithValue("@unitStock", data.UnitsInStock);
             command.Parameters.AddWithValue("@unitOrder", data.UnitsInOrder);
+            command.Parameters.AddWithValue("@category", nameof(data.Category));
             command.Parameters.AddWithValue("@id", data.ProductId);
             await command.ExecuteNonQueryAsync();
         }
