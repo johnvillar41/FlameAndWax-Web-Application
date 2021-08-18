@@ -52,7 +52,7 @@ namespace FlameAndWax.Services.Repositories
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@id", id);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-            if(await reader.ReadAsync())
+            if (await reader.ReadAsync())
             {
                 var categoryString = reader["Category"].ToString();
                 return new ProductModel
@@ -81,7 +81,7 @@ namespace FlameAndWax.Services.Repositories
             var queryString = "SELECT * FROM ProductsTable";
             using SqlCommand command = new SqlCommand(queryString, connection);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-            while(await reader.ReadAsync())
+            while (await reader.ReadAsync())
             {
                 var categoryString = reader["Category"].ToString();
                 products.Add(
@@ -103,6 +103,39 @@ namespace FlameAndWax.Services.Repositories
             return products;
         }
 
+        public async Task<IEnumerable<ProductModel>> FetchCategorizedProducts(Constants.Category category)
+        {
+            List<ProductModel> categorizedProducts = new List<ProductModel>();
+
+            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "SELECT * FROM ProductsTable WHERE Category = @category";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@category", category.ToString());
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            while(await reader.ReadAsync())
+            {
+                var categoryString = reader["Category"].ToString();
+
+                categorizedProducts.Add(
+                        new ProductModel
+                        {
+                            ProductId = int.Parse(reader["ProductId"].ToString()),
+                            ProductName = reader["ProductName"].ToString(),
+                            ProductDescription = reader["ProductDescription"].ToString(),
+                            ProductPrice = int.Parse(reader["ProductPrice"].ToString()),
+                            QuantityPerUnit = int.Parse(reader["QuantityPerUnit"].ToString()),
+                            UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
+                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString())),
+                            UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
+                            UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
+                            Category = ServiceHelper.ConvertStringToConstant(categoryString),
+                        }
+                    );
+            }
+            return categorizedProducts;
+        }
+
         public async Task<IEnumerable<ProductModel>> FetchNewArrivedProducts()
         {
             List<ProductModel> newArrivals = new List<ProductModel>();
@@ -112,7 +145,7 @@ namespace FlameAndWax.Services.Repositories
             var queryString = "SELECT TOP 6 * FROM ProductsTable Order By ProductId DESC;";
             using SqlCommand command = new SqlCommand(queryString, connection);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-            while(await reader.ReadAsync())
+            while (await reader.ReadAsync())
             {
                 var categoryString = reader["Category"].ToString();
                 newArrivals.Add(
@@ -139,7 +172,7 @@ namespace FlameAndWax.Services.Repositories
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
             var queryString = "UPDATE ProductsTable SET UnitsInStock = @unitsToBeSubracted WHERE ProductId = @id";
-            using SqlCommand command = new SqlCommand(queryString,connection);
+            using SqlCommand command = new SqlCommand(queryString, connection);
             await command.ExecuteNonQueryAsync();
         }
 

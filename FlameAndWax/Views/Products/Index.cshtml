@@ -10,13 +10,13 @@
 
     <div class="row p-2">
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle btn-gold" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn dropdown-toggle btn-gold" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Category
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Candle</a>
-                <a class="dropdown-item" href="#">Soap</a>
-                <a class="dropdown-item" href="#">Diffuser</a>
+                <a class="dropdown-item" asp-action="Sort" asp-controller="Products" asp-route-category="Candle">Candle</a>
+                <a class="dropdown-item" >Soap</a>
+                <a class="dropdown-item" >Diffuser</a>
             </div>
         </div>
     </div>

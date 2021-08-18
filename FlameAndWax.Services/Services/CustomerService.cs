@@ -1,4 +1,5 @@
-﻿using FlameAndWax.Data.Models;
+﻿using FlameAndWax.Data.Constants;
+using FlameAndWax.Data.Models;
 using FlameAndWax.Data.Repositories.Interfaces;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Repositories.Interfaces;
@@ -107,6 +108,12 @@ namespace FlameAndWax.Services.Services
 
             var ordersFromCustomer = await _orderRepository.FetchOrdersFromCustomer(customerId);
             return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(ordersFromCustomer, false, null);
+        }
+
+        public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(Constants.Category category)
+        {
+            var categorizedProducts = await _productRepository.FetchCategorizedProducts(category);
+            return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(categorizedProducts, false, null);
         }
 
         public async Task<ServiceResult<ProductModel>> FetchProductDetail(int productId = 0)

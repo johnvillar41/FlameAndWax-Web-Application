@@ -1,4 +1,5 @@
-﻿using FlameAndWax.Data.Models;
+﻿using FlameAndWax.Data.Constants;
+using FlameAndWax.Data.Models;
 using FlameAndWax.Services.Services.BaseInterface.Interface;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,6 @@ namespace FlameAndWax.Services.Services.Interfaces
         Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts();
         Task<ServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int productId);
         Task<ServiceResult<IEnumerable<ProductModel>>> FetchNewArrivedProducts();
+        Task<ServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(Constants.Category category);
     }
 }

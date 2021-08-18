@@ -1,4 +1,6 @@
-﻿using FlameAndWax.Models;
+﻿using FlameAndWax.Data.Constants;
+using FlameAndWax.Models;
+using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,21 +18,53 @@ namespace FlameAndWax.Controllers
             _customerService = customerService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(List<ProductViewModel> products)
         {
-            var productResult = await _customerService.FetchAllProducts();
-            if (productResult.HasError)
+            if (products.Count() == 0)
+            {
+                var productResult = await _customerService.FetchAllProducts();
+                if (productResult.HasError)
+                {
+                    var error = new ErrorViewModel
+                    {
+                        ErrorContent = productResult.ErrorContent
+                    };
+                    return View("Error", error);
+                }
+
+                var productsViewModel = new List<ProductViewModel>();
+                foreach (var product in productResult.Result)
+                {
+                    productsViewModel.Add(new ProductViewModel
+                    {
+                        ProductId = product.ProductId,
+                        ProductName = product.ProductName,
+                        ProductDescription = product.ProductDescription,
+                        ProductPrice = product.ProductPrice,
+                        PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink
+                    });
+                }
+                return View(productsViewModel);
+            }
+
+            return View(products);
+        }
+
+        public async Task<IActionResult> Sort(string category)
+        {
+            var categorizedProducts = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category));
+            if (categorizedProducts.HasError)
             {
                 var error = new ErrorViewModel
                 {
-                    ErrorContent = productResult.ErrorContent
+                    ErrorContent = categorizedProducts.ErrorContent
                 };
                 return View("Error", error);
             }
 
             var products = new List<ProductViewModel>();
-            foreach (var product in productResult.Result)
-            {
+            foreach (var product in categorizedProducts.Result)
+            {               
                 products.Add(new ProductViewModel
                 {
                     ProductId = product.ProductId,
@@ -38,9 +72,11 @@ namespace FlameAndWax.Controllers
                     ProductDescription = product.ProductDescription,
                     ProductPrice = product.ProductPrice,
                     PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink
-                });
+                });               
+                
             }
-            return View(products);
+
+            return View(nameof(Index), products);
         }
 
         public async Task<IActionResult> Details(int productId)
