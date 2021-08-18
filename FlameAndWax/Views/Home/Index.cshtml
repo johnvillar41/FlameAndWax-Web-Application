@@ -25,26 +25,26 @@
             </ol>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="~/images/products/bodycandle.png" class="d-block w-100 rounded" alt="...">
+                    <img src="~/images/carouselpics/candle.jpeg" class="d-block w-100 rounded" alt="Candles">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        <h5><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Candles</span></h5>
+                        <p><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Nulla vitae elit libero, a pharetra augue mollis interdum.</span></p>
                         <button class="btn btn-gold">View Category</button>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="~/images/FooterPic.PNG" class="d-block w-100 rounded" alt="...">
+                    <img src="~/images/carouselpics/soap.jpeg" class="d-block w-100 rounded" alt="Soaps">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Second slide label</h5>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <h5><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Soaps</span></h5>
+                        <p><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></p>
                         <button class="btn btn-gold">View Category</button>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="~/images/FooterPic.PNG" class="d-block w-100 rounded" alt="...">
+                    <img src="~/images/carouselpics/diffuser.jpg" class="d-block w-100 rounded" alt="Diffusers">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Third slide label</h5>
-                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                        <h5><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Diffusers</span></h5>
+                        <p><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Praesent commodo cursus magna, vel scelerisque nisl consectetur.</span></p>
                         <button class="btn btn-gold">View Category</button>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
     <div class="row">
 
         @foreach (var product in Model)
-        {            
+        {
             <div class="col-md-6 col-lg-4 p-1">
                 <div class="card shadow-lg">
                     <img src="@Url.Content(product.PhotoLink)" class="card-img-top" alt="..." style="height:200px;">
@@ -80,7 +80,7 @@
                 </div>
             </div>
         }
-    </div>    
+    </div>
 </div>
 
 
