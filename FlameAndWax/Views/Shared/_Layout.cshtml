@@ -40,17 +40,20 @@
 
                 <div class="navbar-collapse collapse ">
                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item" style="padding-right:30px;">
+                            <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Cart <span class="badge badge-pill badge-light">0</span></a>
+                        </li>
                         @if (User.Identity.IsAuthenticated)
                         {
-                        <li class="nav-item">
-                           <a class="nav-link btn btn-gold" asp-action="ProcessLogout" asp-controller="Account"><i class="fas fa-sign-out-alt"> Logout</i></a>                            
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-gold text-dark" asp-action="ProcessLogout" asp-controller="Account"><i class="fas fa-sign-out-alt"> Logout</i></a>
+                            </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link btn btn-gold" asp-action="Login" asp-controller="Account"><i class="fas fa-sign-in-alt"></i> Login</a>
-</li>
+                                <a class="nav-link btn btn-gold text-dark" asp-action="Login" asp-controller="Account"><i class="fas fa-sign-in-alt"></i> Login</a>
+                            </li>
                         }
                     </ul>
                 </div>
