@@ -1,4 +1,5 @@
-﻿using FlameAndWax.Data.Models;
+﻿using FlameAndWax.Data.Constants;
+using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Services;
@@ -18,7 +19,7 @@ namespace FlameAndWax.Controllers
         {
             _customerService = customerService;
         }
-        [Authorize]
+        [Authorize(Roles = nameof(Constants.Roles.Customer))]
         public async Task<IActionResult> Index()
         {
             var productResult = await _customerService.FetchNewArrivedProducts();

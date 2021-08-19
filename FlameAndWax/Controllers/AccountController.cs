@@ -51,7 +51,7 @@ namespace FlameAndWax.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
-            return View(nameof(Index));
+            return View(nameof(Login));
         }
 
         public async Task<IActionResult> ProcessLogout()
