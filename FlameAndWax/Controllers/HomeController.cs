@@ -19,7 +19,7 @@ namespace FlameAndWax.Controllers
         {
             _customerService = customerService;
         }
-        [Authorize(Roles = nameof(Constants.Roles.Customer))]
+        
         public async Task<IActionResult> Index()
         {
             var productResult = await _customerService.FetchNewArrivedProducts();

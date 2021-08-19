@@ -2,6 +2,7 @@
 using FlameAndWax.Models;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -49,10 +50,10 @@ namespace FlameAndWax.Controllers
 
             return View(products);
         }
-
+        [Authorize(Roles = nameof(Constants.Roles.Customer))]
         public async Task<IActionResult> AddToCart(int productId = 0)
         {
-            throw new NotImplementedException();
+            return View();
         }
 
         public async Task<IActionResult> Sort(string category)

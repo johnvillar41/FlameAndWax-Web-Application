@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] | Flame and Wax</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />   
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom navbar-light box-shadow mb-3" style="background-color: #e4e2da";>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom navbar-light box-shadow mb-3" style="background-color: #e4e2da" ;>
             <div class="container">
                 <a class="navbar-brand" style="color: #a68245; " asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/images/icons/flameAndWaxLogo.png" width="37" height="30" class="d-inline-block align-top" alt="">
@@ -20,7 +20,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -33,6 +33,24 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
                         </li>
+                    </ul>
+
+                </div>
+
+                <div class="navbar-collapse collapse ">
+                    <ul class="navbar-nav ml-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-danger" asp-action="ProcessLogout" asp-controller="Account">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-success" asp-action="Login" asp-controller="Account">Login</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
