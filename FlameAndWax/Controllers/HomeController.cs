@@ -3,6 +3,7 @@ using FlameAndWax.Models;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Services;
 using FlameAndWax.Services.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace FlameAndWax.Controllers
         {
             _customerService = customerService;
         }
-
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var productResult = await _customerService.FetchNewArrivedProducts();

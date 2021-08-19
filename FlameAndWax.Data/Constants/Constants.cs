@@ -31,5 +31,11 @@
             Soap,
             Diffuser
         }
+        public enum Roles
+        {
+            Customer,
+            Employee,
+            Administrator
+        }
     }
 }

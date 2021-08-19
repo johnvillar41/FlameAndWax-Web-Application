@@ -99,7 +99,8 @@ namespace FlameAndWax.Data.Repositories
             await connection.OpenAsync();
             var queryString = "SELECT * FROM CustomerTable WHERE Username = @username AND Password = @password";
             using SqlCommand command = new SqlCommand(queryString, connection);
-            command.Parameters.AddRange(new string[] { loginCustomer.Username, loginCustomer.Password });
+            command.Parameters.AddWithValue("@username", loginCustomer.Username);
+            command.Parameters.AddWithValue("@password", loginCustomer.Password);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if(await reader.ReadAsync())
                 return true;
