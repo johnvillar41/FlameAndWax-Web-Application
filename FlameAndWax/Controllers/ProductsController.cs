@@ -50,6 +50,11 @@ namespace FlameAndWax.Controllers
             return View(products);
         }
 
+        public async Task<IActionResult> AddToCart(int productId = 0)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IActionResult> Sort(string category)
         {
             var categorizedProducts = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category));
@@ -64,7 +69,7 @@ namespace FlameAndWax.Controllers
 
             var products = new List<ProductViewModel>();
             foreach (var product in categorizedProducts.Result)
-            {               
+            {
                 products.Add(new ProductViewModel
                 {
                     ProductId = product.ProductId,
@@ -72,8 +77,8 @@ namespace FlameAndWax.Controllers
                     ProductDescription = product.ProductDescription,
                     ProductPrice = product.ProductPrice,
                     PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink
-                });               
-                
+                });
+
             }
 
             return PartialView("ProductsPartial", products);
@@ -103,7 +108,7 @@ namespace FlameAndWax.Controllers
 
             var customerReviewViewModels = new List<CustomerReviewViewModel>();
             foreach (var customerReview in customerReviewResult.Result)
-            {                
+            {
                 customerReviewViewModels.Add(
                         new CustomerReviewViewModel
                         {
@@ -121,7 +126,7 @@ namespace FlameAndWax.Controllers
                         }
                     );
             }
-            
+
             return View(new ProductDetailViewModel
             {
                 ProductId = productId,

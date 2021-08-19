@@ -1,0 +1,80 @@
+﻿@model FlameAndWax.Models.CustomerViewModel;
+@{
+    Layout = null;
+    ViewData["Title"] = "Login Page";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] | Flame and Wax</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/login.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
+        <div class="centerBlock">
+            <div class="card card0 border-0">
+                <div class="row d-flex">
+                    <div class="col-lg-6">
+                        <div class="card1 pb-5">
+                            <div class="row">
+                                <img src="~/images/icons/flameAndWaxLogo.png" class="logo">
+                            </div>
+                            <div class="row px-3 justify-content-center mt-4 mb-5 border-line">
+                                <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_rw0hvilj.json" background="transparent" speed="1" style="width: 400px; height: 400px;" loop autoplay></lottie-player>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="centerBlock">
+                            <div class="card2 card0 card border-0 px-4 py-5" style="background-color: #e4e2da;">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-8 col-md-10 col-sm-12">
+                                            <div class="row">
+                                                <h1 class="mb-3" style="color: #a68245;"><b>Welcome to Flame and Wax</b></h1>
+                                            </div>
+                                            <div class="row">
+                                                <label><b>Username</b></label>
+                                                <input class="form-control" />
+
+                                            </div>
+                                            <div class="row">
+                                                <label><b>Password</b></label><br />
+                                                <input class="form-control" />
+
+                                            </div>
+                                            <div class="row mt-5">
+                                                <a class="btn btn-gold form-control" style="font-family: Arial Rounded MT">Login</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-4" style="background-color: #e4e2da;">
+                    <div class="row px-3">
+                        <small class="ml-4 ml-sm-5 mb-2" style="color: #a68245;">Copyright &copy; 2021. All rights reserved.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+</html>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script> 
+<script src=@("https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js")></script>   
+
