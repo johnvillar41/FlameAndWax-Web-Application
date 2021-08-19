@@ -51,8 +51,8 @@
                     <input class="form-control" placeholder="Enter Email" asp-for="@Model.Email" id="email" required/><br />
                     <input class="form-control" placeholder="Enter PhoneNumber" asp-for="@Model.PhoneNumber" id="phone" required/><br />
                     <textarea class="form-control" placeholder="Message" rows="4" asp-for="@Model.Message" id="message" required></textarea><br />
-
-                    <input type="submit" id="#sendMessage" class="btn btn-gold btn-block" value="Send"/>
+                    
+                    <button type="submit" id="#sendMessage" class="btn btn-gold btn-block"><i class="fas fa-paper-plane"></i> Send</button>
                 </div>
                 <div class="spinner-border" role="status" id="loader" style="display:none;">
                     <span class="sr-only">Loading...</span>

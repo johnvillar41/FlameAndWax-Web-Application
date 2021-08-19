@@ -107,3 +107,6 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.dropdown-toggle::after {
+    display: none;
+}

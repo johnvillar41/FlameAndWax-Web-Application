@@ -12,7 +12,7 @@
     <div class="row p-2">
         <div class="dropdown">
             <button class="btn dropdown-toggle btn-gold" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Category
+                Category <i class="fas fa-caret-square-down"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Candle)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Candle</a>
