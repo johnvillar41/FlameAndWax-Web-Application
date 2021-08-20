@@ -22,7 +22,8 @@
             <div class="card-body">
                 <h5 class="card-title">@product.ProductName</h5>
                 <p class="card-text p-semi">@product.ProductDescription</p>
-                <h5 class="card-title"><strong>PHP</strong>@product.ProductPrice</h5>
+                <h5 class="card-title"><strong>₱ </strong>@product.ProductPrice</h5>
+                <h5 class="card-title"><strong>Stocks </strong>@product.StockQuantity</h5>
                 <a class="btn btn-gold btn-sm"
                    asp-route-productId="@product.ProductId"
                    asp-action="Details"
