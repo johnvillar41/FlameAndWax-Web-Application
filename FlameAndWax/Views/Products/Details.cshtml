@@ -61,11 +61,15 @@
         </div>
         <hr />
         <div class="row">
-            <div class="col-6">
+            <div class="col-10">
                 <h4>Ratings and Reviews</h4>
                 <h6>Total of @Model.CustomerReviews.Count() Reviews</h6>
             </div>
+            <div class="col-2">
+                <a class="btn btn-gold btn-block">Add a Review</a>
+            </div>
         </div>
+
         @foreach (var customerReview in Model.CustomerReviews)
         {
             <div class="row pb-1">
