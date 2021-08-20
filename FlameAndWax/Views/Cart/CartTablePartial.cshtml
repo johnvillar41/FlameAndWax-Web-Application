@@ -1,0 +1,49 @@
+﻿@model IEnumerable<FlameAndWax.Models.ProductViewModel>;
+
+<table class="table table-hover text-center">
+    <thead>
+        <tr>
+            <th style="width:45%;">Picture</th>
+            <th style="width:15%;">Product Id</th>
+            <th style="width:15%;">Price</th>
+            <th style="width:15%;">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td style="vertical-align:middle;">
+                    <div class="row">
+                        <div class="col-6">
+                            <img src="@Url.Content(product.PhotoLink)" class="img-thumbnail" />
+                        </div>
+                        <div class="col-6 my-auto text-left">
+                            <p><strong>Qty: 5</strong></p>
+                        </div>
+                    </div>
+
+                </td>
+                <td style="vertical-align:middle;">@product.ProductId</td>
+                <td style="vertical-align:middle;">@product.ProductPrice</td>
+                <td style="vertical-align:middle;">
+                    <a class="btn btn-gold btn-block"
+                       asp-action="DeleteCartItem"
+                       asp-controller="Cart"
+                       asp-route-productId="@product.ProductId"
+                       data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#loader">
+                        Delete <i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (Model.Count() == 0)
+{
+    <div class="mx-auto">
+        <div class="row">
+            <lottie-player src="https://assets3.lottiefiles.com/temp/lf20_Celp8h.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+        </div>
+    </div>
+}

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace FlameAndWax.Controllers
 {
+    [Authorize(Roles = nameof(Constants.Roles.Customer))]
     public class CartController : Controller
     {
         private readonly ICustomerService _customerService;
@@ -18,7 +19,6 @@ namespace FlameAndWax.Controllers
             _customerService = customerService;
         }
 
-        [Authorize(Roles = nameof(Constants.Roles.Customer))]
         public IActionResult Index(List<ProductViewModel> cartItems)
         {
             if (cartItems.Count() == 0)
@@ -26,13 +26,19 @@ namespace FlameAndWax.Controllers
                 var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
                 return View(Cart.GetCartItems(userLoggedIn));
             }
-                
+
             return View(cartItems);
         }
 
-        [Authorize(Roles = nameof(Constants.Roles.Customer))]
+        public IActionResult DeleteCartItem(int productId)
+        {
+            var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+            Cart.RemoveCartItem(productId, userLoggedIn);
+            return PartialView("CartTablePartial", Cart.GetCartItems(userLoggedIn));
+        }
+
         public async Task<IActionResult> AddToCart(int productId = 0, string user = "")
-        {            
+        {
             if (productId == 0)
             {
                 return View(Cart.GetCartItems(user));

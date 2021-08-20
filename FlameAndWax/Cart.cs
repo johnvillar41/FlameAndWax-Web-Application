@@ -8,15 +8,15 @@ namespace FlameAndWax
     {
         private static readonly Dictionary<string, List<ProductViewModel>> CartItems = new Dictionary<string, List<ProductViewModel>>();
 
-        public static void ClearCartItems()
+        public static void ClearCartItems(string user)
         {
             foreach (KeyValuePair<string, List<ProductViewModel>> keyValuePair in CartItems)
             {
-                //if (keyValuePair.Key.Equals(UserSession.SingleInstance.GetLoggedInUser()))
-                //{
-                //    keyValuePair.Value.Clear();
-                //    return;
-                //}
+                if (keyValuePair.Key.Equals(user))
+                {
+                    keyValuePair.Value.Clear();
+                    return;
+                }
             }
         }
         public static void AddCartItem(ProductViewModel cartProduct, string loggedInUser)
@@ -53,6 +53,24 @@ namespace FlameAndWax
             }
             return new List<ProductViewModel>();
         }
+
+        public static void RemoveCartItem(int productID, string user)
+        {
+            foreach (KeyValuePair<string, List<ProductViewModel>> keyValuePair in CartItems)
+            {
+                if (keyValuePair.Key.Equals(user))
+                {
+                    foreach (var product in keyValuePair.Value)
+                    {
+                        if (productID == product.ProductId)
+                        {
+                            keyValuePair.Value.Remove(product);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
         //    public static int CalculateTotalSales()
         //    {
         //        int totalSale = 0;
@@ -68,23 +86,7 @@ namespace FlameAndWax
         //        }
         //        return totalSale;
         //    }
-        //    public static void RemoveCartItem(int productID)
-        //    {
-        //        foreach (KeyValuePair<string, List<ProductModel>> keyValuePair in CartItems)
-        //        {
-        //            if (keyValuePair.Key.Equals(UserSession.SingleInstance.GetLoggedInUser()))
-        //            {
-        //                for (int i = 0; i < keyValuePair.Value.Count; i++)
-        //                {
-        //                    if (keyValuePair.Value[i].Product_ID == productID)
-        //                    {
-        //                        keyValuePair.Value.Remove(keyValuePair.Value[i]);
-        //                        break;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
+
         //    public static List<OnsiteProductsTransactionModel> ListOfOnsiteProducts(int transactionID)
         //    {
         //        List<OnsiteProductsTransactionModel> OnSiteProducts = new List<OnsiteProductsTransactionModel>();
