@@ -18,13 +18,15 @@ namespace FlameAndWax.Services.Services
         private readonly ICustomerRepository _customerRepository;
         private readonly ICustomerReviewRepository _customerReviewRepository;
         private readonly IMessageRepository _messageRepository;
+        private readonly IPreviouslyOrderedProductsRepository _previouslyOrderedProductsRepository;
         public CustomerService(
             IProductRepository productRepository,
             IOrderRepository orderRepository,
             IOrderDetailRepository orderDetailRepository,
             ICustomerRepository customerRepository,
             ICustomerReviewRepository customerReviewRepository,
-            IMessageRepository messageRepository)
+            IMessageRepository messageRepository, 
+            IPreviouslyOrderedProductsRepository previouslyOrderedProductsRepository)
         {
             _productRepository = productRepository;
             _orderRepository = orderRepository;
@@ -32,6 +34,7 @@ namespace FlameAndWax.Services.Services
             _customerRepository = customerRepository;
             _customerReviewRepository = customerReviewRepository;
             _messageRepository = messageRepository;
+            _previouslyOrderedProductsRepository = previouslyOrderedProductsRepository;
         }
         public async Task<ServiceResult<bool>> AddOrderTransaction(OrderModel newOrder)
         {
@@ -52,6 +55,12 @@ namespace FlameAndWax.Services.Services
                 await _productRepository.ModifyNumberOfUnitsInOrder(orderDetail.Product.ProductId, orderDetail.Quantity);
             }
             return ServiceHelper.BuildServiceResult<bool>(true, false, null);
+        }
+
+        public async Task<ServiceResult<bool>> CheckIfCustomerHasOrderedAProduct(int customerId, int productId)
+        {           
+            var isSuccess = await _previouslyOrderedProductsRepository.HasCustomerOrderedAProduct(productId, customerId);
+            return ServiceHelper.BuildServiceResult<bool>(isSuccess, false, null);            
         }
 
         public async Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId = 0)

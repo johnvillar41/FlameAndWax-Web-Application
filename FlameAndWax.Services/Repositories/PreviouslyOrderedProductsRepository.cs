@@ -13,6 +13,8 @@ namespace FlameAndWax.Services.Repositories
             await connection.OpenAsync();
             var queryString = "SELECT * FROM PreviouslyOrderedProductsTable WHERE ProductId = @productId AND CustomerId = @customerId";
             using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@productId", productId);
+            command.Parameters.AddWithValue("@customerId", customerId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if(await reader.ReadAsync())
             {
