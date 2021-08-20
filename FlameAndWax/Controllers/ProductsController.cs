@@ -51,9 +51,14 @@ namespace FlameAndWax.Controllers
             return View(products);
         }
         [Authorize(Roles = nameof(Constants.Roles.Customer))]
-        public async Task<IActionResult> AddToCart(int productId = 0)
+        public IActionResult AddToCart(int productId = 0)
         {
-            return View();
+            //Process add to cart data
+
+            //Check if user is authenticated
+            //if user is authenticated add product into cart - TODO
+            //if user is NOT authenticated redirect to login page - done
+            return RedirectToAction("Index", "Cart", new { productIdCart = productId });
         }
 
         public async Task<IActionResult> Sort(string category)

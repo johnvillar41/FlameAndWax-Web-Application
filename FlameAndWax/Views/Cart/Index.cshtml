@@ -1,4 +1,5 @@
 ﻿@using FlameAndWax.Models
+@using FlameAndWax.Data.Constants
 @model IEnumerable<ProductViewModel>;
 
 @{
@@ -48,11 +49,24 @@
                                 <p><strong>PHP 100</strong></p>
                             </div>
                         </div>
-                        <div class="row">
-                            
-                        </div>
+
                     </div>
                     <div class="card-footer">
+                        <div class="row">
+                            <p><strong>SHIPPING</strong></p>
+                        </div>
+                        <div class="row">
+                            <div class="input-group mb-3">
+                                <select class="custom-select" id="inputGroupSelect02">
+                                    <option selected>Choose...</option>
+                                    <option value="@Constants.Courier.FoodPanda">@nameof(Constants.Courier.FoodPanda)</option>
+                                    <option value="@Constants.Courier.JNT">@nameof(Constants.Courier.JNT)</option>                                    
+                                </select>
+                                <div class="input-group-append">
+                                    <label class="input-group-text" for="inputGroupSelect02">Options</label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-6">
                                 <p><strong>TOTAL COST</strong></p>
