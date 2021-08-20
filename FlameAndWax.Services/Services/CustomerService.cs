@@ -57,9 +57,9 @@ namespace FlameAndWax.Services.Services
             return ServiceHelper.BuildServiceResult<bool>(true, false, null);
         }
 
-        public async Task<ServiceResult<bool>> CheckIfCustomerHasOrderedAProduct(int customerId, int productId)
+        public async Task<ServiceResult<bool>> CheckIfCustomerHasOrderedAProduct(string customerUsername, int productId)
         {           
-            var isSuccess = await _previouslyOrderedProductsRepository.HasCustomerOrderedAProduct(productId, customerId);
+            var isSuccess = await _previouslyOrderedProductsRepository.HasCustomerOrderedAProduct(productId, customerUsername);
             return ServiceHelper.BuildServiceResult<bool>(isSuccess, false, null);            
         }
 
