@@ -26,7 +26,7 @@ namespace FlameAndWax.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ProcessLogin(LoginViewModel loginCredentials)
+        public async Task<IActionResult> ProcessLogin(LoginViewModel loginCredentials, string returnUrl)
         {
             var isAuthenticated = await _customerService.Login(new CustomerModel { Username = loginCredentials.Username, Password = loginCredentials.Password });
             if (isAuthenticated.HasError)
@@ -46,8 +46,13 @@ namespace FlameAndWax.Controllers
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity));
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity));
+
+                if (Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
 
                 return RedirectToAction("Index", "Home");
             }
