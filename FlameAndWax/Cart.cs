@@ -31,18 +31,14 @@ namespace FlameAndWax
             {
                 if (keyValuePair.Key.Equals(loggedInUser))
                 {
-                    for (int i = 0; i < keyValuePair.Value.Count; i++)
+                    foreach(var product in keyValuePair.Value)
                     {
-                        if (keyValuePair.Value[i].ProductId == cartProduct.ProductId)
+                        if(product.ProductId == cartProduct.ProductId)
                         {
                             return;
                         }
-                        else
-                        {
-                            keyValuePair.Value.Add(cartProduct);
-                            return;
-                        }
-                    }
+                    }                   
+                    keyValuePair.Value.Add(cartProduct);
                 }
             }
         }
