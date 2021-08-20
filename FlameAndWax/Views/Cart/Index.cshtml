@@ -1,74 +1,8 @@
 ﻿@using FlameAndWax.Models
-@using FlameAndWax.Data.Constants
 @model IEnumerable<ProductViewModel>;
 
-@{
-    ViewData["Title"] = "Cart";
-    double totalCartValue = 0.0f;
-}
 <div class="container">
-    <div class="jumbotron">
-        <div class="row">
-            <div class="col-lg-8 col-md-6 pt-2">
-                <div class="spinner-border" role="status" style="display:none;">
-                    <span class="sr-only">Loading...</span>
-                </div>
-                <div class="card" id="tableCart">
-                    @await Html.PartialAsync("../Cart/CartTablePartial", Model)
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 pt-2">
-                <div class="card p-2">
-                    <div class="card-header">
-                        <h3>Order Summary</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach (var product in Model)
-                            {
-                                <div class="col-6">
-                                    <p><strong>@product.ProductName</strong></p>
-                                </div>
-                                <div class="col-6">
-                                    <p><strong>@product.ProductPrice</strong></p>
-                                </div>
-
-                                totalCartValue += product.ProductPrice;
-                            }
-
-                        </div>
-
-                    </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <p><strong>SHIPPING</strong></p>
-                        </div>
-                        <div class="row">
-                            <div class="input-group mb-3">
-                                <select class="custom-select" id="inputGroupSelect02">
-                                    <option selected>Choose...</option>
-                                    <option value="@Constants.Courier.FoodPanda">@nameof(Constants.Courier.FoodPanda)</option>
-                                    <option value="@Constants.Courier.JNT">@nameof(Constants.Courier.JNT)</option>
-                                </select>
-                                <div class="input-group-append">
-                                    <label class="input-group-text" for="inputGroupSelect02">Options</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <p><strong>TOTAL COST</strong></p>
-                            </div>
-                            <div class="col-6">
-                                <p><strong>PHP @totalCartValue</strong></p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <button class="btn btn-gold btn-block">CHECKOUT <i class="fas fa-money-check-alt"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="jumbotron" id="tableCart">
+        @await Html.PartialAsync("../Cart/CartTablePartial", Model)
     </div>
 </div>
