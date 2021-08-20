@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FlameAndWax.Controllers
@@ -42,7 +43,8 @@ namespace FlameAndWax.Controllers
                         ProductName = product.ProductName,
                         ProductDescription = product.ProductDescription,
                         ProductPrice = product.ProductPrice,
-                        PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink
+                        PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink,
+                        StockQuantity = product.UnitsInStock * product.QuantityPerUnit
                     });
                 }
                 return View(productsViewModel);
@@ -51,14 +53,10 @@ namespace FlameAndWax.Controllers
             return View(products);
         }
         [Authorize(Roles = nameof(Constants.Roles.Customer))]
-        public IActionResult AddToCart(int productId = 0)
+        public IActionResult AddToCart(int _productId)
         {
-            //Process add to cart data
-
-            //Check if user is authenticated
-            //if user is authenticated add product into cart - TODO
-            //if user is NOT authenticated redirect to login page - done
-            return RedirectToAction("Index", "Cart", new { productIdCart = productId });
+            var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+            return RedirectToAction("Index", "Cart", new { productId = _productId, user = userLoggedIn });
         }
 
         public async Task<IActionResult> Sort(string category)
@@ -82,7 +80,8 @@ namespace FlameAndWax.Controllers
                     ProductName = product.ProductName,
                     ProductDescription = product.ProductDescription,
                     ProductPrice = product.ProductPrice,
-                    PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink
+                    PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink,
+                    StockQuantity = product.UnitsInStock * product.QuantityPerUnit
                 });
 
             }

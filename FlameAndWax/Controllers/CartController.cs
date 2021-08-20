@@ -11,8 +11,9 @@ namespace FlameAndWax.Controllers
     public class CartController : Controller
     {
         [Authorize(Roles = nameof(Constants.Roles.Customer))]
-        public IActionResult Index()
+        public IActionResult Index(int productId, string user)
         {
+            
             return View();
         }
     }

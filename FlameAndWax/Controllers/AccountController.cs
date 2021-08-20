@@ -50,7 +50,7 @@ namespace FlameAndWax.Controllers
                     new ClaimsPrincipal(claimsIdentity));
 
                 if (Url.IsLocalUrl(returnUrl))
-                {
+                {                    
                     return Redirect(returnUrl);
                 }
 

@@ -10,6 +10,7 @@ namespace FlameAndWax.Models
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }
         public double ProductPrice { get; set; }        
-        public string PhotoLink { get; set; }        
+        public string PhotoLink { get; set; }
+        public int StockQuantity { get; set; }
     }
 }
