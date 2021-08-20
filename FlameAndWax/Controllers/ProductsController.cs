@@ -56,7 +56,7 @@ namespace FlameAndWax.Controllers
         public IActionResult AddToCart(int _productId)
         {
             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-            return RedirectToAction("Index", "Cart", new { productId = _productId, user = userLoggedIn });
+            return RedirectToAction("AddToCart", "Cart", new { productId = _productId, user = userLoggedIn });
         }
 
         public async Task<IActionResult> Sort(string category)

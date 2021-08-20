@@ -3,7 +3,9 @@ using FlameAndWax.Models;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FlameAndWax.Controllers
@@ -17,9 +19,21 @@ namespace FlameAndWax.Controllers
         }
 
         [Authorize(Roles = nameof(Constants.Roles.Customer))]
-        public async Task<IActionResult> Index(int productId = 0, string user = "")
+        public IActionResult Index(List<ProductViewModel> cartItems)
         {
-            if(productId == 0)
+            if (cartItems.Count() == 0)
+            {
+                var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+                return View(Cart.GetCartItems(userLoggedIn));
+            }
+                
+            return View(cartItems);
+        }
+
+        [Authorize(Roles = nameof(Constants.Roles.Customer))]
+        public async Task<IActionResult> AddToCart(int productId = 0, string user = "")
+        {            
+            if (productId == 0)
             {
                 return View(Cart.GetCartItems(user));
             }
@@ -45,7 +59,7 @@ namespace FlameAndWax.Controllers
             };
 
             Cart.AddCartItem(productViewModel, user);
-            return View(Cart.GetCartItems(user));
+            return View(nameof(Index), Cart.GetCartItems(user));
         }
     }
 }

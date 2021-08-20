@@ -4,6 +4,7 @@
 
 @{
     ViewData["Title"] = "Cart";
+    double totalCartValue = 0.0f;
 }
 
 <div class="container">
@@ -20,7 +21,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach(var product in Model)
+                            @foreach (var product in Model)
                             {
                                 <tr>
                                     <td>
@@ -41,12 +42,18 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-6">
-                                <p><strong>Items</strong></p>
-                            </div>
-                            <div class="col-6">
-                                <p><strong>PHP 100</strong></p>
-                            </div>
+                            @foreach (var product in Model)
+                            {
+                                <div class="col-6">
+                                    <p><strong>@product.ProductName</strong></p>
+                                </div>
+                                <div class="col-6">
+                                    <p><strong>@product.ProductPrice</strong></p>
+                                </div>
+                               
+                                totalCartValue += product.ProductPrice;                                
+                            }
+
                         </div>
 
                     </div>
@@ -59,7 +66,7 @@
                                 <select class="custom-select" id="inputGroupSelect02">
                                     <option selected>Choose...</option>
                                     <option value="@Constants.Courier.FoodPanda">@nameof(Constants.Courier.FoodPanda)</option>
-                                    <option value="@Constants.Courier.JNT">@nameof(Constants.Courier.JNT)</option>                                    
+                                    <option value="@Constants.Courier.JNT">@nameof(Constants.Courier.JNT)</option>
                                 </select>
                                 <div class="input-group-append">
                                     <label class="input-group-text" for="inputGroupSelect02">Options</label>
@@ -71,7 +78,7 @@
                                 <p><strong>TOTAL COST</strong></p>
                             </div>
                             <div class="col-6">
-                                <p><strong>PHP 700</strong></p>
+                                <p><strong>PHP @totalCartValue</strong></p>
                             </div>
                         </div>
                         <div class="row">
