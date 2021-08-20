@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FlameAndWax.Controllers
@@ -32,6 +33,7 @@ namespace FlameAndWax.Controllers
 
         public IActionResult DeleteCartItem(int productId)
         {
+            Thread.Sleep(3000);
             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
             Cart.RemoveCartItem(productId, userLoggedIn);
             return PartialView("CartTablePartial", Cart.GetCartItems(userLoggedIn));
