@@ -156,17 +156,15 @@ namespace FlameAndWax.Controllers
                 UnitsInStock = productResult.Result.UnitsInStock,
                 CustomerReviews = customerReviewViewModels,
                 ProductGallery = productResult.Result.ProductGallery,
+
             };
-            try
+
+            if (User.Identity.IsAuthenticated)
             {
                 var loggedInUser = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
                 var result = _customerService.CheckIfCustomerHasOrderedAProduct(loggedInUser, productId).Result;
-
-                productDetailViewModel.IsProductBoughtByLoggedInCustomer = result.Result;                
-            }
-            catch (System.NullReferenceException)
-            {
-                productDetailViewModel.IsProductBoughtByLoggedInCustomer = false;
+                productDetailViewModel.IsProductBoughtByLoggedInCustomer = result.Result;
+                return View(productDetailViewModel);
             }
 
             return View(productDetailViewModel);
