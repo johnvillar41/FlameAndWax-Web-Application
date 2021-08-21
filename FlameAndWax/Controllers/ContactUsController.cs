@@ -21,12 +21,12 @@ namespace FlameAndWax.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(MessageModel messageModel)
         {
-            var customerResult = await _customerService.SendMessage(messageModel);
-            if (customerResult.HasError)
+            var customerServiceResult = await _customerService.SendMessage(messageModel);
+            if (customerServiceResult.HasError)
             {
                 var error = new ErrorViewModel
                 {
-                    ErrorContent = customerResult.ErrorContent
+                    ErrorContent = customerServiceResult.ErrorContent
                 };
                 return View("Error", error);
             }

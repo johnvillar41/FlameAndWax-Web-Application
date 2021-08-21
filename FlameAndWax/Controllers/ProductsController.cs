@@ -25,18 +25,18 @@ namespace FlameAndWax.Controllers
         {
             if (products.Count() == 0)
             {
-                var productResult = await _customerService.FetchAllProducts();
-                if (productResult.HasError)
+                var productServiceResult = await _customerService.FetchAllProducts();
+                if (productServiceResult.HasError)
                 {
                     var error = new ErrorViewModel
                     {
-                        ErrorContent = productResult.ErrorContent
+                        ErrorContent = productServiceResult.ErrorContent
                     };
                     return View("Error", error);
                 }
 
                 var productsViewModel = new List<ProductViewModel>();
-                foreach (var product in productResult.Result)
+                foreach (var product in productServiceResult.Result)
                 {
                     productsViewModel.Add(new ProductViewModel
                     {
@@ -116,18 +116,18 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> Sort(string category)
         {
-            var categorizedProducts = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category));
-            if (categorizedProducts.HasError)
+            var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category));
+            if (categorizedProductsServiceResult.HasError)
             {
                 var error = new ErrorViewModel
                 {
-                    ErrorContent = categorizedProducts.ErrorContent
+                    ErrorContent = categorizedProductsServiceResult.ErrorContent
                 };
                 return View("Error", error);
             }
 
             var products = new List<ProductViewModel>();
-            foreach (var product in categorizedProducts.Result)
+            foreach (var product in categorizedProductsServiceResult.Result)
             {
                 products.Add(new ProductViewModel
                 {
@@ -146,28 +146,28 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> Details(int productId)
         {
-            var productResult = await _customerService.FetchProductDetail(productId);
-            if (productResult.HasError)
+            var productServiceResult = await _customerService.FetchProductDetail(productId);
+            if (productServiceResult.HasError)
             {
                 var error = new ErrorViewModel
                 {
-                    ErrorContent = productResult.ErrorContent
+                    ErrorContent = productServiceResult.ErrorContent
                 };
                 return View("Error", error);
             }
 
-            var customerReviewResult = await _customerService.FetchCustomerReviewsInAProduct(productId);
-            if (customerReviewResult.HasError)
+            var customerReviewServiceResult = await _customerService.FetchCustomerReviewsInAProduct(productId);
+            if (customerReviewServiceResult.HasError)
             {
                 var error = new ErrorViewModel
                 {
-                    ErrorContent = customerReviewResult.ErrorContent
+                    ErrorContent = customerReviewServiceResult.ErrorContent
                 };
                 return View("Error", error);
             }
 
             var customerReviewViewModels = new List<CustomerReviewViewModel>();
-            foreach (var customerReview in customerReviewResult.Result)
+            foreach (var customerReview in customerReviewServiceResult.Result)
             {
                 customerReviewViewModels.Add(
                         new CustomerReviewViewModel
@@ -190,21 +190,21 @@ namespace FlameAndWax.Controllers
             var productDetailViewModel = new ProductDetailViewModel
             {
                 ProductId = productId,
-                ProductName = productResult.Result.ProductName,
-                ProductDescription = productResult.Result.ProductDescription,
-                ProductPrice = productResult.Result.ProductPrice,
-                UnitPrice = productResult.Result.UnitPrice,
-                UnitsInStock = productResult.Result.UnitsInStock,
+                ProductName = productServiceResult.Result.ProductName,
+                ProductDescription = productServiceResult.Result.ProductDescription,
+                ProductPrice = productServiceResult.Result.ProductPrice,
+                UnitPrice = productServiceResult.Result.UnitPrice,
+                UnitsInStock = productServiceResult.Result.UnitsInStock,
                 CustomerReviews = customerReviewViewModels,
-                ProductGallery = productResult.Result.ProductGallery,
+                ProductGallery = productServiceResult.Result.ProductGallery,
 
             };
 
             if (User.Identity.IsAuthenticated)
             {
                 var loggedInUser = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-                var result = _customerService.CheckIfCustomerHasOrderedAProduct(loggedInUser, productId).Result;
-                productDetailViewModel.IsProductBoughtByLoggedInCustomer = result.Result;
+                var hasCustomerOrderedServiceResult = _customerService.CheckIfCustomerHasOrderedAProduct(loggedInUser, productId).Result;
+                productDetailViewModel.IsProductBoughtByLoggedInCustomer = hasCustomerOrderedServiceResult.Result;
                 return View(productDetailViewModel);
             }
 

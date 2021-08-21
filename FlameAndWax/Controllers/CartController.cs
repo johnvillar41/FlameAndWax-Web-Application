@@ -46,12 +46,12 @@ namespace FlameAndWax.Controllers
                 return View(Cart.GetCartItems(user));
             }
 
-            var productResult = await _customerService.FetchProductDetail(productId);
-            if (productResult.HasError)
+            var productServiceResult = await _customerService.FetchProductDetail(productId);
+            if (productServiceResult.HasError)
             {
                 var error = new ErrorViewModel
                 {
-                    ErrorContent = productResult.ErrorContent
+                    ErrorContent = productServiceResult.ErrorContent
                 };
                 return View("Error", error);
             }
@@ -59,11 +59,11 @@ namespace FlameAndWax.Controllers
             var productViewModel = new ProductViewModel
             {
                 ProductId = productId,
-                ProductName = productResult.Result.ProductName,
-                ProductDescription = productResult.Result.ProductDescription,
-                ProductPrice = productResult.Result.ProductPrice,
-                PhotoLink = productResult.Result.ProductGallery.FirstOrDefault().PhotoLink,
-                StockQuantity = productResult.Result.QuantityPerUnit * productResult.Result.UnitsInStock
+                ProductName = productServiceResult.Result.ProductName,
+                ProductDescription = productServiceResult.Result.ProductDescription,
+                ProductPrice = productServiceResult.Result.ProductPrice,
+                PhotoLink = productServiceResult.Result.ProductGallery.FirstOrDefault().PhotoLink,
+                StockQuantity = productServiceResult.Result.QuantityPerUnit * productServiceResult.Result.UnitsInStock
             };
 
             Cart.AddCartItem(productViewModel, user);

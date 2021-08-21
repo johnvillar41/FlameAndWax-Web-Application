@@ -22,26 +22,26 @@ namespace FlameAndWax.Controllers
         
         public async Task<IActionResult> Index()
         {
-            var productResult = await _customerService.FetchNewArrivedProducts();
-            if (productResult.HasError)
+            var productServiceResult = await _customerService.FetchNewArrivedProducts();
+            if (productServiceResult.HasError)
             {
                 var error = new ErrorViewModel
                 {
-                    ErrorContent = productResult.ErrorContent
+                    ErrorContent = productServiceResult.ErrorContent
                 };
                 return View("Error", error);
             }
                 
 
             var newProducts = new List<ProductViewModel>();
-            foreach (var newProduct in productResult.Result)
+            foreach (var newProduct in productServiceResult.Result)
             {
                 var reviewResult = await _customerService.FetchCustomerReviewsInAProduct(newProduct.ProductId);
                 if (reviewResult.HasError)
                 {
                     var error = new ErrorViewModel
                     {
-                        ErrorContent = productResult.ErrorContent
+                        ErrorContent = productServiceResult.ErrorContent
                     };
                     return View("Error", error);
                 }
@@ -62,18 +62,18 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> ViewCategorizedProducts(string category)
         {
-            var categorizedProducts = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category));
-            if (categorizedProducts.HasError)
+            var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category));
+            if (categorizedProductsServiceResult.HasError)
             {
                 var error = new ErrorViewModel
                 {
-                    ErrorContent = categorizedProducts.ErrorContent
+                    ErrorContent = categorizedProductsServiceResult.ErrorContent
                 };
                 return View("Error", error);
             }
 
             List<ProductViewModel> productViewModels = new List<ProductViewModel>();
-            foreach(var product in categorizedProducts.Result)
+            foreach(var product in categorizedProductsServiceResult.Result)
             {
                 productViewModels.Add(
                         new ProductViewModel
