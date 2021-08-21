@@ -79,8 +79,39 @@ namespace FlameAndWax.Controllers
                     ProductId = productId
                 }
             };
-            var reviewResult = await _customerService.AddCustomerReview(customerReview);
-            return PartialView("ProductReviewPartial");
+            var reviewServiceResult = await _customerService.AddCustomerReview(customerReview);
+            var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(productId);
+            if (customerServiceReviewResult.HasError)
+            {
+                var error = new ErrorViewModel
+                {
+                    ErrorContent = customerServiceReviewResult.ErrorContent
+                };
+                return View("Error", error);
+            }
+
+            var customerReviewModels = new List<CustomerReviewViewModel>();
+            foreach(var customerReviewResult in customerServiceReviewResult.Result)
+            {
+                customerReviewModels.Add(
+                        new CustomerReviewViewModel
+                        {
+                            ReviewId = customerReviewResult.ReviewId,
+                            ProductId = customerReviewResult.Product.ProductId,
+                            ReviewDetail = customerReviewResult.ReviewDetail,
+                            ReviewScore = ServiceHelper.BuildReviewScore(3),//TODO FIX THIS STATIC VALUE
+                            Customer = new CustomerViewModel
+                            {
+                                CustomerId = customerReviewResult.Customer.CustomerId,
+                                CustomerName = customerReviewResult.Customer.CustomerName,
+                                ContactNumber = customerReviewResult.Customer.ContactNumber,
+                                ProfilePictureLink = customerReviewResult.Customer.ProfilePictureLink 
+                            }
+                        }
+                    );
+            }
+            
+            return PartialView("ProductReviewPartial", customerReviewModels);
         }
 
         public async Task<IActionResult> Sort(string category)

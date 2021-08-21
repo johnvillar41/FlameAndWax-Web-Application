@@ -70,18 +70,20 @@
             <div class="col-6">
                 @if (Model.IsProductBoughtByLoggedInCustomer)
                 {
-                    <form method="get" asp-controller="Products" asp-action="AddProductReview" data-ajax="true" data-ajax-update="#customerReviewPanel">
+                    <form method="get" asp-controller="Products" asp-action="AddProductReview"
+                          data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">
                         <input type="hidden" name="productId" value="@Model.ProductId" />
                         <textarea type="text" name="reviewDetail" class="form-control" placeholder="Enter Review Detail"></textarea>
-                        <input type="submit" value="Post Review" class="btn btn-gold mt-1" />
+                        <button type="submit" class="btn btn-gold mt-1">Post Review</button>
+
                     </form>
                 }
             </div>
         </div>
         <hr />
-        <div class="row" id="customerReviewPanel">
-            @await Html.PartialAsync("ProductReviewPartial", Model)
-        </div>     
+        <div class="row" id="content">
+            @await Html.PartialAsync("ProductReviewPartial", Model.CustomerReviews)
+        </div>
     </div>
 </div>
 
