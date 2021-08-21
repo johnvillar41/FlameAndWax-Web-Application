@@ -7,10 +7,7 @@
 
 <div class="row">
     <div class="col-lg-8 col-md-12 pt-2">        
-        <div class="card">
-            <div id="overlayDiv" style="display:none;">
-                <lottie-player src="https://assets7.lottiefiles.com/datafiles/ORpUnaV6z0mJ17E/data.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
-            </div>
+        <div class="card">            
             <table class="table table-hover table-responsive text-center">
                 <thead>
                     <tr>
@@ -46,7 +43,7 @@
                                    asp-action="DeleteCartItem"
                                    asp-controller="Cart"
                                    asp-route-productId="@product.ProductId"
-                                   data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#overlayDiv">
+                                   data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv">
                                     Delete <i class="fas fa-trash-alt"></i>
                                 </a>
                             </td>
