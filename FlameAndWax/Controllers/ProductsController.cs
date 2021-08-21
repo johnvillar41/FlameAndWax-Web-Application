@@ -59,6 +59,12 @@ namespace FlameAndWax.Controllers
             return RedirectToAction("AddToCart", "Cart", new { productId = _productId, user = userLoggedIn });
         }
 
+        [HttpPost]
+        public IActionResult AddProductReview(string reviewDetail, int productId)
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Sort(string category)
         {
             var categorizedProducts = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category));
@@ -132,6 +138,8 @@ namespace FlameAndWax.Controllers
                     );
             }
 
+            var loggedInUser = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+            var result = _customerService.CheckIfCustomerHasOrderedAProduct(loggedInUser, productId).Result;
             return View(new ProductDetailViewModel
             {
                 ProductId = productId,
@@ -141,7 +149,8 @@ namespace FlameAndWax.Controllers
                 UnitPrice = productResult.Result.UnitPrice,
                 UnitsInStock = productResult.Result.UnitsInStock,
                 CustomerReviews = customerReviewViewModels,
-                ProductGallery = productResult.Result.ProductGallery
+                ProductGallery = productResult.Result.ProductGallery,
+                IsProductBoughtByLoggedInCustomer = result.Result
             });
         }
     }

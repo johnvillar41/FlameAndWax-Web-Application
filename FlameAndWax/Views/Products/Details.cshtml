@@ -1,4 +1,5 @@
 ﻿@model FlameAndWax.Models.ProductDetailViewModel;
+@inject FlameAndWax.Services.Services.Interfaces.ICustomerService _customerService;
 @using FlameAndWax.Data.Models;
 <div class="container">
     <div class="jumbotron" style="background-color:#e4e2da;">
@@ -61,15 +62,23 @@
         </div>
         <hr />
         <div class="row">
-            <div class="col-10">
+            <div class="col-6">
                 <h4>Ratings and Reviews</h4>
                 <h6>Total of @Model.CustomerReviews.Count() Reviews</h6>
-            </div>
-            <div class="col-2">
-                <a class="btn btn-gold btn-block" asp-controller="Products" asp-action="AddToCart">Add a Review</a>
+            </div>           
+        </div>
+        <div class="row">
+            <div class="col-6">
+                @if (Model.IsProductBoughtByLoggedInCustomer)
+                {
+                    <form method="post" asp-controller="Details" asp-action="AddProductReview" asp-route-productId="@Model.ProductId">
+                        <textarea type="text" name="reviewDetail" class="form-control" placeholder="Enter Review Detail" ></textarea>
+                        <input type="submit" value="Post Review" class="btn btn-gold mt-1" />
+                    </form>
+                }
             </div>
         </div>
-
+        <hr />
         @foreach (var customerReview in Model.CustomerReviews)
         {
             <div class="row pb-1">
@@ -95,3 +104,4 @@
         }
     </div>
 </div>
+
