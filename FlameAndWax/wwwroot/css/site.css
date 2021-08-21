@@ -88,28 +88,31 @@ body {
     background-color: #a68245;
 }
 
-.btn-gold:hover {
-    color: #fff;
-    background-color: #856838;
-}
+    .btn-gold:hover {
+        color: #fff;
+        background-color: #856838;
+    }
 
 .carousel-control-next,
 .carousel-control-prev {
-    background-color: #e4e2da;    
+    background-color: #e4e2da;
 }
 
-.tab{
-    margin-left:40px;
+.tab {
+    margin-left: 40px;
 }
+
 .p-semi {
     width: 200px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .dropdown-toggle::after {
     display: none;
 }
+
 #overlayDiv {
     position: fixed;
     left: 50%;
@@ -117,4 +120,55 @@ body {
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     z-index: 99;
+}
+
+.form-control:focus {
+    border-color: #e4e2da;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.rate {
+    float: left;
+    height: 46px;
+}
+
+.rate:not(:checked) > input {
+    position: absolute;
+    top: -9999px;
+}
+
+.rate:not(:checked) > label {
+    float: right;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 30px;
+    color: #ccc;
+}
+
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+
+.rate > input:checked ~ label {
+    color: #ffc700;
+}
+
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;
+}
+
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
 }
