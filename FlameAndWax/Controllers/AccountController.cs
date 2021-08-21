@@ -37,12 +37,13 @@ namespace FlameAndWax.Controllers
                 };
                 return View("Error", error);
             }
-            if (isAuthenticated.Result)
+            if (isAuthenticated.Result != -1)
             {
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, loginCredentials.Username),
-                    new Claim(ClaimTypes.Role, nameof(Constants.Roles.Customer))
+                    new Claim(ClaimTypes.Role, nameof(Constants.Roles.Customer)),
+                    new Claim(ClaimTypes.NameIdentifier, isAuthenticated.Result.ToString())
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(

@@ -142,13 +142,13 @@ namespace FlameAndWax.Services.Services
             return ServiceHelper.BuildServiceResult<ProductModel>(productDetail, false, null);
         }
 
-        public async Task<ServiceResult<bool>> Login(CustomerModel loginCredentials)
+        public async Task<ServiceResult<int>> Login(CustomerModel loginCredentials)
         {
             if (loginCredentials.Username == null && loginCredentials.Password == null)
-                return ServiceHelper.BuildServiceResult<bool>(false, true, "Login Credentials has no value");
+                return ServiceHelper.BuildServiceResult<int>(loginCredentials.CustomerId, true, "Login Credentials has no value");
 
             var isLoggedIn = await _customerRepository.LoginCustomerAccount(loginCredentials);
-            return ServiceHelper.BuildServiceResult<bool>(isLoggedIn, false, null);
+            return ServiceHelper.BuildServiceResult<int>(loginCredentials.CustomerId, false, null);
         }
 
         public async Task<ServiceResult<bool>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId = 0)

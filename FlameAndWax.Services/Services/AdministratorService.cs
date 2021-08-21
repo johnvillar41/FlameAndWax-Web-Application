@@ -52,13 +52,13 @@ namespace FlameAndWax.Services.Services
             return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(products, false, null);
         }
 
-        public async Task<ServiceResult<bool>> Login(EmployeeModel loginCredentials)
+        public async Task<ServiceResult<int>> Login(EmployeeModel loginCredentials)
         {
             if (loginCredentials == null)
-                return ServiceHelper.BuildServiceResult<bool>(false, true, "Empty Employee credentials!");
+                return ServiceHelper.BuildServiceResult<int>(loginCredentials.EmployeeId, true, "Empty Employee credentials!");
 
             await _employeeRepository.Login(loginCredentials);
-            return ServiceHelper.BuildServiceResult<bool>(true, false, null);
+            return ServiceHelper.BuildServiceResult<int>(loginCredentials.EmployeeId, false, null);
         }
 
         public async Task<ServiceResult<bool>> MarkEmployeeAsTerminated(int employeeId = 0)

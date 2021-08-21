@@ -87,7 +87,7 @@ namespace FlameAndWax.Services.Repositories
             return employees;
         }
 
-        public async Task<bool> Login(EmployeeModel employee)
+        public async Task<int> Login(EmployeeModel employee)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
@@ -98,9 +98,9 @@ namespace FlameAndWax.Services.Repositories
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
-                return true;
+                return int.Parse(reader["EmployeeId"].ToString());
             }
-            return false;
+            return -1;
         }
 
         public async Task ModifyEmployeeStatus(int employeeId, Constants.AccountStatus accountStatus)

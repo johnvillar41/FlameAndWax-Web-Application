@@ -93,7 +93,7 @@ namespace FlameAndWax.Data.Repositories
             return customers;
         }
 
-        public async Task<bool> LoginCustomerAccount(CustomerModel loginCustomer)
+        public async Task<int> LoginCustomerAccount(CustomerModel loginCustomer)
         {
             using SqlConnection connection = new SqlConnection(Constants.Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
@@ -103,8 +103,8 @@ namespace FlameAndWax.Data.Repositories
             command.Parameters.AddWithValue("@password", loginCustomer.Password);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if(await reader.ReadAsync())
-                return true;
-            return false;
+                return int.Parse(reader["CustomerId"].ToString());
+            return -1;
         }
 
         public async Task Update(CustomerModel data, int id)
