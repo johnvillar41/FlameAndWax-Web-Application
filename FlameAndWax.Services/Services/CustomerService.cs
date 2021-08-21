@@ -149,7 +149,7 @@ namespace FlameAndWax.Services.Services
 
             var isLoggedIn = await _customerRepository.LoginCustomerAccount(loginCredentials);
             if(isLoggedIn > -1)            
-                return ServiceHelper.BuildServiceResult<int>(loginCredentials.CustomerId, false, null);
+                return ServiceHelper.BuildServiceResult<int>(isLoggedIn, false, null);
             
             else
                 return ServiceHelper.BuildServiceResult<int>(-1, true, "Invalid User");

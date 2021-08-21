@@ -65,14 +65,22 @@ namespace FlameAndWax.Controllers
         [HttpGet]
         public async Task<IActionResult> AddProductReview(string reviewDetail, int productId)
         {
-            //var customerReview = new CustomerReviewModel
-            //{
-
-            //};
-            //customerReview.Product.ProductId = productId;
-            //customerReview.
-            //var reviewResult = await _customerService.AddCustomerReview();
-            return View();
+            var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
+            var customerReview = new CustomerReviewModel
+            {
+                ReviewScore = Constants.ReviewScore.Good, //Default value for now to be fixed later,
+                ReviewDetail = reviewDetail,
+                Customer = new CustomerModel
+                {
+                    CustomerId = int.Parse(customerIdLoggedIn)
+                },
+                Product = new ProductModel
+                {
+                    ProductId = productId
+                }
+            };
+            var reviewResult = await _customerService.AddCustomerReview(customerReview);
+            return PartialView("ProductReviewPartial");
         }
 
         public async Task<IActionResult> Sort(string category)
