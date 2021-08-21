@@ -37,16 +37,18 @@
                     </ul>
 
                 </div>
-                @{ 
-                    var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-                }
+                
                 <div class="navbar-collapse collapse ">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item" style="padding-right:30px;">
-                            <a class="nav-link" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"></i> Cart <span class="badge badge-pill badge-light">@Cart.GetCartItems(userLoggedIn).Count()</span></a>
-                        </li>
                         @if (User.Identity.IsAuthenticated)
-                        {
+                        {                           
+                            var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+                            var totalNumberOfCart = Cart.GetCartItems(userLoggedIn).Count();
+
+                            <li class="nav-item" style="padding-right:30px;">
+                                <a class="nav-link" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"></i> Cart <span class="badge badge-pill badge-light">@totalNumberOfCart</span></a>
+                            </li>                       
+
                             <li class="nav-item">
                                 <a class="nav-link btn btn-gold text-dark" asp-action="ProcessLogout" asp-controller="Account"><i class="fas fa-sign-out-alt"> Logout</i></a>
                             </li>
