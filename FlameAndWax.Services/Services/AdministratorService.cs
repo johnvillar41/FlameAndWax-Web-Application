@@ -55,9 +55,12 @@ namespace FlameAndWax.Services.Services
         public async Task<ServiceResult<int>> Login(EmployeeModel loginCredentials)
         {
             if (loginCredentials == null)
-                return ServiceHelper.BuildServiceResult<int>(loginCredentials.EmployeeId, true, "Empty Employee credentials!");
+                return ServiceHelper.BuildServiceResult<int>(-1, true, "Empty Employee credentials!");
 
-            await _employeeRepository.Login(loginCredentials);
+            var loginResult = await _employeeRepository.Login(loginCredentials);
+            if(loginResult == -1)
+                return ServiceHelper.BuildServiceResult<int>(-1, true, "Invalid Credentials");
+
             return ServiceHelper.BuildServiceResult<int>(loginCredentials.EmployeeId, false, null);
         }
 
