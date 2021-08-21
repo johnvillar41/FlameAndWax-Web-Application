@@ -63,7 +63,8 @@ namespace FlameAndWax.Controllers
                 ProductDescription = productServiceResult.Result.ProductDescription,
                 ProductPrice = productServiceResult.Result.ProductPrice,
                 PhotoLink = productServiceResult.Result.ProductGallery.FirstOrDefault().PhotoLink,
-                StockQuantity = productServiceResult.Result.QuantityPerUnit * productServiceResult.Result.UnitsInStock
+                StockQuantity = productServiceResult.Result.QuantityPerUnit * productServiceResult.Result.UnitsInStock,
+                QuantityPerUnit = productServiceResult.Result.QuantityPerUnit
             };
 
             Cart.AddCartItem(productViewModel, user);
