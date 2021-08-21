@@ -84,17 +84,35 @@
         {
             <div class="row pb-1">
                 <div class="col-12">
-                    <div class="card" style="background-color: #D3D3D3;">
-                        <div class="card-header ">
-                            <div class="row pl-1 pr-1">
-                                <p>Name: @customerReview.Customer.CustomerName</p>
-                                <p class="ml-auto">Date Here</p>
+                    <div class="card border-dark">
+                        <!-- Review header -->
+                        <div class="card-header" style="background-color: #D3D3D3;">
+                            <!--
+                            <img src="" class="rounded" alt="customer name here">
+                            -->
+                            <div class="row px-1">
+                                <div class="col-12">
+                                    <div class="float-left text-uppercase">
+                                        <b>@customerReview.Customer.CustomerName</b>
+                                        <br />
+                                    </div>
+                                    <div class="float-right">
+                                        <b>Score: </b>
+                                        <!-- NOTE: Insert "if statement" that changes badge color depending on score -->
+                                        <div class="badge badge-primary text-wrap">@customerReview.ReviewScore</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="row pl-1 pr-1">
-                                <p>Score: @customerReview.ReviewScore</p>
+                            <div class="row px-1">
+                                <div class="col-12">
+                                    <div class="text-left">
+                                        <b>Posted: </b>Date Here
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <!-- Review comment -->
+                        <div class="card-body" style="background-color: #F0F0F0;">
                             <blockquote class="blockquote mb-0">
                                 <p>@customerReview.ReviewDetail</p>
                             </blockquote>

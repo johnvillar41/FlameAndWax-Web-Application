@@ -12,9 +12,11 @@ namespace FlameAndWax.Services.Helpers
         {
             switch (reviewScore)
             {
-                case 1: return Constants.ReviewScore.Good;
-                case 2: return Constants.ReviewScore.Bad;
-                default: return Constants.ReviewScore.Meh;
+                case 1: return Constants.ReviewScore.VeryPoor;
+                case 2: return Constants.ReviewScore.Poor;
+                case 3: return Constants.ReviewScore.Good;
+                case 4: return Constants.ReviewScore.VeryGood;
+                default: return Constants.ReviewScore.Excellent;
             }
         }
 
