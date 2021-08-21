@@ -146,9 +146,7 @@ namespace FlameAndWax.Controllers
                     );
             }
 
-            var loggedInUser = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-            var result = _customerService.CheckIfCustomerHasOrderedAProduct(loggedInUser, productId).Result;
-            return View(new ProductDetailViewModel
+            var productDetailViewModel = new ProductDetailViewModel
             {
                 ProductId = productId,
                 ProductName = productResult.Result.ProductName,
@@ -158,8 +156,20 @@ namespace FlameAndWax.Controllers
                 UnitsInStock = productResult.Result.UnitsInStock,
                 CustomerReviews = customerReviewViewModels,
                 ProductGallery = productResult.Result.ProductGallery,
-                IsProductBoughtByLoggedInCustomer = result.Result
-            });
+            };
+            try
+            {
+                var loggedInUser = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+                var result = _customerService.CheckIfCustomerHasOrderedAProduct(loggedInUser, productId).Result;
+
+                productDetailViewModel.IsProductBoughtByLoggedInCustomer = result.Result;                
+            }
+            catch (System.NullReferenceException)
+            {
+                productDetailViewModel.IsProductBoughtByLoggedInCustomer = false;
+            }
+
+            return View(productDetailViewModel);
         }
     }
 }
