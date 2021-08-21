@@ -71,7 +71,8 @@
             <div class="col-6">
                 @if (Model.IsProductBoughtByLoggedInCustomer)
                 {
-                    <form method="post" asp-controller="Details" asp-action="AddProductReview" asp-route-productId="@Model.ProductId">
+                    <form method="get" asp-controller="Products" asp-action="AddProductReview">
+                        <input type="hidden" name="productId" value="@Model.ProductId" />
                         <textarea type="text" name="reviewDetail" class="form-control" placeholder="Enter Review Detail" ></textarea>
                         <input type="submit" value="Post Review" class="btn btn-gold mt-1" />
                     </form>

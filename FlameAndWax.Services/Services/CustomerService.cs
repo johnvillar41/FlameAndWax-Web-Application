@@ -25,7 +25,7 @@ namespace FlameAndWax.Services.Services
             IOrderDetailRepository orderDetailRepository,
             ICustomerRepository customerRepository,
             ICustomerReviewRepository customerReviewRepository,
-            IMessageRepository messageRepository, 
+            IMessageRepository messageRepository,
             IPreviouslyOrderedProductsRepository previouslyOrderedProductsRepository)
         {
             _productRepository = productRepository;
@@ -36,6 +36,13 @@ namespace FlameAndWax.Services.Services
             _messageRepository = messageRepository;
             _previouslyOrderedProductsRepository = previouslyOrderedProductsRepository;
         }
+
+        public async Task<ServiceResult<bool>> AddCustomerReview(CustomerReviewModel customerReview)
+        {            
+            await _customerReviewRepository.Add(customerReview);
+            return ServiceHelper.BuildServiceResult<Boolean>(true, false, null);
+        }
+
         public async Task<ServiceResult<bool>> AddOrderTransaction(OrderModel newOrder)
         {
             if (newOrder == null)
@@ -58,9 +65,9 @@ namespace FlameAndWax.Services.Services
         }
 
         public async Task<ServiceResult<bool>> CheckIfCustomerHasOrderedAProduct(string customerUsername, int productId)
-        {           
+        {
             var isSuccess = await _previouslyOrderedProductsRepository.HasCustomerOrderedAProduct(productId, customerUsername);
-            return ServiceHelper.BuildServiceResult<bool>(isSuccess, false, null);            
+            return ServiceHelper.BuildServiceResult<bool>(isSuccess, false, null);
         }
 
         public async Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId = 0)

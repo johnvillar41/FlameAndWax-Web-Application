@@ -13,6 +13,7 @@ namespace FlameAndWax.Services.Services.Interfaces
         Task<ServiceResult<Boolean>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId);
         Task<ServiceResult<Boolean>> SendMessage(MessageModel newMessage);
         Task<ServiceResult<Boolean>> CheckIfCustomerHasOrderedAProduct(string customerUsername,int productId);
+        Task<ServiceResult<Boolean>> AddCustomerReview(CustomerReviewModel customerReview);
 
         Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId);       
         Task<ServiceResult<ProductModel>> FetchProductDetail(int productId);

@@ -1,4 +1,5 @@
 ﻿using FlameAndWax.Data.Constants;
+using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Services.Interfaces;
@@ -59,9 +60,16 @@ namespace FlameAndWax.Controllers
             return RedirectToAction("AddToCart", "Cart", new { productId = _productId, user = userLoggedIn });
         }
 
-        [HttpPost]
-        public IActionResult AddProductReview(string reviewDetail, int productId)
+        [HttpGet]
+        public async Task<IActionResult> AddProductReview(string reviewDetail, int productId)
         {
+            //var customerReview = new CustomerReviewModel
+            //{
+
+            //};
+            //customerReview.Product.ProductId = productId;
+            //customerReview.
+            //var reviewResult = await _customerService.AddCustomerReview();
             return View();
         }
 
