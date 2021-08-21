@@ -19,18 +19,22 @@
             {
                 <img class="card-img-top" src="@Url.Content(product.PhotoLink)" style="height: 200px;" alt="Card image cap">
             }
-            <div class="card-body">
-                <h5 class="card-title">@product.ProductName</h5>
-                <p class="card-text p-semi">@product.ProductDescription</p>
-                <h5 class="card-title"><strong>₱ </strong>@product.ProductPrice</h5>
-                <h5 class="card-title"><strong>Stocks </strong>@product.StockQuantity</h5>
-                <a class="btn btn-gold btn-sm"
-                   asp-route-productId="@product.ProductId"
-                   asp-action="Details"
-                   asp-controller="Products">
-                    See More <i class="fas fa-info-circle"></i>
-                </a>
-            </div>
+        <div class="card-body">
+            <h5 class="card-title">@product.ProductName</h5>
+            <p class="card-text p-semi">@product.ProductDescription</p>
+            <h6 class="card-title"><strong>Price:   ₱ </strong>@product.ProductPrice</h6>
+            <h6 class="card-title"><strong>Quantity per Unit: </strong>@product.QuantityPerUnit</h6>
+            <h6 class="card-title"><strong>Units in Stock: </strong>@product.UnitsInStock</h6>
+            <hr />
+
+            <h5 class="card-title"><strong>Stocks </strong>@product.StockQuantity</h5>
+            <a class="btn btn-gold btn-sm"
+               asp-route-productId="@product.ProductId"
+               asp-action="Details"
+               asp-controller="Products">
+                See More <i class="fas fa-info-circle"></i>
+            </a>
+        </div>
         </div>
     </div>
 }

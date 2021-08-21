@@ -30,6 +30,10 @@
                                         <img src="@Url.Content(product.PhotoLink)" class="img-thumbnail" />
                                     </div>
                                     <div class="col-6 my-auto text-left">
+
+                                        <p><strong>@product.ProductName</strong></p>
+                                        <p><strong>Quantity per Unit: </strong>@product.QuantityPerUnit</p>
+                                        <p><strong>Units in Stock: </strong>@product.StockQuantity</p>
                                         <p><strong>Qty: 5</strong></p>
                                     </div>
                                 </div>
@@ -93,6 +97,8 @@
                             <option selected>Choose...</option>
                             <option value="@Constants.Courier.FoodPanda">@nameof(Constants.Courier.FoodPanda)</option>
                             <option value="@Constants.Courier.JNT">@nameof(Constants.Courier.JNT)</option>
+                            <option value="@Constants.Courier.NinjaVan">@nameof(Constants.Courier.NinjaVan)</option>
+                            <option value="@Constants.Courier.GogoExpress">@nameof(Constants.Courier.GogoExpress)</option>
                         </select>
                         <div class="input-group-append">
                             <label class="input-group-text" for="inputGroupSelect02">Options</label>

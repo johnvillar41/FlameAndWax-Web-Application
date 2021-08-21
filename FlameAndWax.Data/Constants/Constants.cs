@@ -20,7 +20,9 @@
         public enum Courier
         {
             FoodPanda,
-            JNT
+            JNT,
+            NinjaVan,
+            GogoExpress
         }
         public enum AccountStatus
         {
