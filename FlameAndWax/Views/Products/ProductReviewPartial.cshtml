@@ -1,10 +1,25 @@
 ﻿@model IEnumerable<FlameAndWax.Models.CustomerReviewViewModel>
 
+
+@if (Model.Count() == 0)
+{
+    <div class="col-12">
+        <div class="row">
+            <div class="col-lg-4 col-sm-12 my-auto mx-auto">
+                <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_buhby0ug.json" background="transparent" speed="1" style="width: 300px; height: 300px;" autoplay></lottie-player>
+            </div>
+            <div class="col-lg-4 col-sm-12 my-auto mx-auto">
+                <h3 class="text-center">No results found!</h3>
+            </div>
+        </div>
+
+    </div>
+}
+
 @foreach (var customerReview in Model)
 {
     <div class="col-12 mb-2">
         <div class="card card0 card2">
-            <!-- Review header -->
             <div class="card-header" style="background-color: #D3D3D3;">
                 <div class="row ">
                     <div class="col-3">
@@ -12,7 +27,7 @@
                     </div>
                     <div class="col-9">
                         <div class="float-right">
-                            <b>Score: </b>                           
+                            <b>Score: </b>
                             @{
                                 switch (customerReview.ReviewScore)
                                 {
@@ -35,13 +50,13 @@
                             }
                         </div>
                     </div>
-                    
+
                     <div class="col-12">
                         <div class="float-left text-uppercase">
                             <b>@customerReview.Customer.CustomerName</b>
                             <br />
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="row">
@@ -51,7 +66,7 @@
                         </div>
                     </div>
                 </div>
-            </div>           
+            </div>
             <div class="card-body" style="background-color: #F0F0F0;">
                 <blockquote class="blockquote mb-0">
                     <p>@customerReview.ReviewDetail</p>
