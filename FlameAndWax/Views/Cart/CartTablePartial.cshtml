@@ -4,7 +4,10 @@
     ViewData["Title"] = "Cart";
     double totalCartValue = 0.0f;
 }
-
+<a class="btn btn-gold" asp-action="RefreshCart" asp-controller="Cart"
+   data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv">
+    Refresh Cart <i class="fas fa-sync"></i>
+</a>
 <div class="row">
     <div class="col-lg-8 col-md-12 pt-2">
         <div class="card">

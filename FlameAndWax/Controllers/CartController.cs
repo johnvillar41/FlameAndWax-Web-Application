@@ -39,6 +39,13 @@ namespace FlameAndWax.Controllers
             return PartialView("CartTablePartial", Cart.GetCartItems(userLoggedIn));
         }
 
+        public IActionResult RefreshCart()
+        {
+            Thread.Sleep(3000);
+            var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+            return PartialView("CartTablePartial", Cart.GetCartItems(userLoggedIn));
+        }
+
         public async Task<IActionResult> AddToCart(int productId = 0, string user = "")
         {
             if (productId == 0)

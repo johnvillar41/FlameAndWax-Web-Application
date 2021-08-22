@@ -2,7 +2,8 @@
 @model IEnumerable<ProductViewModel>;
 
 <div class="container">
-    <div class="jumbotron" id="tableCart">
+    
+    <div class="jumbotron" id="tableCart">        
         @await Html.PartialAsync("../Cart/CartTablePartial", Model)
     </div>
 </div>
