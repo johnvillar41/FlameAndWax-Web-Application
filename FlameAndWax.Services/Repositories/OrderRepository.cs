@@ -25,16 +25,21 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO OrdersTable(CustomerId,OrderDetailsId,DateNeeded,ModeOfPayment,Courier)" +
-                "VALUES(@customerId,@orderDetailsId,@dateNeeded,@modeOfPayment,@courier)";
+            var queryString = "INSERT INTO OrdersTable(CustomerId,DateNeeded,ModeOfPayment,Courier)" +
+                "VALUES(@customerId,@dateNeeded,@modeOfPayment,@courier);" +
+                "SELECT SCOPE_IDENTITY() as fk;";
             using SqlCommand command = new SqlCommand(queryString, connection);
-            command.Parameters.AddWithValue("@customerId", Data.Customer.CustomerId);            
-            //command.Parameters.AddWithValue("@orderDetailsId", Data.OrderDetailPk);
+            command.Parameters.AddWithValue("@customerId", Data.Customer.CustomerId);           
             command.Parameters.AddWithValue("@dateNeeded", DateTime.UtcNow);
             command.Parameters.AddWithValue("@modeOfPayment", nameof(Data.ModeOfPayment));
             command.Parameters.AddWithValue("@courier", nameof(Data.Courier));
-            await command.ExecuteNonQueryAsync();
-            return Data.OrderId;
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if(await reader.ReadAsync())
+            {
+                var primaryKey = int.Parse(reader["fk"].ToString());
+                return primaryKey;
+            }
+            return -1;
         }
 
         public async Task Delete(int id)
