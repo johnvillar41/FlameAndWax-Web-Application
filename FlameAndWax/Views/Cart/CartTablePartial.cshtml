@@ -6,8 +6,8 @@
 }
 
 <div class="row">
-    <div class="col-lg-8 col-md-12 pt-2">        
-        <div class="card">            
+    <div class="col-lg-8 col-md-12 pt-2">
+        <div class="card">
             <table class="table table-hover table-responsive text-center">
                 <thead>
                     <tr>
@@ -30,9 +30,8 @@
 
                                         <p><strong>@product.ProductName</strong></p>
                                         <hr />
-                                        <p><strong>Quantity per Unit: </strong>@product.QuantityPerUnit</p>
+                                        <p><strong>Quantity per Unit: </strong><input type="number" id="numQty" min="1" max="50" class="form-control" onkeypress="return isNumber(event);" value="@product.QuantityPerUnit" /></p>
                                         <p><strong>Units in Stock: </strong>@product.StockQuantity</p>
-                                        <p><strong>Qty: 5</strong></p>
                                     </div>
                                 </div>
 
@@ -118,3 +117,14 @@
         </div>
     </div>
 </div>
+
+<script>
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if ((charCode > 31 && charCode < 48) || charCode > 57) {
+            return false;
+        }        
+        return true;
+    }
+</script>

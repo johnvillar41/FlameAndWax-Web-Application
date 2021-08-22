@@ -136,7 +136,9 @@ namespace FlameAndWax.Controllers
                     ProductDescription = product.ProductDescription,
                     ProductPrice = product.ProductPrice,
                     PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink,
-                    StockQuantity = product.UnitsInStock * product.QuantityPerUnit
+                    StockQuantity = product.UnitsInStock * product.QuantityPerUnit,
+                    QuantityPerUnit = product.QuantityPerUnit,
+                    UnitsInStock = product.UnitsInStock
                 });
 
             }
