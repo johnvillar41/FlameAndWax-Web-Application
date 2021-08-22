@@ -19,18 +19,19 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO OrderDetailsTable(ProductId,TotalPrice,Quantity)" +
-                "VALUES(@ProductId,@TotalPrice,@Quantity);" +
-                "SELECT SCOPE_IDENTITY() as fk;";
+            var queryString = "INSERT INTO OrderDetailsTable(OrderId,ProductId,TotalPrice,Quantity)" +
+                "VALUES(@OrderId,@ProductId,@TotalPrice,@Quantity);" +
+                "SELECT SCOPE_IDENTITY() as fk;";                
             using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@OrderId", Data.Order.OrderId);
             command.Parameters.AddWithValue("@ProductId", Data.Product.ProductId);
             command.Parameters.AddWithValue("@TotalPrice", Data.TotalPrice);
             command.Parameters.AddWithValue("@Quantity", Data.Quantity);
-            using SqlDataReader reader = await command.ExecuteReaderAsync();          
-            if (await reader.ReadAsync())
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if(await reader.ReadAsync())
             {
-                var foreignKey = int.Parse(reader["fk"].ToString());
-                return foreignKey;
+                var primaryKey = int.Parse(reader["fk"].ToString());
+                return primaryKey;
             }
             return -1;
         }
