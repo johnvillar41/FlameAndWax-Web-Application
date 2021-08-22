@@ -16,7 +16,7 @@ namespace FlameAndWax.Services.Repositories
         {
             _productGalleryRepository = productGalleryRepository;
         }
-        public async Task Add(ProductModel Data)
+        public async Task<int> Add(ProductModel Data)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
@@ -32,6 +32,7 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@order", Data.UnitsInOrder);
             command.Parameters.AddWithValue("@category", nameof(Data.Category));
             await command.ExecuteNonQueryAsync();
+            return Data.ProductId;
         }
 
         public async Task Delete(int id)
@@ -175,7 +176,7 @@ namespace FlameAndWax.Services.Repositories
             using SqlCommand command = new SqlCommand(queryString, connection);
             await command.ExecuteNonQueryAsync();
         }
-
+        //TODO: Fix the updating should be adding
         public async Task ModifyNumberOfUnitsInOrder(int productId, int numberOfUnitsToBeAdded)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
@@ -183,6 +184,7 @@ namespace FlameAndWax.Services.Repositories
             var queryString = "UPDATE ProductsTable SET UnitsOnOrder = @unitOrder WHERE ProductId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@unitOrder", numberOfUnitsToBeAdded);
+            command.Parameters.AddWithValue("@id", productId);
             command.Parameters.AddWithValue("@uniditOrder", productId);
             await command.ExecuteNonQueryAsync();
         }

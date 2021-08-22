@@ -21,20 +21,20 @@ namespace FlameAndWax.Services.Repositories
             _employeeRepository = employeeRepository;
             _orderDetailRepository = orderDetailRepository;
         }
-        public async Task Add(OrderModel Data)
+        public async Task<int> Add(OrderModel Data)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO OrdersTable(CustomerId,EmployeeId,OrderDetailsId,DateNeeded,ModeOfPayment,Courier)" +
-                "VALUES(@customerId,@employeeId,@orderDetailsId,@dateNeeded,@modeOfPayment,@courier)";
+            var queryString = "INSERT INTO OrdersTable(CustomerId,OrderDetailsId,DateNeeded,ModeOfPayment,Courier)" +
+                "VALUES(@customerId,@orderDetailsId,@dateNeeded,@modeOfPayment,@courier)";
             using SqlCommand command = new SqlCommand(queryString, connection);
-            command.Parameters.AddWithValue("@customerId", Data.Customer.CustomerId);
-            command.Parameters.AddWithValue("@employeeId", Data.Employee.EmployeeId);
-            command.Parameters.AddWithValue("@orderDetailsId", Data.OrderDetails.First().OrderDetailId);//TODO Fetch OrderDetailId from db
-            command.Parameters.AddWithValue("@dateNeeded", Data.DateNeeded);
+            command.Parameters.AddWithValue("@customerId", Data.Customer.CustomerId);            
+            command.Parameters.AddWithValue("@orderDetailsId", Data.OrderDetailPk);
+            command.Parameters.AddWithValue("@dateNeeded", DateTime.UtcNow);
             command.Parameters.AddWithValue("@modeOfPayment", nameof(Data.ModeOfPayment));
             command.Parameters.AddWithValue("@courier", nameof(Data.Courier));
             await command.ExecuteNonQueryAsync();
+            return Data.OrderId;
         }
 
         public async Task Delete(int id)
@@ -161,6 +161,11 @@ namespace FlameAndWax.Services.Repositories
         }
 
         public async Task Update(OrderModel data, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task<int> SelectInsertId()
         {
             throw new NotImplementedException();
         }

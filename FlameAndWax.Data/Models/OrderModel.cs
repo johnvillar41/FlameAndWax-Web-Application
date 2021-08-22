@@ -12,6 +12,7 @@ namespace FlameAndWax.Data.Models
         public DateTime DateNeeded { get; set; }
         public ModeOfPayment ModeOfPayment { get; set; }
         public Courier Courier { get; set; }
+        public int OrderDetailPk { get; set; }
 
         public IEnumerable<OrderDetailModel> OrderDetails { get; set; }
     }

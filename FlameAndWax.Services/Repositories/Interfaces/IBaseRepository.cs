@@ -5,7 +5,7 @@ namespace FlameAndWax.Data.Repositories.Interfaces
 {
     public interface IBaseRepository<T> where T : class
     {
-        Task Add(T Data);
+        Task<int> Add(T Data);
         Task Delete(int id);
         Task Update(T data, int id);
         Task<T> Fetch(int id);

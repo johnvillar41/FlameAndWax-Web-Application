@@ -1,20 +1,12 @@
-﻿namespace FlameAndWax.Data.Models
+﻿using System.Diagnostics;
+
+namespace FlameAndWax.Data.Models
 {
     public class OrderDetailModel
     {
         public int OrderDetailId { get; set; }
-        public ProductModel Product { get; set; }
-        public double TotalPrice
-        {
-            get
-            {
-                return TotalPrice;
-            }
-            set
-            {
-                TotalPrice = Product.ProductPrice * Quantity;
-            }
-        }
+        public ProductModel Product { get; set; }       
+        public double TotalPrice { get; set; }
         public int Quantity { get; set; }
     }
 }

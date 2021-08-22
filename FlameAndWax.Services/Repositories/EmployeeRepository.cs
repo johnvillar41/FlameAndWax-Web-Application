@@ -10,7 +10,7 @@ namespace FlameAndWax.Services.Repositories
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        public async Task Add(EmployeeModel Data)
+        public async Task<int> Add(EmployeeModel Data)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
@@ -24,6 +24,7 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@HireDate", Data.HireDate);
             command.Parameters.AddWithValue("@City", Data.City);
             await command.ExecuteNonQueryAsync();
+            return Data.EmployeeId;
         }
 
         public async Task Delete(int id)

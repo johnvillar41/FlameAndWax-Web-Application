@@ -8,7 +8,7 @@ namespace FlameAndWax.Data.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
-        public async Task Add(CustomerModel Data)
+        public async Task<int> Add(CustomerModel Data)
         {
             using SqlConnection connection = new SqlConnection(Constants.Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
@@ -21,6 +21,7 @@ namespace FlameAndWax.Data.Repositories
             command.Parameters.AddWithValue("@password", Data.Password);
             command.Parameters.AddWithValue("@link", Data.ProfilePictureLink);
             await command.ExecuteNonQueryAsync();
+            return Data.CustomerId;
         }
 
         public async Task ChangeCustomerStatus(int customerId, Constants.Constants.AccountStatus customerStatus)

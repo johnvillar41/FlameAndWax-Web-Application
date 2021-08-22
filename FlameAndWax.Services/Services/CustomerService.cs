@@ -142,6 +142,13 @@ namespace FlameAndWax.Services.Services
             return ServiceHelper.BuildServiceResult<ProductModel>(productDetail, false, null);
         }
 
+        public async Task<ServiceResult<int>> InsertOrderDetail(OrderDetailModel orderDetail)
+        {
+            await _orderDetailRepository.Add(orderDetail);
+            var foreignKey = await _orderDetailRepository.Add(orderDetail);
+            return ServiceHelper.BuildServiceResult<int>(foreignKey, false, null);
+        }
+
         public async Task<ServiceResult<int>> Login(CustomerModel loginCredentials)
         {
             if (loginCredentials.Username == null && loginCredentials.Password == null)

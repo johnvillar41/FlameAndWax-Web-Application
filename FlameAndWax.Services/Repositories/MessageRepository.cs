@@ -9,7 +9,7 @@ namespace FlameAndWax.Services.Repositories
 {
     public class MessageRepository : IMessageRepository
     {
-        public async Task Add(MessageModel Data)
+        public async Task<int> Add(MessageModel Data)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
@@ -21,6 +21,7 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@number", Data.PhoneNumber);
             command.Parameters.AddWithValue("@msg", Data.Message);
             await command.ExecuteNonQueryAsync();
+            return Data.MessageId;
         }
 
         public Task Delete(int id)

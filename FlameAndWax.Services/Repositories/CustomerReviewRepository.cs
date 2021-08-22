@@ -16,7 +16,7 @@ namespace FlameAndWax.Services.Repositories
             _customerRepository = customerRepository;
             _productRepository = productRepository;
         }
-        public async Task Add(CustomerReviewModel Data)
+        public async Task<int> Add(CustomerReviewModel Data)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
@@ -28,6 +28,7 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@ReviewScore", Data.ReviewScore);
             command.Parameters.AddWithValue("@ReviewDetail", Data.ReviewDetail);
             await command.ExecuteNonQueryAsync();
+            return Data.ReviewId;
         }
 
         public async Task Delete(int id)

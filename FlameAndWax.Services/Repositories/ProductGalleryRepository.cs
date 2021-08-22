@@ -9,7 +9,7 @@ namespace FlameAndWax.Services.Repositories
 {
     public class ProductGalleryRepository : IProductGalleryRepository
     {
-        public Task Add(ProductGalleryModel Data)
+        public Task<int> Add(ProductGalleryModel Data)
         {
             throw new System.NotImplementedException();
         }

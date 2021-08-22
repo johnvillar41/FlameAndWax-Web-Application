@@ -15,17 +15,24 @@ namespace FlameAndWax.Services.Repositories
         {
             _productRepository = productRepository;
         }
-        public async Task Add(OrderDetailModel Data)
+        public async Task<int> Add(OrderDetailModel Data)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
             var queryString = "INSERT INTO OrderDetailsTable(ProductId,TotalPrice,Quantity)" +
-                "VALUES(@ProductId,@TotalPrice,@Quantity)";
+                "VALUES(@ProductId,@TotalPrice,@Quantity);" +
+                "SELECT SCOPE_IDENTITY() as fk;";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@ProductId", Data.Product.ProductId);
             command.Parameters.AddWithValue("@TotalPrice", Data.TotalPrice);
             command.Parameters.AddWithValue("@Quantity", Data.Quantity);
-            await command.ExecuteNonQueryAsync();
+            using SqlDataReader reader = await command.ExecuteReaderAsync();          
+            if (await reader.ReadAsync())
+            {
+                var foreignKey = int.Parse(reader["fk"].ToString());
+                return foreignKey;
+            }
+            return -1;
         }
 
         public async Task Delete(int id)
@@ -105,7 +112,7 @@ namespace FlameAndWax.Services.Repositories
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@orderId", orderId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-            while(await reader.ReadAsync())
+            while (await reader.ReadAsync())
             {
                 var orderDetailId = int.Parse(reader["OrderDetailsId"].ToString());
                 var productId = int.Parse(reader["ProductId"].ToString());

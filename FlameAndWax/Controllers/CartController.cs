@@ -67,18 +67,33 @@ namespace FlameAndWax.Controllers
                     );
             }
 
+            
+            var orderDetailForeignKey = -1;
+            foreach (var orderDetail in orderDetails)
+            {
+                var orderDetailServiceResult = await _customerService.InsertOrderDetail(orderDetail);
+                orderDetailForeignKey = orderDetailServiceResult.Result;
+                if (orderDetailServiceResult.HasError)
+                {
+                    return View("Error", new ErrorViewModel { ErrorContent = orderDetailServiceResult.ErrorContent });
+                }
+            }
             var orderModel = new OrderModel
             {
                 Customer = new CustomerModel { CustomerId = int.Parse(userLoggedInID) },
                 Employee = new EmployeeModel { EmployeeId = -1 },
                 ModeOfPayment = Constants.ModeOfPayment.Cash, //static values for now fix later
                 Courier = Constants.Courier.FoodPanda,
-                OrderDetails = orderDetails
+                OrderDetails = orderDetails,
+                OrderDetailPk = orderDetailForeignKey
             };
-            var orderTransactionServiceResult = await _customerService.AddOrderTransaction(orderModel);
-            if (orderTransactionServiceResult.HasError)
+            if (orderDetailForeignKey != -1)
             {
-                return View("Error", new ErrorViewModel { ErrorContent = orderTransactionServiceResult.ErrorContent });
+                var orderTransactionServiceResult = await _customerService.AddOrderTransaction(orderModel);
+                if (orderTransactionServiceResult.HasError)
+                {
+                    return View("Error", new ErrorViewModel { ErrorContent = orderTransactionServiceResult.ErrorContent });
+                }
             }
 
             return PartialView("CartTablePartial", Cart.GetCartItems(userLoggedInID));
