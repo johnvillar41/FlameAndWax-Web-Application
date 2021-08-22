@@ -71,7 +71,7 @@ namespace FlameAndWax.Controllers
             var orderDetailForeignKey = -1;
             foreach (var orderDetail in orderDetails)
             {
-                var orderDetailServiceResult = await _customerService.InsertOrderDetail(orderDetail);
+                var orderDetailServiceResult = await _customerService.InsertNewOrder(orderDetail);
                 orderDetailForeignKey = orderDetailServiceResult.Result;
                 if (orderDetailServiceResult.HasError)
                 {

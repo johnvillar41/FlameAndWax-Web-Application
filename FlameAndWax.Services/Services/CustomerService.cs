@@ -38,7 +38,7 @@ namespace FlameAndWax.Services.Services
         }
 
         public async Task<ServiceResult<bool>> AddCustomerReview(CustomerReviewModel customerReview)
-        {            
+        {
             await _customerReviewRepository.Add(customerReview);
             return ServiceHelper.BuildServiceResult<Boolean>(true, false, null);
         }
@@ -142,11 +142,19 @@ namespace FlameAndWax.Services.Services
             return ServiceHelper.BuildServiceResult<ProductModel>(productDetail, false, null);
         }
 
-        public async Task<ServiceResult<int>> InsertOrderDetail(OrderDetailModel orderDetail)
+        public async Task<ServiceResult<int>> InsertNewOrder(OrderModel order)
         {
-            await _orderDetailRepository.Add(orderDetail);
-            var foreignKey = await _orderDetailRepository.Add(orderDetail);
-            return ServiceHelper.BuildServiceResult<int>(foreignKey, false, null);
+            var primaryKey = await _orderRepository.Add(order);
+            if (primaryKey != 1)
+                foreach (var orderDetail in order.OrderDetails)
+                {
+                    var primaryKeyOrderDetail = await _orderDetailRepository.Add(orderDetail);
+                    if (primaryKeyOrderDetail == -1)
+                        return ServiceHelper.BuildServiceResult<int>(primaryKeyOrderDetail, true, "Error Inserting OrderDetail");
+                }
+            else
+                return ServiceHelper.BuildServiceResult<int>(primaryKey, true, "Error Inserting Order");
+            return ServiceHelper.BuildServiceResult<int>(primaryKey, false, null);
         }
 
         public async Task<ServiceResult<int>> Login(CustomerModel loginCredentials)
@@ -155,9 +163,9 @@ namespace FlameAndWax.Services.Services
                 return ServiceHelper.BuildServiceResult<int>(-1, true, "Login Credentials has no value");
 
             var isLoggedIn = await _customerRepository.LoginCustomerAccount(loginCredentials);
-            if(isLoggedIn > -1)            
+            if (isLoggedIn > -1)
                 return ServiceHelper.BuildServiceResult<int>(isLoggedIn, false, null);
-            
+
             else
                 return ServiceHelper.BuildServiceResult<int>(-1, true, "Invalid User");
         }
