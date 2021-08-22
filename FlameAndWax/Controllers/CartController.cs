@@ -1,4 +1,5 @@
 ﻿using FlameAndWax.Data.Constants;
+using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -44,6 +45,43 @@ namespace FlameAndWax.Controllers
             Thread.Sleep(3000);
             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
             return PartialView("CartTablePartial", Cart.GetCartItems(userLoggedIn));
+        }
+
+        public async Task<IActionResult> Checkout()
+        {
+            var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
+            var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+            var orderDetails = new List<OrderDetailModel>();
+            foreach (var cartItem in Cart.GetCartItems(userLoggedInUsername))
+            {
+                orderDetails.Add(
+                        new OrderDetailModel
+                        {
+                            Product = new ProductModel
+                            {
+                                ProductId = cartItem.ProductId,
+                                ProductPrice = cartItem.ProductPrice,
+                            },
+                            Quantity = cartItem.QuantityOrdered
+                        }
+                    );
+            }
+
+            var orderModel = new OrderModel
+            {
+                Customer = new CustomerModel { CustomerId = int.Parse(userLoggedInID) },
+                Employee = new EmployeeModel { EmployeeId = -1 },
+                ModeOfPayment = Constants.ModeOfPayment.Cash, //static values for now fix later
+                Courier = Constants.Courier.FoodPanda,
+                OrderDetails = orderDetails
+            };
+            var orderTransactionServiceResult = await _customerService.AddOrderTransaction(orderModel);
+            if (orderTransactionServiceResult.HasError)
+            {
+                return View("Error", new ErrorViewModel { ErrorContent = orderTransactionServiceResult.ErrorContent });
+            }
+
+            return PartialView("CartTablePartial", Cart.GetCartItems(userLoggedInID));
         }
 
         public async Task<IActionResult> AddToCart(int productId = 0, string user = "")

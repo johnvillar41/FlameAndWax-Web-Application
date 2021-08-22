@@ -33,7 +33,7 @@
 
                                         <p><strong>@product.ProductName</strong></p>
                                         <hr />
-                                        <p><strong>Quantity per Unit: </strong><input type="number" id="numQty" min="1" max="50" class="form-control" onkeypress="return isNumber(event);" value="@product.QuantityPerUnit" /></p>
+                                        <p><strong>Quantity per Unit: </strong><input type="number" id="numQty" min="1" max="50" class="form-control" onkeypress="return isNumber(event);" value="@product.QuantityOrdered" /></p>
                                         <p><strong>Units in Stock: </strong>@product.StockQuantity</p>
                                     </div>
                                 </div>
@@ -113,8 +113,8 @@
                         <p><strong>PHP @totalCartValue</strong></p>
                     </div>
                 </div>
-                <div class="row">
-                    <button class="btn btn-gold btn-block">CHECKOUT <i class="fas fa-money-check-alt"></i></button>
+                <div class="row">                   
+                    <a class="btn btn-gold btn-block" asp-controller="Cart" asp-action="Checkout">CHECKOUT <i class="fas fa-money-check-alt"></i></a>
                 </div>
             </div>
         </div>

@@ -14,5 +14,6 @@ namespace FlameAndWax.Models
         public int StockQuantity { get; set; }
         public int QuantityPerUnit { get; set; }
         public int UnitsInStock { get; set; }
+        public int QuantityOrdered { get; set; }
     }
 }

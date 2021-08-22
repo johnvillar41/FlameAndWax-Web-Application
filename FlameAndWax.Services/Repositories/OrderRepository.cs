@@ -30,7 +30,7 @@ namespace FlameAndWax.Services.Repositories
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@customerId", Data.Customer.CustomerId);
             command.Parameters.AddWithValue("@employeeId", Data.Employee.EmployeeId);
-            command.Parameters.AddWithValue("@orderDetailsId", Data.OrderDetails.First().OrderDetailId);
+            command.Parameters.AddWithValue("@orderDetailsId", Data.OrderDetails.First().OrderDetailId);//TODO Fetch OrderDetailId from db
             command.Parameters.AddWithValue("@dateNeeded", Data.DateNeeded);
             command.Parameters.AddWithValue("@modeOfPayment", nameof(Data.ModeOfPayment));
             command.Parameters.AddWithValue("@courier", nameof(Data.Courier));
