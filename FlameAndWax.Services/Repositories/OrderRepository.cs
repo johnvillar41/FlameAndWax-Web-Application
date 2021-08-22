@@ -29,7 +29,7 @@ namespace FlameAndWax.Services.Repositories
                 "VALUES(@customerId,@orderDetailsId,@dateNeeded,@modeOfPayment,@courier)";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@customerId", Data.Customer.CustomerId);            
-            command.Parameters.AddWithValue("@orderDetailsId", Data.OrderDetailPk);
+            //command.Parameters.AddWithValue("@orderDetailsId", Data.OrderDetailPk);
             command.Parameters.AddWithValue("@dateNeeded", DateTime.UtcNow);
             command.Parameters.AddWithValue("@modeOfPayment", nameof(Data.ModeOfPayment));
             command.Parameters.AddWithValue("@courier", nameof(Data.Courier));

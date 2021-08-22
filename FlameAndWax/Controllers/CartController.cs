@@ -84,8 +84,8 @@ namespace FlameAndWax.Controllers
                 Employee = new EmployeeModel { EmployeeId = -1 },
                 ModeOfPayment = Constants.ModeOfPayment.Cash, //static values for now fix later
                 Courier = Constants.Courier.FoodPanda,
-                OrderDetails = orderDetails,
-                OrderDetailPk = orderDetailForeignKey
+                OrderDetails = orderDetails
+                //OrderDetailPk = orderDetailForeignKey
             };
             if (orderDetailForeignKey != -1)
             {
