@@ -6,11 +6,11 @@
         public const string DB_CONNECTION_STRING = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=FlameAndWaxDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public enum ReviewScore
         {
-            Excellent,
-            VeryGood,
-            Good,
-            Poor,
-            VeryPoor
+            Excellent = 5,
+            VeryGood = 4,
+            Good = 3,
+            Poor = 2,
+            VeryPoor = 1
         }
         public enum ModeOfPayment
         {

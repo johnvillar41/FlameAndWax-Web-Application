@@ -63,12 +63,12 @@ namespace FlameAndWax.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddProductReview(string reviewDetail, int productId)
+        public async Task<IActionResult> AddProductReview(string reviewDetail, int productId, int rate)
         {
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
             var customerReview = new CustomerReviewModel
             {
-                ReviewScore = Constants.ReviewScore.Good, //Default value for now to be fixed later,
+                ReviewScore = (Constants.ReviewScore)(int)ServiceHelper.BuildReviewScore(rate), //Default value for now to be fixed later,
                 ReviewDetail = reviewDetail,
                 Customer = new CustomerModel
                 {
@@ -91,7 +91,7 @@ namespace FlameAndWax.Controllers
             }
 
             var customerReviewModels = new List<CustomerReviewViewModel>();
-            foreach(var customerReviewResult in customerServiceReviewResult.Result)
+            foreach (var customerReviewResult in customerServiceReviewResult.Result)
             {
                 customerReviewModels.Add(
                         new CustomerReviewViewModel
@@ -99,18 +99,18 @@ namespace FlameAndWax.Controllers
                             ReviewId = customerReviewResult.ReviewId,
                             ProductId = customerReviewResult.Product.ProductId,
                             ReviewDetail = customerReviewResult.ReviewDetail,
-                            ReviewScore = ServiceHelper.BuildReviewScore(3),//TODO FIX THIS STATIC VALUE
+                            ReviewScore = ServiceHelper.BuildReviewScore(rate),//TODO FIX THIS STATIC VALUE
                             Customer = new CustomerViewModel
                             {
                                 CustomerId = customerReviewResult.Customer.CustomerId,
                                 CustomerName = customerReviewResult.Customer.CustomerName,
                                 ContactNumber = customerReviewResult.Customer.ContactNumber,
-                                ProfilePictureLink = customerReviewResult.Customer.ProfilePictureLink 
+                                ProfilePictureLink = customerReviewResult.Customer.ProfilePictureLink
                             }
                         }
                     );
             }
-            
+
             return PartialView("ProductReviewPartial", customerReviewModels);
         }
 

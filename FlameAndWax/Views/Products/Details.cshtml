@@ -65,25 +65,34 @@
                 <h4>Ratings and Reviews</h4>
                 <h6>Total of @Model.CustomerReviews.Count() Reviews</h6>
             </div>
+            <div class="col-6">
+                <!--Alert-->
+                <div class="alert alert-warning alert-dismissible fade show" role="alert" id="completed" style="display:none;">
+                    <strong>Congratulations!</strong> You have added a comment below.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-12">
                 @if (Model.IsProductBoughtByLoggedInCustomer)
                 {
-                    <div class="rate">
-                        <input type="radio" id="star5" name="rate" value="5" />
-                        <label for="star5" title="text">5 stars</label>
-                        <input type="radio" id="star4" name="rate" value="4" />
-                        <label for="star4" title="text">4 stars</label>
-                        <input type="radio" id="star3" name="rate" value="3" />
-                        <label for="star3" title="text">3 stars</label>
-                        <input type="radio" id="star2" name="rate" value="2" />
-                        <label for="star2" title="text">2 stars</label>
-                        <input type="radio" id="star1" name="rate" value="1" />
-                        <label for="star1" title="text">1 star</label>
-                    </div>
                     <form method="get" asp-controller="Products" asp-action="AddProductReview"
-                          data-ajax="true" data-ajax-update="#content" data-ajax-loading="#overlayLoadingDiv">
+                          data-ajax="true" data-ajax-update="#content" data-ajax-loading="#overlayLoadingDiv" data-ajax-complete="completed">
+                        <div class="rate">
+                            <input type="radio" id="star5" name="rate" value="5" />
+                            <label for="star5" title="text">5 stars</label>
+                            <input type="radio" id="star4" name="rate" value="4" />
+                            <label for="star4" title="text">4 stars</label>
+                            <input type="radio" id="star3" name="rate" value="3" />
+                            <label for="star3" title="text">3 stars</label>
+                            <input type="radio" id="star2" name="rate" value="2" />
+                            <label for="star2" title="text">2 stars</label>
+                            <input type="radio" id="star1" name="rate" value="1" />
+                            <label for="star1" title="text">1 star</label>
+                        </div>
                         <input type="hidden" name="productId" value="@Model.ProductId" />
                         <textarea type="text" name="reviewDetail" class="form-control" placeholder="Enter Review Detail" rows="5"></textarea>
                         <button type="submit" class="btn btn-gold mt-1">Post Review <i class="fas fa-paper-plane"></i></button>
@@ -98,4 +107,21 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script>
+        completed = function () {
+            var x = document.getElementById("completed");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+                document.getElementById("name").value = "";
+                document.getElementById("email").value = "";
+                document.getElementById("phone").value = "";
+                document.getElementById("message").value = "";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+}
 
