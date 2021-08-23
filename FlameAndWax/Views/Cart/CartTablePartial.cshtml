@@ -40,8 +40,7 @@
                                                 <hr />
                                                 <p>
                                                     <strong>Quantity per Unit: </strong>
-                                                    <input type="number" asp-for="@Model.CartProducts[i].QuantityOrdered" id="numQty" min="1" max="50" class="form-control" onkeypress="return isNumber(event);" />
-                                                    <input type="hidden" asp-for="@Model.CartProducts[i].ProductPrice"/>
+                                                    <input type="number" asp-for="@Model.CartProducts[i].QuantityOrdered" id="numQty" min="1" max="50" class="form-control" onkeypress="return isNumber(event);" />                                                    
                                                     <input type="hidden" asp-for="@Model.CartProducts[i].ProductId" />    
                                                     <input type="hidden" asp-for="@Model.CartProducts[i].ProductName" />
                                                 </p>
