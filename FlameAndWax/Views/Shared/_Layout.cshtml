@@ -47,7 +47,7 @@
                         {
                             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
                             var totalNumberOfCart = Cart.GetCartItems(userLoggedIn).Count();
-                            
+
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <strong>Welcome!</strong>, @User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value <i class="fas fa-user-circle"></i>
@@ -59,12 +59,16 @@
                                     <hr />
                                     <a class="dropdown-item" asp-action="ProcessLogout" asp-controller="Account">Logout <i class="fas fa-sign-out-alt"></i></a>
                                 </div>
-                            </li>                         
+                            </li>
+
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link btn btn-gold text-dark" asp-action="Login" asp-controller="Account"><i class="fas fa-sign-in-alt"></i> Login</a>
+                                <a class="nav-link text-dark" asp-action="Login" asp-controller="Account"><i class="fas fa-sign-in-alt"></i> Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark btn btn-gold"> Register</a>
                             </li>
                         }
                     </ul>

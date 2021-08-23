@@ -156,3 +156,9 @@ a {
         margin: 0px 15px
     }
 }
+
+@media screen and (min-width: 0px) and (max-width: 992px) {
+    #lottieGif {
+        display: none;
+    }    
+}

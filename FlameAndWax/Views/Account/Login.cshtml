@@ -21,11 +21,8 @@
         <div class="centerBlock">
             <div class="card card0 border-0">
                 <div class="row d-flex">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6" id="lottieGif">
                         <div class="card1 pb-5">
-                            <div class="row">
-                                <img src="~/images/icons/flameAndWaxLogo.png" class="logo">
-                            </div>
                             <div class="row px-3 justify-content-center mt-4 mb-5 border-line">
                                 <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_rw0hvilj.json" background="transparent" speed="1" style="width: 400px; height: 400px;" loop autoplay></lottie-player>
                             </div>
@@ -36,6 +33,11 @@
                             <div class="card2 card0 card border-0 px-4 py-5" style="background-color: #e4e2da;">
                                 <div class="container">
                                     <div class="row">
+                                        <div class="col-lg-2 col-md-6 col-sm-12">
+                                            <img src="~/images/icons/flameAndWaxLogo.png" class="img-fluid">
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <form method="post" asp-controller="Account" asp-action="ProcessLogin" asp-route-returnUrl="@returnUrl">
                                             <div class="col-lg-8 col-md-10 col-sm-12">
                                                 <div class="row">
@@ -43,16 +45,16 @@
                                                 </div>
                                                 <div class="row">
                                                     <label><b>Username</b></label>
-                                                    <input class="form-control" asp-for="@Model.Username" required/>
+                                                    <input class="form-control" asp-for="@Model.Username" required />
 
                                                 </div>
                                                 <div class="row">
                                                     <label><b>Password</b></label><br />
-                                                    <input class="form-control" asp-for="@Model.Password" required/>
+                                                    <input class="form-control" asp-for="@Model.Password" required />
 
                                                 </div>
-                                                <div class="row mt-5">                                                    
-                                                    <button type="submit" class="btn btn-block btn-gold"  style="font-family: Arial Rounded MT"><i class="fas fa-sign-in-alt"></i> Login</button>
+                                                <div class="row mt-5">
+                                                    <button type="submit" class="btn btn-block btn-gold" style="font-family: Arial Rounded MT"><i class="fas fa-sign-in-alt"></i> Login</button>
                                                 </div>
                                             </div>
                                         </form>
