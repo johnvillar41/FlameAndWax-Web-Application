@@ -92,9 +92,7 @@
                                 <p><strong>@product.ProductPrice</strong></p>
                             </div>
 
-                            totalCartValue += product.ProductPrice;
-                            Model.TotalCost = totalCartValue;
-                            <input type="hidden" asp-for="@Model.TotalCost" />
+                            totalCartValue += product.ProductPrice;                            
                         }
 
                     </div>
