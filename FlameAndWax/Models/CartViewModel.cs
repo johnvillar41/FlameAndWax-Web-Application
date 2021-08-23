@@ -12,6 +12,6 @@ namespace FlameAndWax.Models
         public Constants.ModeOfPayment ModeOfPayment { get; set; }
         public Constants.Courier Courier { get; set; }
 
-        public IEnumerable<ProductViewModel> CartProducts { get; set; }
+        public List<ProductViewModel> CartProducts { get; set; }
     }
 }

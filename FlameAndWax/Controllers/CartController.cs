@@ -50,11 +50,11 @@ namespace FlameAndWax.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> Checkout(CartViewModel cart)
-        {            
+        {                 
             var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
             var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
 
-            var cartItems = Cart.GetCartItems(userLoggedInUsername);            
+            var cartItems = cart.CartProducts;            
             
             var orderDetails = new List<OrderDetailModel>();
             

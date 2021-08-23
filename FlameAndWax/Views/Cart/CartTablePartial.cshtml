@@ -1,8 +1,9 @@
-﻿@model FlameAndWax.Models.CartViewModel;
-@using FlameAndWax.Data.Constants
+﻿@using FlameAndWax.Data.Constants
+@using FlameAndWax.Models
+@model CartViewModel;
 @{
     ViewData["Title"] = "Cart";
-    double totalCartValue = 0.0f;
+    double totalCartValue = 0.0f;   
 }
 <a class="btn btn-gold" asp-action="RefreshCart" asp-controller="Cart"
    data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv">
@@ -24,39 +25,44 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var product in Model.CartProducts)
-                        {
-                            <tr>
-                                <td style="vertical-align:middle;">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-sm-12">
-                                            <img src="@Url.Content(product.PhotoLink)" class="img-thumbnail" />
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12 my-auto text-left">
+                        @{
+                            for (int i = 0; i < Model.CartProducts.Count(); i++)
+                            {
+                                <tr>
+                                    <td style="vertical-align:middle;">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-sm-12">
+                                                <img src="@Url.Content(Model.CartProducts[i].PhotoLink)" class="img-thumbnail" />
+                                            </div>
+                                            <div class="col-lg-6 col-sm-12 my-auto text-left">
 
-                                            <p><strong>@product.ProductName</strong></p>
-                                            <hr />
-                                            <p>
-                                                <strong>Quantity per Unit: </strong>
-                                                <input type="number" asp-for="@product.QuantityOrdered" id="numQty" min="1" max="50" class="form-control" onkeypress="return isNumber(event);" />
-                                            </p>
-                                            <p><strong>Units in Stock: </strong>@product.StockQuantity</p>
+                                                <p><strong>@Model.CartProducts[i].ProductName</strong></p>
+                                                <hr />
+                                                <p>
+                                                    <strong>Quantity per Unit: </strong>
+                                                    <input type="number" asp-for="@Model.CartProducts[i].QuantityOrdered" id="numQty" min="1" max="50" class="form-control" onkeypress="return isNumber(event);" />
+                                                    <input type="hidden" asp-for="@Model.CartProducts[i].ProductPrice"/>
+                                                    <input type="hidden" asp-for="@Model.CartProducts[i].ProductId" />    
+                                                    <input type="hidden" asp-for="@Model.CartProducts[i].ProductName" />
+                                                </p>
+                                                <p><strong>Units in Stock: </strong>@Model.CartProducts[i].StockQuantity</p>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                </td>
-                                <td style="vertical-align:middle;">@product.ProductId</td>
-                                <td style="vertical-align:middle;">@product.ProductPrice</td>
-                                <td style="vertical-align:middle;">
-                                    <a class="btn btn-gold btn-block"
-                                       asp-action="DeleteCartItem"
-                                       asp-controller="Cart"
-                                       asp-route-productId="@product.ProductId"
-                                       data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv">
-                                        Delete <i class="fas fa-trash-alt"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td style="vertical-align:middle;">@Model.CartProducts[i].ProductId</td>
+                                    <td style="vertical-align:middle;">@Model.CartProducts[i].ProductPrice</td>
+                                    <td style="vertical-align:middle;">
+                                        <a class="btn btn-gold btn-block"
+                                           asp-action="DeleteCartItem"
+                                           asp-controller="Cart"
+                                           asp-route-productId="@Model.CartProducts[i].ProductId"
+                                           data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv">
+                                            Delete <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
                         }
                     </tbody>
                 </table>
@@ -88,6 +94,8 @@
                             </div>
 
                             totalCartValue += product.ProductPrice;
+                            Model.TotalCost = totalCartValue;
+                            <input type="hidden" asp-for="@Model.TotalCost" />
                         }
 
                     </div>
@@ -120,9 +128,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <button type="submit" class="btn btn-gold btn-block">
-                            CHECKOUT <i class="fas fa-money-check-alt"></i>
-                        </button>
+                        <input type="submit" class="btn btn-gold btn-block" />                            
                     </div>
                 </div>
             </div>
