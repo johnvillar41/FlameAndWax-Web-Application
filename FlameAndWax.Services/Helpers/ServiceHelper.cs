@@ -50,6 +50,38 @@ namespace FlameAndWax.Services.Helpers
             }
         }        
 
+        public static Constants.CustomerAccountStatus ConvertStringToCustomerAccountStatus(string accountStatus)
+        {
+            switch (accountStatus)
+            {
+                case nameof(Constants.CustomerAccountStatus.Active):
+                    return Constants.CustomerAccountStatus.Active;
+                case nameof(Constants.CustomerAccountStatus.Banned):
+                    return Constants.CustomerAccountStatus.Banned;
+                default:
+                    return Constants.CustomerAccountStatus.Active;
+            }
+        }
+
+        public static Constants.OrderDetailStatus ConvertStringtoOrderDetailStatus(string orderStatus)
+        {
+            switch (orderStatus)
+            {
+                case nameof(Constants.OrderDetailStatus.Pending):
+                    return Constants.OrderDetailStatus.Pending;
+                case nameof(Constants.OrderDetailStatus.Processing):
+                    return Constants.OrderDetailStatus.Processing;
+                case nameof(Constants.OrderDetailStatus.Shipping):
+                    return Constants.OrderDetailStatus.Shipping;
+                case nameof(Constants.OrderDetailStatus.Finished):
+                    return Constants.OrderDetailStatus.Finished;
+                case nameof(Constants.OrderDetailStatus.Cancelled):
+                    return Constants.OrderDetailStatus.Cancelled;
+                default:
+                    return Constants.OrderDetailStatus.Pending;
+            }
+        }       
+
         public static Constants.Category ConvertStringToConstant(string value)
         {
             switch (value)
@@ -64,6 +96,20 @@ namespace FlameAndWax.Services.Helpers
                     return Constants.Category.Soap;
             }
         }
+
+        public static Constants.EmployeeAccountStatus ConvertStringToEmployeeAccountStatus(string accountStatus)
+        {
+            switch (accountStatus)
+            {
+                case nameof(Constants.EmployeeAccountStatus.Activated):
+                    return Constants.EmployeeAccountStatus.Activated;
+                case nameof(Constants.EmployeeAccountStatus.Deactivated):
+                    return Constants.EmployeeAccountStatus.Deactivated;
+                default:
+                    return Constants.EmployeeAccountStatus.Activated;
+            }
+        }
+
         public static ServiceResult<T> BuildServiceResult<T>(T result, bool hasError, string errorContent)
         {
             return new ServiceResult<T>

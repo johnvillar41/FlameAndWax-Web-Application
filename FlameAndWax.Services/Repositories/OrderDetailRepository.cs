@@ -1,6 +1,7 @@
 ﻿using FlameAndWax.Data.Constants;
 using FlameAndWax.Data.Models;
 using FlameAndWax.Data.Repositories.Interfaces;
+using FlameAndWax.Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -11,22 +12,25 @@ namespace FlameAndWax.Services.Repositories
     public class OrderDetailRepository : IOrderDetailRepository
     {
         private readonly IProductRepository _productRepository;
-        public OrderDetailRepository(IProductRepository productRepository)
+        private readonly IOrderRepository _orderRepository;
+        public OrderDetailRepository(IProductRepository productRepository,IOrderRepository orderRepository)
         {
             _productRepository = productRepository;
+            _orderRepository = orderRepository;
         }
         public async Task<int> Add(OrderDetailModel Data)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO OrderDetailsTable(OrderId,ProductId,TotalPrice,Quantity)" +
-                "VALUES(@OrderId,@ProductId,@TotalPrice,@Quantity);" +
+            var queryString = "INSERT INTO OrderDetailsTable(OrderId,ProductId,TotalPrice,Quantity,Status)" +
+                "VALUES(@OrderId,@ProductId,@TotalPrice,@Quantity,@Status);" +
                 "SELECT SCOPE_IDENTITY() as fk;";                
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@OrderId", Data.Order.OrderId);
             command.Parameters.AddWithValue("@ProductId", Data.Product.ProductId);
             command.Parameters.AddWithValue("@TotalPrice", Data.TotalPrice);
             command.Parameters.AddWithValue("@Quantity", Data.Quantity);
+            command.Parameters.AddWithValue("@Status", Data.Status.ToString());
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if(await reader.ReadAsync())
             {
@@ -56,18 +60,23 @@ namespace FlameAndWax.Services.Repositories
             if (await reader.ReadAsync())
             {
                 var orderDetailId = int.Parse(reader["OrderDetailsId"].ToString());
+                var orderId = int.Parse(reader["OrderId"].ToString());
                 var productId = int.Parse(reader["ProductId"].ToString());
                 var totalPrice = double.Parse(reader["TotalPrice"].ToString());
                 var quantity = int.Parse(reader["Quantity"].ToString());
+                var status = ServiceHelper.ConvertStringtoOrderDetailStatus(reader["Status"].ToString());
 
                 var product = await _productRepository.Fetch(productId);
+                var order = await _orderRepository.Fetch(orderId);
 
                 return new OrderDetailModel
                 {
-                    OrderDetailId = orderDetailId,
+                    OrderDetailsId = orderDetailId,
+                    Order = order,
                     Product = product,
                     TotalPrice = totalPrice,
-                    Quantity = quantity
+                    Quantity = quantity,
+                    Status = status
                 };
             }
             return null;
@@ -85,18 +94,24 @@ namespace FlameAndWax.Services.Repositories
             while (await reader.ReadAsync())
             {
                 var orderDetailId = int.Parse(reader["OrderDetailsId"].ToString());
+                var orderId = int.Parse(reader["OrderId"].ToString());                
                 var productId = int.Parse(reader["ProductId"].ToString());
                 var totalPrice = double.Parse(reader["TotalPrice"].ToString());
                 var quantity = int.Parse(reader["Quantity"].ToString());
+                var status = ServiceHelper.ConvertStringtoOrderDetailStatus(reader["Status"].ToString());
 
                 var product = await _productRepository.Fetch(productId);
+                var order = await _orderRepository.Fetch(orderId);
+
                 orderDetails.Add(
                         new OrderDetailModel
                         {
-                            OrderDetailId = orderDetailId,
+                            OrderDetailsId = orderDetailId,
+                            Order = order,
                             Product = product,
                             TotalPrice = totalPrice,
-                            Quantity = quantity
+                            Quantity = quantity,
+                            Status = status
                         }
                     );
             }
@@ -119,15 +134,20 @@ namespace FlameAndWax.Services.Repositories
                 var productId = int.Parse(reader["ProductId"].ToString());
                 var totalPrice = double.Parse(reader["TotalPrice"].ToString());
                 var quantity = int.Parse(reader["Quantity"].ToString());
+                var status = ServiceHelper.ConvertStringtoOrderDetailStatus(reader["Status"].ToString());
 
                 var product = await _productRepository.Fetch(productId);
+                var order = await _orderRepository.Fetch(orderId);
+
                 orderDetails.Add(
                         new OrderDetailModel
                         {
-                            OrderDetailId = orderDetailId,
+                            OrderDetailsId = orderDetailId,
+                            Order = order,
                             Product = product,
                             TotalPrice = totalPrice,
-                            Quantity = quantity
+                            Quantity = quantity,
+                            Status = status
                         }
                     );
             }
@@ -138,13 +158,14 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "UPDATE OrderDetailsTable SET ProductId = @productId, TotalPrice = @totalPrice, Quantity = @quantity" +
+            var queryString = "UPDATE OrderDetailsTable SET ProductId = @productId, TotalPrice = @totalPrice, Quantity = @quantity, Status = @status" +
                 "WHERE OrderDetailsId = @orderDetailsId";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@productId", data.Product.ProductId);
             command.Parameters.AddWithValue("@totalPrice", data.TotalPrice);
             command.Parameters.AddWithValue("@quantity", data.Quantity);
             command.Parameters.AddWithValue("@orderDetailsId", id);
+            command.Parameters.AddWithValue("@Status", data.Status.ToString());
             await command.ExecuteNonQueryAsync();
         }
     }

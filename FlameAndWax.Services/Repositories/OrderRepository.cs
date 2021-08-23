@@ -170,9 +170,6 @@ namespace FlameAndWax.Services.Repositories
             throw new NotImplementedException();
         }
 
-        private async Task<int> SelectInsertId()
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

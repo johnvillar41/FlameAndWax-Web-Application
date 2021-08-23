@@ -24,10 +24,23 @@
             NinjaVan,
             GogoExpress
         }
-        public enum AccountStatus
+        public enum CustomerAccountStatus
+        {
+            Banned,
+            Active
+        }
+        public enum EmployeeAccountStatus
         {
             Deactivated,
             Activated
+        }
+        public enum OrderDetailStatus
+        {
+            Pending,
+            Finished,
+            Processing,            
+            Shipping,
+            Cancelled
         }
         public enum Category
         {

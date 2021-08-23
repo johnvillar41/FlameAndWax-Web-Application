@@ -27,7 +27,7 @@ namespace FlameAndWax.Services.Services
             if (customerId == 0)
                 return ServiceHelper.BuildServiceResult<bool>(false, true, "Customer Id is not defined!");
 
-            await _customerRepository.ChangeCustomerStatus(customerId, Constants.AccountStatus.Deactivated);
+            await _customerRepository.ChangeCustomerStatus(customerId, Constants.CustomerAccountStatus.Banned);
             return ServiceHelper.BuildServiceResult<bool>(true, false, null);
         }
 
@@ -69,7 +69,7 @@ namespace FlameAndWax.Services.Services
             if (employeeId == 0)
                 return ServiceHelper.BuildServiceResult<bool>(false, true, "Employee Id is not defined");
 
-            await _employeeRepository.ModifyEmployeeStatus(employeeId, Constants.AccountStatus.Deactivated);
+            await _employeeRepository.ModifyEmployeeStatus(employeeId, Constants.EmployeeAccountStatus.Deactivated);
             return ServiceHelper.BuildServiceResult<bool>(true, false, null);
         }
 

@@ -27,7 +27,7 @@ namespace FlameAndWax.Services.Services
             if (customerId == 0)
                 return ServiceHelper.BuildServiceResult<bool>(false, true, "Employee Id not defined");
 
-            await _customerRepository.ChangeCustomerStatus(customerId, Constants.AccountStatus.Deactivated);
+            await _customerRepository.ChangeCustomerStatus(customerId, Constants.CustomerAccountStatus.Banned);
             return ServiceHelper.BuildServiceResult<bool>(true, false, null);
         }
 

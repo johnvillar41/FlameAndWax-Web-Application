@@ -7,6 +7,6 @@ namespace FlameAndWax.Data.Repositories.Interfaces
     {
         Task UpdateProfilePicture(string profileLink);
         Task<int> Login(EmployeeModel employee);
-        Task ModifyEmployeeStatus(int employeeId, Constants.Constants.AccountStatus accountStatus);
+        Task ModifyEmployeeStatus(int employeeId, Constants.Constants.EmployeeAccountStatus accountStatus);
     }
 }

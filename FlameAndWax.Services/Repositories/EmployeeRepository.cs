@@ -1,6 +1,7 @@
 ﻿using FlameAndWax.Data.Constants;
 using FlameAndWax.Data.Models;
 using FlameAndWax.Data.Repositories.Interfaces;
+using FlameAndWax.Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -14,17 +15,28 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO EmployeesTable(FirstName,LastName,PhotoLink,BirthDate,HireDate,City)" +
-                "VALUES(@FirstName,@LastName,@PhotoLink,@Bday,@HireDate,@City)";
+            var queryString = "INSERT INTO EmployeesTable(FirstName,LastName,Email,PhotoLink,BirthDate,HireDate,City,Username,Password,Status)" +
+                "VALUES(@FirstName,@LastName,@Email,@PhotoLink,@Bday,@HireDate,@City,@Username,@Password,@Status);" +
+                "SELECT SCOPE_IDENTITY() as pk;";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@FirstName", Data.FirstName);
             command.Parameters.AddWithValue("@LastName", Data.LastName);
+            command.Parameters.AddWithValue("@Email", Data.Email);
             command.Parameters.AddWithValue("@PhotoLink", Data.PhotoLink);
             command.Parameters.AddWithValue("@Bday", Data.BirthDate);
             command.Parameters.AddWithValue("@HireDate", Data.HireDate);
             command.Parameters.AddWithValue("@City", Data.City);
-            await command.ExecuteNonQueryAsync();
-            return Data.EmployeeId;
+            command.Parameters.AddWithValue("@Username", Data.Username);
+            command.Parameters.AddWithValue("@Password", Data.Password);
+            command.Parameters.AddWithValue("@Status", Data.Status);
+
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if(await reader.ReadAsync())
+            {
+                var primaryKey = int.Parse(reader["pk"].ToString());
+                return primaryKey;
+            }
+            return -1;
         }
 
         public async Task Delete(int id)
@@ -52,10 +64,14 @@ namespace FlameAndWax.Services.Repositories
                     EmployeeId = int.Parse(reader["EmployeeId"].ToString()),
                     FirstName = reader["FirstName"].ToString(),
                     LastName = reader["LastName"].ToString(),
+                    Email = reader["Email"].ToString(),
                     PhotoLink = reader["PhotoLink"].ToString(),
                     BirthDate = DateTime.Parse(reader["BirthDaye"].ToString()),
                     HireDate = DateTime.Parse(reader["HireDate"].ToString()),
-                    City = reader["City"].ToString()
+                    City = reader["City"].ToString(),
+                    Username = reader["Username"].ToString(),
+                    Password = reader["Password"].ToString(),
+                    Status = ServiceHelper.ConvertStringToEmployeeAccountStatus(reader["Status"].ToString())
                 };
             }
             return null;
@@ -78,10 +94,14 @@ namespace FlameAndWax.Services.Repositories
                             EmployeeId = int.Parse(reader["EmployeeId"].ToString()),
                             FirstName = reader["FirstName"].ToString(),
                             LastName = reader["LastName"].ToString(),
+                            Email = reader["Email"].ToString(),
                             PhotoLink = reader["PhotoLink"].ToString(),
                             BirthDate = DateTime.Parse(reader["BirthDaye"].ToString()),
                             HireDate = DateTime.Parse(reader["HireDate"].ToString()),
-                            City = reader["City"].ToString()
+                            City = reader["City"].ToString(),
+                            Username = reader["Username"].ToString(),
+                            Password = reader["Password"].ToString(),
+                            Status = ServiceHelper.ConvertStringToEmployeeAccountStatus(reader["Status"].ToString())
                         }
                     );
             }
@@ -104,13 +124,13 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task ModifyEmployeeStatus(int employeeId, Constants.AccountStatus accountStatus)
+        public async Task ModifyEmployeeStatus(int employeeId, Constants.EmployeeAccountStatus accountStatus)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
             var queryString = "UPDATE EmployeesTable SET Status = @status WHERE EmployeeId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
-            command.Parameters.AddWithValue("@status", nameof(accountStatus));
+            command.Parameters.AddWithValue("@status", accountStatus.ToString());
             command.Parameters.AddWithValue("@id", employeeId);
             await command.ExecuteNonQueryAsync();
         }
@@ -122,14 +142,18 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "UPDATE EmployeesTable SET FirstName = @firstName, LastName = @lastName, " +
+            var queryString = "UPDATE EmployeesTable SET FirstName = @firstName, LastName = @lastName, Email = @email, " +
+                "Username = @username, Password = @password ," +
                 "BirthDate = @bday, HireDate = @hireDate, City = @city WHERE EmployeeId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@firstName", data.FirstName);
             command.Parameters.AddWithValue("@lastName", data.LastName);
+            command.Parameters.AddWithValue("@email", data.Email);
             command.Parameters.AddWithValue("@bday", data.BirthDate);
             command.Parameters.AddWithValue("@hireDate", data.HireDate);
             command.Parameters.AddWithValue("@city", data.City);
+            command.Parameters.AddWithValue("@username", data.Username);
+            command.Parameters.AddWithValue("@password", data.Password);
             command.Parameters.AddWithValue("@id", data.EmployeeId);
             await command.ExecuteNonQueryAsync();
         }
