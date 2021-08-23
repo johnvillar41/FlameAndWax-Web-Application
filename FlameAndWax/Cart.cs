@@ -19,6 +19,23 @@ namespace FlameAndWax
                 }
             }
         }
+
+        public static double CalculateTotalCartCost(string user)
+        {
+            double totalCost = 0.0f;
+            foreach (KeyValuePair<string, List<ProductViewModel>> keyValuePair in CartItems)
+            {
+                if (keyValuePair.Key.Equals(user))
+                {
+                    foreach (var product in keyValuePair.Value)
+                    {
+                        totalCost += product.ProductPrice * product.QuantityOrdered;
+                    }
+                }
+            }
+            return totalCost;
+        }
+
         public static void AddCartItem(ProductViewModel cartProduct, string loggedInUser)
         {
             if (!CartItems.Keys.Contains(loggedInUser))

@@ -53,7 +53,10 @@ namespace FlameAndWax.Controllers
         {            
             var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
             var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+
             cart.CartProducts = Cart.GetCartItems(userLoggedInUsername);
+            cart.TotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername);
+
             var orderDetails = new List<OrderDetailModel>();
             foreach(var cartItem in cart.CartProducts)
             {
