@@ -1,9 +1,11 @@
 ﻿using FlameAndWax.Data.Constants;
 using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
+using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -47,56 +49,43 @@ namespace FlameAndWax.Controllers
             return PartialView("CartTablePartial", Cart.GetCartItems(userLoggedIn));
         }
 
-        public async Task<IActionResult> Checkout()
-        {
+        public async Task<IActionResult> Checkout(CartViewModel cart)
+        {            
             var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
             var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+            cart.CartProducts = Cart.GetCartItems(userLoggedInUsername);
             var orderDetails = new List<OrderDetailModel>();
-            foreach (var cartItem in Cart.GetCartItems(userLoggedInUsername))
+            foreach(var cartItem in cart.CartProducts)
             {
                 orderDetails.Add(
-                        new OrderDetailModel
+                    new OrderDetailModel
+                    {
+                        Product = new ProductModel
                         {
-                            Product = new ProductModel
-                            {
-                                ProductId = cartItem.ProductId,
-                                ProductPrice = cartItem.ProductPrice,
-                            },
-                            Quantity = cartItem.QuantityOrdered
-                        }
-                    );
+                            ProductId = cartItem.ProductId                            
+                        },
+                        TotalPrice = cart.TotalCost,
+                        Quantity = cart.CartProducts.Count()
+                    }
+                );
             }
-
             
-            var orderDetailForeignKey = -1;
-            foreach (var orderDetail in orderDetails)
-            {
-                var orderDetailServiceResult = await _customerService.InsertNewOrder(orderDetail);
-                orderDetailForeignKey = orderDetailServiceResult.Result;
-                if (orderDetailServiceResult.HasError)
-                {
-                    return View("Error", new ErrorViewModel { ErrorContent = orderDetailServiceResult.ErrorContent });
-                }
-            }
-            var orderModel = new OrderModel
+            var order = new OrderModel
             {
                 Customer = new CustomerModel { CustomerId = int.Parse(userLoggedInID) },
                 Employee = new EmployeeModel { EmployeeId = -1 },
-                ModeOfPayment = Constants.ModeOfPayment.Cash, //static values for now fix later
-                Courier = Constants.Courier.FoodPanda,
-                OrderDetails = orderDetails
-                //OrderDetailPk = orderDetailForeignKey
+                DateNeeded = DateTime.UtcNow,
+                ModeOfPayment = cart.ModeOfPayment,
+                OrderDetails = orderDetails,               
             };
-            if (orderDetailForeignKey != -1)
+            var primaryKeyServiceResult = await _customerService.InsertNewOrder(order);
+            
+            if(primaryKeyServiceResult.Result == -1)
             {
-                var orderTransactionServiceResult = await _customerService.AddOrderTransaction(orderModel);
-                if (orderTransactionServiceResult.HasError)
-                {
-                    return View("Error", new ErrorViewModel { ErrorContent = orderTransactionServiceResult.ErrorContent });
-                }
+                return View("Error", new ErrorViewModel { ErrorContent = primaryKeyServiceResult.ErrorContent });
             }
-
-            return PartialView("CartTablePartial", Cart.GetCartItems(userLoggedInID));
+            Cart.ClearCartItems(userLoggedInUsername);
+            return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedInID) });
         }
 
         public async Task<IActionResult> AddToCart(int productId = 0, string user = "")

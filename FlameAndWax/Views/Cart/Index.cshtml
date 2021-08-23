@@ -4,6 +4,6 @@
 <div class="container">
     
     <div class="jumbotron" id="tableCart">        
-        @await Html.PartialAsync("../Cart/CartTablePartial", Model)
+        @await Html.PartialAsync("../Cart/CartTablePartial", new CartViewModel { CartProducts = Model})
     </div>
 </div>

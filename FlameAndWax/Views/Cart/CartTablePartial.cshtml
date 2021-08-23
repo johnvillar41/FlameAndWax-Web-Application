@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FlameAndWax.Models.ProductViewModel>;
+﻿@model FlameAndWax.Models.CartViewModel;
 @using FlameAndWax.Data.Constants
 @{
     ViewData["Title"] = "Cart";
@@ -21,7 +21,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var product in Model)
+                    @foreach (var product in Model.CartProducts)
                     {
                         <tr>
                             <td style="vertical-align:middle;">
@@ -54,7 +54,7 @@
                     }
                 </tbody>
             </table>
-            @if (Model.Count() == 0)
+            @if (Model.CartProducts.Count() == 0)
             {
                 <div class="mx-auto">
                     <div class="row">
@@ -72,7 +72,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    @foreach (var product in Model)
+                    @foreach (var product in Model.CartProducts)
                     {
                         <div class="col-6">
                             <p><strong>@product.ProductName</strong></p>
@@ -113,8 +113,12 @@
                         <p><strong>PHP @totalCartValue</strong></p>
                     </div>
                 </div>
-                <div class="row">                   
-                    <a class="btn btn-gold btn-block" asp-controller="Cart" asp-action="Checkout">CHECKOUT <i class="fas fa-money-check-alt"></i></a>
+                <div class="row">
+                    <a class="btn btn-gold btn-block"
+                       asp-controller="Cart" asp-action="Checkout"
+                       data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv">
+                        CHECKOUT <i class="fas fa-money-check-alt"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -127,7 +131,7 @@
         var charCode = (evt.which) ? evt.which : evt.keyCode;
         if ((charCode > 31 && charCode < 48) || charCode > 57) {
             return false;
-        }        
+        }
         return true;
     }
 </script>

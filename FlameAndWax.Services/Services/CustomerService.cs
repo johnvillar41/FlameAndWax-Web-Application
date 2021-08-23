@@ -148,6 +148,7 @@ namespace FlameAndWax.Services.Services
             if (primaryKey != 1)
                 foreach (var orderDetail in order.OrderDetails)
                 {
+                    orderDetail.Order = new OrderModel { OrderId = primaryKey };
                     var primaryKeyOrderDetail = await _orderDetailRepository.Add(orderDetail);
                     if (primaryKeyOrderDetail == -1)
                         return ServiceHelper.BuildServiceResult<int>(primaryKeyOrderDetail, true, "Error Inserting OrderDetail");
