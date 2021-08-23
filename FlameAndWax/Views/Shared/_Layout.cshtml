@@ -26,28 +26,33 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ContactUs" asp-action="Index">Contact Us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="AboutUs" asp-action="Index">About Us</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Information <i class="fas fa-chevron-down"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" asp-area="" asp-controller="ContactUs" asp-action="Index">Contact Us <i class="fas fa-address-book"></i></a>
+                                <a class="dropdown-item" asp-area="" asp-controller="AboutUs" asp-action="Index">About Us <i class="fas fa-info-circle"></i></a>
+                            </div>
                         </li>
                     </ul>
 
                 </div>
-                
+
                 <div class="navbar-collapse collapse ">
                     <ul class="navbar-nav ml-auto">
                         @if (User.Identity.IsAuthenticated)
-                        {                           
+                        {
                             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
                             var totalNumberOfCart = Cart.GetCartItems(userLoggedIn).Count();
 
                             <li class="nav-item" style="padding-right:30px;">
                                 <a class="nav-link" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"></i> Cart <span class="badge badge-pill badge-light">@totalNumberOfCart</span></a>
-                            </li>                       
+                            </li>
+
+
 
                             <li class="nav-item">
                                 <a class="nav-link btn btn-gold text-dark" asp-action="ProcessLogout" asp-controller="Account"><i class="fas fa-sign-out-alt"> Logout</i></a>
@@ -63,6 +68,7 @@
                 </div>
             </div>
         </nav>
+
     </header>
     <div class="container">        
         <main role="main" class="pb-4">
