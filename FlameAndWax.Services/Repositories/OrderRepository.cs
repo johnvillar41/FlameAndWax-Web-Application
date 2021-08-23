@@ -31,8 +31,8 @@ namespace FlameAndWax.Services.Repositories
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@customerId", Data.Customer.CustomerId);           
             command.Parameters.AddWithValue("@dateNeeded", DateTime.UtcNow);
-            command.Parameters.AddWithValue("@modeOfPayment", nameof(Data.ModeOfPayment));
-            command.Parameters.AddWithValue("@courier", nameof(Data.Courier));
+            command.Parameters.AddWithValue("@modeOfPayment", Data.ModeOfPayment.ToString());
+            command.Parameters.AddWithValue("@courier", Data.Courier.ToString());
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if(await reader.ReadAsync())
             {

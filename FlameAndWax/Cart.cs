@@ -5,9 +5,8 @@ using System.Linq;
 namespace FlameAndWax
 {
     public class Cart
-    {
-        private static readonly Dictionary<string, List<ProductViewModel>> CartItems = new Dictionary<string, List<ProductViewModel>>();
-
+    {        
+        private static readonly Dictionary<string, List<ProductViewModel>> CartItems = new Dictionary<string, List<ProductViewModel>>();        
         public static void ClearCartItems(string user)
         {
             foreach (KeyValuePair<string, List<ProductViewModel>> keyValuePair in CartItems)
@@ -29,7 +28,7 @@ namespace FlameAndWax
                 {
                     foreach (var product in keyValuePair.Value)
                     {
-                        totalCost += product.ProductPrice * product.QuantityOrdered;
+                        totalCost += product.ProductPrice * product.QuantityOrdered;                        
                     }
                 }
             }

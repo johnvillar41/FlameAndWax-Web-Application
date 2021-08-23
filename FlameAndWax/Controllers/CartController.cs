@@ -54,18 +54,19 @@ namespace FlameAndWax.Controllers
             var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
             var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
 
-            cart.CartProducts = Cart.GetCartItems(userLoggedInUsername);
+            cart.CartProducts = Cart.GetCartItems(userLoggedInUsername);            
             cart.TotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername);
 
             var orderDetails = new List<OrderDetailModel>();
             foreach(var cartItem in cart.CartProducts)
-            {
+            { 
                 orderDetails.Add(
                     new OrderDetailModel
                     {
                         Product = new ProductModel
                         {
-                            ProductId = cartItem.ProductId                            
+                            ProductId = cartItem.ProductId,
+                            ProductPrice = cartItem.ProductPrice                           
                         },
                         TotalPrice = cart.TotalCost,
                         Quantity = cart.CartProducts.Count()
@@ -78,8 +79,9 @@ namespace FlameAndWax.Controllers
                 Customer = new CustomerModel { CustomerId = int.Parse(userLoggedInID) },
                 Employee = new EmployeeModel { EmployeeId = -1 },
                 DateNeeded = DateTime.UtcNow,
-                ModeOfPayment = cart.ModeOfPayment,
+                ModeOfPayment = ServiceHelper.BuildModeOfPayment(nameof(cart.ModeOfPayment)),
                 OrderDetails = orderDetails,               
+                Courier = ServiceHelper.BuildCourier(nameof(cart.Courier))
             };
             var primaryKeyServiceResult = await _customerService.InsertNewOrder(order);
             
