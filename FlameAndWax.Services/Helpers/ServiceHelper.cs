@@ -41,6 +41,10 @@ namespace FlameAndWax.Services.Helpers
                     return Constants.Courier.FoodPanda;
                 case nameof(Constants.Courier.JNT):
                     return Constants.Courier.JNT;
+                case nameof(Constants.Courier.NinjaVan):
+                    return Constants.Courier.NinjaVan;
+                case nameof(Constants.Courier.GogoExpress):
+                    return Constants.Courier.GogoExpress;
                 default:
                     return Constants.Courier.FoodPanda;
             }

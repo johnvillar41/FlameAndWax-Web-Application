@@ -19,7 +19,7 @@ namespace FlameAndWax
             }
         }
 
-        public static double CalculateTotalCartCost(string user)
+        public static double CalculateTotalCartCost(string user, int quantityOrdered)
         {
             double totalCost = 0.0f;
             foreach (KeyValuePair<string, List<ProductViewModel>> keyValuePair in CartItems)
@@ -28,7 +28,7 @@ namespace FlameAndWax
                 {
                     foreach (var product in keyValuePair.Value)
                     {
-                        totalCost += product.ProductPrice * product.QuantityOrdered;                        
+                        totalCost += product.ProductPrice * quantityOrdered;                        
                     }
                 }
             }

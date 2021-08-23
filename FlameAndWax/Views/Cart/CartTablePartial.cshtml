@@ -8,122 +8,127 @@
    data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv">
     Refresh Cart <i class="fas fa-sync"></i>
 </a>
-<div class="row">
-    <div class="col-lg-8 col-md-12 pt-2">
-        <div class="card">
-            <table class="table table-hover table-responsive text-center">
-                <thead>
-                    <tr>
-                        <th style="width:45%;">Picture</th>
-                        <th style="width:15%;">Product Id</th>
-                        <th style="width:15%;">Price</th>
-                        <th style="width:15%;">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var product in Model.CartProducts)
-                    {
+<form method="post"
+      asp-controller="Cart" asp-action="Checkout"
+      data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv">
+    <div class="row">
+        <div class="col-lg-8 col-md-12 pt-2">
+            <div class="card">
+                <table class="table table-hover table-responsive text-center">
+                    <thead>
                         <tr>
-                            <td style="vertical-align:middle;">
-                                <div class="row">
-                                    <div class="col-lg-6 col-sm-12">
-                                        <img src="@Url.Content(product.PhotoLink)" class="img-thumbnail" />
-                                    </div>
-                                    <div class="col-lg-6 col-sm-12 my-auto text-left">
-
-                                        <p><strong>@product.ProductName</strong></p>
-                                        <hr />
-                                        <p><strong>Quantity per Unit: </strong><input type="number" id="numQty" min="1" max="50" class="form-control" onkeypress="return isNumber(event);" value="@product.QuantityOrdered" /></p>
-                                        <p><strong>Units in Stock: </strong>@product.StockQuantity</p>
-                                    </div>
-                                </div>
-
-                            </td>
-                            <td style="vertical-align:middle;">@product.ProductId</td>
-                            <td style="vertical-align:middle;">@product.ProductPrice</td>
-                            <td style="vertical-align:middle;">
-                                <a class="btn btn-gold btn-block"
-                                   asp-action="DeleteCartItem"
-                                   asp-controller="Cart"
-                                   asp-route-productId="@product.ProductId"
-                                   data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv">
-                                    Delete <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </td>
+                            <th style="width:45%;">Picture</th>
+                            <th style="width:15%;">Product Id</th>
+                            <th style="width:15%;">Price</th>
+                            <th style="width:15%;">Action</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-            @if (Model.CartProducts.Count() == 0)
-            {
-                <div class="mx-auto">
+                    </thead>
+                    <tbody>
+                        @foreach (var product in Model.CartProducts)
+                        {
+                            <tr>
+                                <td style="vertical-align:middle;">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-12">
+                                            <img src="@Url.Content(product.PhotoLink)" class="img-thumbnail" />
+                                        </div>
+                                        <div class="col-lg-6 col-sm-12 my-auto text-left">
+
+                                            <p><strong>@product.ProductName</strong></p>
+                                            <hr />
+                                            <p>
+                                                <strong>Quantity per Unit: </strong>
+                                                <input type="number" asp-for="@product.QuantityOrdered" id="numQty" min="1" max="50" class="form-control" onkeypress="return isNumber(event);" />
+                                            </p>
+                                            <p><strong>Units in Stock: </strong>@product.StockQuantity</p>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                <td style="vertical-align:middle;">@product.ProductId</td>
+                                <td style="vertical-align:middle;">@product.ProductPrice</td>
+                                <td style="vertical-align:middle;">
+                                    <a class="btn btn-gold btn-block"
+                                       asp-action="DeleteCartItem"
+                                       asp-controller="Cart"
+                                       asp-route-productId="@product.ProductId"
+                                       data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv">
+                                        Delete <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @if (Model.CartProducts.Count() == 0)
+                {
+                    <div class="mx-auto">
+                        <div class="row">
+                            <lottie-player src="https://assets3.lottiefiles.com/temp/lf20_Celp8h.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-12 pt-2">
+            <div class="card p-2">
+                <div class="card-header">
+                    <h3>Order Summary</h3>
+                </div>
+                <div class="card-body">
                     <div class="row">
-                        <lottie-player src="https://assets3.lottiefiles.com/temp/lf20_Celp8h.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
-                    </div>
-                </div>
-            }
+                        @foreach (var product in Model.CartProducts)
+                        {
+                            <div class="col-6">
+                                <p><strong>@product.ProductName</strong></p>
+                            </div>
+                            <div class="col-6">
+                                <p><strong>@product.ProductPrice</strong></p>
+                            </div>
 
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-12 pt-2">
-        <div class="card p-2">
-            <div class="card-header">
-                <h3>Order Summary</h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    @foreach (var product in Model.CartProducts)
-                    {
+                            totalCartValue += product.ProductPrice;
+                        }
+
+                    </div>
+
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <p><strong>SHIPPING</strong></p>
+                    </div>
+                    <div class="row">
+                        <div class="input-group mb-3">
+                            <select class="custom-select" id="inputGroupSelect02" asp-for="@Model.Courier">
+                                <option selected>Choose...</option>
+                                <option value="@Constants.Courier.FoodPanda">@nameof(Constants.Courier.FoodPanda)</option>
+                                <option value="@Constants.Courier.JNT">@nameof(Constants.Courier.JNT)</option>
+                                <option value="@Constants.Courier.NinjaVan">@nameof(Constants.Courier.NinjaVan)</option>
+                                <option value="@Constants.Courier.GogoExpress">@nameof(Constants.Courier.GogoExpress)</option>
+                            </select>
+                            <div class="input-group-append">
+                                <label class="input-group-text" for="inputGroupSelect02">Options</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-6">
-                            <p><strong>@product.ProductName</strong></p>
+                            <p><strong>TOTAL COST</strong></p>
                         </div>
                         <div class="col-6">
-                            <p><strong>@product.ProductPrice</strong></p>
-                        </div>
-
-                        totalCartValue += product.ProductPrice;
-                    }
-
-                </div>
-
-            </div>
-            <div class="card-footer">
-                <div class="row">
-                    <p><strong>SHIPPING</strong></p>
-                </div>
-                <div class="row">
-                    <div class="input-group mb-3">
-                        <select class="custom-select" id="inputGroupSelect02">
-                            <option selected>Choose...</option>
-                            <option value="@Constants.Courier.FoodPanda">@nameof(Constants.Courier.FoodPanda)</option>
-                            <option value="@Constants.Courier.JNT">@nameof(Constants.Courier.JNT)</option>
-                            <option value="@Constants.Courier.NinjaVan">@nameof(Constants.Courier.NinjaVan)</option>
-                            <option value="@Constants.Courier.GogoExpress">@nameof(Constants.Courier.GogoExpress)</option>
-                        </select>
-                        <div class="input-group-append">
-                            <label class="input-group-text" for="inputGroupSelect02">Options</label>
+                            <p><strong>PHP @totalCartValue</strong></p>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <p><strong>TOTAL COST</strong></p>
+                    <div class="row">
+                        <button type="submit" class="btn btn-gold btn-block">
+                            CHECKOUT <i class="fas fa-money-check-alt"></i>
+                        </button>
                     </div>
-                    <div class="col-6">
-                        <p><strong>PHP @totalCartValue</strong></p>
-                    </div>
-                </div>
-                <div class="row">
-                    <a class="btn btn-gold btn-block"
-                       asp-controller="Cart" asp-action="Checkout"
-                       data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv">
-                        CHECKOUT <i class="fas fa-money-check-alt"></i>
-                    </a>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</form>
 
 <script>
     function isNumber(evt) {

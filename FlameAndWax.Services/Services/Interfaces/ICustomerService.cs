@@ -15,6 +15,7 @@ namespace FlameAndWax.Services.Services.Interfaces
         Task<ServiceResult<Boolean>> CheckIfCustomerHasOrderedAProduct(string customerUsername,int productId);
         Task<ServiceResult<Boolean>> AddCustomerReview(CustomerReviewModel customerReview);
         Task<ServiceResult<int>> InsertNewOrder(OrderModel order);
+        Task<ServiceResult<double>> FetchProductPrice(int productId);
 
         Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId);       
         Task<ServiceResult<ProductModel>> FetchProductDetail(int productId);

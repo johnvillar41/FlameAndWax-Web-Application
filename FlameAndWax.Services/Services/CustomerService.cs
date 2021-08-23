@@ -142,13 +142,19 @@ namespace FlameAndWax.Services.Services
             return ServiceHelper.BuildServiceResult<ProductModel>(productDetail, false, null);
         }
 
+        public async Task<ServiceResult<double>> FetchProductPrice(int productId)
+        {
+            var productPrice = await _productRepository.Fetch(productId);
+            return ServiceHelper.BuildServiceResult<double>(productPrice.ProductPrice, false, null);
+        }
+
         public async Task<ServiceResult<int>> InsertNewOrder(OrderModel order)
         {
             var primaryKey = await _orderRepository.Add(order);
             if (primaryKey != 1)
                 foreach (var orderDetail in order.OrderDetails)
                 {
-                    orderDetail.Order = new OrderModel { OrderId = primaryKey };
+                    orderDetail.Order = new OrderModel { OrderId = primaryKey, ModeOfPayment = order.ModeOfPayment };
                     var primaryKeyOrderDetail = await _orderDetailRepository.Add(orderDetail);
                     if (primaryKeyOrderDetail == -1)
                         return ServiceHelper.BuildServiceResult<int>(primaryKeyOrderDetail, true, "Error Inserting OrderDetail");

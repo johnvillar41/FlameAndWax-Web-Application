@@ -48,40 +48,45 @@ namespace FlameAndWax.Controllers
             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
             return PartialView("CartTablePartial", Cart.GetCartItems(userLoggedIn));
         }
-
+        [HttpPost]
         public async Task<IActionResult> Checkout(CartViewModel cart)
         {            
             var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
             var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
 
-            cart.CartProducts = Cart.GetCartItems(userLoggedInUsername);            
-            cart.TotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername);
-
+            var cartItems = Cart.GetCartItems(userLoggedInUsername);            
+            
             var orderDetails = new List<OrderDetailModel>();
-            foreach(var cartItem in cart.CartProducts)
-            { 
+            
+            foreach(var cartItem in cartItems)
+            {
+                var totalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);
+                var productPriceServiceResult = await _customerService.FetchProductPrice(cartItem.ProductId);
+                if (productPriceServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = productPriceServiceResult.ErrorContent });
                 orderDetails.Add(
                     new OrderDetailModel
                     {
                         Product = new ProductModel
                         {
                             ProductId = cartItem.ProductId,
-                            ProductPrice = cartItem.ProductPrice                           
+                            ProductPrice = productPriceServiceResult.Result //Fetch ProductPrice from service layer not from ui for safety                     
                         },
-                        TotalPrice = cart.TotalCost,
-                        Quantity = cart.CartProducts.Count()
+                        TotalPrice = totalCost,
+                        Quantity = cartItems.Count(),                        
                     }
                 );
             }
-            
+
+            var modeOfPayment = ServiceHelper.BuildModeOfPayment(cart.ModeOfPayment.ToString());
+            var courierType = ServiceHelper.BuildCourier(cart.Courier.ToString());
             var order = new OrderModel
             {
                 Customer = new CustomerModel { CustomerId = int.Parse(userLoggedInID) },
                 Employee = new EmployeeModel { EmployeeId = -1 },
                 DateNeeded = DateTime.UtcNow,
-                ModeOfPayment = ServiceHelper.BuildModeOfPayment(nameof(cart.ModeOfPayment)),
+                ModeOfPayment = modeOfPayment,
                 OrderDetails = orderDetails,               
-                Courier = ServiceHelper.BuildCourier(nameof(cart.Courier))
+                Courier = courierType
             };
             var primaryKeyServiceResult = await _customerService.InsertNewOrder(order);
             
