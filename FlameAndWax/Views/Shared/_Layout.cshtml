@@ -48,19 +48,18 @@
                             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
                             var totalNumberOfCart = Cart.GetCartItems(userLoggedIn).Count();
                             
-                            <li class="nav-item dropdown" style="padding-right:30px;">
+                            <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Profile <i class="fas fa-user-circle"></i>
+                                    <strong>Welcome!</strong>, @User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value <i class="fas fa-user-circle"></i>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item">View Profile <i class="fas fa-user-circle"></i></a>
                                     <a class="dropdown-item" asp-controller="Cart" asp-action="Index">Cart <i class="fas fa-shopping-cart"></i>&nbsp;<span class="badge badge-pill badge-warning">@totalNumberOfCart</span></a>
                                     <a class="dropdown-item" asp-controller="Orders" asp-action="Index">Orders <i class="fas fa-clipboard-list"></i></a>
+                                    <hr />
+                                    <a class="dropdown-item" asp-action="ProcessLogout" asp-controller="Account">Logout <i class="fas fa-sign-out-alt"></i></a>
                                 </div>
-                            </li>                           
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-gold text-dark" asp-action="ProcessLogout" asp-controller="Account"><i class="fas fa-sign-out-alt"> Logout</i></a>
-                            </li>
+                            </li>                         
                         }
                         else
                         {
