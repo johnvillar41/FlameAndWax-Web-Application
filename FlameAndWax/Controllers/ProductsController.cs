@@ -110,7 +110,7 @@ namespace FlameAndWax.Controllers
                         }
                     );
             }
-
+            customerReviewModels.Reverse();
             return PartialView("ProductReviewPartial", customerReviewModels);
         }
 
@@ -188,7 +188,7 @@ namespace FlameAndWax.Controllers
                         }
                     );
             }
-
+            customerReviewViewModels.Reverse();
             var productDetailViewModel = new ProductDetailViewModel
             {
                 ProductId = productId,
