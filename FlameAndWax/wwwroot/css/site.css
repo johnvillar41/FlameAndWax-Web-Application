@@ -185,3 +185,9 @@ body {
     .rate > label:hover ~ input:checked ~ label {
         color: #c59b08;
     }
+
+@media only screen and (max-width: 768px) {
+    .hideColumnPhoneSize {
+        display: none;
+    }
+}

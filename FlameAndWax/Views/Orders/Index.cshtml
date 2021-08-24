@@ -4,15 +4,16 @@
         <div class="col-12">
             <h3>Orders List</h3>
         </div>
-    </div>   
+    </div>
     @for (int i = 0; i < 5; i++)
     {
-        <div class="row mb-2">            
+        <div class="row mb-2">
             <div class="col-12">
-                <div class="card card0 p-3 btn-light-gold"data-toggle="collapse" href="#collapseExample_@i" role="button" aria-expanded="false" aria-controls="collapseExample">
+                <div class="card card0 p-3 btn-light-gold" data-toggle="collapse" href="#collapseExample_@i" role="button" aria-expanded="false" aria-controls="collapseExample">
                     <div class="row">
                         <div class="col-lg-6">
                             <h4>Order Id: 2012310083</h4>
+                            <hr />
                             <p>Date: 12-1-1</p>
                             <p>Mode of payment: Cash</p>
                             <p>Total Cost: 70,000</p>
@@ -22,18 +23,43 @@
                             <p>Finished: 4</p>
                             <p>Pending: 4</p>
                             <p>Shipping: 2</p>
-                            <p>Processing: 1</p>                           
+                            <p>Processing: 1</p>
                         </div>
-                        <div class="collapse p-1" id="collapseExample_@i" >
-                            <div class="card card-body" style="background-color: #cccac4;">
-                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                        <div class="collapse p-1 col-lg-12" id="collapseExample_@i">
+                            <hr />
+                            <div class="card card-body" style="background-color: #D3D3D3; border:none;">
+                                <table class="table table-hover table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <td style="width: 45%;" class="hideColumnPhoneSize">Picture</td>
+                                            <td style="width: auto;">Product Id</td>
+                                            <td style="width: auto;">Quantity Ordered</td>
+                                            <td style="width: auto;">Subtotal Price</td>
+                                            <td style="width: auto;">Status</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int j = 0; j < 5; j++)
+                                        {
+                                            <tr>
+                                                <td class="hideColumnPhoneSize">
+                                                    <div class="col-3"><img src="~/images/products/50mlcandle.jpeg" class="img-thumbnail img-fluid" /></div>
+                                                </td>
+                                                <td>10209123</td>
+                                                <td>4</td>
+                                                <td>440,000</td>
+                                                <td><span class="badge badge-pill badge-warning">Finished</span></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-             
+
     }
 
     <div class="row">
