@@ -1,3 +1,40 @@
-﻿<div class="container">
-    <h1>Display orders</h1>
+﻿@model FlameAndWax.Models.OrderDetailViewModel;
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h3>Orders List</h3>
+        </div>
+    </div>
+    <hr />
+    @for (int i = 0; i < 5; i++)
+    {
+        <div class="row p-3">
+            <div class="col-lg-6">
+                <h4>Order Id: 2012310083</h4>
+                <p>Date: 12-1-1</p>
+                <p>Mode of payment: Cash</p>
+                <p>Total Cost: 70,000</p>
+            </div>
+            <div class="col-lg-6">
+                <p>Total number of orders: 4</p>
+                <p>Finished: 4</p>
+                <p>Pending: 4</p>
+                <p>Shipping: 2</p>
+                <p>Processing: 1</p>
+                <a class="btn btn-gold" data-toggle="collapse" href="#collapseExample_@i" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    Link with href
+                </a>
+            </div>
+        </div>
+        <div class="collapse" id="collapseExample_@i">
+            <div class="card card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+            </div>
+        </div>
+        <hr />
+    }
+
+    <div class="row">
+
+    </div>
 </div>
