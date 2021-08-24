@@ -7,7 +7,7 @@ using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Models
 {
-    public class OrdersViewModel
+    public class OrderViewModel
     {
         public int OrderId { get; set; }
         public DateTime Date { get; set; }

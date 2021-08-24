@@ -79,7 +79,7 @@ namespace FlameAndWax.Services.Repositories
                     Customer = customer,
                     Employee = employee,
                     OrderDetails = orderDetails,
-                    DateNeeded = DateTime.Parse(reader["DateNeeded"].ToString()),
+                    DateOrdered = DateTime.Parse(reader["DateNeeded"].ToString()),
                     ModeOfPayment = modeOfPayment,
                     Courier = courier
                 };
@@ -117,7 +117,7 @@ namespace FlameAndWax.Services.Repositories
                             Customer = customer,
                             Employee = employee,
                             OrderDetails = orderDetails,
-                            DateNeeded = DateTime.Parse(reader["DateNeeded"].ToString()),
+                            DateOrdered = DateTime.Parse(reader["DateNeeded"].ToString()),
                             ModeOfPayment = modeOfPayment,
                             Courier = courier
                         }
@@ -156,7 +156,7 @@ namespace FlameAndWax.Services.Repositories
                             Customer = customer,
                             Employee = employee,
                             OrderDetails = orderDetails,
-                            DateNeeded = DateTime.Parse(reader["DateNeeded"].ToString()),
+                            DateOrdered = DateTime.Parse(reader["DateNeeded"].ToString()),
                             ModeOfPayment = modeOfPayment,
                             Courier = courier
                         }

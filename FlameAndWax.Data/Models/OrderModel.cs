@@ -9,7 +9,7 @@ namespace FlameAndWax.Data.Models
         public int OrderId { get; set; }
         public CustomerModel Customer { get; set; }
         public EmployeeModel Employee { get; set; }        
-        public DateTime DateNeeded { get; set; }
+        public DateTime DateOrdered { get; set; }
         public ModeOfPayment ModeOfPayment { get; set; }
         public Courier Courier { get; set; }       
 

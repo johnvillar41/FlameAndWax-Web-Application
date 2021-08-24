@@ -84,7 +84,7 @@ namespace FlameAndWax.Controllers
                 {
                     Customer = new CustomerModel { CustomerId = int.Parse(userLoggedInID) },
                     Employee = new EmployeeModel { EmployeeId = -1 },
-                    DateNeeded = DateTime.UtcNow,
+                    DateOrdered = DateTime.UtcNow,
                     ModeOfPayment = modeOfPayment,
                     OrderDetails = orderDetails,
                     Courier = courierType

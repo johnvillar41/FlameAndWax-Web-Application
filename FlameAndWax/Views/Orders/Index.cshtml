@@ -10,52 +10,69 @@
         <div class="row mb-2">
             <div class="col-12">
                 <div class="card card0 p-3">
+
                     <div class="row">
-                        <div class="col-lg-6">
-                            <h4>Order Id: 2012310083</h4>
+                        <div class="col-lg-12">
+
+                            <div class="d-flex justify-content-end">
+                                <div class="mr-auto p-2"> <h4>Order ID: 2012310083</h4></div>
+                                <div class="p-2"><b>Date Ordered:&nbsp;</b>12-1-1</div>
+                            </div>
+
                             <hr />
-                            <p>Date: 12-1-1</p>
-                            <p>Mode of payment: Cash</p>
-                            <p>Total Cost: 70,000</p>
+                            <div class="row p-2">
+                                <div class="col-lg-6">
+                                    <b>Mode of payment:&nbsp;</b>Cash
+                                    <br />
+                                    <b>Courier:&nbsp;</b>Gogo Express
+                                </div>
+                                <div class="col-lg-6">
+                                    sample data<br />
+                                    sample data<br />
+                                    sample data
+                                </div>
+                            </div>
+                            <div class="row m-2 justify-content-end">
+                                <a class="btn" style="background-color: rgba(166,130,69,1); " data-toggle="collapse" href="#collapseExample_@i" role="button" aria-expanded="false" aria-controls="collapseExample">See more <i class="fas fa-chevron-circle-down"></i></a>
+                            </div>                            
                         </div>
-                        <div class="col-lg-6">
-                            <p>Total number of orders: 4</p>
-                            <p>Finished: 4</p>
-                            <p>Pending: 4</p>
-                            <p>Shipping: 2</p>
-                            <p>Processing: 1</p>
-                            <a class="btn btn-gold" data-toggle="collapse" href="#collapseExample_@i" role="button" aria-expanded="false" aria-controls="collapseExample">See more</a>
-                        </div>
+
                         <div class="collapse p-1 col-lg-12" id="collapseExample_@i">
                             <hr />
                             <div class="card card-body" style="background-color: #D3D3D3; border:none;">
                                 <table class="table table-hover table-responsive">
                                     <thead>
                                         <tr>
-                                            <td style="width: 45%;" class="hideColumnPhoneSize">Picture</td>
-                                            <td style="width: auto;">Product Id</td>
-                                            <td style="width: auto;">Quantity Ordered</td>
-                                            <td style="width: auto;">Subtotal Price</td>
-                                            <td style="width: auto;">Status</td>
+                                            <td style="width: 50%; " class="hideColumnPhoneSize"><b>Picture</b></td>
+                                            <td style="width: auto;"><b>Product Name</b></td>
+                                            <td style="width: auto;"><b>Quantity Ordered</b></td>
+                                            <td style="width: auto;"><b>Status</b></td>
+                                            <td style="width: auto;"><b>Subtotal Price</b></td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @for (int j = 0; j < 5; j++)
                                         {
-                                            <tr>
-                                                <td class="hideColumnPhoneSize">
-                                                    <div class="col-3"><img src="~/images/products/50mlcandle.jpeg" class="img-thumbnail img-fluid" /></div>
-                                                </td>
-                                                <td>10209123</td>
-                                                <td>4</td>
-                                                <td>440,000</td>
-                                                <td><span class="badge badge-pill badge-warning">Finished</span></td>
-                                            </tr>
+                                        <tr>
+                                            <td class="hideColumnPhoneSize">
+                                                <div class="col-3"><img src="~/images/products/50mlcandle.jpeg" class="img-thumbnail img-fluid" /></div>
+                                            </td>
+                                            <td>candlezzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz</td>
+                                            <td class="text-center"> 4</td>
+                                            <td><span class="badge badge-pill badge-success">Finished</span></td>
+                                            <td class="text-right">440,000</td>
+
+                                        </tr>
                                         }
 
                                     </tbody>
-                                </table>                                
-                            </div>                            
+                                </table>
+                                <hr />
+                                <div class="alert alert-success" role="alert">
+                                    <h5 class="text-right"><b>Total Cost: 70,000</b></h5>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>

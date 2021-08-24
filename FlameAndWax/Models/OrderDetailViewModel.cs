@@ -1,4 +1,6 @@
-﻿namespace FlameAndWax.Models
+﻿using static FlameAndWax.Data.Constants.Constants;
+
+namespace FlameAndWax.Models
 {
     public class OrderDetailViewModel
     {
@@ -6,5 +8,6 @@
         public string ProductPictureLink { get; set; }
         public int ProductQuantityOrdered { get; set; }
         public double SubTotalPrice { get; set; }
+        public OrderDetailStatus Status { get; set; }
     }
 }
