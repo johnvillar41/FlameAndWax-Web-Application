@@ -11,6 +11,11 @@ a {
     color: #0366d6;
 }
 
+.card0 {
+    box-shadow: 0px 4px 8px 0px #757575;
+    border-radius: 5px
+}
+
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
@@ -93,6 +98,14 @@ body {
         background-color: #856838;
     }
 
+.btn-light-gold {
+    background-color: #e4e2da;
+}
+
+    .btn-light-gold:hover {
+        background-color: #cccac4;
+    }
+
 .carousel-control-next,
 .carousel-control-prev {
     background-color: #e4e2da;
@@ -137,38 +150,38 @@ body {
     height: 46px;
 }
 
-.rate:not(:checked) > input {
-    position: absolute;
-    display:none;
-}
+    .rate:not(:checked) > input {
+        position: absolute;
+        display: none;
+    }
 
-.rate:not(:checked) > label {
-    float: right;
-    width: 1em;
-    overflow: hidden;
-    white-space: nowrap;
-    cursor: pointer;
-    font-size: 30px;
-    color: #ccc;
-}
+    .rate:not(:checked) > label {
+        float: right;
+        width: 1em;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 30px;
+        color: #ccc;
+    }
 
-.rate:not(:checked) > label:before {
-    content: '★ ';
-}
+        .rate:not(:checked) > label:before {
+            content: '★ ';
+        }
 
-.rate > input:checked ~ label {
-    color: #ffc700;
-}
+    .rate > input:checked ~ label {
+        color: #ffc700;
+    }
 
-.rate:not(:checked) > label:hover,
-.rate:not(:checked) > label:hover ~ label {
-    color: #deb217;
-}
+    .rate:not(:checked) > label:hover,
+    .rate:not(:checked) > label:hover ~ label {
+        color: #deb217;
+    }
 
-.rate > input:checked + label:hover,
-.rate > input:checked + label:hover ~ label,
-.rate > input:checked ~ label:hover,
-.rate > input:checked ~ label:hover ~ label,
-.rate > label:hover ~ input:checked ~ label {
-    color: #c59b08;
-}
+    .rate > input:checked + label:hover,
+    .rate > input:checked + label:hover ~ label,
+    .rate > input:checked ~ label:hover,
+    .rate > input:checked ~ label:hover ~ label,
+    .rate > label:hover ~ input:checked ~ label {
+        color: #c59b08;
+    }
