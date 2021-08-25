@@ -18,6 +18,7 @@
 
 @foreach (var customerReview in Model)
 {
+    <!--
     <div class="col-12 mb-2">
         <div class="card card0 card2">
             <div class="card-header" style="background-color: #D3D3D3;">
@@ -67,6 +68,70 @@
                     </div>
                 </div>
             </div>
+            <div class="card-body" style="background-color: #F0F0F0;">
+                <blockquote class="blockquote mb-0">
+                    <p>@customerReview.ReviewDetail</p>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+
+
+    -->
+    <div class="col-12 mb-2">
+        <div class="card card0 card2">
+            <div class="card-header" style="background-color: #D3D3D3;">
+
+                <!--
+                    Possible additions:
+                    - Sort function (by date, by rating)
+                    - Limit char. num that can be viewed (100 chars.), requires "See More" to look at entire review
+                -->
+
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Customer Picture (Rounded) -->
+                        <img src="~/images/customers/rechard.jpg" class="rounded-circle float-left" style="height:50px;" alt="customer pic">
+
+                        <!-- Customer Name + Score Badge-->
+                        <div class="my-auto float-left">
+                            <b class="text-uppercase">&nbsp;&nbsp;@customerReview.Customer.CustomerName</b>
+                            <br />
+
+                            <b>&nbsp;&nbsp;Score:</b>
+                            @{
+                                switch (customerReview.ReviewScore)
+                                {
+                                    case Constants.ReviewScore.Excellent:
+                                        <div class="badge badge-primary badge-pill badge-success text-wrap">@customerReview.ReviewScore</div>
+                                        break;
+                                    case Constants.ReviewScore.VeryGood:
+                                        <div class="badge badge-primary badge-pill badge-info text-wrap">@customerReview.ReviewScore</div>
+                                        break;
+                                    case Constants.ReviewScore.Good:
+                                        <div class="badge badge-primary badge-pill badge-light text-wrap">@customerReview.ReviewScore</div>
+                                        break;
+                                    case Constants.ReviewScore.Poor:
+                                        <div class="badge badge-primary badge-pill badge-dark text-wrap">@customerReview.ReviewScore</div>
+                                        break;
+                                    case Constants.ReviewScore.VeryPoor:
+                                        <div class="badge badge-primary badge-pill badge-danger text-wrap">@customerReview.ReviewScore</div>
+                                        break;
+                                }
+                            }
+                        </div>
+
+                        <!-- Date of Review Posted -->
+                        <div class="text-right my-auto">
+                            <b>Posted:</b>&nbsp;Date Here
+                        </div>
+
+                    </div>                   
+                </div>
+
+            </div>
+
+            <!-- Customer Review -->
             <div class="card-body" style="background-color: #F0F0F0;">
                 <blockquote class="blockquote mb-0">
                     <p>@customerReview.ReviewDetail</p>
