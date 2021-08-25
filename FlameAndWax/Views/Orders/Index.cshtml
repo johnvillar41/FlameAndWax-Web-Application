@@ -22,19 +22,32 @@
                             <hr />
                             <div class="row p-2">
                                 <div class="col-lg-6">
-                                    <b>Mode of payment:&nbsp;</b>Cash
-                                    <br />
-                                    <b>Courier:&nbsp;</b>Gogo Express
-                                </div>
-                                <div class="col-lg-6">
-                                    sample data<br />
-                                    sample data<br />
-                                    sample data
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td><b>Mode of payment: </b></td>
+                                                <td>Cash</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>Courier:</b>
+                                                </td>
+                                                <td> Gogo Express</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>Status:</b>
+                                                </td>
+                                                <td> <span class="badge badge-pill badge-success">Finished <i class="fas fa-check-circle"></i></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>                                   
+                                   
                                 </div>
                             </div>
                             <div class="row m-2 justify-content-end">
-                                <a class="btn" style="background-color: rgba(166,130,69,1); " data-toggle="collapse" href="#collapseExample_@i" role="button" aria-expanded="false" aria-controls="collapseExample">See more <i class="fas fa-chevron-circle-down"></i></a>
-                            </div>                            
+                                <a class="btn btn-gold" data-toggle="collapse" href="#collapseExample_@i" role="button" aria-expanded="false" aria-controls="collapseExample">See more <i class="fas fa-chevron-circle-down"></i></a>
+                            </div>
                         </div>
 
                         <div class="collapse p-1 col-lg-12" id="collapseExample_@i">
@@ -53,25 +66,34 @@
                                     <tbody>
                                         @for (int j = 0; j < 5; j++)
                                         {
-                                        <tr>
-                                            <td class="hideColumnPhoneSize">
-                                                <div class="col-3"><img src="~/images/products/50mlcandle.jpeg" class="img-thumbnail img-fluid" /></div>
-                                            </td>
-                                            <td>candlezzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz</td>
-                                            <td class="text-center"> 4</td>
-                                            <td><span class="badge badge-pill badge-success">Finished</span></td>
-                                            <td class="text-right">440,000</td>
+                                            <tr>
+                                                <td class="hideColumnPhoneSize">
+                                                    <div class="col-3"><img src="~/images/products/50mlcandle.jpeg" class="img-thumbnail img-fluid" /></div>
+                                                </td>
+                                                <td>candlezzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz</td>
+                                                <td class="text-center"> 4</td>
+                                                <td><span class="badge badge-pill badge-success">Finished</span></td>
+                                                <td class="text-right">440,000</td>
 
-                                        </tr>
+                                            </tr>
                                         }
 
                                     </tbody>
                                 </table>
-                                <hr />
-                                <div class="alert alert-success" role="alert">
-                                    <h5 class="text-right"><b>Total Cost: 70,000</b></h5>
-                                </div>
 
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <hr />
+                            <div class="alert alert-success" role="alert">
+                                <h5 class="text-right"><b>Total Cost: 70,000</b></h5>
                             </div>
                         </div>
                     </div>
