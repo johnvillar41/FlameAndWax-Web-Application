@@ -1,0 +1,82 @@
+﻿@model FlameAndWax.Models.UserProfileViewModel;
+<div class="col-12">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" style="display:none;" id="completed">
+        <strong>Conrgrats!</strong> You have updated your profile.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+<div class="col-sm-3">
+
+    <div class="text-center p-2">
+        @{
+            var imageSource = Model.ProfilePictureLink == null ? "" : Url.Content(Model.ProfilePictureLink);
+        }
+        <img src="@imageSource" class="avatar img-circle img-thumbnail" alt="avatar">
+        <h6>Upload a different photo...</h6>
+        <input type="file" class="text-center center-block file-upload">
+    </div>
+    <hr />
+</div>
+
+<div class="col-lg-9">
+    <form class="form" asp-controller="UserProfile" asp-action="Save" method="post"
+            data-ajax="true" data-ajax-update="#content" data-ajax-loading="#overlayLoadingDiv"
+            data-ajax-complete="completed"
+            data-ajax-method="post">
+        <div class="form-group">
+            <div class="col-xs-6">
+                <h5>Full name</h5>
+                <input type="text" class="form-control" asp-for="@Model.Fullname" placeholder="Enter Full Name" title="enter your first name if any.">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <h5>Contact Number</h5>
+                    <input type="text" class="form-control" asp-for="@Model.ContactNumber" placeholder="Enter Contact Number" title="enter your phone number if any.">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+
+            <div class="col-xs-6">
+                <h5>Email</h5>
+                <input type="email" class="form-control" asp-for="@Model.Email" placeholder="email@example.com" title="enter your email.">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-6">
+                <h5>Username</h5>
+                <input type="text" class="form-control" asp-for="@Model.Username" placeholder="Enter Username" title="enter your username.">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-6">
+                <h5>Address</h5>
+                <input type="text" class="form-control" asp-for="@Model.Address" placeholder="Enter Address" title="enter a location">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-6">
+                <h5>Password</h5>
+                <input type="text" class="form-control" asp-for="@Model.Password" placeholder="Enter Password" title="enter your password.">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-6">
+                <h5>Verify</h5>
+                <input type="password" class="form-control" asp-for="@Model.VerifyPassword" placeholder="Enter Password" title="enter your password2.">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-12">
+                <br>
+                <button class="btn btn-lg btn-gold" type="submit">Save <i class="fas fa-save"></i></button>
+                <button class="btn btn-lg btn-gold" type="reset">Reset <i class="fas fa-redo-alt"></i></button>
+            </div>
+        </div>
+    </form>
+</div>

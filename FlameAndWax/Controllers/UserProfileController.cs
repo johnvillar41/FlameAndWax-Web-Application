@@ -49,12 +49,26 @@ namespace FlameAndWax.Controllers
                 Email = userProfile.Email,
                 Username = userProfile.Username,
                 Password = userProfile.Password,
-                ProfilePictureLink = null, //TODO FIX
                 Address = userProfile.Address
             };
+
             var modifyServiceResult = await _customerService.ModifyAccountDetails(customerModel, int.Parse(userId));
             if (modifyServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = modifyServiceResult.ErrorContent });
-            return RedirectToAction("Index");
+
+            var accountDetailServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId));
+            if (accountDetailServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = accountDetailServiceResult.ErrorContent });
+
+            var userProfileViewModel = new UserProfileViewModel
+            {
+                Fullname = accountDetailServiceResult.Result.CustomerName,
+                ContactNumber = accountDetailServiceResult.Result.ContactNumber,
+                Email = accountDetailServiceResult.Result.Email,
+                Address = accountDetailServiceResult.Result.Address,
+                Password = accountDetailServiceResult.Result.Password,
+                Username = accountDetailServiceResult.Result.Username,
+                ProfilePictureLink = accountDetailServiceResult.Result.ProfilePictureLink
+            };
+            return PartialView("ProfilePartial", userProfileViewModel);
         }
     }
 }

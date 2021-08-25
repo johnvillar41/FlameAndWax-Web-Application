@@ -134,16 +134,14 @@ namespace FlameAndWax.Data.Repositories
             using SqlConnection connection = new SqlConnection(DB_CONNECTION_STRING);
             await connection.OpenAsync();
             var queryString = "UPDATE CustomerTable SET CustomerName = @name, ContactNumber = @number, Email = @email, Username = @username, " +
-                "Password = @password, ProfilePictureLink = @link, Status = @status, Address = @address WHERE CustomerId = @id";
+                "Password = @password, Address = @address WHERE CustomerId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@id", id);
             command.Parameters.AddWithValue("@name", data.CustomerName);
             command.Parameters.AddWithValue("@number", data.ContactNumber);
             command.Parameters.AddWithValue("@email", data.Email);
             command.Parameters.AddWithValue("@username", data.Username);
-            command.Parameters.AddWithValue("@password", data.Password);
-            command.Parameters.AddWithValue("@link", data.ProfilePictureLink);
-            command.Parameters.AddWithValue("@status",  data.Status);
+            command.Parameters.AddWithValue("@password", data.Password);                   
             command.Parameters.AddWithValue("@address", data.Address);
             await command.ExecuteNonQueryAsync();
         }
