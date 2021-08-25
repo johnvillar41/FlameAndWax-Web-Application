@@ -56,12 +56,13 @@ namespace FlameAndWax.Controllers
                 var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
                
                 var cartItems = cart.CartProducts;
-
+                var totalOrderCost = 0.0;
                 var orderDetails = new List<OrderDetailModel>();
 
                 foreach (var cartItem in cartItems)
                 {                    
-                    var totalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);
+                    var subTotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);
+                    totalOrderCost += subTotalCost;
                     var productPriceServiceResult = await _customerService.FetchProductPrice(cartItem.ProductId);
                     if (productPriceServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = productPriceServiceResult.ErrorContent });
                     orderDetails.Add(
@@ -72,7 +73,7 @@ namespace FlameAndWax.Controllers
                                 ProductId = cartItem.ProductId,
                                 ProductPrice = productPriceServiceResult.Result //Fetch ProductPrice from service layer not from ui for safety                     
                             },
-                            TotalPrice = totalCost,
+                            TotalPrice = subTotalCost,
                             Quantity = cartItems.Count(),
                         }
                     );
@@ -85,6 +86,7 @@ namespace FlameAndWax.Controllers
                     Customer = new CustomerModel { CustomerId = int.Parse(userLoggedInID) },
                     Employee = new EmployeeModel { EmployeeId = -1 },
                     DateOrdered = DateTime.UtcNow,
+                    TotalCost = totalOrderCost,
                     ModeOfPayment = modeOfPayment,
                     OrderDetails = orderDetails,
                     Courier = courierType

@@ -10,6 +10,7 @@ namespace FlameAndWax.Data.Models
         public CustomerModel Customer { get; set; }
         public EmployeeModel Employee { get; set; }        
         public DateTime DateOrdered { get; set; }
+        public double TotalCost { get; set; }
         public ModeOfPayment ModeOfPayment { get; set; }
         public Courier Courier { get; set; }       
 

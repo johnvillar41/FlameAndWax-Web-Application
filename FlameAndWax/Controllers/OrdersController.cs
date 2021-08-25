@@ -23,22 +23,17 @@ namespace FlameAndWax.Controllers
             var ordersServiceResult = await _customerService.FetchOrders(int.Parse(customerIdLoggedIn));
 
             if (ordersServiceResult.HasError)
-                return PartialView("Error", new ErrorViewModel { ErrorContent = ordersServiceResult.ErrorContent });
-
-            
-            var totalCost = 0.0;
+                return PartialView("Error", new ErrorViewModel { ErrorContent = ordersServiceResult.ErrorContent });            
+           
             var orderStatus = Constants.OrderDetailStatus.Processing;
             foreach(var order in ordersServiceResult.Result)
             {                
                 foreach(var cost in order.OrderDetails)
-                {
-                    totalCost += cost.TotalPrice;
+                {                    
                     if (cost.Status == orderStatus)
                         orderStatus = Constants.OrderDetailStatus.Processing;
                 }
-            }
-
-            
+            }            
 
             var orderViewModels = new List<OrderViewModel>();
             foreach (var order in ordersServiceResult.Result)
@@ -69,7 +64,7 @@ namespace FlameAndWax.Controllers
                             Date = order.DateOrdered,
                             ModeOfPayment = order.ModeOfPayment,
                             Courier = order.Courier,
-                            TotalCost = totalCost,
+                            TotalCost = order.TotalCost,
                             OrderStatus = orderStatus,
                             OrderDetails = orderDetails
                         }

@@ -25,12 +25,13 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO OrdersTable(CustomerId,DateNeeded,ModeOfPayment,Courier)" +
-                "VALUES(@customerId,@dateNeeded,@modeOfPayment,@courier);" +
+            var queryString = "INSERT INTO OrdersTable(CustomerId,DateOrdered,TotalCost,ModeOfPayment,Courier)" +
+                "VALUES(@customerId,@dateOrdered,@totalCost,@modeOfPayment,@courier);" +
                 "SELECT SCOPE_IDENTITY() as fk;";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@customerId", Data.Customer.CustomerId);           
-            command.Parameters.AddWithValue("@dateNeeded", DateTime.UtcNow);
+            command.Parameters.AddWithValue("@dateOrdered", DateTime.UtcNow);
+            command.Parameters.AddWithValue("@totalCost", Data.TotalCost);
             command.Parameters.AddWithValue("@modeOfPayment", Data.ModeOfPayment.ToString());
             command.Parameters.AddWithValue("@courier", Data.Courier.ToString());
             using SqlDataReader reader = await command.ExecuteReaderAsync();
@@ -64,12 +65,12 @@ namespace FlameAndWax.Services.Repositories
             {
                 var orderId = int.Parse(reader["OrderId"].ToString());
                 var customerId = int.Parse(reader["CustomerId"].ToString());
-                var employeeId = int.Parse(reader["EmployeeId"].ToString());
-                var orderDetailId = int.Parse(reader["OrderDetailsId"].ToString());
+                var employeeId = int.Parse(reader["EmployeeId"].ToString());               
+                var totalCost = double.Parse(reader["TotalCost"].ToString());
 
                 var customer = await _customerRepository.Fetch(customerId);
                 var employee = await _employeeRepository.Fetch(employeeId);
-                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderDetailId);
+                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId);
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
@@ -79,7 +80,8 @@ namespace FlameAndWax.Services.Repositories
                     Customer = customer,
                     Employee = employee,
                     OrderDetails = orderDetails,
-                    DateOrdered = DateTime.Parse(reader["DateNeeded"].ToString()),
+                    DateOrdered = DateTime.Parse(reader["DateOrdered"].ToString()),
+                    TotalCost = totalCost,
                     ModeOfPayment = modeOfPayment,
                     Courier = courier
                 };
@@ -100,12 +102,12 @@ namespace FlameAndWax.Services.Repositories
             {
                 var orderId = int.Parse(reader["OrderId"].ToString());
                 var customerId = int.Parse(reader["CustomerId"].ToString());
-                var employeeId = int.Parse(reader["EmployeeId"].ToString());
-                var orderDetailId = int.Parse(reader["OrderDetailsId"].ToString());
+                var employeeId = int.Parse(reader["EmployeeId"].ToString());                
+                var totalCost = double.Parse(reader["TotalCost"].ToString());
 
                 var customer = await _customerRepository.Fetch(customerId);
                 var employee = await _employeeRepository.Fetch(employeeId);
-                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderDetailId);
+                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId);
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
@@ -117,7 +119,8 @@ namespace FlameAndWax.Services.Repositories
                             Customer = customer,
                             Employee = employee,
                             OrderDetails = orderDetails,
-                            DateOrdered = DateTime.Parse(reader["DateNeeded"].ToString()),
+                            DateOrdered = DateTime.Parse(reader["DateOrdered"].ToString()),
+                            TotalCost = totalCost,
                             ModeOfPayment = modeOfPayment,
                             Courier = courier
                         }
@@ -139,7 +142,8 @@ namespace FlameAndWax.Services.Repositories
             while (await reader.ReadAsync())
             {
                 var orderId = int.Parse(reader["OrderId"].ToString());                
-                //var employeeId = int.Parse(reader["EmployeeId"].ToString());                
+                //var employeeId = int.Parse(reader["EmployeeId"].ToString());               
+                var totalCost = double.Parse(reader["TotalCost"].ToString());
 
                 var customer = await _customerRepository.Fetch(customerId);
                 //var employee = await _employeeRepository.Fetch(employeeId);
@@ -156,6 +160,7 @@ namespace FlameAndWax.Services.Repositories
                             //Employee = employee,
                             OrderDetails = orderDetails,
                             DateOrdered = DateTime.Parse(reader["DateOrdered"].ToString()),
+                            TotalCost = totalCost,
                             ModeOfPayment = modeOfPayment,
                             Courier = courier
                         }
