@@ -74,7 +74,7 @@ namespace FlameAndWax.Controllers
                                 ProductPrice = productPriceServiceResult.Result //Fetch ProductPrice from service layer not from ui for safety                     
                             },
                             TotalPrice = subTotalCost,
-                            Quantity = cartItems.Count(),
+                            Quantity = cartItem.QuantityOrdered,
                         }
                     );
                 }
@@ -93,7 +93,7 @@ namespace FlameAndWax.Controllers
                 };
                 var primaryKeyServiceResult = await _customerService.CheckoutOrder(order,userLoggedInUsername);
 
-                if (primaryKeyServiceResult.Result == -1)
+                if (primaryKeyServiceResult.HasError)
                 {
                     return View("Error", new ErrorViewModel { ErrorContent = primaryKeyServiceResult.ErrorContent });
                 }                            

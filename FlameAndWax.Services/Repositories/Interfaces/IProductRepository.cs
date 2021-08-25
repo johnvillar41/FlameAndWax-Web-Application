@@ -8,6 +8,7 @@ namespace FlameAndWax.Data.Repositories.Interfaces
     {
         Task ModifyNumberOfStocks(int productId, int numberOfStocksToBeSubtracted);
         Task ModifyNumberOfUnitsInOrder(int productId, int numberOfUnitsToBeAdded);
+        Task UpdateAddUnitsOnOrder(int productId, int quantity);
         Task<IEnumerable<ProductModel>> FetchNewArrivedProducts();
         Task<IEnumerable<ProductModel>> FetchCategorizedProducts(Constants.Constants.Category category);
     }

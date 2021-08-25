@@ -13,9 +13,9 @@ namespace FlameAndWax.Services.Services.Interfaces
         Task<ServiceResult<Boolean>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId);
         Task<ServiceResult<Boolean>> SendMessage(MessageModel newMessage);
         Task<ServiceResult<Boolean>> CheckIfCustomerHasOrderedAProduct(string customerUsername,int productId);
-        Task<ServiceResult<Boolean>> AddCustomerReview(CustomerReviewModel customerReview);        
+        Task<ServiceResult<Boolean>> AddCustomerReview(CustomerReviewModel customerReview);       
+        Task<ServiceResult<Boolean>> CheckoutOrder(OrderModel order,string usernameLoggedIn);
 
-        Task<ServiceResult<int>> CheckoutOrder(OrderModel order,string usernameLoggedIn);
         Task<ServiceResult<double>> FetchProductPrice(int productId);        
 
         Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId);       
