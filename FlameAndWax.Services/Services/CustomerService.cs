@@ -48,13 +48,7 @@ namespace FlameAndWax.Services.Services
             if (newOrder == null)
                 return ServiceHelper.BuildServiceResult<bool>(false, true, "OrderModel not defined!");
 
-            await _orderRepository.Add(newOrder);
-            /**
-             * Get the Orders inside the order object then
-             * loop through the orderDetail list property then adding 
-             * orderDetail and subtracting the Quantity of products
-             * inside the database
-            **/
+            await _orderRepository.Add(newOrder);            
             var orderDetails = newOrder.OrderDetails;
             foreach (var orderDetail in orderDetails)
             {
@@ -174,20 +168,7 @@ namespace FlameAndWax.Services.Services
             else
                 return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Inserting Order");
             return ServiceHelper.BuildServiceResult<bool>(true, false, null);
-        }
-
-        public async Task<ServiceResult<Boolean>> InsertPreviouslyOrderedProduct(PreviouslyOrderedProductModel previouslyOrderedProduct)
-        {
-            var isProductAlreadyOrdered = await _previouslyOrderedProductsRepository.HasCustomerOrderedAProduct(previouslyOrderedProduct.ProductId, previouslyOrderedProduct.CustomerUsername);
-            if (!isProductAlreadyOrdered)
-            {
-                var result = await _previouslyOrderedProductsRepository.AddPreviouslyOrderedProducts(previouslyOrderedProduct);
-                if (result == -1)
-                    return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Adding data!");
-            }
-
-            return ServiceHelper.BuildServiceResult<bool>(true, false, null);
-        }
+        }       
 
         public async Task<ServiceResult<int>> Login(CustomerModel loginCredentials)
         {
