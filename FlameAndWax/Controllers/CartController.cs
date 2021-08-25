@@ -98,6 +98,9 @@ namespace FlameAndWax.Controllers
                     return View("Error", new ErrorViewModel { ErrorContent = primaryKeyServiceResult.ErrorContent });
                 }
 
+                //Add values in PreviouslyOrderedTables if product has not been ordered yet
+                //Update ProductsTablee column units on order
+
                 Cart.ClearCartItems(userLoggedInUsername);
                 return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedInID) });
             }

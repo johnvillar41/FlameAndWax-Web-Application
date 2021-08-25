@@ -141,12 +141,19 @@ namespace FlameAndWax.Services.Repositories
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                var orderId = int.Parse(reader["OrderId"].ToString());                
-                //var employeeId = int.Parse(reader["EmployeeId"].ToString());               
+                var orderId = int.Parse(reader["OrderId"].ToString());   
+                
+                var employeeId = -1;
+                EmployeeModel employee = null;
+                if (!reader.IsDBNull(2))
+                {
+                    employeeId = int.Parse(reader["EmployeeId"].ToString());
+                    employee = await _employeeRepository.Fetch(employeeId);
+                }
+
                 var totalCost = double.Parse(reader["TotalCost"].ToString());
 
-                var customer = await _customerRepository.Fetch(customerId);
-                //var employee = await _employeeRepository.Fetch(employeeId);
+                var customer = await _customerRepository.Fetch(customerId);                
                 var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId);
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
@@ -157,7 +164,7 @@ namespace FlameAndWax.Services.Repositories
                         {
                             OrderId = orderId,
                             Customer = customer,
-                            //Employee = employee,
+                            Employee = employee,
                             OrderDetails = orderDetails,
                             DateOrdered = DateTime.Parse(reader["DateOrdered"].ToString()),
                             TotalCost = totalCost,
