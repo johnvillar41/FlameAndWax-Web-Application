@@ -4,12 +4,12 @@
         <div class="col-sm-3">
 
             <div class="text-center p-2">
-                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
+                <img src="@Url.Content(Model.ProfilePictureLink)" class="avatar img-circle img-thumbnail" alt="avatar">
                 <h6>Upload a different photo...</h6>
                 <input type="file" class="text-center center-block file-upload">
             </div>
-            <hr />            
-        </div>
+            <hr />
+        </div>        
 
         <div class="col-lg-9">
             <form class="form" asp-controller="UserProfile" asp-action="Save" method="post">
@@ -54,10 +54,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-
                     <div class="col-xs-6">
                         <h5>Password</h5>
-                        <input type="password" class="form-control" asp-for="@Model.Password" placeholder="Enter Password" title="enter your password.">
+                        <input type="text" class="form-control" asp-for="@Model.Password" placeholder="Enter Password" title="enter your password.">
                     </div>
                 </div>
                 <div class="form-group">

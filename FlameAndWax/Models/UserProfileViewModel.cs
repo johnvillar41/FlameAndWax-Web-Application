@@ -14,5 +14,6 @@ namespace FlameAndWax.Models
         public string Password { get; set; }
         public string VerifyPassword { get; set; }
         public string Username { get; set; }
+        public string ProfilePictureLink { get; set; }
     }
 }

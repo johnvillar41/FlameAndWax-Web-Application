@@ -17,17 +17,30 @@ namespace FlameAndWax.Controllers
         {
             _customerService = customerService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var userId = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.Name).Value;
-            
-            return View();
+            var userId = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
+            var accountDetailServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId));
+            if (accountDetailServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = accountDetailServiceResult.ErrorContent });
+
+            var userProfile = new UserProfileViewModel
+            {
+                Fullname = accountDetailServiceResult.Result.CustomerName,
+                ContactNumber = accountDetailServiceResult.Result.ContactNumber,
+                Email = accountDetailServiceResult.Result.Email,
+                Address = accountDetailServiceResult.Result.Address,
+                Password = accountDetailServiceResult.Result.Password,
+                Username = accountDetailServiceResult.Result.Username,
+                ProfilePictureLink = accountDetailServiceResult.Result.ProfilePictureLink
+            };
+
+            return View(userProfile);
         }
 
         [HttpPost]
         public async Task<IActionResult> Save(UserProfileViewModel userProfile)
         {
-            var userId = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.Name).Value;
+            var userId = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
             var customerModel = new CustomerModel
             {
                 CustomerId = int.Parse(userId),
@@ -39,7 +52,7 @@ namespace FlameAndWax.Controllers
                 ProfilePictureLink = null, //TODO FIX
                 Address = userProfile.Address
             };
-            var modifyServiceResult = await _customerService.ModifyAccountDetails(customerModel,int.Parse(userId));
+            var modifyServiceResult = await _customerService.ModifyAccountDetails(customerModel, int.Parse(userId));
             if (modifyServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = modifyServiceResult.ErrorContent });
             return RedirectToAction("Index");
         }
