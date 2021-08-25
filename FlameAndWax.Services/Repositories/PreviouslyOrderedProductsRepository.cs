@@ -1,4 +1,5 @@
 ﻿using FlameAndWax.Data.Constants;
+using FlameAndWax.Data.Models;
 using FlameAndWax.Services.Repositories.Interfaces;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -7,6 +8,25 @@ namespace FlameAndWax.Services.Repositories
 {
     public class PreviouslyOrderedProductsRepository : IPreviouslyOrderedProductsRepository
     {
+        public async Task<int> AddPreviouslyOrderedProducts(PreviouslyOrderedProductModel previouslyOrderedProduct)
+        {
+            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "INSERT INTO PreviouslyOrderedProductsTable(ProductId,CustomerUsername)" +
+                "VALUES(@productId,@customerUsername);" +
+                "SELECT SCOPE_IDENTITY() as fk;";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@productId", previouslyOrderedProduct.ProductId);
+            command.Parameters.AddWithValue("@customerUsername", previouslyOrderedProduct.CustomerUsername);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                var primaryKey = int.Parse(reader["fk"].ToString());
+                return primaryKey;
+            }
+            return -1;
+        }
+
         public async Task<bool> HasCustomerOrderedAProduct(int productId, string customerUsername)
         {
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
@@ -16,7 +36,7 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@productId", productId);
             command.Parameters.AddWithValue("@customerUsername", customerUsername);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-            if(await reader.ReadAsync())
+            if (await reader.ReadAsync())
             {
                 return true;
             }
