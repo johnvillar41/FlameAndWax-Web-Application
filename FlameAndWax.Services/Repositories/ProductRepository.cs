@@ -114,7 +114,7 @@ namespace FlameAndWax.Services.Repositories
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@category", category.ToString());
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-            while(await reader.ReadAsync())
+            while (await reader.ReadAsync())
             {
                 var categoryString = reader["Category"].ToString();
 
@@ -206,6 +206,17 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@unitOrder", data.UnitsInOrder);
             command.Parameters.AddWithValue("@category", nameof(data.Category));
             command.Parameters.AddWithValue("@id", data.ProductId);
+            await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdateAddUnitsOnOrder(int productId, int quantity)
+        {
+            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            await connection.OpenAsync();
+            var queryString = "UPDATE ProductsTable SET UnitsOnOrder = UnitsOnOrder + @quantity WHERE ProductId = @productId";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@quantity", quantity);
+            command.Parameters.AddWithValue("@productId", productId);
             await command.ExecuteNonQueryAsync();
         }
     }
