@@ -14,6 +14,7 @@ namespace FlameAndWax.Models
         public ModeOfPayment ModeOfPayment { get; set; }
         public Courier Courier { get; set; }
         public double TotalCost { get; set; }
+        public Constants.OrderDetailStatus OrderStatus{ get; set; }
 
         public IEnumerable<OrderDetailViewModel> OrderDetails { get; set; }
     }

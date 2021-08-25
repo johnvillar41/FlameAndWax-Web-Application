@@ -139,12 +139,11 @@ namespace FlameAndWax.Services.Repositories
             while (await reader.ReadAsync())
             {
                 var orderId = int.Parse(reader["OrderId"].ToString());                
-                var employeeId = int.Parse(reader["EmployeeId"].ToString());
-                var orderDetailId = int.Parse(reader["OrderDetailsId"].ToString());
+                //var employeeId = int.Parse(reader["EmployeeId"].ToString());                
 
                 var customer = await _customerRepository.Fetch(customerId);
-                var employee = await _employeeRepository.Fetch(employeeId);
-                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderDetailId);
+                //var employee = await _employeeRepository.Fetch(employeeId);
+                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId);
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
@@ -154,9 +153,9 @@ namespace FlameAndWax.Services.Repositories
                         {
                             OrderId = orderId,
                             Customer = customer,
-                            Employee = employee,
+                            //Employee = employee,
                             OrderDetails = orderDetails,
-                            DateOrdered = DateTime.Parse(reader["DateNeeded"].ToString()),
+                            DateOrdered = DateTime.Parse(reader["DateOrdered"].ToString()),
                             ModeOfPayment = modeOfPayment,
                             Courier = courier
                         }
