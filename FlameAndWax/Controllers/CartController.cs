@@ -77,17 +77,6 @@ namespace FlameAndWax.Controllers
                             Quantity = cartItems.Count(),
                         }
                     );
-
-                    //should be refratored
-                    var previouslyOrderedModel = new PreviouslyOrderedProductModel
-                    {
-                        ProductId = cartItem.ProductId,
-                        CustomerUsername = userLoggedInUsername
-                    };
-
-                    var previousOrderedServiceResult = await _customerService.InsertPreviouslyOrderedProduct(previouslyOrderedModel);
-                    if (previousOrderedServiceResult.HasError)
-                        return View("Error", new ErrorViewModel { ErrorContent = previousOrderedServiceResult.ErrorContent });
                 }
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(cart.ModeOfPayment.ToString());
@@ -102,15 +91,13 @@ namespace FlameAndWax.Controllers
                     OrderDetails = orderDetails,
                     Courier = courierType
                 };
-                var primaryKeyServiceResult = await _customerService.InsertNewOrder(order);
+                var primaryKeyServiceResult = await _customerService.CheckoutOrder(order,userLoggedInUsername);
 
                 if (primaryKeyServiceResult.Result == -1)
                 {
                     return View("Error", new ErrorViewModel { ErrorContent = primaryKeyServiceResult.ErrorContent });
-                }              
-                
-                //Update ProductsTablee column units on order
-
+                }                            
+               
                 Cart.ClearCartItems(userLoggedInUsername);
                 return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedInID) });
             }

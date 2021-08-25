@@ -148,7 +148,7 @@ namespace FlameAndWax.Services.Services
             return ServiceHelper.BuildServiceResult<double>(productPrice.ProductPrice, false, null);
         }
 
-        public async Task<ServiceResult<int>> InsertNewOrder(OrderModel order)
+        public async Task<ServiceResult<int>> CheckoutOrder(OrderModel order,string usernameLoggedIn)
         {
             var primaryKey = await _orderRepository.Add(order);
             if (primaryKey != 1)
@@ -158,6 +158,18 @@ namespace FlameAndWax.Services.Services
                     var primaryKeyOrderDetail = await _orderDetailRepository.Add(orderDetail);
                     if (primaryKeyOrderDetail == -1)
                         return ServiceHelper.BuildServiceResult<int>(primaryKeyOrderDetail, true, "Error Inserting OrderDetail");
+
+                    var previouslyOrderedModel = new PreviouslyOrderedProductModel
+                    {
+                        ProductId = orderDetail.Product.ProductId,
+                        CustomerUsername = usernameLoggedIn
+                    };
+
+                    var result = await _previouslyOrderedProductsRepository.AddPreviouslyOrderedProducts(previouslyOrderedModel);
+                    if (result == -1)
+                        return ServiceHelper.BuildServiceResult<int>(result, true, "Error Adding Previous Orders");
+
+                    //Update ProductsTablee column units on order
                 }
             else
                 return ServiceHelper.BuildServiceResult<int>(primaryKey, true, "Error Inserting Order");
