@@ -1,6 +1,6 @@
 ﻿namespace FlameAndWax.Data.Models
 {
-    public class PreviouslyOrderedProductsModel
+    public class PreviouslyOrderedProductModel
     {
         public int PreviouslyOrderedId { get; set; }
         public int ProductId { get; set; }

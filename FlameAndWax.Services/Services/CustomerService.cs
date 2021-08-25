@@ -164,6 +164,19 @@ namespace FlameAndWax.Services.Services
             return ServiceHelper.BuildServiceResult<int>(primaryKey, false, null);
         }
 
+        public async Task<ServiceResult<Boolean>> InsertPreviouslyOrderedProduct(PreviouslyOrderedProductModel previouslyOrderedProduct)
+        {
+            var isProductAlreadyOrdered = await _previouslyOrderedProductsRepository.HasCustomerOrderedAProduct(previouslyOrderedProduct.ProductId, previouslyOrderedProduct.CustomerUsername);
+            if (!isProductAlreadyOrdered)
+            {
+                var result = await _previouslyOrderedProductsRepository.AddPreviouslyOrderedProducts(previouslyOrderedProduct);
+                if (result == -1)
+                    return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Adding data!");
+            }
+
+            return ServiceHelper.BuildServiceResult<bool>(true, false, null);
+        }
+
         public async Task<ServiceResult<int>> Login(CustomerModel loginCredentials)
         {
             if (loginCredentials.Username == null && loginCredentials.Password == null)
