@@ -59,14 +59,14 @@
                                     <a class="dropdown-item" asp-controller="Orders" asp-action="Index">&nbsp;<i class="fas fa-clipboard-list"></i>&nbsp;Orders</a>
 
                                     <hr />
-                                    <a class="dropdown-item" asp-action="ProcessLogout" asp-controller="Account"><i class="fas fa-sign-out-alt" style="margin-left: -10px; margin-right:5px;"></i>Logout</a>
+                                    <a class="dropdown-item" asp-action="ProcessLogout" asp-controller="Account">&nbsp;<i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
                                 </div>
                             </li>
 
                         }
                         else
                         {
-                            if (ViewData["Title"] != "Login Page")
+                            if (!ViewData["Title"].Equals("Login Page") && !ViewData["Title"].Equals("Register Account"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-action="Login" asp-controller="Account"><i class="fas fa-sign-in-alt"></i>&nbsp;Login</a>

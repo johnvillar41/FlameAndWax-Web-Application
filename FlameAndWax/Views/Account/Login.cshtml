@@ -43,8 +43,14 @@
                                             <input class="form-control" type="password" asp-for="@Model.Password" required />
 
                                         </div>
-                                        <div class="row mt-5">
-                                            <button type="submit" class="btn btn-block btn-gold" style="font-family: Arial Rounded MT"><i class="fas fa-sign-in-alt"></i> Login</button>
+
+                                        <hr />
+
+                                        <div class="row mt-2">
+                                            <button type="submit" class="btn btn-block btn-gold"><i class="fas fa-sign-in-alt"></i> Login</button>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <a asp-action="Index" asp-controller="Register" class="btn btn-block btn-gold"><i class="fas fa-user-plus"></i> Register Now</a>
                                         </div>
                                     </div>
                                 </form>
@@ -55,7 +61,7 @@
             </div>
             <div class="py-4" style="background-color: #e4e2da;">
                 <div class="row px-3">
-                    <small class="ml-4 ml-sm-5 mb-2" style="color: #a68245;">Copyright &copy; 2021. All rights reserved.</small>
+                    <small class="ml-4 ml-sm-5 mb-2" style="color: #a68245;">Copyright &copy; @DateTime.Today.Year. All rights reserved.</small>
                 </div>
             </div>
         </div>

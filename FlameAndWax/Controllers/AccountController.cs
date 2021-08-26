@@ -35,7 +35,7 @@ namespace FlameAndWax.Controllers
                 {
                     ErrorContent = isAuthenticatedServiceResult.ErrorContent
                 };
-                return View("Error", error);
+                return PartialView("Error", error);
             }
             if (isAuthenticatedServiceResult.Result != -1)
             {
