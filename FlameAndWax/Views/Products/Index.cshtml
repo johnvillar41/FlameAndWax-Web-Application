@@ -15,9 +15,9 @@
                 Category <i class="fas fa-caret-square-down"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" onclick="update('Products')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Candle)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Candle</a>
-                <a class="dropdown-item" onclick="update('Products')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Soap)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Soap</a>
-                <a class="dropdown-item" onclick="update('Products')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Diffuser)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Diffuser</a>
+                <a class="dropdown-item" onclick="update('Candle')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Candle)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Candle</a>
+                <a class="dropdown-item" onclick="update('Soap')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Soap)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Soap</a>
+                <a class="dropdown-item" onclick="update('Diffuser')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Diffuser)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Diffuser</a>
             </div>
         </div>
         <div class="spinner-border ml-2" role="status" id="loader" style="display:none;">
@@ -30,12 +30,11 @@
 
 </div>
 
-@section scripts{
-    <script>
-        update = function (text) {
-            var button = document.getElementById("dropdownMenuButton").innerHTML;
-            button = text;
-        }
-    </script>
-}
+
+<script>
+    update = function (text) {
+        document.getElementById("dropdownMenuButton").innerHTML = text;       
+    }
+</script>
+
 
