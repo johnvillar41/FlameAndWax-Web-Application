@@ -23,7 +23,7 @@ namespace FlameAndWax.Controllers
         {
             return View();
         }
-
+        [HttpPost]
         public async Task<IActionResult> RegisterUser(UserProfileViewModel newUser)
         {
             var customerModel = new CustomerModel
