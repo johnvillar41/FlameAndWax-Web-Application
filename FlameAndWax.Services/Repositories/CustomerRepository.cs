@@ -14,8 +14,8 @@ namespace FlameAndWax.Data.Repositories
         {
             using SqlConnection connection = new SqlConnection(DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO CustomerTable(CustomerName,ContactNumber,Email,Username,Password,ProfilePictureLink,Status,Address)" +
-                "VALUES(@name,@number,@email,@username,@password,@link,@status,@address);" +
+            var queryString = "INSERT INTO CustomerTable(CustomerName,ContactNumber,Email,Username,Password,Status,Address)" +
+                "VALUES(@name,@number,@email,@username,@password,@status,@address);" +
                 "SELECT SCOPE_IDENTITY() as pk;";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@name", Data.CustomerName);
@@ -23,8 +23,8 @@ namespace FlameAndWax.Data.Repositories
             command.Parameters.AddWithValue("@email", Data.Email);
             command.Parameters.AddWithValue("@username", Data.Username);
             command.Parameters.AddWithValue("@password", Data.Password);
-            command.Parameters.AddWithValue("@link", Data.ProfilePictureLink);
-            command.Parameters.AddWithValue("@status", CustomerAccountStatus.Active.ToString());
+            //command.Parameters.AddWithValue("@link", Data.ProfilePictureLink);
+            command.Parameters.AddWithValue("@status",Constants.Constants.CustomerAccountStatus.Pending.ToString());
             command.Parameters.AddWithValue("@address",  Data.Address);
 
             using SqlDataReader reader = await command.ExecuteReaderAsync();
