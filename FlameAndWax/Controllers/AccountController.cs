@@ -63,7 +63,7 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> ProcessLogout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
