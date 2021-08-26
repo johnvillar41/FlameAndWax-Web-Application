@@ -5,110 +5,106 @@
 }
 
 <div class="container">
-    <h2>@ViewData["Title"]</h2>
-    <div class="row">
 
-        <div class="card">
-            <div class="row no-gutters">
-
-                <div class="col-xl-8 col-lg-8 col-12 border-right">
-                    <form method="post" asp-action="RegisterUser" asp-controller="Register">
-                        <div class="card-body">
-
-                            <!-- Full Name -->
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">Full Name</div>
-                                        </div>
-                                        <input type="text" asp-for="@Model.Fullname" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter full name here...">
+    <div class="card card0">
+        <div class="row">
+            <div class="col-xl-8 col-lg-8 col-12 border-right">
+                <form method="post" asp-action="RegisterUser" asp-controller="Register">
+                    <div class="card-body">
+                        <h2>@ViewData["Title"]</h2>
+                        <!-- Full Name -->
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Full Name</div>
                                     </div>
-                                </div>
-
-                            </div>
-
-                            <!-- Contact Number -->
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">Contact No.</div>
-                                        </div>
-                                        <input type="text" asp-for="@Model.ContactNumber" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter mobile number here...">
-                                    </div>
+                                    <input required type="text" asp-for="@Model.Fullname" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter full name here...">
                                 </div>
                             </div>
 
-                            <!-- Address -->
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">Address</div>
-                                        </div>
-                                        <input type="text" asp-for="@Model.Address" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter address here...">
+                        </div>
+
+                        <!-- Contact Number -->
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Contact No.</div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <hr />
-
-                            <!-- Email Address -->
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">Email Address</div>
-                                        </div>
-                                        <input type="text" asp-for="@Model.Email" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter email address here...">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Username -->
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">Username</div>
-                                        </div>
-                                        <input type="text" asp-for="@Model.Username" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter username here...">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Password -->
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">Password</div>
-                                        </div>
-                                        <input type="text" asp-for="@Model.Password" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter password here...">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-2">
-                                <div class="col-4 mx-auto">
-                                    <button class="btn btn-gold btn-block" type="submit"><i class="fas fa-user-plus"></i> Register</button>
+                                    <input required type="text" asp-for="@Model.ContactNumber" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter mobile number here...">
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
 
-                <div class="col-xl-4 col-lg-4 col-12">
-                    <div class="card-body">
-                        <!-- Picture -->
-                        Long ago, the four nations lived together in harmony. Then everything changed when the Fire Nation attacked.
+                        <!-- Address -->
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Address</div>
+                                    </div>
+                                    <textarea required type="text" asp-for="@Model.Address" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter address here..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Email Address -->
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Email Address</div>
+                                    </div>
+                                    <input required type="text" asp-for="@Model.Email" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter email address here...">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Username -->
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Username</div>
+                                    </div>
+                                    <input required type="text" asp-for="@Model.Username" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter username here...">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Password</div>
+                                    </div>
+                                    <input required type="text" asp-for="@Model.Password" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter password here...">
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row mb-2">
+                            <div class="col-4 mx-auto">
+                                <button class="btn btn-gold btn-block" type="submit"><i class="fas fa-user-plus"></i> Register</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-
+                </form>
             </div>
-        </div>
 
+            <div class="col-xl-4 col-lg-4 col-12 text-center">                
+                <img src="~/images/customers/rechard.jpg" class="avatar img-circle img-thumbnail" alt="avatar">
+                <h6>Upload a different photo...</h6>
+                <input type="file" class="text-center center-block file-upload">
+            </div>
+
+
+        </div>
     </div>
+
 </div>
+
