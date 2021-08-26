@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<FlameAndWax.Models.ProductViewModel>;
 @using FlameAndWax.Data.Constants;
 @{
-    ViewData["Title"] = "Products";   
+    ViewData["Title"] = "Products";
 }
 <div class="container">
     <div class="row p-2">
@@ -15,9 +15,9 @@
                 Category <i class="fas fa-caret-square-down"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Candle)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Candle</a>
-                <a class="dropdown-item" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Soap)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Soap</a>
-                <a class="dropdown-item" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Diffuser)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Diffuser</a>
+                <a class="dropdown-item" onclick="update('Products')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Candle)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Candle</a>
+                <a class="dropdown-item" onclick="update('Products')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Soap)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Soap</a>
+                <a class="dropdown-item" onclick="update('Products')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Diffuser)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Diffuser</a>
             </div>
         </div>
         <div class="spinner-border ml-2" role="status" id="loader" style="display:none;">
@@ -29,3 +29,13 @@
     </div>
 
 </div>
+
+@section scripts{
+    <script>
+        update = function (text) {
+            var button = document.getElementById("dropdownMenuButton").innerHTML;
+            button = text;
+        }
+    </script>
+}
+
