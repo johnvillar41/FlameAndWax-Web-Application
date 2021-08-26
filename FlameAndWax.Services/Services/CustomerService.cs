@@ -48,7 +48,7 @@ namespace FlameAndWax.Services.Services
             if (newOrder == null)
                 return ServiceHelper.BuildServiceResult<bool>(false, true, "OrderModel not defined!");
 
-            await _orderRepository.Add(newOrder);            
+            await _orderRepository.Add(newOrder);
             var orderDetails = newOrder.OrderDetails;
             foreach (var orderDetail in orderDetails)
             {
@@ -142,7 +142,7 @@ namespace FlameAndWax.Services.Services
             return ServiceHelper.BuildServiceResult<double>(productPrice.ProductPrice, false, null);
         }
 
-        public async Task<ServiceResult<bool>> CheckoutOrder(OrderModel order,string usernameLoggedIn)
+        public async Task<ServiceResult<bool>> CheckoutOrder(OrderModel order, string usernameLoggedIn)
         {
             var primaryKey = await _orderRepository.Add(order);
             if (primaryKey != 1)
@@ -162,13 +162,13 @@ namespace FlameAndWax.Services.Services
                     var result = await _previouslyOrderedProductsRepository.AddPreviouslyOrderedProducts(previouslyOrderedModel);
                     if (result == -1)
                         return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Adding Previous Orders");
-                    
+
                     await _productRepository.UpdateAddUnitsOnOrder(orderDetail.Product.ProductId, orderDetail.Quantity);
                 }
             else
                 return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Inserting Order");
             return ServiceHelper.BuildServiceResult<bool>(true, false, null);
-        }       
+        }
 
         public async Task<ServiceResult<int>> Login(CustomerModel loginCredentials)
         {
@@ -211,5 +211,7 @@ namespace FlameAndWax.Services.Services
             await _messageRepository.Add(newMessage);
             return ServiceHelper.BuildServiceResult<bool>(true, false, null);
         }
+
+        
     }
 }

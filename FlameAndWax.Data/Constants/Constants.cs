@@ -27,7 +27,8 @@
         public enum CustomerAccountStatus
         {
             Banned,
-            Active
+            Active,
+            Pending
         }
         public enum EmployeeAccountStatus
         {
