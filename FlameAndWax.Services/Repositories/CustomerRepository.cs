@@ -116,7 +116,7 @@ namespace FlameAndWax.Data.Repositories
         {
             using SqlConnection connection = new SqlConnection(DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "SELECT CustomerId FROM CustomerTable WHERE Username = @username AND Password = @password";
+            var queryString = "SELECT CustomerId FROM CustomerTable WHERE Username = @username COLLATE SQL_Latin1_General_CP1_CS_AS AND Password = @password COLLATE SQL_Latin1_General_CP1_CS_AS";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@username", loginCustomer.Username);
             command.Parameters.AddWithValue("@password", loginCustomer.Password);
