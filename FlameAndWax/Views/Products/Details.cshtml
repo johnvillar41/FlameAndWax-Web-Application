@@ -97,7 +97,7 @@
                     <form method="get" asp-controller="Products" asp-action="AddProductReview"
                           data-ajax="true" data-ajax-update="#content" data-ajax-loading="#overlayLoadingDiv" data-ajax-complete="completed">
                         <div class="rate">
-                            <input type="radio" id="star5" name="rate" value="5" />
+                            <input type="radio" required id="star5" name="rate" value="5" />
                             <label for="star5" title="text">5 stars</label>
                             <input type="radio" id="star4" name="rate" value="4" />
                             <label for="star4" title="text">4 stars</label>
@@ -109,7 +109,7 @@
                             <label for="star1" title="text">1 star</label>
                         </div>
                         <input type="hidden" name="productId" value="@Model.ProductId" />
-                        <textarea type="text" name="reviewDetail" class="form-control" placeholder="Enter Review Detail" rows="5"></textarea>
+                        <textarea type="text" required name="reviewDetail" class="form-control" placeholder="Enter Review Detail" rows="5"></textarea>
                         <button type="submit" class="btn btn-gold mt-1">Post Review <i class="fas fa-paper-plane"></i></button>
 
                     </form>

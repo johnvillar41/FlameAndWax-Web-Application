@@ -66,7 +66,7 @@
                         }
                         else
                         {
-                            if (ViewData["Title"]!=null && !ViewData["Title"].Equals("Login Page") && !ViewData["Title"].Equals("Register Account"))
+                            if (ViewData["Title"] != null && !ViewData["Title"].Equals("Login Page") && !ViewData["Title"].Equals("Register Account"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-action="Login" asp-controller="Account"><i class="fas fa-sign-in-alt"></i>&nbsp;Login</a>
@@ -132,6 +132,7 @@
     <script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src=@("https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js")></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
