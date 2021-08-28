@@ -110,7 +110,6 @@ namespace FlameAndWax.Controllers
                         }
                     );
             }
-            customerReviewModels.Reverse();
             return PartialView("ProductReviewPartial", customerReviewModels);
         }
 

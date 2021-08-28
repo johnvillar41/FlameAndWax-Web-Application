@@ -135,7 +135,7 @@ namespace FlameAndWax.Services.Repositories
             
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM OrdersTable WHERE CustomerId = @customerId";
+            var queryString = "SELECT * FROM OrdersTable WHERE CustomerId = @customerId ORDER BY DateOrdered DESC";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@customerId", customerId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();

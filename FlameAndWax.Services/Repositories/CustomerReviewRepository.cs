@@ -73,7 +73,7 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM CustomerReviewTable";
+            var queryString = "SELECT * FROM CustomerReviewTable ORDER BY ReviewID DESC";
             using SqlCommand command = new SqlCommand(queryString, connection);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while(await reader.ReadAsync())
