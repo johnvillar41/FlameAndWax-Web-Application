@@ -86,8 +86,11 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM OrderDetailsTable";
+            var queryString = "SELECT * FROM OrderDetailsTable ORDER by OrderDetailsId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
+                "FETCH NEXT @PageSize ROWS ONLY";
             using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@PageNumber", pageNumber);
+            command.Parameters.AddWithValue("@PageSize", pageSize);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {

@@ -24,11 +24,11 @@ namespace FlameAndWax.Data.Repositories
             command.Parameters.AddWithValue("@username", Data.Username);
             command.Parameters.AddWithValue("@password", Data.Password);
             //command.Parameters.AddWithValue("@link", Data.ProfilePictureLink);
-            command.Parameters.AddWithValue("@status",Constants.Constants.CustomerAccountStatus.Pending.ToString());
-            command.Parameters.AddWithValue("@address",  Data.Address);
+            command.Parameters.AddWithValue("@status", Constants.Constants.CustomerAccountStatus.Pending.ToString());
+            command.Parameters.AddWithValue("@address", Data.Address);
 
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-            if(await reader.ReadAsync())
+            if (await reader.ReadAsync())
             {
                 var primaryKey = int.Parse(reader["pk"].ToString());
                 return primaryKey;
@@ -89,8 +89,11 @@ namespace FlameAndWax.Data.Repositories
 
             using SqlConnection connection = new SqlConnection(DB_CONNECTION_STRING);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM CustomerTable";
+            var queryString = "SELECT * FROM CustomerTable ORDER BY CustomerId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
+                "FETCH NEXT @PageSize ROWS ONLY";
             using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@PageNumber", pageNumber);
+            command.Parameters.AddWithValue("@PageSize", pageSize);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -121,11 +124,11 @@ namespace FlameAndWax.Data.Repositories
             command.Parameters.AddWithValue("@username", loginCustomer.Username);
             command.Parameters.AddWithValue("@password", loginCustomer.Password);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-            if(await reader.ReadAsync())
+            if (await reader.ReadAsync())
             {
                 var customerId = int.Parse(reader["CustomerId"].ToString());
                 return customerId;
-            }                 
+            }
             return -1;
         }
 
@@ -141,7 +144,7 @@ namespace FlameAndWax.Data.Repositories
             command.Parameters.AddWithValue("@number", data.ContactNumber);
             command.Parameters.AddWithValue("@email", data.Email);
             command.Parameters.AddWithValue("@username", data.Username);
-            command.Parameters.AddWithValue("@password", data.Password);                   
+            command.Parameters.AddWithValue("@password", data.Password);
             command.Parameters.AddWithValue("@address", data.Address);
             await command.ExecuteNonQueryAsync();
         }
