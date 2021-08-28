@@ -23,17 +23,9 @@ namespace FlameAndWax.Controllers
             var ordersServiceResult = await _customerService.FetchOrders(int.Parse(customerIdLoggedIn));
 
             if (ordersServiceResult.HasError)
-                return PartialView("Error", new ErrorViewModel { ErrorContent = ordersServiceResult.ErrorContent });            
-           
-            var orderStatus = Constants.OrderDetailStatus.Processing;
-            foreach(var order in ordersServiceResult.Result)
-            {                
-                foreach(var cost in order.OrderDetails)
-                {                    
-                    if (cost.Status == orderStatus)
-                        orderStatus = Constants.OrderDetailStatus.Processing;
-                }
-            }            
+                return PartialView("Error", new ErrorViewModel { ErrorContent = ordersServiceResult.ErrorContent });
+
+            
 
             var orderViewModels = new List<OrderViewModel>();
             foreach (var order in ordersServiceResult.Result)
@@ -42,8 +34,12 @@ namespace FlameAndWax.Controllers
                 if (orderDetailsServiceResult.HasError)
                     return View("Error", new ErrorViewModel { ErrorContent = orderDetailsServiceResult.ErrorContent });
 
+                var orderStatus = Constants.OrderDetailStatus.Processing;
+                if (order.OrderDetails.Any(o => o.Status.Equals(Constants.OrderDetailStatus.Finished)))                
+                    orderStatus = Constants.OrderDetailStatus.Finished;                
+
                 var orderDetails = new List<OrderDetailViewModel>();
-                foreach(var orderDetail in orderDetailsServiceResult.Result)
+                foreach (var orderDetail in orderDetailsServiceResult.Result)
                 {
                     orderDetails.Add(
                             new OrderDetailViewModel
