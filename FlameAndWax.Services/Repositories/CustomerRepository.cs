@@ -83,7 +83,7 @@ namespace FlameAndWax.Data.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<CustomerModel>> FetchAll()
+        public async Task<IEnumerable<CustomerModel>> FetchPaginatedResult(int pageNumber, int pageSize)
         {
             List<CustomerModel> customers = new List<CustomerModel>();
 

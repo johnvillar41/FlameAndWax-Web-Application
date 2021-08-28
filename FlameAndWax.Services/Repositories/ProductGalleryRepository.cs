@@ -24,7 +24,7 @@ namespace FlameAndWax.Services.Repositories
             throw new System.NotImplementedException();
         }
 
-        public Task<IEnumerable<ProductGalleryModel>> FetchAll()
+        public Task<IEnumerable<ProductGalleryModel>> FetchPaginatedResult(int pageNumber, int pageSize)
         {
             throw new System.NotImplementedException();
         }

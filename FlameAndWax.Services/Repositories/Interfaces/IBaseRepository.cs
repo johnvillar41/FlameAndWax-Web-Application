@@ -9,6 +9,6 @@ namespace FlameAndWax.Data.Repositories.Interfaces
         Task Delete(int id);
         Task Update(T data, int id);
         Task<T> Fetch(int id);
-        Task<IEnumerable<T>> FetchAll();
+        Task<IEnumerable<T>> FetchPaginatedResult(int pageNumber, int pageSize);
     }
 }

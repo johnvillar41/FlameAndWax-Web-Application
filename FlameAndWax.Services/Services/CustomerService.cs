@@ -73,9 +73,9 @@ namespace FlameAndWax.Services.Services
             return ServiceHelper.BuildServiceResult<CustomerModel>(customer, false, null);
         }
 
-        public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts()
+        public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts(int pageNumber, int pageSize)
         {
-            var products = await _productRepository.FetchAll();
+            var products = await _productRepository.FetchPaginatedResult(pageNumber,pageSize);
             return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(products, false, null);
         }
 

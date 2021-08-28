@@ -21,11 +21,11 @@ namespace FlameAndWax.Controllers
             _customerService = customerService;
         }
 
-        public async Task<IActionResult> Index(List<ProductViewModel> products)
+        public async Task<IActionResult> Index(List<ProductViewModel> products, int pageNumber, int pageSize)
         {
             if (products.Count() == 0)
             {
-                var productServiceResult = await _customerService.FetchAllProducts();
+                var productServiceResult = await _customerService.FetchAllProducts(pageNumber,pageSize);
                 if (productServiceResult.HasError)
                 {
                     var error = new ErrorViewModel

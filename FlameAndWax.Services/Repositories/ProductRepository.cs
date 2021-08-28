@@ -73,7 +73,7 @@ namespace FlameAndWax.Services.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<ProductModel>> FetchAll()
+        public async Task<IEnumerable<ProductModel>> FetchPaginatedResult(int pageNumber, int pageSize)
         {
             List<ProductModel> products = new List<ProductModel>();
 

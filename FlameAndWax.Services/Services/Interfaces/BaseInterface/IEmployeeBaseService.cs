@@ -12,7 +12,7 @@ namespace FlameAndWax.Services.Services.BaseInterface.Interface
         Task<ServiceResult<Boolean>> DeleteCustomerAccount(int employeeId);
         Task<ServiceResult<Boolean>> ModifyProduct(ProductModel updatedProduct, int productId);
 
-        Task<ServiceResult<IEnumerable<CustomerModel>>> FetchAllCustomerAccounts();        
-        Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts();
+        Task<ServiceResult<IEnumerable<CustomerModel>>> FetchAllCustomerAccounts(int pageNumber, int pageSize);        
+        Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts(int pageNumber, int pageSize);
     }
 }

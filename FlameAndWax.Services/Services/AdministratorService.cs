@@ -40,15 +40,15 @@ namespace FlameAndWax.Services.Services
             return ServiceHelper.BuildServiceResult<bool>(true, false, null);
         }
 
-        public async Task<ServiceResult<IEnumerable<CustomerModel>>> FetchAllCustomerAccounts()
+        public async Task<ServiceResult<IEnumerable<CustomerModel>>> FetchAllCustomerAccounts(int pageNumber, int pageSize)
         {
-            var customers = await _customerRepository.FetchAll();
+            var customers = await _customerRepository.FetchPaginatedResult(pageNumber,pageSize);
             return ServiceHelper.BuildServiceResult<IEnumerable<CustomerModel>>(customers, false, null);
         }
 
-        public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts()
+        public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts(int pageNumber, int pageSize)
         {
-            var products = await _productRepository.FetchAll();
+            var products = await _productRepository.FetchPaginatedResult(pageNumber,pageSize);
             return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(products, false, null);
         }
 

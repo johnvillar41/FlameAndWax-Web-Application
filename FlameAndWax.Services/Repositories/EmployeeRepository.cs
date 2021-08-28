@@ -77,7 +77,7 @@ namespace FlameAndWax.Services.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<EmployeeModel>> FetchAll()
+        public async Task<IEnumerable<EmployeeModel>> FetchPaginatedResult(int pageNumber, int pageSize)
         {
             List<EmployeeModel> employees = new List<EmployeeModel>();
 
