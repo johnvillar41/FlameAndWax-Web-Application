@@ -21,7 +21,7 @@ namespace FlameAndWax.Controllers
             _customerService = customerService;
         }
 
-        public async Task<IActionResult> Index(List<ProductViewModel> products, int pageNumber, int pageSize)
+        public async Task<IActionResult> Index(List<ProductViewModel> products, int pageNumber = 1, int pageSize=9)
         {
             if (products.Count() == 0)
             {

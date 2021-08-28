@@ -27,13 +27,30 @@
     <div class="row" id="content">
         @await Html.PartialAsync("../Products/ProductsPartial")
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="Index" asp-route-pageNumber="1">1</a></li>
+            <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="Index" asp-route-pageNumber="2">2</a></li>
+            <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="Index" asp-route-pageNumber="3">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>-
+                </a>
+            </li>
+        </ul>
+    </nav>
 
 </div>
 
 
 <script>
     update = function (text) {
-        document.getElementById("dropdownMenuButton").innerHTML = text + ' <i class="fas fa-caret-square-down"></i>';        
+        document.getElementById("dropdownMenuButton").innerHTML = text + ' <i class="fas fa-caret-square-down"></i>';
     }
 </script>
 
