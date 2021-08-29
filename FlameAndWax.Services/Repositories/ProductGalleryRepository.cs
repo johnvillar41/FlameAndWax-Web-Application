@@ -33,7 +33,7 @@ namespace FlameAndWax.Services.Repositories
         {
             List<ProductGalleryModel> productGalleries = new List<ProductGalleryModel>();
 
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM ProductGalleryTable WHERE ProductId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
