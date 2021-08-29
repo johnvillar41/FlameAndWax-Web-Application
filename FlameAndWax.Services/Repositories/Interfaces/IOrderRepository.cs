@@ -6,6 +6,6 @@ namespace FlameAndWax.Data.Repositories.Interfaces
 {
     public interface IOrderRepository : IBaseRepository<OrderModel>
     {
-        Task<IEnumerable<OrderModel>> FetchOrdersFromCustomer(int customerId);
+        Task<IEnumerable<OrderModel>> FetchOrdersFromCustomer(int customerId, string connectionString);
     }
 }

@@ -9,23 +9,23 @@ namespace FlameAndWax.Services.Services.Interfaces
 {
     public interface ICustomerService : ILoginBaseService<CustomerModel>
     {
-        Task<ServiceResult<Boolean>> AddOrderTransaction(OrderModel newOrder);
-        Task<ServiceResult<Boolean>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId);
-        Task<ServiceResult<Boolean>> SendMessage(MessageModel newMessage);
-        Task<ServiceResult<Boolean>> CheckIfCustomerHasOrderedAProduct(string customerUsername,int productId);
-        Task<ServiceResult<Boolean>> AddCustomerReview(CustomerReviewModel customerReview);       
-        Task<ServiceResult<Boolean>> CheckoutOrder(OrderModel order,string usernameLoggedIn);
+        Task<ServiceResult<Boolean>> AddOrderTransaction(OrderModel newOrder,string connectionString);
+        Task<ServiceResult<Boolean>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId,string connectionString);
+        Task<ServiceResult<Boolean>> SendMessage(MessageModel newMessage, string connectionString);
+        Task<ServiceResult<Boolean>> CheckIfCustomerHasOrderedAProduct(string customerUsername,int productId, string connectionString);
+        Task<ServiceResult<Boolean>> AddCustomerReview(CustomerReviewModel customerReview, string connectionString);       
+        Task<ServiceResult<Boolean>> CheckoutOrder(OrderModel order,string usernameLoggedIn, string connectionString);
    
-        Task<ServiceResult<double>> FetchProductPrice(int productId);        
+        Task<ServiceResult<double>> FetchProductPrice(int productId, string connectionString);        
 
-        Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId);       
-        Task<ServiceResult<ProductModel>> FetchProductDetail(int productId);
+        Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId, string connectionString);       
+        Task<ServiceResult<ProductModel>> FetchProductDetail(int productId, string connectionString);
 
-        Task<ServiceResult<IEnumerable<OrderDetailModel>>> FetchOrderDetails(int orderId);
-        Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrders(int customerId);
-        Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts(int pageNumber, int pageSize);
-        Task<ServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int productId);
-        Task<ServiceResult<IEnumerable<ProductModel>>> FetchNewArrivedProducts();
-        Task<ServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(Constants.Category category);
+        Task<ServiceResult<IEnumerable<OrderDetailModel>>> FetchOrderDetails(int orderId, string connectionString);
+        Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrders(int customerId, string connectionString);
+        Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts(int pageNumber, int pageSize, string connectionString);
+        Task<ServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int productId, string connectionString);
+        Task<ServiceResult<IEnumerable<ProductModel>>> FetchNewArrivedProducts(string connectionString);
+        Task<ServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(Constants.Category category, string connectionString);
     }
 }

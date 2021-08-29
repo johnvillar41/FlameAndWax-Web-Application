@@ -5,6 +5,7 @@ using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,15 @@ namespace FlameAndWax.Controllers
     public class CartController : Controller
     {
         private readonly ICustomerService _customerService;
-        public CartController(ICustomerService customerService)
+        private readonly IConfiguration _configuration;
+
+        private string ConnectionString { get; set; }
+
+        public CartController(ICustomerService customerService, IConfiguration configuration)
         {
             _customerService = customerService;
+            _configuration = configuration;
+            ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
 
         public IActionResult Index(List<ProductViewModel> cartItems)
@@ -35,14 +42,14 @@ namespace FlameAndWax.Controllers
         }
 
         public IActionResult DeleteCartItem(int productId)
-        {            
+        {
             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-            Cart.RemoveCartItem(productId, userLoggedIn);            
+            Cart.RemoveCartItem(productId, userLoggedIn);
             return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedIn) });
         }
 
         public IActionResult RefreshCart()
-        {            
+        {
             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
             return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedIn) });
         }
@@ -54,16 +61,16 @@ namespace FlameAndWax.Controllers
             {
                 var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
                 var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-               
+
                 var cartItems = cart.CartProducts;
                 var totalOrderCost = 0.0;
                 var orderDetails = new List<OrderDetailModel>();
-                
+
                 foreach (var cartItem in cartItems)
-                {                    
+                {
                     var subTotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);
                     totalOrderCost += subTotalCost;
-                    var productPriceServiceResult = await _customerService.FetchProductPrice(cartItem.ProductId);
+                    var productPriceServiceResult = await _customerService.FetchProductPrice(cartItem.ProductId, ConnectionString);
                     if (productPriceServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = productPriceServiceResult.ErrorContent });
                     orderDetails.Add(
                         new OrderDetailModel
@@ -91,13 +98,13 @@ namespace FlameAndWax.Controllers
                     OrderDetails = orderDetails,
                     Courier = courierType
                 };
-                var primaryKeyServiceResult = await _customerService.CheckoutOrder(order,userLoggedInUsername);
+                var primaryKeyServiceResult = await _customerService.CheckoutOrder(order, userLoggedInUsername, ConnectionString);
 
                 if (primaryKeyServiceResult.HasError)
                 {
                     return View("Error", new ErrorViewModel { ErrorContent = primaryKeyServiceResult.ErrorContent });
-                }                            
-               
+                }
+
                 Cart.ClearCartItems(userLoggedInUsername);
                 return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedInID) });
             }
@@ -112,7 +119,7 @@ namespace FlameAndWax.Controllers
                 return View(Cart.GetCartItems(user));
             }
 
-            var productServiceResult = await _customerService.FetchProductDetail(productId);
+            var productServiceResult = await _customerService.FetchProductDetail(productId, ConnectionString);
             if (productServiceResult.HasError)
             {
                 var error = new ErrorViewModel

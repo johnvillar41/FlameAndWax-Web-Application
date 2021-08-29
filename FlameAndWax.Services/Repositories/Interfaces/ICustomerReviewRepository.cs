@@ -6,6 +6,6 @@ namespace FlameAndWax.Data.Repositories.Interfaces
 {
     public interface ICustomerReviewRepository : IBaseRepository<CustomerReviewModel>
     {
-        Task<IEnumerable<CustomerReviewModel>> FetchReviewsOfAProduct(int productId);
+        Task<IEnumerable<CustomerReviewModel>> FetchReviewsOfAProduct(int productId, string connectionString);
     }
 }

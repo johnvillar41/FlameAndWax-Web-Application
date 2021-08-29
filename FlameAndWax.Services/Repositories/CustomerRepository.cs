@@ -10,9 +10,9 @@ namespace FlameAndWax.Data.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
-        public async Task<int> Add(CustomerModel Data)
+        public async Task<int> Add(CustomerModel Data, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "INSERT INTO CustomerTable(CustomerName,ContactNumber,Email,Username,Password,Status,Address)" +
                 "VALUES(@name,@number,@email,@username,@password,@status,@address);" +
@@ -36,9 +36,9 @@ namespace FlameAndWax.Data.Repositories
             return -1;
         }
 
-        public async Task ChangeCustomerStatus(int customerId, CustomerAccountStatus customerStatus)
+        public async Task ChangeCustomerStatus(int customerId, CustomerAccountStatus customerStatus, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "UPDATE CustomerTable SET Status = @status WHERE CustomerId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -47,9 +47,9 @@ namespace FlameAndWax.Data.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "DELETE FROM CustomerTable WHERE CustomerId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -57,9 +57,9 @@ namespace FlameAndWax.Data.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<CustomerModel> Fetch(int id)
+        public async Task<CustomerModel> Fetch(int id,string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM CustomerTable WHERE CustomerId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -83,11 +83,11 @@ namespace FlameAndWax.Data.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<CustomerModel>> FetchPaginatedResult(int pageNumber, int pageSize)
+        public async Task<IEnumerable<CustomerModel>> FetchPaginatedResult(int pageNumber, int pageSize,string connectionString)
         {
             List<CustomerModel> customers = new List<CustomerModel>();
 
-            using SqlConnection connection = new SqlConnection(DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM CustomerTable ORDER BY CustomerId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
                 "FETCH NEXT @PageSize ROWS ONLY";
@@ -115,9 +115,9 @@ namespace FlameAndWax.Data.Repositories
             return customers;
         }
 
-        public async Task<int> LoginCustomerAccount(CustomerModel loginCustomer)
+        public async Task<int> LoginCustomerAccount(CustomerModel loginCustomer,string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT CustomerId FROM CustomerTable WHERE Username = @username COLLATE SQL_Latin1_General_CP1_CS_AS AND Password = @password COLLATE SQL_Latin1_General_CP1_CS_AS";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -132,9 +132,9 @@ namespace FlameAndWax.Data.Repositories
             return -1;
         }
 
-        public async Task Update(CustomerModel data, int id)
+        public async Task Update(CustomerModel data, int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "UPDATE CustomerTable SET CustomerName = @name, ContactNumber = @number, Email = @email, Username = @username, " +
                 "Password = @password, Address = @address WHERE CustomerId = @id";

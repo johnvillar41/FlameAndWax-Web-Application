@@ -6,7 +6,7 @@ namespace FlameAndWax.Data.Repositories.Interfaces
 {
     public interface ICustomerRepository : IBaseRepository<CustomerModel>
     {
-        Task<int> LoginCustomerAccount(CustomerModel loginCustomer);
-        Task ChangeCustomerStatus(int customerId, CustomerAccountStatus customerStatus);
+        Task<int> LoginCustomerAccount(CustomerModel loginCustomer, string connectionString);
+        Task ChangeCustomerStatus(int customerId, CustomerAccountStatus customerStatus, string connectionString);
     }
 }

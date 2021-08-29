@@ -10,15 +10,17 @@ namespace FlameAndWax.Services.Repositories
     public class CustomerReviewRepository : ICustomerReviewRepository
     {
         private readonly ICustomerRepository _customerRepository;
-        private readonly IProductRepository _productRepository;        
-        public CustomerReviewRepository(ICustomerRepository customerRepository,IProductRepository productRepository)
+        private readonly IProductRepository _productRepository;
+        public CustomerReviewRepository(
+            ICustomerRepository customerRepository,
+            IProductRepository productRepository)
         {
             _customerRepository = customerRepository;
             _productRepository = productRepository;
         }
-        public async Task<int> Add(CustomerReviewModel Data)
+        public async Task<int> Add(CustomerReviewModel Data, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "INSERT INTO CustomerReviewTable(ProductId,CustomerId,ReviewScore,ReviewDetail)" +
                 "VALUES(@ProductId,@CustomerId,@ReviewScore,@ReviewDetail)";
@@ -31,9 +33,9 @@ namespace FlameAndWax.Services.Repositories
             return Data.ReviewId;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "DELETE FROM CustomerReviewTable WHERE ReviewId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -41,15 +43,15 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<CustomerReviewModel> Fetch(int id)
+        public async Task<CustomerReviewModel> Fetch(int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM CustomerReviewTable WHERE ReviewId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@id", id);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-            if(await reader.ReadAsync())
+            if (await reader.ReadAsync())
             {
                 var productId = int.Parse(reader["ProductId"].ToString());
                 var customerId = int.Parse(reader["CustomerId"].ToString());
@@ -57,8 +59,8 @@ namespace FlameAndWax.Services.Repositories
 
                 return new CustomerReviewModel
                 {
-                    Product = await _productRepository.Fetch(productId),
-                    Customer = await _customerRepository.Fetch(customerId),
+                    Product = await _productRepository.Fetch(productId, connectionString),
+                    Customer = await _customerRepository.Fetch(customerId, connectionString),
                     ReviewId = id,
                     ReviewScore = Helpers.ServiceHelper.BuildReviewScore(reviewScore),
                     ReviewDetail = reader["ReviewDetail"].ToString()
@@ -67,19 +69,19 @@ namespace FlameAndWax.Services.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<CustomerReviewModel>> FetchPaginatedResult(int pageNumber, int pageSize)
+        public async Task<IEnumerable<CustomerReviewModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
         {
             List<CustomerReviewModel> customerReviews = new List<CustomerReviewModel>();
 
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM CustomerReviewTable ORDER BY ReviewID OFFSET (@PageNumber - 1) * @PageSize ROWS " + 
+            var queryString = "SELECT * FROM CustomerReviewTable ORDER BY ReviewID OFFSET (@PageNumber - 1) * @PageSize ROWS " +
                 "FETCH NEXT @PageSize ROWS ONLY";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@PageNumber", pageNumber);
             command.Parameters.AddWithValue("@PageSize", pageSize);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-            while(await reader.ReadAsync())
+            while (await reader.ReadAsync())
             {
                 var productId = int.Parse(reader["ProductId"].ToString());
                 var customerId = int.Parse(reader["CustomerId"].ToString());
@@ -89,8 +91,8 @@ namespace FlameAndWax.Services.Repositories
                         new CustomerReviewModel
                         {
                             ReviewId = int.Parse(reader["ReviewId"].ToString()),
-                            Product = await _productRepository.Fetch(productId),
-                            Customer = await _customerRepository.Fetch(customerId),                            
+                            Product = await _productRepository.Fetch(productId, connectionString),
+                            Customer = await _customerRepository.Fetch(customerId, connectionString),
                             ReviewScore = Helpers.ServiceHelper.BuildReviewScore(reviewScore),
                             ReviewDetail = reader["ReviewDetail"].ToString()
                         }
@@ -99,18 +101,18 @@ namespace FlameAndWax.Services.Repositories
             return customerReviews;
         }
 
-        public async Task<IEnumerable<CustomerReviewModel>> FetchReviewsOfAProduct(int productId)
+        public async Task<IEnumerable<CustomerReviewModel>> FetchReviewsOfAProduct(int productId, string connectionString)
         {
             List<CustomerReviewModel> customerReviews = new List<CustomerReviewModel>();
 
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM CustomerReviewTable WHERE ProductId = @productId";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@productId", productId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-            while(await reader.ReadAsync())
-            {                
+            while (await reader.ReadAsync())
+            {
                 var customerId = int.Parse(reader["CustomerId"].ToString());
                 var reviewScore = int.Parse(reader["ReviewScore"].ToString());
 
@@ -118,8 +120,8 @@ namespace FlameAndWax.Services.Repositories
                         new CustomerReviewModel
                         {
                             ReviewId = int.Parse(reader["ReviewId"].ToString()),
-                            Product = await _productRepository.Fetch(productId),
-                            Customer = await _customerRepository.Fetch(customerId),
+                            Product = await _productRepository.Fetch(productId, connectionString),
+                            Customer = await _customerRepository.Fetch(customerId, connectionString),
                             ReviewScore = Helpers.ServiceHelper.BuildReviewScore(reviewScore),
                             ReviewDetail = reader["ReviewDetail"].ToString()
                         }
@@ -128,14 +130,14 @@ namespace FlameAndWax.Services.Repositories
             return customerReviews;
         }
 
-        public async Task Update(CustomerReviewModel data, int id)
+        public async Task Update(CustomerReviewModel data, int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "UPDATE CustomerReviewTable SET ReviewScore = @reviewScore, ReviewDetail = @detail" +
                 "WHERE ReviewId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
-            command.Parameters.AddWithValue("@id",id);
+            command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
         }
     }

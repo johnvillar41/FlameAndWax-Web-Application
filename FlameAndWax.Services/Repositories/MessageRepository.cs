@@ -9,9 +9,9 @@ namespace FlameAndWax.Services.Repositories
 {
     public class MessageRepository : IMessageRepository
     {
-        public async Task<int> Add(MessageModel Data)
+        public async Task<int> Add(MessageModel Data, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "INSERT INTO MessageTable(Name,Email,PhoneNumber,Message)" +
                 "VALUES(@name,@email,@number,@msg)";
@@ -24,22 +24,22 @@ namespace FlameAndWax.Services.Repositories
             return Data.MessageId;
         }
 
-        public Task Delete(int id)
+        public Task Delete(int id,string connectionString)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<MessageModel> Fetch(int id)
+        public Task<MessageModel> Fetch(int id, string connectionString)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<IEnumerable<MessageModel>> FetchPaginatedResult(int pageNumber, int pageSize)
+        public Task<IEnumerable<MessageModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task Update(MessageModel data, int id)
+        public Task Update(MessageModel data, int id, string connectionString)
         {
             throw new System.NotImplementedException();
         }

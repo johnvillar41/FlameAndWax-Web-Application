@@ -16,9 +16,9 @@ namespace FlameAndWax.Services.Repositories
         {
             _productGalleryRepository = productGalleryRepository;
         }
-        public async Task<int> Add(ProductModel Data)
+        public async Task<int> Add(ProductModel Data, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "INSERT INTO ProductsTable(ProductName,ProductDescription,ProductPrice,QuantityPerUnit,UnitPrice,UnitsInStock,UnitsOnOrder,Category)" +
                 "VALUES(@name,@desc,@price,@quantity,@unitprice,@stock,@order,@category)";
@@ -35,9 +35,9 @@ namespace FlameAndWax.Services.Repositories
             return Data.ProductId;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "DELETE FROM ProductsTable WHERE ProductId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -45,9 +45,9 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<ProductModel> Fetch(int id)
+        public async Task<ProductModel> Fetch(int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM ProductsTable WHERE ProductId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -66,18 +66,18 @@ namespace FlameAndWax.Services.Repositories
                     UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                     UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
                     UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
-                    ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(id),
+                    ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(id,connectionString),
                     Category = ServiceHelper.ConvertStringToConstant(categoryString)
                 };
             }
             return null;
         }
 
-        public async Task<IEnumerable<ProductModel>> FetchPaginatedResult(int pageNumber, int pageSize)
+        public async Task<IEnumerable<ProductModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
         {
             List<ProductModel> products = new List<ProductModel>();
 
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM ProductsTable ORDER by ProductId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
                 "FETCH NEXT @PageSize ROWS ONLY";
@@ -99,7 +99,7 @@ namespace FlameAndWax.Services.Repositories
                             UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                             UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
                             UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
-                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString())),
+                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString()),connectionString),
                             Category = ServiceHelper.ConvertStringToConstant(categoryString)
                         }
                     );
@@ -107,11 +107,11 @@ namespace FlameAndWax.Services.Repositories
             return products;
         }
 
-        public async Task<IEnumerable<ProductModel>> FetchCategorizedProducts(Constants.Category category)
+        public async Task<IEnumerable<ProductModel>> FetchCategorizedProducts(Constants.Category category,string connectionString)
         {
             List<ProductModel> categorizedProducts = new List<ProductModel>();
 
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM ProductsTable WHERE Category = @category";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -130,7 +130,7 @@ namespace FlameAndWax.Services.Repositories
                             ProductPrice = int.Parse(reader["ProductPrice"].ToString()),
                             QuantityPerUnit = int.Parse(reader["QuantityPerUnit"].ToString()),
                             UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
-                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString())),
+                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString()),connectionString),
                             UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
                             UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
                             Category = ServiceHelper.ConvertStringToConstant(categoryString),
@@ -140,11 +140,11 @@ namespace FlameAndWax.Services.Repositories
             return categorizedProducts;
         }
 
-        public async Task<IEnumerable<ProductModel>> FetchNewArrivedProducts()
+        public async Task<IEnumerable<ProductModel>> FetchNewArrivedProducts(string connectionString)
         {
             List<ProductModel> newArrivals = new List<ProductModel>();
 
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT TOP 6 * FROM ProductsTable Order By ProductId DESC;";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -163,7 +163,7 @@ namespace FlameAndWax.Services.Repositories
                             UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                             UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
                             UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
-                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString())),
+                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString()), connectionString),
                             Category = ServiceHelper.ConvertStringToConstant(categoryString)
                         }
                     );
@@ -171,18 +171,18 @@ namespace FlameAndWax.Services.Repositories
             return newArrivals;
         }
 
-        public async Task ModifyNumberOfStocks(int productId, int numberOfStocksToBeSubtracted)
+        public async Task ModifyNumberOfStocks(int productId, int numberOfStocksToBeSubtracted, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "UPDATE ProductsTable SET UnitsInStock = @unitsToBeSubracted WHERE ProductId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
             await command.ExecuteNonQueryAsync();
         }
         //TODO: Fix the updating should be adding
-        public async Task ModifyNumberOfUnitsInOrder(int productId, int numberOfUnitsToBeAdded)
+        public async Task ModifyNumberOfUnitsInOrder(int productId, int numberOfUnitsToBeAdded, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "UPDATE ProductsTable SET UnitsOnOrder = @unitOrder WHERE ProductId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -192,9 +192,9 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task Update(ProductModel data, int id)
+        public async Task Update(ProductModel data, int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "UPDATE ProductsTable SET ProductName = @name, ProductDescription = @desc, ProductPrice = @price" +
                 "QuantityPerUnit = @qty, UnitPrice = @unitPrice, UnitsInStock = @unitStock, UnitsOnOrder = @unitOrder , Category = @category WHERE " +
@@ -212,9 +212,9 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task UpdateAddUnitsOnOrder(int productId, int quantity)
+        public async Task UpdateAddUnitsOnOrder(int productId, int quantity, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "UPDATE ProductsTable SET UnitsOnOrder = UnitsOnOrder + @quantity WHERE ProductId = @productId";
             using SqlCommand command = new SqlCommand(queryString, connection);

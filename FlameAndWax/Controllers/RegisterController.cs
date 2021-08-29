@@ -2,6 +2,7 @@
 using FlameAndWax.Models;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,13 @@ namespace FlameAndWax.Controllers
     public class RegisterController : Controller
     {
         private readonly ICustomerService _customerService;
-
-        public RegisterController(ICustomerService customerService)
+        private readonly IConfiguration _configuration;
+        private string ConnectionString { get; set; }
+        public RegisterController(ICustomerService customerService, IConfiguration configuration)
         {
             _customerService = customerService;
+            _configuration = configuration;
+            ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
 
         public IActionResult Index()
@@ -37,7 +41,7 @@ namespace FlameAndWax.Controllers
                 Status = CustomerAccountStatus.Pending
             };
 
-            await _customerService.Register(customerModel);
+            await _customerService.Register(customerModel, ConnectionString);
             return RedirectToAction(nameof(Index));
         }
     }

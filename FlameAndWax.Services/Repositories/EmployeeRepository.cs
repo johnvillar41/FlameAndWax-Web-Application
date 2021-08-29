@@ -11,9 +11,9 @@ namespace FlameAndWax.Services.Repositories
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        public async Task<int> Add(EmployeeModel Data)
+        public async Task<int> Add(EmployeeModel Data, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "INSERT INTO EmployeesTable(FirstName,LastName,Email,PhotoLink,BirthDate,HireDate,City,Username,Password,Status)" +
                 "VALUES(@FirstName,@LastName,@Email,@PhotoLink,@Bday,@HireDate,@City,@Username,@Password,@Status);" +
@@ -31,7 +31,7 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@Status", Data.Status);
 
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-            if(await reader.ReadAsync())
+            if (await reader.ReadAsync())
             {
                 var primaryKey = int.Parse(reader["pk"].ToString());
                 return primaryKey;
@@ -39,9 +39,9 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "DELETE FROM EmployeesTable WHERE EmployeeId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -49,9 +49,9 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<EmployeeModel> Fetch(int id)
+        public async Task<EmployeeModel> Fetch(int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM EmployeesTable WHERE EmployeeId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -77,11 +77,11 @@ namespace FlameAndWax.Services.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<EmployeeModel>> FetchPaginatedResult(int pageNumber, int pageSize)
+        public async Task<IEnumerable<EmployeeModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
         {
             List<EmployeeModel> employees = new List<EmployeeModel>();
 
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM EmployeesTable ORDER by EmployeeId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
                 "FETCH NEXT @PageSize ROWS ONLY";
@@ -111,9 +111,9 @@ namespace FlameAndWax.Services.Repositories
             return employees;
         }
 
-        public async Task<int> Login(EmployeeModel employee)
+        public async Task<int> Login(EmployeeModel employee, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM EmployeesTable WHERE Username = @username AND Password = @password";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -127,9 +127,9 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task ModifyEmployeeStatus(int employeeId, Constants.EmployeeAccountStatus accountStatus)
+        public async Task ModifyEmployeeStatus(int employeeId, Constants.EmployeeAccountStatus accountStatus, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "UPDATE EmployeesTable SET Status = @status WHERE EmployeeId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -141,9 +141,9 @@ namespace FlameAndWax.Services.Repositories
         /// <summary>
         /// Updates the employee credentials excluding the PhotoLink property
         /// </summary>       
-        public async Task Update(EmployeeModel data, int id)
+        public async Task Update(EmployeeModel data, int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "UPDATE EmployeesTable SET FirstName = @firstName, LastName = @lastName, Email = @email, " +
                 "Username = @username, Password = @password ," +
@@ -161,9 +161,9 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task UpdateProfilePicture(string profileLink)
+        public async Task UpdateProfilePicture(string profileLink, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "UPDATE EmployeesTable SET PhotoLink = @link";
             using SqlCommand command = new SqlCommand(queryString, connection);

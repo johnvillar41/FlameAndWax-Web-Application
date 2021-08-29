@@ -8,9 +8,9 @@ namespace FlameAndWax.Services.Repositories
 {
     public class PreviouslyOrderedProductsRepository : IPreviouslyOrderedProductsRepository
     {
-        public async Task<int> AddPreviouslyOrderedProducts(PreviouslyOrderedProductModel previouslyOrderedProduct)
+        public async Task<int> AddPreviouslyOrderedProducts(PreviouslyOrderedProductModel previouslyOrderedProduct,string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "INSERT INTO PreviouslyOrderedProductsTable(ProductId,CustomerUsername)" +
                 "VALUES(@productId,@customerUsername);" +
@@ -27,9 +27,9 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task<bool> HasCustomerOrderedAProduct(int productId, string customerUsername)
+        public async Task<bool> HasCustomerOrderedAProduct(int productId, string customerUsername,string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM PreviouslyOrderedProductsTable WHERE ProductId = @productId AND CustomerUsername = @customerUsername";
             using SqlCommand command = new SqlCommand(queryString, connection);

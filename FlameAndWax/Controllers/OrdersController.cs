@@ -2,6 +2,7 @@
 using FlameAndWax.Models;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,30 +14,33 @@ namespace FlameAndWax.Controllers
     public class OrdersController : Controller
     {
         private readonly ICustomerService _customerService;
-        public OrdersController(ICustomerService customerService)
+        private readonly IConfiguration _configuration;
+        private string ConnectionString { get; set; }
+
+        public OrdersController(ICustomerService customerService, IConfiguration configuration)
         {
             _customerService = customerService;
+            _configuration = configuration;
+            ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
         public async Task<IActionResult> Index()
         {
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
-            var ordersServiceResult = await _customerService.FetchOrders(int.Parse(customerIdLoggedIn));
+            var ordersServiceResult = await _customerService.FetchOrders(int.Parse(customerIdLoggedIn), ConnectionString);
 
             if (ordersServiceResult.HasError)
                 return PartialView("Error", new ErrorViewModel { ErrorContent = ordersServiceResult.ErrorContent });
 
-            
-
             var orderViewModels = new List<OrderViewModel>();
             foreach (var order in ordersServiceResult.Result)
             {
-                var orderDetailsServiceResult = await _customerService.FetchOrderDetails(order.OrderId);
+                var orderDetailsServiceResult = await _customerService.FetchOrderDetails(order.OrderId, ConnectionString);
                 if (orderDetailsServiceResult.HasError)
                     return View("Error", new ErrorViewModel { ErrorContent = orderDetailsServiceResult.ErrorContent });
 
                 var orderStatus = Constants.OrderDetailStatus.Processing;
-                if (order.OrderDetails.Any(o => o.Status.Equals(Constants.OrderDetailStatus.Finished)))                
-                    orderStatus = Constants.OrderDetailStatus.Finished;                
+                if (order.OrderDetails.Any(o => o.Status.Equals(Constants.OrderDetailStatus.Finished)))
+                    orderStatus = Constants.OrderDetailStatus.Finished;
 
                 var orderDetails = new List<OrderDetailViewModel>();
                 foreach (var orderDetail in orderDetailsServiceResult.Result)

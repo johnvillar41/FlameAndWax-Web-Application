@@ -5,6 +5,7 @@ using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +17,22 @@ namespace FlameAndWax.Controllers
     public class ProductsController : Controller
     {
         private readonly ICustomerService _customerService;
-        public ProductsController(ICustomerService customerService)
+        private readonly IConfiguration _configaration;
+
+        private string ConnectionString { get; set; }
+
+        public ProductsController(ICustomerService customerService, IConfiguration configuration)
         {
             _customerService = customerService;
+            _configaration = configuration;
+            ConnectionString = _configaration.GetConnectionString("FlameAndWaxDBConnection");
         }
 
-        public async Task<IActionResult> Index(List<ProductViewModel> products, int pageNumber = 1, int pageSize=9)
+        public async Task<IActionResult> Index(List<ProductViewModel> products, int pageNumber = 1, int pageSize = 9)
         {
             if (products.Count() == 0)
             {
-                var productServiceResult = await _customerService.FetchAllProducts(pageNumber,pageSize);
+                var productServiceResult = await _customerService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
                 if (productServiceResult.HasError)
                 {
                     var error = new ErrorViewModel
@@ -79,8 +86,8 @@ namespace FlameAndWax.Controllers
                     ProductId = productId
                 }
             };
-            var reviewServiceResult = await _customerService.AddCustomerReview(customerReview);
-            var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(productId);
+            var reviewServiceResult = await _customerService.AddCustomerReview(customerReview, ConnectionString);
+            var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(productId, ConnectionString);
             if (customerServiceReviewResult.HasError)
             {
                 var error = new ErrorViewModel
@@ -115,7 +122,7 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> Sort(string category)
         {
-            var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category));
+            var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category), ConnectionString);
             if (categorizedProductsServiceResult.HasError)
             {
                 var error = new ErrorViewModel
@@ -147,7 +154,7 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> Details(int productId)
         {
-            var productServiceResult = await _customerService.FetchProductDetail(productId);
+            var productServiceResult = await _customerService.FetchProductDetail(productId, ConnectionString);
             if (productServiceResult.HasError)
             {
                 var error = new ErrorViewModel
@@ -157,7 +164,7 @@ namespace FlameAndWax.Controllers
                 return View("Error", error);
             }
 
-            var customerReviewServiceResult = await _customerService.FetchCustomerReviewsInAProduct(productId);
+            var customerReviewServiceResult = await _customerService.FetchCustomerReviewsInAProduct(productId, ConnectionString);
             if (customerReviewServiceResult.HasError)
             {
                 var error = new ErrorViewModel
@@ -204,7 +211,7 @@ namespace FlameAndWax.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var loggedInUser = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-                var hasCustomerOrderedServiceResult = _customerService.CheckIfCustomerHasOrderedAProduct(loggedInUser, productId).Result;
+                var hasCustomerOrderedServiceResult = _customerService.CheckIfCustomerHasOrderedAProduct(loggedInUser, productId, ConnectionString).Result;
                 productDetailViewModel.IsProductBoughtByLoggedInCustomer = hasCustomerOrderedServiceResult.Result;
                 return View(productDetailViewModel);
             }

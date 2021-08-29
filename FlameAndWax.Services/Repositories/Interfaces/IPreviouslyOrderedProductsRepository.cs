@@ -5,7 +5,7 @@ namespace FlameAndWax.Services.Repositories.Interfaces
 {
     public interface IPreviouslyOrderedProductsRepository
     {
-        Task<bool> HasCustomerOrderedAProduct(int productId,string customerUsername);
-        Task<int> AddPreviouslyOrderedProducts(PreviouslyOrderedProductModel previouslyOrderedProduct);
+        Task<bool> HasCustomerOrderedAProduct(int productId,string customerUsername, string connectionString);
+        Task<int> AddPreviouslyOrderedProducts(PreviouslyOrderedProductModel previouslyOrderedProduct, string connectionString);
     }
 }

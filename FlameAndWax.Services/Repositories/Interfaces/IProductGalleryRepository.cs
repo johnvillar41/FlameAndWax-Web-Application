@@ -7,6 +7,6 @@ namespace FlameAndWax.Services.Repositories.Interfaces
 {
     public interface IProductGalleryRepository : IBaseRepository<ProductGalleryModel>
     {
-        Task<IEnumerable<ProductGalleryModel>> FetchAllPicturesForProduct(int productId);
+        Task<IEnumerable<ProductGalleryModel>> FetchAllPicturesForProduct(int productId, string connectionString);
     }
 }

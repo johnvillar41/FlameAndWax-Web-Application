@@ -2,6 +2,7 @@
 using FlameAndWax.Models;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +14,19 @@ namespace FlameAndWax.Controllers
     public class UserProfileController : Controller
     {
         private readonly ICustomerService _customerService;
-        public UserProfileController(ICustomerService customerService)
+        private readonly IConfiguration _configuration;
+
+        private string ConnectionString { get; set; }
+        public UserProfileController(ICustomerService customerService, IConfiguration configuration)
         {
             _customerService = customerService;
+            _configuration = configuration;
+            ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
         public async Task<IActionResult> Index()
         {
             var userId = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
-            var accountDetailServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId));
+            var accountDetailServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId), ConnectionString);
             if (accountDetailServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = accountDetailServiceResult.ErrorContent });
 
             var userProfile = new UserProfileViewModel
@@ -52,10 +58,10 @@ namespace FlameAndWax.Controllers
                 Address = userProfile.Address
             };
 
-            var modifyServiceResult = await _customerService.ModifyAccountDetails(customerModel, int.Parse(userId));
+            var modifyServiceResult = await _customerService.ModifyAccountDetails(customerModel, int.Parse(userId), ConnectionString);
             if (modifyServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = modifyServiceResult.ErrorContent });
 
-            var accountDetailServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId));
+            var accountDetailServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId), ConnectionString);
             if (accountDetailServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = accountDetailServiceResult.ErrorContent });
 
             var userProfileViewModel = new UserProfileViewModel

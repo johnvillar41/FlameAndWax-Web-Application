@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,15 @@ namespace FlameAndWax.Controllers
     public class AccountController : Controller
     {
         private readonly ICustomerService _customerService;
-        public AccountController(ICustomerService customerService)
+        private readonly IConfiguration _configuration;
+
+        private string ConnectionString { get; set; }
+
+        public AccountController(ICustomerService customerService, IConfiguration configuration)
         {
             _customerService = customerService;
+            _configuration = configuration;
+            ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
         public IActionResult Login()
         {
@@ -28,7 +35,7 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> ProcessLogin(LoginViewModel loginCredentials, string returnUrl)
         {
-            var isAuthenticatedServiceResult = await _customerService.Login(new CustomerModel { Username = loginCredentials.Username, Password = loginCredentials.Password });
+            var isAuthenticatedServiceResult = await _customerService.Login(new CustomerModel { Username = loginCredentials.Username, Password = loginCredentials.Password }, ConnectionString);
             if (isAuthenticatedServiceResult.HasError)
             {
                 var error = new ErrorViewModel
@@ -51,7 +58,7 @@ namespace FlameAndWax.Controllers
                     new ClaimsPrincipal(claimsIdentity));
 
                 if (Url.IsLocalUrl(returnUrl))
-                {                    
+                {
                     return Redirect(returnUrl);
                 }
 

@@ -6,6 +6,7 @@ using FlameAndWax.Services.Services;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,14 +16,20 @@ namespace FlameAndWax.Controllers
     public class HomeController : Controller
     {
         private readonly ICustomerService _customerService;
-        public HomeController(ICustomerService customerService)
+        private readonly IConfiguration _configuration;
+
+        private string ConnectionString { get; set; }
+
+        public HomeController(ICustomerService customerService, IConfiguration configuration)
         {
             _customerService = customerService;
+            _configuration = configuration;
+            ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
-        
+
         public async Task<IActionResult> Index()
         {
-            var productServiceResult = await _customerService.FetchNewArrivedProducts();
+            var productServiceResult = await _customerService.FetchNewArrivedProducts(ConnectionString);
             if (productServiceResult.HasError)
             {
                 var error = new ErrorViewModel
@@ -31,12 +38,12 @@ namespace FlameAndWax.Controllers
                 };
                 return View("Error", error);
             }
-                
+
 
             var newProducts = new List<ProductViewModel>();
             foreach (var newProduct in productServiceResult.Result)
             {
-                var reviewResult = await _customerService.FetchCustomerReviewsInAProduct(newProduct.ProductId);
+                var reviewResult = await _customerService.FetchCustomerReviewsInAProduct(newProduct.ProductId, ConnectionString);
                 if (reviewResult.HasError)
                 {
                     var error = new ErrorViewModel
@@ -62,7 +69,7 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> ViewCategorizedProducts(string category)
         {
-            var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category));
+            var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category), ConnectionString);
             if (categorizedProductsServiceResult.HasError)
             {
                 var error = new ErrorViewModel
@@ -73,7 +80,7 @@ namespace FlameAndWax.Controllers
             }
 
             List<ProductViewModel> productViewModels = new List<ProductViewModel>();
-            foreach(var product in categorizedProductsServiceResult.Result)
+            foreach (var product in categorizedProductsServiceResult.Result)
             {
                 productViewModels.Add(
                         new ProductViewModel
@@ -86,7 +93,7 @@ namespace FlameAndWax.Controllers
                         }
                     );
             }
-            
+
             return View("../Products/Index", productViewModels);
         }
 

@@ -11,16 +11,14 @@ namespace FlameAndWax.Services.Repositories
 {
     public class OrderDetailRepository : IOrderDetailRepository
     {
-        private readonly IProductRepository _productRepository;
-        //private readonly IOrderRepository _orderRepository;
-        public OrderDetailRepository(IProductRepository productRepository)//, IOrderRepository orderRepository)
+        private readonly IProductRepository _productRepository;        
+        public OrderDetailRepository(IProductRepository productRepository)
         {
-            _productRepository = productRepository;
-            //_orderRepository = orderRepository;
+            _productRepository = productRepository;          
         }
-        public async Task<int> Add(OrderDetailModel Data)
+        public async Task<int> Add(OrderDetailModel Data, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "INSERT INTO OrderDetailsTable(OrderId,ProductId,TotalPrice,Quantity,Status)" +
                 "VALUES(@OrderId,@ProductId,@TotalPrice,@Quantity,@Status);" +
@@ -40,18 +38,18 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "DELETE FROM OrderDetailsTable WHERE OrderDetailsId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<OrderDetailModel> Fetch(int id)
+        public async Task<OrderDetailModel> Fetch(int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM OrderDetailsTable WHERE OrderDetailsId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -66,7 +64,7 @@ namespace FlameAndWax.Services.Repositories
                 var quantity = int.Parse(reader["Quantity"].ToString());
                 var status = ServiceHelper.ConvertStringtoOrderDetailStatus(reader["Status"].ToString());
 
-                var product = await _productRepository.Fetch(productId);               
+                var product = await _productRepository.Fetch(productId, connectionString);
                 return new OrderDetailModel
                 {
                     OrderDetailsId = orderDetailId,
@@ -80,11 +78,11 @@ namespace FlameAndWax.Services.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<OrderDetailModel>> FetchPaginatedResult(int pageNumber, int pageSize)
+        public async Task<IEnumerable<OrderDetailModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
         {
             List<OrderDetailModel> orderDetails = new List<OrderDetailModel>();
 
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM OrderDetailsTable ORDER by OrderDetailsId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
                 "FETCH NEXT @PageSize ROWS ONLY";
@@ -101,7 +99,7 @@ namespace FlameAndWax.Services.Repositories
                 var quantity = int.Parse(reader["Quantity"].ToString());
                 var status = ServiceHelper.ConvertStringtoOrderDetailStatus(reader["Status"].ToString());
 
-                var product = await _productRepository.Fetch(productId);                
+                var product = await _productRepository.Fetch(productId, connectionString);
                 orderDetails.Add(
                         new OrderDetailModel
                         {
@@ -117,11 +115,11 @@ namespace FlameAndWax.Services.Repositories
             return orderDetails;
         }
 
-        public async Task<IEnumerable<OrderDetailModel>> FetchOrderDetails(int orderId)
+        public async Task<IEnumerable<OrderDetailModel>> FetchOrderDetails(int orderId, string connectionString)
         {
             List<OrderDetailModel> orderDetails = new List<OrderDetailModel>();
 
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM OrderDetailsTable WHERE OrderId = @orderId";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -135,7 +133,7 @@ namespace FlameAndWax.Services.Repositories
                 var quantity = int.Parse(reader["Quantity"].ToString());
                 var status = ServiceHelper.ConvertStringtoOrderDetailStatus(reader["Status"].ToString());
 
-                var product = await _productRepository.Fetch(productId);
+                var product = await _productRepository.Fetch(productId, connectionString);
                 orderDetails.Add(
                         new OrderDetailModel
                         {
@@ -151,9 +149,9 @@ namespace FlameAndWax.Services.Repositories
             return orderDetails;
         }
 
-        public async Task Update(OrderDetailModel data, int id)
+        public async Task Update(OrderDetailModel data, int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "UPDATE OrderDetailsTable SET ProductId = @productId, TotalPrice = @totalPrice, Quantity = @quantity, Status = @status" +
                 "WHERE OrderDetailsId = @orderDetailsId";

@@ -7,7 +7,7 @@ namespace FlameAndWax.Services.Services.Interfaces
 {
     public interface IAdministratorService : ILoginBaseService<EmployeeModel>, IEmployeeBaseService
     {
-        Task<ServiceResult<Boolean>> RemoveEmployee(int employeeId);
-        Task<ServiceResult<Boolean>> MarkEmployeeAsTerminated(int employeeId);
+        Task<ServiceResult<Boolean>> RemoveEmployee(int employeeId, string connectionString);
+        Task<ServiceResult<Boolean>> MarkEmployeeAsTerminated(int employeeId, string connectionString);
     }
 }

@@ -15,27 +15,30 @@ namespace FlameAndWax.Services.Repositories
         private readonly ICustomerRepository _customerRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IOrderDetailRepository _orderDetailRepository;
-        public OrderRepository(ICustomerRepository customerRepository, IEmployeeRepository employeeRepository, IOrderDetailRepository orderDetailRepository)
+        public OrderRepository(
+            ICustomerRepository customerRepository,
+            IEmployeeRepository employeeRepository,
+            IOrderDetailRepository orderDetailRepository)
         {
             _customerRepository = customerRepository;
             _employeeRepository = employeeRepository;
             _orderDetailRepository = orderDetailRepository;
         }
-        public async Task<int> Add(OrderModel Data)
+        public async Task<int> Add(OrderModel Data, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "INSERT INTO OrdersTable(CustomerId,DateOrdered,TotalCost,ModeOfPayment,Courier)" +
                 "VALUES(@customerId,@dateOrdered,@totalCost,@modeOfPayment,@courier);" +
                 "SELECT SCOPE_IDENTITY() as fk;";
             using SqlCommand command = new SqlCommand(queryString, connection);
-            command.Parameters.AddWithValue("@customerId", Data.Customer.CustomerId);           
+            command.Parameters.AddWithValue("@customerId", Data.Customer.CustomerId);
             command.Parameters.AddWithValue("@dateOrdered", DateTime.UtcNow);
             command.Parameters.AddWithValue("@totalCost", Data.TotalCost);
             command.Parameters.AddWithValue("@modeOfPayment", Data.ModeOfPayment.ToString());
             command.Parameters.AddWithValue("@courier", Data.Courier.ToString());
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-            if(await reader.ReadAsync())
+            if (await reader.ReadAsync())
             {
                 var primaryKey = int.Parse(reader["fk"].ToString());
                 return primaryKey;
@@ -43,9 +46,9 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "DELETE FROM OrdersTable WHERE OrderId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -53,9 +56,9 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<OrderModel> Fetch(int id)
+        public async Task<OrderModel> Fetch(int id, string connectionString)
         {
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM OrdersTable WHERE OrderId = @id";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -65,12 +68,12 @@ namespace FlameAndWax.Services.Repositories
             {
                 var orderId = int.Parse(reader["OrderId"].ToString());
                 var customerId = int.Parse(reader["CustomerId"].ToString());
-                var employeeId = int.Parse(reader["EmployeeId"].ToString());               
+                var employeeId = int.Parse(reader["EmployeeId"].ToString());
                 var totalCost = double.Parse(reader["TotalCost"].ToString());
 
-                var customer = await _customerRepository.Fetch(customerId);
-                var employee = await _employeeRepository.Fetch(employeeId);
-                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId);
+                var customer = await _customerRepository.Fetch(customerId, connectionString);
+                var employee = await _employeeRepository.Fetch(employeeId, connectionString);
+                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId, connectionString);
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
@@ -89,11 +92,11 @@ namespace FlameAndWax.Services.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<OrderModel>> FetchPaginatedResult(int pageNumber, int pageSize)
+        public async Task<IEnumerable<OrderModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
         {
             List<OrderModel> orders = new List<OrderModel>();
 
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM OrdersTable ORDER by OrderId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
                 "FETCH NEXT @PageSize ROWS ONLY";
@@ -105,12 +108,12 @@ namespace FlameAndWax.Services.Repositories
             {
                 var orderId = int.Parse(reader["OrderId"].ToString());
                 var customerId = int.Parse(reader["CustomerId"].ToString());
-                var employeeId = int.Parse(reader["EmployeeId"].ToString());                
+                var employeeId = int.Parse(reader["EmployeeId"].ToString());
                 var totalCost = double.Parse(reader["TotalCost"].ToString());
 
-                var customer = await _customerRepository.Fetch(customerId);
-                var employee = await _employeeRepository.Fetch(employeeId);
-                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId);
+                var customer = await _customerRepository.Fetch(customerId, connectionString);
+                var employee = await _employeeRepository.Fetch(employeeId, connectionString);
+                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId, connectionString);
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
@@ -132,11 +135,11 @@ namespace FlameAndWax.Services.Repositories
             return orders;
         }
 
-        public async Task<IEnumerable<OrderModel>> FetchOrdersFromCustomer(int customerId)
+        public async Task<IEnumerable<OrderModel>> FetchOrdersFromCustomer(int customerId, string connectionString)
         {
             List<OrderModel> orders = new List<OrderModel>();
-            
-            using SqlConnection connection = new SqlConnection(Constants.DB_CONNECTION_STRING);
+
+            using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "SELECT * FROM OrdersTable WHERE CustomerId = @customerId ORDER BY DateOrdered DESC";
             using SqlCommand command = new SqlCommand(queryString, connection);
@@ -144,20 +147,20 @@ namespace FlameAndWax.Services.Repositories
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                var orderId = int.Parse(reader["OrderId"].ToString());   
-                
+                var orderId = int.Parse(reader["OrderId"].ToString());
+
                 var employeeId = -1;
                 EmployeeModel employee = null;
                 if (!reader.IsDBNull(2))
                 {
                     employeeId = int.Parse(reader["EmployeeId"].ToString());
-                    employee = await _employeeRepository.Fetch(employeeId);
+                    employee = await _employeeRepository.Fetch(employeeId, connectionString);
                 }
 
                 var totalCost = double.Parse(reader["TotalCost"].ToString());
 
-                var customer = await _customerRepository.Fetch(customerId);                
-                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId);
+                var customer = await _customerRepository.Fetch(customerId, connectionString);
+                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId, connectionString);
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
@@ -179,11 +182,11 @@ namespace FlameAndWax.Services.Repositories
             return orders;
         }
 
-        public async Task Update(OrderModel data, int id)
+        public async Task Update(OrderModel data, int id, string connectionString)
         {
             throw new NotImplementedException();
         }
 
-       
+
     }
 }

@@ -8,11 +8,11 @@ namespace FlameAndWax.Services.Services.BaseInterface.Interface
 {
     public interface IEmployeeBaseService
     {
-        Task<ServiceResult<Boolean>> DeactivateCustomerAccount(int customerId);
-        Task<ServiceResult<Boolean>> DeleteCustomerAccount(int employeeId);
-        Task<ServiceResult<Boolean>> ModifyProduct(ProductModel updatedProduct, int productId);
+        Task<ServiceResult<Boolean>> DeactivateCustomerAccount(int customerId,string connectionString);
+        Task<ServiceResult<Boolean>> DeleteCustomerAccount(int employeeId,string connectionString);
+        Task<ServiceResult<Boolean>> ModifyProduct(ProductModel updatedProduct, int productId,string connectionString);
 
-        Task<ServiceResult<IEnumerable<CustomerModel>>> FetchAllCustomerAccounts(int pageNumber, int pageSize);        
-        Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts(int pageNumber, int pageSize);
+        Task<ServiceResult<IEnumerable<CustomerModel>>> FetchAllCustomerAccounts(int pageNumber, int pageSize, string connectionString);        
+        Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts(int pageNumber, int pageSize, string connectionString);
     }
 }

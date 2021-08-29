@@ -30,6 +30,9 @@ namespace FlameAndWax
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
               .AddCookie();
+
+            //Connection String
+            services.AddSingleton<IConfiguration>(Configuration);
             
             //Dependency Injection Repository
             services.AddSingleton<ICustomerRepository, CustomerRepository>();
