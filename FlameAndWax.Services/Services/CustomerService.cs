@@ -180,8 +180,11 @@ namespace FlameAndWax.Services.Services
 
         public async Task<ServiceResult<bool>> CheckoutOrder(OrderModel order, string usernameLoggedIn, string connectionString)
         {
-            var primaryKey = await _orderRepository.Add(order, connectionString);
-            if (primaryKey != 1)
+            try
+            {
+                var primaryKey = await _orderRepository.Add(order, connectionString);
+                if (primaryKey == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Inserting Order");
+
                 foreach (var orderDetail in order.OrderDetails)
                 {
                     orderDetail.OrderId = primaryKey;
@@ -201,53 +204,67 @@ namespace FlameAndWax.Services.Services
 
                     await _productRepository.UpdateAddUnitsOnOrder(orderDetail.Product.ProductId, orderDetail.Quantity, connectionString);
                 }
-            else
-                return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Inserting Order");
-            return ServiceHelper.BuildServiceResult<bool>(true, false, null);
+
+
+                return ServiceHelper.BuildServiceResult<bool>(true, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
         }
 
         public async Task<ServiceResult<int>> Login(CustomerModel loginCredentials, string connectionString)
         {
-            if (loginCredentials.Username == null && loginCredentials.Password == null)
+            if (loginCredentials == null)
                 return ServiceHelper.BuildServiceResult<int>(-1, true, "Login Credentials has no value");
+            try
+            {
+                var isLoggedIn = await _customerRepository.LoginCustomerAccount(loginCredentials, connectionString);
+                if (isLoggedIn > -1)
+                    return ServiceHelper.BuildServiceResult<int>(isLoggedIn, false, null);
 
-            var isLoggedIn = await _customerRepository.LoginCustomerAccount(loginCredentials, connectionString);
-            if (isLoggedIn > -1)
-                return ServiceHelper.BuildServiceResult<int>(isLoggedIn, false, null);
-
-            else
-                return ServiceHelper.BuildServiceResult<int>(-1, true, "Invalid User");
+                else
+                    return ServiceHelper.BuildServiceResult<int>(-1, true, "Invalid User");
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }
         }
 
-        public async Task<ServiceResult<bool>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId = 0, string connectionString = "")
+        public async Task<ServiceResult<bool>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId, string connectionString)
         {
             if (modifiedAccount == null)
                 return ServiceHelper.BuildServiceResult<bool>(false, true, "Modified Account details has no value!");
-            if (customerId == 0)
-                return ServiceHelper.BuildServiceResult<bool>(false, true, "Customer Id is not defined!");
-
-
-            await _customerRepository.Update(modifiedAccount, customerId, connectionString);
-            return ServiceHelper.BuildServiceResult<bool>(true, false, null);
+            try
+            {
+                await _customerRepository.Update(modifiedAccount, customerId, connectionString);
+                return ServiceHelper.BuildServiceResult<bool>(true, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
         }
 
         public async Task<ServiceResult<bool>> Register(CustomerModel registeredCredentials, string connectionString)
         {
             if (registeredCredentials == null)
                 return ServiceHelper.BuildServiceResult<bool>(false, true, "Registered Data has no value");
-
-            await _customerRepository.Add(registeredCredentials, connectionString);
-            return ServiceHelper.BuildServiceResult<bool>(true, false, null);
+            try
+            {
+                var customerRespositoryResult = await _customerRepository.Add(registeredCredentials, connectionString);
+                if(customerRespositoryResult == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Adding Customer");
+                
+                return ServiceHelper.BuildServiceResult<bool>(true, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
         }
 
         public async Task<ServiceResult<bool>> SendMessage(MessageModel newMessage, string connectionString)
         {
             if (newMessage == null)
                 return ServiceHelper.BuildServiceResult<bool>(false, true, "Empty Message!");
-            await _messageRepository.Add(newMessage, connectionString);
-            return ServiceHelper.BuildServiceResult<bool>(true, false, null);
+            try
+            {
+                var messageRepositoryResult = await _messageRepository.Add(newMessage, connectionString);
+                if(messageRepositoryResult == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Adding Message");
+                
+                return ServiceHelper.BuildServiceResult<bool>(true, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
         }
-
-
     }
 }
