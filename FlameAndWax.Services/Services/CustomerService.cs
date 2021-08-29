@@ -39,107 +39,143 @@ namespace FlameAndWax.Services.Services
 
         public async Task<ServiceResult<bool>> AddCustomerReview(CustomerReviewModel customerReview, string connectionString)
         {
-            await _customerReviewRepository.Add(customerReview, connectionString);
-            return ServiceHelper.BuildServiceResult<Boolean>(true, false, null);
+            if (customerReview == null) return ServiceHelper.BuildServiceResult<bool>(false, true, "Customer review has no data");
+
+            try
+            {
+                var customerReviewResult = await _customerReviewRepository.Add(customerReview, connectionString);
+                if (customerReviewResult == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Error adding customer review");
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
+
+            return ServiceHelper.BuildServiceResult<bool>(true, false, null);
         }
 
         public async Task<ServiceResult<bool>> AddOrderTransaction(OrderModel newOrder, string connectionString)
         {
-            if (newOrder == null)
-                return ServiceHelper.BuildServiceResult<bool>(false, true, "OrderModel not defined!");
+            if (newOrder == null) return ServiceHelper.BuildServiceResult<bool>(false, true, "OrderModel not defined!");
 
-            await _orderRepository.Add(newOrder, connectionString);
-            var orderDetails = newOrder.OrderDetails;
-            foreach (var orderDetail in orderDetails)
+            try
             {
-                await _orderDetailRepository.Add(orderDetail, connectionString);
-                await _productRepository.ModifyNumberOfUnitsInOrder(orderDetail.Product.ProductId, orderDetail.Quantity, connectionString);
+                var orderRepositoryResult = await _orderRepository.Add(newOrder, connectionString);
+                if (orderRepositoryResult == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Failed to add order item");
+
+                var orderDetails = newOrder.OrderDetails;
+                foreach (var orderDetail in orderDetails)
+                {
+                    var orderDetailRepositoryResult = await _orderDetailRepository.Add(orderDetail, connectionString);
+                    if (orderDetailRepositoryResult == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Failed to add order details");
+
+                    await _productRepository.ModifyNumberOfUnitsInOrder(orderDetail.Product.ProductId, orderDetail.Quantity, connectionString);
+                }
+                return ServiceHelper.BuildServiceResult<bool>(true, false, null);
             }
-            return ServiceHelper.BuildServiceResult<bool>(true, false, null);
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
         }
 
         public async Task<ServiceResult<bool>> CheckIfCustomerHasOrderedAProduct(string customerUsername, int productId, string connectionString)
         {
-            var isSuccess = await _previouslyOrderedProductsRepository.HasCustomerOrderedAProduct(productId, customerUsername, connectionString);
-            return ServiceHelper.BuildServiceResult<bool>(isSuccess, false, null);
+            try
+            {
+                var isSuccess = await _previouslyOrderedProductsRepository.HasCustomerOrderedAProduct(productId, customerUsername, connectionString);
+                return ServiceHelper.BuildServiceResult<bool>(isSuccess, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
         }
 
-        public async Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId = 0, string connectionString = "")
+        public async Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId, string connectionString)
         {
-            if (customerId == 0)
-                return ServiceHelper.BuildServiceResult<CustomerModel>(null, true, "Customer Id not defined!");
-
-            var customer = await _customerRepository.Fetch(customerId, connectionString);
-            return ServiceHelper.BuildServiceResult<CustomerModel>(customer, false, null);
+            try
+            {
+                var customer = await _customerRepository.Fetch(customerId, connectionString);
+                if (customer == null) return ServiceHelper.BuildServiceResult<CustomerModel>(new CustomerModel(), true, "Customer not found!");
+                return ServiceHelper.BuildServiceResult<CustomerModel>(customer, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<CustomerModel>(null, false, e.Message); }
         }
 
         public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts(int pageNumber, int pageSize, string connectionString)
         {
-            var products = await _productRepository.FetchPaginatedResult(pageNumber, pageSize, connectionString);
-            return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(products, false, null);
+            try
+            {
+                var products = await _productRepository.FetchPaginatedResult(pageNumber, pageSize, connectionString);
+                return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(products, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(null, true, e.Message); }
         }
 
-        public async Task<ServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int productId = 0, string connectionString = "")
+        public async Task<ServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int productId, string connectionString)
         {
-            if (productId == 0)
-                return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(null, true, "ProductId not defined!");
-
-
-            var customerReviews = await _customerReviewRepository.FetchReviewsOfAProduct(productId, connectionString);
-            return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(customerReviews, false, null);
+            try
+            {
+                var customerReviews = await _customerReviewRepository.FetchReviewsOfAProduct(productId, connectionString);
+                return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(customerReviews, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(null, true, e.Message); }
         }
 
         public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchNewArrivedProducts(string connectionString)
         {
-            var newArrivals = await _productRepository.FetchNewArrivedProducts(connectionString);
-            return new ServiceResult<IEnumerable<ProductModel>>
+            try
             {
-                Result = newArrivals,
-                HasError = false,
-                ErrorContent = null
-            };
+                var newArrivals = await _productRepository.FetchNewArrivedProducts(connectionString);
+                return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(newArrivals, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(null, true, e.Message); }
         }
 
         public async Task<ServiceResult<IEnumerable<OrderDetailModel>>> FetchOrderDetails(int orderId = 0, string connectionString = "")
         {
-            if (orderId == 0)
-                return ServiceHelper.BuildServiceResult<IEnumerable<OrderDetailModel>>(null, true, "Order Id not defined!");
-
-
-            var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId, connectionString);
-            return ServiceHelper.BuildServiceResult<IEnumerable<OrderDetailModel>>(orderDetails, false, null);
+            try
+            {
+                if (orderId == 0)
+                    return ServiceHelper.BuildServiceResult<IEnumerable<OrderDetailModel>>(null, true, "Order Id not defined!");
+                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId, connectionString);
+                return ServiceHelper.BuildServiceResult<IEnumerable<OrderDetailModel>>(orderDetails, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<OrderDetailModel>>(null, true, e.Message); }
         }
 
         public async Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrders(int customerId = 0, string connectionString = "")
         {
-            if (customerId == 0)
-                return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(null, true, "Customer Id not defined!");
-
-
-            var ordersFromCustomer = await _orderRepository.FetchOrdersFromCustomer(customerId, connectionString);
-            return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(ordersFromCustomer, false, null);
+            try
+            {
+                if (customerId == 0)
+                    return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(null, true, "Customer Id not defined!");
+                var ordersFromCustomer = await _orderRepository.FetchOrdersFromCustomer(customerId, connectionString);
+                return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(ordersFromCustomer, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(null, true, e.Message); }
         }
 
         public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(Constants.Category category, string connectionString)
         {
-            var categorizedProducts = await _productRepository.FetchCategorizedProducts(category, connectionString);
-            return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(categorizedProducts, false, null);
+            try
+            {
+                var categorizedProducts = await _productRepository.FetchCategorizedProducts(category, connectionString);
+                return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(categorizedProducts, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(null, true, e.Message); }
         }
 
-        public async Task<ServiceResult<ProductModel>> FetchProductDetail(int productId = 0, string connectionString = "")
+        public async Task<ServiceResult<ProductModel>> FetchProductDetail(int productId, string connectionString)
         {
-            if (productId == 0)
-                return ServiceHelper.BuildServiceResult<ProductModel>(null, true, "Product Id not defined!");
-
-
-            var productDetail = await _productRepository.Fetch(productId, connectionString);
-            return ServiceHelper.BuildServiceResult<ProductModel>(productDetail, false, null);
+            try
+            {
+                var productDetail = await _productRepository.Fetch(productId, connectionString);
+                return ServiceHelper.BuildServiceResult<ProductModel>(productDetail, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<ProductModel>(null, true, e.Message); }
         }
 
         public async Task<ServiceResult<double>> FetchProductPrice(int productId, string connectionString)
         {
-            var productPrice = await _productRepository.Fetch(productId, connectionString);
-            return ServiceHelper.BuildServiceResult<double>(productPrice.ProductPrice, false, null);
+            try
+            {
+                var productPrice = await _productRepository.Fetch(productId, connectionString);
+                return ServiceHelper.BuildServiceResult<double>(productPrice.ProductPrice, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<double>(-0.1, true, e.Message); }
         }
 
         public async Task<ServiceResult<bool>> CheckoutOrder(OrderModel order, string usernameLoggedIn, string connectionString)
