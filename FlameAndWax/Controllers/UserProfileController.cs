@@ -1,10 +1,13 @@
 ﻿using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
 using FlameAndWax.Services.Services.Interfaces;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -15,12 +18,17 @@ namespace FlameAndWax.Controllers
     {
         private readonly ICustomerService _customerService;
         private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         private string ConnectionString { get; set; }
-        public UserProfileController(ICustomerService customerService, IConfiguration configuration)
+        public UserProfileController(
+            ICustomerService customerService, 
+            IConfiguration configuration,
+            IWebHostEnvironment webHostEnvironment)
         {
             _customerService = customerService;
             _configuration = configuration;
+            _webHostEnvironment = webHostEnvironment;
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
         public async Task<IActionResult> Index()
@@ -47,6 +55,7 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> Save(UserProfileViewModel userProfile)
         {
             var userId = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
+            var imageLink = await BuildProfilePictureLink(userProfile.ProfilePictureFile);          
             var customerModel = new CustomerModel
             {
                 CustomerId = int.Parse(userId),
@@ -55,7 +64,8 @@ namespace FlameAndWax.Controllers
                 Email = userProfile.Email,
                 Username = userProfile.Username,
                 Password = userProfile.Password,
-                Address = userProfile.Address
+                Address = userProfile.Address,
+                ProfilePictureLink = imageLink
             };
 
             var modifyServiceResult = await _customerService.ModifyAccountDetails(customerModel, int.Parse(userId), ConnectionString);
@@ -75,6 +85,22 @@ namespace FlameAndWax.Controllers
                 ProfilePictureLink = accountDetailServiceResult.Result.ProfilePictureLink
             };
             return PartialView("ProfilePartial", userProfileViewModel);
+        }
+
+        private async Task<string> BuildProfilePictureLink(IFormFile profilePictureFile)
+        {
+            var fileExtension = Path.GetExtension(profilePictureFile.FileName);
+            var guid = Guid.NewGuid();
+            if (fileExtension.Equals(".JPG", StringComparison.CurrentCultureIgnoreCase) || 
+                fileExtension.Equals(".PNG", StringComparison.CurrentCultureIgnoreCase)  ||
+                fileExtension.Equals(".JPEG",StringComparison.CurrentCultureIgnoreCase))
+            {                
+                var saveImage = Path.Combine(_webHostEnvironment.WebRootPath, @"images\customers", $"{guid}{profilePictureFile.FileName}");
+                var stream = new FileStream(saveImage, FileMode.Create);
+                await profilePictureFile.CopyToAsync(stream);
+                return @$"images\customers\{guid}{profilePictureFile.FileName}";
+            }
+            return string.Empty;
         }
     }
 }

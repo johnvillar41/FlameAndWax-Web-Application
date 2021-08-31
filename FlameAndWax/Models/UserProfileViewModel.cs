@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,5 +16,6 @@ namespace FlameAndWax.Models
         public string VerifyPassword { get; set; }
         public string Username { get; set; }
         public string ProfilePictureLink { get; set; }
+        public IFormFile ProfilePictureFile { get; set; }
     }
 }

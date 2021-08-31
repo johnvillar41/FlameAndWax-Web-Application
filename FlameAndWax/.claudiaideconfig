@@ -1,0 +1,22 @@
+﻿{
+  "BackgroundImageAbsolutePath": "C:\\Users\\Villar\\source\\repos\\batmobile-batman-arkham-knight-wallpaper.jpg",
+  "BackgroundImagesDirectoryAbsolutePath": "C:\\USERS\\VILLAR\\APPDATA\\LOCAL\\MICROSOFT\\VISUALSTUDIO\\16.0_30A05C1E\\EXTENSIONS\\ROOVBTIQ.ELI\\Images",
+  "ExpandToIDE": true,
+  "Extensions": ".png, .jpg, .gif, .bmp",
+  "ImageBackgroundType": 0,
+  "ImageFadeAnimationInterval": "PT0S",
+  "ImageStretch": 1,
+  "IsLimitToMainlyEditorWindow": false,
+  "LoopSlideshow": false,
+  "MaxHeight": 0,
+  "MaxWidth": 0,
+  "Opacity": 0.35,
+  "PositionHorizon": 2,
+  "PositionVertical": 2,
+  "ShuffleSlideshow": false,
+  "SoftEdgeX": 0,
+  "SoftEdgeY": 0,
+  "UpdateImageInterval": "PT1M",
+  "ViewBoxPointX": 0,
+  "ViewBoxPointY": 0
+}
