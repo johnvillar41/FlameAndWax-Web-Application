@@ -7,9 +7,10 @@
 <div class="container">
 
     <div class="card card0">
-        <div class="row">
-            <div class="col-xl-8 col-lg-8 col-12 border-right">
-                <form method="post" asp-action="RegisterUser" asp-controller="Register">
+
+        <form method="post" asp-action="RegisterUser" asp-controller="Register" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 col-12 border-right">
                     <div class="card-body">
                         <h2>@ViewData["Title"]</h2>
                         <!-- Full Name -->
@@ -93,17 +94,18 @@
                             </div>
                         </div>
                     </div>
-                </form>
+
+                </div>
+
+                <div class="col-xl-4 col-lg-4 col-12 text-center">
+                    <img src="~/images/customers/rechard.jpg" class="avatar img-circle img-thumbnail" alt="avatar">
+                    <h6>Upload a different photo...</h6>
+                    <input type="file" class="text-center center-block file-upload" asp-for="@Model.ProfilePictureFile">
+                </div>
             </div>
-
-            <div class="col-xl-4 col-lg-4 col-12 text-center">                
-                <img src="~/images/customers/rechard.jpg" class="avatar img-circle img-thumbnail" alt="avatar">
-                <h6>Upload a different photo...</h6>
-                <input type="file" class="text-center center-block file-upload">
-            </div>
+        </form>
 
 
-        </div>
     </div>
 
 </div>
