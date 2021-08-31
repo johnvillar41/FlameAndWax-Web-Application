@@ -33,3 +33,12 @@ completedComment = function () {
         x.style.display = "none";
     }
 }
+
+checkIfPasswordIsEqual = function (password, validatePassword, e) {
+    if (password === validatePassword) {
+        return true;
+    } else {
+        e.preventDefault();
+        return false;
+    }
+}

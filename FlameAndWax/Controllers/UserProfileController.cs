@@ -76,7 +76,7 @@ namespace FlameAndWax.Controllers
             var customerServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId), ConnectionString);
             if (customerServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = customerServiceResult.ErrorContent });
 
-            if(customerServiceResult.Result.ProfilePictureLink.Length != 0)
+            if(userProfile.ProfilePictureFile != null)
                 DeleteOldProfilePicture(customerServiceResult.Result.ProfilePictureLink);
 
             var modifyServiceResult = await _customerService.ModifyAccountDetails(customerModel, int.Parse(userId), ConnectionString);
