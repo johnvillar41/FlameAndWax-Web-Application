@@ -68,6 +68,11 @@ namespace FlameAndWax.Controllers
                 ProfilePictureLink = imageLink
             };
 
+            var customerServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId), ConnectionString);
+            if (customerServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = customerServiceResult.ErrorContent });
+
+            DeleteOldProfilePicture(customerServiceResult.Result.ProfilePictureLink);
+
             var modifyServiceResult = await _customerService.ModifyAccountDetails(customerModel, int.Parse(userId), ConnectionString);
             if (modifyServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = modifyServiceResult.ErrorContent });
 
@@ -101,6 +106,17 @@ namespace FlameAndWax.Controllers
                 return @$"images\customers\{guid}{profilePictureFile.FileName}";
             }
             return string.Empty;
+        }
+
+        private void DeleteOldProfilePicture(string fileToDelete)
+        {
+            fileToDelete = Path.Combine(_webHostEnvironment.WebRootPath, fileToDelete);
+            FileInfo fileInfo = new FileInfo(fileToDelete);
+            if (fileInfo != null)
+            {
+                System.IO.File.Delete(fileToDelete);
+                fileInfo.Delete();
+            }
         }
     }
 }
