@@ -34,11 +34,25 @@ completedComment = function () {
     }
 }
 
-checkIfPasswordIsEqual = function (password, validatePassword, e) {
-    if (password === validatePassword) {
+checkIfPasswordIsEqual = function () {
+    let password = document.querySelector('#password').value;
+    let verifyPassword = document.querySelector('#verifyPassword').value;
+    if (password === verifyPassword) {
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Your profile has been saved',
+            showConfirmButton: false,
+            timer: 1500
+        })
         return true;
     } else {
-        e.preventDefault();
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: '<h6>Passwords do not match!</h6>'
+        })
         return false;
     }
 }
