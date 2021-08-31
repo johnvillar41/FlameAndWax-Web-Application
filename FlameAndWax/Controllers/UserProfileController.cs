@@ -22,7 +22,7 @@ namespace FlameAndWax.Controllers
 
         private string ConnectionString { get; set; }
         public UserProfileController(
-            ICustomerService customerService, 
+            ICustomerService customerService,
             IConfiguration configuration,
             IWebHostEnvironment webHostEnvironment)
         {
@@ -55,23 +55,29 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> Save(UserProfileViewModel userProfile)
         {
             var userId = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
-            var imageLink = await BuildProfilePictureLink(userProfile.ProfilePictureFile);          
-            var customerModel = new CustomerModel
+            var customerModel = new CustomerModel();
+            if (userProfile.ProfilePictureFile != null)
             {
-                CustomerId = int.Parse(userId),
-                CustomerName = userProfile.Fullname,
-                ContactNumber = userProfile.ContactNumber,
-                Email = userProfile.Email,
-                Username = userProfile.Username,
-                Password = userProfile.Password,
-                Address = userProfile.Address,
-                ProfilePictureLink = imageLink
-            };
+                var imageLink = await BuildProfilePictureLink(userProfile.ProfilePictureFile);
+                customerModel = new CustomerModel
+                {
+                    ProfilePictureLink = imageLink
+                };
+            }
+
+            customerModel.CustomerId = int.Parse(userId);
+            customerModel.CustomerName = userProfile.Fullname;
+            customerModel.ContactNumber = userProfile.ContactNumber;
+            customerModel.Email = userProfile.Email;
+            customerModel.Username = userProfile.Username;
+            customerModel.Password = userProfile.Password;
+            customerModel.Address = userProfile.Address;
 
             var customerServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId), ConnectionString);
             if (customerServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = customerServiceResult.ErrorContent });
 
-            DeleteOldProfilePicture(customerServiceResult.Result.ProfilePictureLink);
+            if(customerServiceResult.Result.ProfilePictureLink.Length != 0)
+                DeleteOldProfilePicture(customerServiceResult.Result.ProfilePictureLink);
 
             var modifyServiceResult = await _customerService.ModifyAccountDetails(customerModel, int.Parse(userId), ConnectionString);
             if (modifyServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = modifyServiceResult.ErrorContent });
@@ -96,10 +102,10 @@ namespace FlameAndWax.Controllers
         {
             var fileExtension = Path.GetExtension(profilePictureFile.FileName);
             var guid = Guid.NewGuid();
-            if (fileExtension.Equals(".JPG", StringComparison.CurrentCultureIgnoreCase) || 
-                fileExtension.Equals(".PNG", StringComparison.CurrentCultureIgnoreCase)  ||
-                fileExtension.Equals(".JPEG",StringComparison.CurrentCultureIgnoreCase))
-            {                
+            if (fileExtension.Equals(".JPG", StringComparison.CurrentCultureIgnoreCase) ||
+                fileExtension.Equals(".PNG", StringComparison.CurrentCultureIgnoreCase) ||
+                fileExtension.Equals(".JPEG", StringComparison.CurrentCultureIgnoreCase))
+            {
                 var saveImage = Path.Combine(_webHostEnvironment.WebRootPath, @"images\customers", $"{guid}{profilePictureFile.FileName}");
                 var stream = new FileStream(saveImage, FileMode.Create);
                 await profilePictureFile.CopyToAsync(stream);
