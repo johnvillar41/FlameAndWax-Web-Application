@@ -56,7 +56,7 @@
                                 <div class="dropdown-menu">
 
                                     <a class="dropdown-item" asp-controller="UserProfile" asp-action="Index"><i class="fas fa-user-circle"></i> View Profile</a>
-                                    <a class="dropdown-item" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"></i>&nbsp;Cart &nbsp;<span class="badge badge-pill badge-warning">@totalNumberOfCart</span></a>
+                                    <a class="dropdown-item" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"></i>&nbsp;Cart &nbsp;<span class="badge badge-pill badge-warning" id="totalCartCount">@totalNumberOfCart</span></a>
                                     <a class="dropdown-item" asp-controller="Orders" asp-action="Index">&nbsp;<i class="fas fa-clipboard-list"></i>&nbsp;Orders</a>
 
                                     <hr />

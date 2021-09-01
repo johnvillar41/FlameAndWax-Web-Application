@@ -35,12 +35,21 @@ $('#submit').click(function () {
 $('#cartComplete').click(function () {
     cartComplete = function (xhr) {
         if (xhr.status == "200") {
-            Swal.fire({
+            const Toast = Swal.mixin({
+                toast: true,
                 position: 'top-end',
-                icon: 'success',
-                title: 'Your cart has been submitted',
                 showConfirmButton: false,
-                timer: 1500
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Cart Submitted!'
             })
         } else {
 
@@ -97,3 +106,24 @@ checkIfPasswordIsEqual = function () {
 update = function (text) {
     document.getElementById("dropdownMenuButton").innerHTML = text + ' <i class="fas fa-caret-square-down"></i>';
 }
+
+//Add to Cart trigger
+$('#addtoCartBtn').click(function () {
+    addToCart = function () {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+        Toast.fire({
+            icon: 'success',
+            title: 'Added to cart!'
+        })        
+    }
+});
