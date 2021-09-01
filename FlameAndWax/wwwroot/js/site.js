@@ -31,7 +31,7 @@ $('#submit').click(function () {
     }
 });
 
-
+//For cart submission trigger
 $('#cartComplete').click(function () {
     cartComplete = function (xhr) {
         if (xhr.status == "200") {
@@ -48,6 +48,7 @@ $('#cartComplete').click(function () {
     }
 });
 
+//Cart validation
 checkIfCartHasItems = function (cartItems) {
     if (cartItems == 0) {
         Swal.fire({
@@ -58,7 +59,6 @@ checkIfCartHasItems = function (cartItems) {
         })
         return false;
     }
-
     return true;
 }
 
@@ -76,6 +76,7 @@ completedComment = function () {
     }
 }
 
+//User profile password validation
 checkIfPasswordIsEqual = function () {
     let password = document.querySelector('#password').value;
     let verifyPassword = document.querySelector('#verifyPassword').value;
@@ -90,10 +91,6 @@ checkIfPasswordIsEqual = function () {
         })
         return false;
     }
-}
-
-contactUsPopup = function () {
-
 }
 
 //Updates the text for dropdown on Products

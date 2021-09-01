@@ -57,77 +57,61 @@ namespace FlameAndWax.Controllers
         [HttpPost]
         public async Task<IActionResult> Checkout(CartViewModel cart)
         {
-            if (cart.CartProducts != null)
+            if (cart.CartProducts == null) return RedirectToAction("Index", "Error", new { ErrorContent = "Cart Products is null" });
+
+            var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
+            var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+
+            var cartItems = cart.CartProducts;
+            var totalOrderCost = 0.0;
+            var orderDetails = new List<OrderDetailModel>();
+
+            foreach (var cartItem in cartItems)
             {
-                var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
-                var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-
-                var cartItems = cart.CartProducts;
-                var totalOrderCost = 0.0;
-                var orderDetails = new List<OrderDetailModel>();
-
-                foreach (var cartItem in cartItems)
-                {
-                    var subTotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);
-                    totalOrderCost += subTotalCost;
-                    var productPriceServiceResult = await _customerService.FetchProductPrice(cartItem.ProductId, ConnectionString);
-                    if (productPriceServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = productPriceServiceResult.ErrorContent });
-                    orderDetails.Add(
-                        new OrderDetailModel
+                var subTotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);
+                totalOrderCost += subTotalCost;
+                var productPriceServiceResult = await _customerService.FetchProductPrice(cartItem.ProductId, ConnectionString);
+                if (productPriceServiceResult.HasError) return RedirectToAction("Index", "Error", new { productPriceServiceResult.ErrorContent });
+                orderDetails.Add(
+                    new OrderDetailModel
+                    {
+                        Product = new ProductModel
                         {
-                            Product = new ProductModel
-                            {
-                                ProductId = cartItem.ProductId,
-                                ProductPrice = productPriceServiceResult.Result //Fetch ProductPrice from service layer not from ui for safety                     
-                            },
-                            TotalPrice = subTotalCost,
-                            Quantity = cartItem.QuantityOrdered,
-                        }
-                    );
-                }
-
-                var modeOfPayment = ServiceHelper.BuildModeOfPayment(cart.ModeOfPayment.ToString());
-                var courierType = ServiceHelper.BuildCourier(cart.Courier.ToString());
-                var order = new OrderModel
-                {
-                    Customer = new CustomerModel { CustomerId = int.Parse(userLoggedInID) },
-                    Employee = new EmployeeModel { EmployeeId = -1 },
-                    DateOrdered = DateTime.UtcNow,
-                    TotalCost = totalOrderCost,
-                    ModeOfPayment = modeOfPayment,
-                    OrderDetails = orderDetails,
-                    Courier = courierType
-                };
-                var primaryKeyServiceResult = await _customerService.CheckoutOrder(order, userLoggedInUsername, ConnectionString);
-
-                if (primaryKeyServiceResult.HasError)
-                {
-                    return View("Error", new ErrorViewModel { ErrorContent = primaryKeyServiceResult.ErrorContent });
-                }
-
-                Cart.ClearCartItems(userLoggedInUsername);
-                return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedInID) });
+                            ProductId = cartItem.ProductId,
+                            ProductPrice = productPriceServiceResult.Result //Fetch ProductPrice from service layer not from ui for safety                     
+                        },
+                        TotalPrice = subTotalCost,
+                        Quantity = cartItem.QuantityOrdered,
+                    }
+                );
             }
 
-            return PartialView("Error", new ErrorViewModel { ErrorContent = "Empty Cart" });
+            var modeOfPayment = ServiceHelper.BuildModeOfPayment(cart.ModeOfPayment.ToString());
+            var courierType = ServiceHelper.BuildCourier(cart.Courier.ToString());
+            var order = new OrderModel
+            {
+                Customer = new CustomerModel { CustomerId = int.Parse(userLoggedInID) },
+                Employee = new EmployeeModel { EmployeeId = -1 },
+                DateOrdered = DateTime.UtcNow,
+                TotalCost = totalOrderCost,
+                ModeOfPayment = modeOfPayment,
+                OrderDetails = orderDetails,
+                Courier = courierType
+            };
+            var primaryKeyServiceResult = await _customerService.CheckoutOrder(order, userLoggedInUsername, ConnectionString);
+
+            if (primaryKeyServiceResult.HasError) return RedirectToAction("Index", "Error", new { primaryKeyServiceResult.ErrorContent });
+
+            Cart.ClearCartItems(userLoggedInUsername);
+            return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedInID) });
         }
 
         public async Task<IActionResult> AddToCart(int productId = 0, string user = "")
         {
-            if (productId == 0)
-            {
-                return View(Cart.GetCartItems(user));
-            }
+            if (productId == 0) return View(Cart.GetCartItems(user));
 
             var productServiceResult = await _customerService.FetchProductDetail(productId, ConnectionString);
-            if (productServiceResult.HasError)
-            {
-                var error = new ErrorViewModel
-                {
-                    ErrorContent = productServiceResult.ErrorContent
-                };
-                return View("Error", error);
-            }
+            if (productServiceResult.HasError) return RedirectToAction("Index", "Error", new { productServiceResult.ErrorContent });
 
             var productViewModel = new ProductViewModel
             {
