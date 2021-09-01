@@ -125,8 +125,9 @@ namespace FlameAndWax.Controllers
             };
 
             Cart.AddCartItem(productViewModel, user);
-            return Ok();
-            //return View(nameof(Index), Cart.GetCartItems(user));
+            var cartItems = Cart.GetCartItems(user);
+            var cartItemCount = cartItems.Count();
+            return Ok(cartItemCount);            
         }
     }
 }
