@@ -31,6 +31,37 @@ $('#submit').click(function () {
     }
 });
 
+
+$('#cartComplete').click(function () {
+    cartComplete = function (xhr) {
+        if (xhr.status == "200") {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your cart has been submitted',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        } else {
+
+        }
+    }
+});
+
+checkIfCartHasItems = function (cartItems) {
+    if (cartItems == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: '<h6>Cart has no items</h6>'
+        })
+        return false;
+    }
+
+    return true;
+}
+
 //For prompting successfull comment
 completedComment = function () {
     var x = document.getElementById("completedComment");
@@ -48,7 +79,7 @@ completedComment = function () {
 checkIfPasswordIsEqual = function () {
     let password = document.querySelector('#password').value;
     let verifyPassword = document.querySelector('#verifyPassword').value;
-    if (password === verifyPassword) {        
+    if (password === verifyPassword) {
         return true;
     } else {
         Swal.fire({
