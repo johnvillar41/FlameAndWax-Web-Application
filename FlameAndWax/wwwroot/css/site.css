@@ -11,6 +11,14 @@ a {
     color: #0366d6;
 }
 
+hr {
+    height: 1px;
+    background-color: #000000;
+    border: none;
+    padding: 0;
+}
+
+
 .card0 {
     box-shadow: 0px 4px 8px 0px #757575;
     border-radius: 5px
@@ -105,7 +113,7 @@ body {
     .btn-light-gold:hover {
         background-color: #cccac4;
     }
-   
+
 
 .carousel-control-next,
 .carousel-control-prev {

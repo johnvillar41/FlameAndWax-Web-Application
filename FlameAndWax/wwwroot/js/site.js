@@ -64,3 +64,8 @@ checkIfPasswordIsEqual = function () {
 contactUsPopup = function () {
 
 }
+
+//Updates the text for dropdown on Products
+update = function (text) {
+    document.getElementById("dropdownMenuButton").innerHTML = text + ' <i class="fas fa-caret-square-down"></i>';
+}
