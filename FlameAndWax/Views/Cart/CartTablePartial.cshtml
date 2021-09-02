@@ -60,7 +60,10 @@
                                            asp-action="DeleteCartItem"
                                            asp-controller="Cart"
                                            asp-route-productId="@Model.CartProducts[i].ProductId"
-                                           data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv">
+                                           data-ajax="true" data-ajax-update="#tableCart" 
+                                           data-ajax-loading="#overlayLoadingDiv" 
+                                           data-ajax-complete="negateTotalNumberOfCart"
+                                           id="deleteCartItem">
                                             Delete <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </td>

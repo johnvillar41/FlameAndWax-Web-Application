@@ -135,7 +135,33 @@ $('#addtoCartBtn').click(function () {
     }
 });
 
-successAddToCart = function (response) {
+$('#deleteCartItem').click(function () {
+    negateTotalNumberOfCart = function (xhr) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+        if (xhr.status == "200") {
+            Toast.fire({
+                icon: 'success',
+                title: 'Removed item from cart!'
+            })
+
+            let totalCartNumValue = Number(document.getElementById('totalCartCount').innerHTML);
+            totalCartNumValue--;
+            document.getElementById('totalCartCount').innerHTML = totalCartNumValue;
+        }
+    }
+});
+
+updateAddToCartTotalCount = function (response) {
     var dataObject = JSON.parse(response);
     document.querySelector('#totalCartCount').innerHTML = dataObject;
 }
