@@ -200,3 +200,49 @@ body {
         display: none;
     }
 }
+
+/* Card image sizing */
+
+.productImage {
+    position: relative;
+    float: left;
+    display: inline-block;
+    width: 100%;
+}
+
+.productImage:after {
+    padding-top: 100%;
+    display: block;
+    content: '';
+}
+
+.img-wrapper {
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.img-wrapper .thumb {
+    height: 100%;
+}
+
+.img-project, .thumb {
+    display: block;
+}
+
+.img-project img, .thumb img {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    max-width: 100%;
+    max-height: 100%;
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+
