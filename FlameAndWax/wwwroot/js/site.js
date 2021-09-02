@@ -211,3 +211,36 @@ window.addEventListener("pageshow", function (event) {
         window.location.reload();
     }
 });
+
+//Login User
+$('#loginBtn').click(function () {
+    loginComplete = function (xhr) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+        if (xhr.status == "200") {
+            Toast.fire({
+                icon: 'success',
+                title: 'Login Successfull!'
+            });
+        } else {
+            Toast.fire({
+                icon: 'error',
+                title: 'Login credentials not found!'
+            });
+        }
+    }
+});
+
+//Login success routing
+loginSuccess = function (response) {    
+    window.location.href = response;
+}

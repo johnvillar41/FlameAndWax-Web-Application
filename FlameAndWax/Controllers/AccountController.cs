@@ -59,10 +59,11 @@ namespace FlameAndWax.Controllers
 
                 if (Url.IsLocalUrl(returnUrl))
                 {
-                    return Redirect(returnUrl);
+                    return Json(returnUrl);
                 }
 
-                return RedirectToAction("Index", "Home");
+                returnUrl = "/Home/Index";
+                return Json(returnUrl);
             }
             return View(nameof(Login));
         }
