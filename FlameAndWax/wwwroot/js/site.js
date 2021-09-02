@@ -1,4 +1,4 @@
-﻿//for clearing Contact us
+﻿//for clearing User profile
 function resetText() {
     document.getElementById("fullname").value = "";
     document.getElementById("contactNumber").value = "";
@@ -51,6 +51,7 @@ $('#cartComplete').click(function () {
                 icon: 'success',
                 title: 'Cart Submitted!'
             })
+            document.getElementById('totalCartCount').innerHTML = "0";
         } else {
 
         }
