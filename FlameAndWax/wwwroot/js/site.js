@@ -127,7 +127,7 @@ $('#addtoCartBtn').click(function () {
                 icon: 'success',
                 title: 'Added to cart!'
             })
-        } else {           
+        } else {
             Toast.fire({
                 icon: 'error',
                 title: 'Failed to add!'
@@ -198,5 +198,16 @@ $('#registerUser').click(function () {
                 title: 'Error in registrating new user!'
             });
         }
+    }
+});
+
+//Reloads page on back button trigger
+window.addEventListener("pageshow", function (event) {
+    var historyPage = event.persisted ||
+        (typeof window.performance != "undefined" &&
+            window.performance.navigation.type === 2);
+    if (historyPage) {
+        // Handle page restore.
+        window.location.reload();
     }
 });
