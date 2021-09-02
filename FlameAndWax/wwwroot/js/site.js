@@ -168,9 +168,9 @@ updateAddToCartTotalCount = function (response) {
 }
 
 failureAddToCart = function (response) {
-    if (response.status == "401") {
-        window.location.href = "/Account/Login";
-    }
+
+    window.location.href = "/Account/Login/?returnUrl=" + response;
+
 }
 
 //For Registering new User
@@ -241,6 +241,6 @@ $('#loginBtn').click(function () {
 });
 
 //Login success routing
-loginSuccess = function (response) {    
+loginSuccess = function (response) {
     window.location.href = response;
 }
