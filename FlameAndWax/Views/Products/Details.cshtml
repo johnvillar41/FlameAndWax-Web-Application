@@ -43,7 +43,7 @@
             </div>
 
             <!-- Product Details -->
-            <div class="col-xl-4 col-lg-4 col-12">
+            <div class="col-xl-4 col-lg-4 col-12 text-center">
                 <h4><strong>@Model.ProductName</strong></h4>
                 <p><strong>Product Id: @Model.ProductId</strong></p>
                 <hr />
@@ -71,12 +71,17 @@
                    asp-controller="Products"
                    data-ajax="true"
                    id="addtoCartBtn"
+                   data-ajax-loading="#cartLoading"
                    data-ajax-success="successAddToCart"
                    data-ajax-failure="failureAddToCart"
                    data-ajax-complete="addToCart">
                     Add To Cart <i class="fas fa-cart-plus"></i>
                 </a>
+                <div class="spinner-border mt-2" role="status" id="cartLoading" style="display:none;">
+                    <span class="sr-only">Loading...</span>
+                </div>
             </div>
+           
         </div>
         <hr />
 
