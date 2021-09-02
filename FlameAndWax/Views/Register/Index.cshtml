@@ -5,12 +5,16 @@
 }
 
 <div class="container">
-
     <div class="card card0">
-
-        <form method="post" asp-action="RegisterUser" asp-controller="Register" enctype="multipart/form-data">
+        <form method="post"
+              data-ajax="true"
+              data-ajax-loading="#registerSpinner"
+              data-ajax-complete="registrationComplete"
+              asp-action="RegisterUser"
+              asp-controller="Register"
+              enctype="multipart/form-data">
             <div class="row">
-                <div class="col-xl-8 col-lg-8 col-12 border-right">
+                <div class="col-xl-8 col-lg-8 col-12 border-right ">
                     <div class="card-body">
                         <h2>@ViewData["Title"]</h2>
                         <!-- Full Name -->
@@ -87,26 +91,30 @@
                                 </div>
                             </div>
                         </div>
-                        <hr />
-                        <div class="row mb-2">
-                            <div class="col-4 mx-auto">
-                                <button class="btn btn-gold btn-block" type="submit"><i class="fas fa-user-plus"></i> Register</button>
-                            </div>
-                        </div>
+
+
                     </div>
 
                 </div>
 
-                <div class="col-xl-4 col-lg-4 col-12 text-center">                   
+                <div class="col-xl-4 col-lg-4 col-12 text-center">
                     <img src="~/images/add picture.png" class="avatar img-circle img-thumbnail" alt="avatar">
                     <h6>Upload a different photo...</h6>
                     <input type="file" class="text-center center-block file-upload" asp-for="@Model.ProfilePictureFile">
                 </div>
             </div>
+            <hr />
+            <div class="row mb-2">
+                <div class="col-9 mx-auto text-center">
+                    <button class="btn btn-gold btn-block" id="registerUser" type="submit"><i class="fas fa-user-plus"></i> Register</button>
+                    <div class="spinner-border mt-2" role="status" id="registerSpinner" style="display:none;">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                
+            </div>
+          
         </form>
-
-
     </div>
-
 </div>
 
