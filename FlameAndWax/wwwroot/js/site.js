@@ -150,3 +150,9 @@ successAddToCart = function (response) {
     var dataObject = JSON.parse(response);
     document.querySelector('#totalCartCount').innerHTML = dataObject;
 }
+
+failureAddToCart = function (response) {
+    if (response.status == "401") {
+        window.location.href = "/Account/Login";
+    }    
+}
