@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<FlameAndWax.Models.ProductViewModel>;
 @{@using FlameAndWax.Data.Constants;
-    ViewData["Title"] = "Home Page";
+ViewData["Title"] = "Home Page";
 }
 
 
@@ -11,6 +11,7 @@
     }
 </style>
 <!-- Carousel CSS from https://stackoverflow.com/questions/54407116/bootstrap-carousel-image-size-->
+<!-- Product image sizing from https://stackoverflow.com/questions/44672909/fixed-thumbnail-size-maintaining-aspect-ratio-of-image-bootstrap-4-->
 <!-- -->
 <div class="container-fluid">
     <!-- Product Carousel Test -->
@@ -29,7 +30,7 @@
                     <div class="carousel-caption">
                         <h5><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Candles</span></h5>
                         <p><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Nulla vitae elit libero, a pharetra augue mollis interdum.</span></p>
-                        <a asp-controller="Home" asp-action="ViewCategorizedProducts" asp-route-category="@nameof(Constants.Category.Candle)" class="btn btn-gold"><i class="fas fa-eye"></i> View Category</a>                        
+                        <a asp-controller="Home" asp-action="ViewCategorizedProducts" asp-route-category="@nameof(Constants.Category.Candle)" class="btn btn-gold"><i class="fas fa-eye"></i> View Category</a>
                     </div>
                 </div>
                 <div class="carousel-item">
@@ -38,7 +39,7 @@
                         <h5><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Soaps</span></h5>
                         <p><span class="rounded" style="background-color: rgba(56, 56, 56, 0.8)">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></p>
                         <a asp-controller="Home" asp-action="ViewCategorizedProducts" asp-route-category="@nameof(Constants.Category.Soap)" class="btn btn-gold"><i class="fas fa-eye"></i> View Category</a>
-                        
+
                     </div>
                 </div>
                 <div class="carousel-item">
@@ -66,7 +67,7 @@
     <h3>New Arrivals</h3>
 
     <div class="row">
-        @if(Model == null)
+        @if (Model == null)
         {
             return;
         }
@@ -74,7 +75,18 @@
         {
             <div class="col-md-6 col-lg-4 p-1">
                 <div class="card shadow-lg">
-                    <img src="@Url.Content(product.PhotoLink)" class="card-img-top" alt="..." style="height:200px;">
+
+                    <div class="card-img">
+                        <div class="productImage">
+                            <div class="img-wrapper">
+                                <a class="thumb">
+                                    <img src="@Url.Content(product.PhotoLink)">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+
                     <div class="card-body">
                         <a class="badge badge-danger text-white">New Arrivals <i class="fab fa-hotjar"></i></a>
                         <h5 class="card-title">@product.ProductName</h5>
