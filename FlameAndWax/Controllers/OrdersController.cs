@@ -38,10 +38,6 @@ namespace FlameAndWax.Controllers
                 if (orderDetailsServiceResult.HasError)
                     return View("Error", new ErrorViewModel { ErrorContent = orderDetailsServiceResult.ErrorContent });
 
-                var orderStatus = Constants.OrderDetailStatus.Processing;
-                if (order.OrderDetails.Any(o => o.Status.Equals(Constants.OrderDetailStatus.Finished)))
-                    orderStatus = Constants.OrderDetailStatus.Finished;
-
                 var orderDetails = new List<OrderDetailViewModel>();
                 foreach (var orderDetail in orderDetailsServiceResult.Result)
                 {
@@ -65,7 +61,7 @@ namespace FlameAndWax.Controllers
                             ModeOfPayment = order.ModeOfPayment,
                             Courier = order.Courier,
                             TotalCost = order.TotalCost,
-                            OrderStatus = orderStatus,
+                            Status = order.Status,
                             OrderDetails = orderDetails
                         }
                     );

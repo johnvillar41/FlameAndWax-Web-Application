@@ -63,6 +63,25 @@ namespace FlameAndWax.Services.Helpers
             }
         }
 
+        public static Constants.OrderStatus ConvertStringtoOrderStatus(string orderStatus)
+        {
+            switch (orderStatus)
+            {
+                case nameof(Constants.OrderStatus.Pending):
+                    return Constants.OrderStatus.Pending;
+                case nameof(Constants.OrderStatus.Processing):
+                    return Constants.OrderStatus.Processing;
+                case nameof(Constants.OrderStatus.Shipping):
+                    return Constants.OrderStatus.Shipping;
+                case nameof(Constants.OrderStatus.Finished):
+                    return Constants.OrderStatus.Finished;
+                case nameof(Constants.OrderStatus.Cancelled):
+                    return Constants.OrderStatus.Cancelled;
+                default:
+                    return Constants.OrderStatus.Pending;
+            }
+        }
+
         public static Constants.OrderDetailStatus ConvertStringtoOrderDetailStatus(string orderStatus)
         {
             switch (orderStatus)

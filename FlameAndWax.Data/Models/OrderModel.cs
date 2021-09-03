@@ -14,6 +14,7 @@ namespace FlameAndWax.Data.Models
         public ModeOfPayment ModeOfPayment { get; set; }
         public Courier Courier { get; set; }       
 
+        public OrderStatus Status { get; set; }
         public IEnumerable<OrderDetailModel> OrderDetails { get; set; }
     }
 }

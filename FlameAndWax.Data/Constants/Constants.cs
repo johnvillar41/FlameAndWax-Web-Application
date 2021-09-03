@@ -33,12 +33,20 @@
             Deactivated,
             Activated
         }
+        public enum OrderStatus
+        {
+            Pending,
+            Processing,
+            Shipping,
+            Finished,                       
+            Cancelled
+        }
         public enum OrderDetailStatus
         {
             Pending,
-            Finished,
-            Processing,            
+            Processing,
             Shipping,
+            Finished,
             Cancelled
         }
         public enum Category

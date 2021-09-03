@@ -37,7 +37,7 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@totalCost", Data.TotalCost);
             command.Parameters.AddWithValue("@modeOfPayment", Data.ModeOfPayment.ToString());
             command.Parameters.AddWithValue("@courier", Data.Courier.ToString());
-            command.Parameters.AddWithValue("@status", Constants.OrderDetailStatus.Pending.ToString());
+            command.Parameters.AddWithValue("@status", Constants.OrderStatus.Pending.ToString());
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
@@ -70,7 +70,7 @@ namespace FlameAndWax.Services.Repositories
                 var orderId = int.Parse(reader["OrderId"].ToString());
                 var customerId = int.Parse(reader["CustomerId"].ToString());
                 var employeeId = int.Parse(reader["EmployeeId"].ToString());
-                var totalCost = double.Parse(reader["TotalCost"].ToString());
+                var totalCost = double.Parse(reader["TotalCost"].ToString());                
 
                 var customer = await _customerRepository.Fetch(customerId, connectionString);
                 var employee = await _employeeRepository.Fetch(employeeId, connectionString);
@@ -78,6 +78,7 @@ namespace FlameAndWax.Services.Repositories
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
+                var status = ServiceHelper.ConvertStringtoOrderStatus(reader["Status"].ToString());
                 return new OrderModel
                 {
                     OrderId = orderId,
@@ -87,7 +88,8 @@ namespace FlameAndWax.Services.Repositories
                     DateOrdered = DateTime.Parse(reader["DateOrdered"].ToString()),
                     TotalCost = totalCost,
                     ModeOfPayment = modeOfPayment,
-                    Courier = courier
+                    Courier = courier,
+                    Status = status
                 };
             }
             return null;
@@ -118,6 +120,7 @@ namespace FlameAndWax.Services.Repositories
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
+                var status = ServiceHelper.ConvertStringtoOrderStatus(reader["Status"].ToString());
 
                 orders.Add(
                         new OrderModel
@@ -129,7 +132,8 @@ namespace FlameAndWax.Services.Repositories
                             DateOrdered = DateTime.Parse(reader["DateOrdered"].ToString()),
                             TotalCost = totalCost,
                             ModeOfPayment = modeOfPayment,
-                            Courier = courier
+                            Courier = courier,
+                            Status = status
                         }
                     );
             }
@@ -165,6 +169,7 @@ namespace FlameAndWax.Services.Repositories
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
+                var status = ServiceHelper.ConvertStringtoOrderStatus(reader["Status"].ToString());
 
                 orders.Add(
                         new OrderModel
@@ -176,7 +181,8 @@ namespace FlameAndWax.Services.Repositories
                             DateOrdered = DateTime.Parse(reader["DateOrdered"].ToString()),
                             TotalCost = totalCost,
                             ModeOfPayment = modeOfPayment,
-                            Courier = courier
+                            Courier = courier,
+                            Status = status
                         }
                     );
             }

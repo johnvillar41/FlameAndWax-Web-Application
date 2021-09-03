@@ -11,11 +11,11 @@ namespace FlameAndWax.Models
     {
         public int OrderId { get; set; }
         public DateTime Date { get; set; }
+        public double TotalCost { get; set; }
         public ModeOfPayment ModeOfPayment { get; set; }
         public Courier Courier { get; set; }
-        public double TotalCost { get; set; }
-        public Constants.OrderDetailStatus OrderStatus{ get; set; }
-
+   
+        public OrderStatus Status { get; set; }
         public IEnumerable<OrderDetailViewModel> OrderDetails { get; set; }
     }
 }
