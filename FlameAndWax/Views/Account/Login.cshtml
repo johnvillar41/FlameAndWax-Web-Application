@@ -9,66 +9,64 @@
 </head>
 
 <div class="container px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
-    <div class="centerBlock">
-        <div class="card card0 border-0">
-            <div class="row d-flex">
-                <div class="col-lg-6" id="lottieGif">
-                    <div class="card1 pb-5">
-                        <div class="row px-3 justify-content-center mt-4 mb-5 border-line">
-                            <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_rw0hvilj.json" background="transparent" speed="1" style="width: 400px; height: 400px;" loop autoplay></lottie-player>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="centerBlock">
-                        <div class="card2 card0 card border-0 px-4 py-5" style="background-color: #e4e2da;">
-                            <div class="row ">
-                                <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
-                                    <img src="~/images/icons/flameAndWaxLogo.png" class="img-thumbnail">
-                                </div>
-                            </div>
-                            <div class="row mx-auto">
-                                <form method="post" 
-                                      asp-controller="Account" 
-                                      asp-action="ProcessLogin" 
-                                      asp-route-returnUrl="@returnUrl"
-                                      data-ajax="true"
-                                      data-ajax-success="loginSuccess"
-                                      data-ajax-complete="loginComplete">
-                                    <div class="col-lg-12 col-md-10 col-sm-12">
-                                        <div class="row">
-                                            <h1 class="mb-3" style="color: #a68245;"><b>Welcome to Flame and Wax</b></h1>
-                                        </div>
-                                        <div class="row">
-                                            <label><b>Username</b></label>
-                                            <input class="form-control" asp-for="@Model.Username" required />
 
-                                        </div>
-                                        <div class="row">
-                                            <label><b>Password</b></label><br />
-                                            <input class="form-control" type="password" asp-for="@Model.Password" required />
-
-                                        </div>
-
-                                        <hr />
-
-                                        <div class="row mt-2">
-                                            <button type="submit" id="loginBtn" class="btn btn-block btn-gold"><i class="fas fa-sign-in-alt"></i> Login</button>
-                                        </div>
-                                        <div class="row mt-2">
-                                            <a asp-action="Index" asp-controller="Register" class="btn btn-block btn-gold"><i class="fas fa-user-plus"></i> Register Now</a>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+    <div class="card card0 border-0">
+        <div class="row d-flex">
+            <div class="col-lg-6" id="lottieGif">
+                <div class="card1 pb-5">
+                    <div class="row px-3 justify-content-center mt-4 mb-5 border-line">
+                        <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_rw0hvilj.json" background="transparent" speed="1" style="width: 400px; height: 400px;" loop autoplay></lottie-player>
                     </div>
                 </div>
             </div>
-            <div class="py-4" style="background-color: #e4e2da;">
-                <div class="row px-3">
-                    <small class="ml-4 ml-sm-5 mb-2" style="color: #a68245;">Copyright &copy; @DateTime.Today.Year. All rights reserved.</small>
+            <div class="col-lg-6">
+                <div class="card2 card0 card border-0 px-4 py-5" style="background-color: #e4e2da;">
+                    <div class="row ">
+                        <div class="col-lg-4 col-md-6 col-sm-12 mx-auto">
+                            <img src="~/images/icons/flameAndWaxLogo.png" class="img-thumbnail">
+                        </div>
+                    </div>
+                    <div class="row mx-auto">
+                        <form method="post"
+                              asp-controller="Account"
+                              asp-action="ProcessLogin"
+                              asp-route-returnUrl="@returnUrl"
+                              data-ajax="true"
+                              data-ajax-success="loginSuccess"
+                              data-ajax-complete="loginComplete">
+                            <div class="col-lg-12 col-md-10 col-sm-12">
+                                <div class="row">
+                                    <h1 class="mb-3" style="color: #a68245;"><b>Welcome to Flame and Wax</b></h1>
+                                </div>
+                                <div class="row">
+                                    <label><b>Username</b></label>
+                                    <input class="form-control" asp-for="@Model.Username" required />
+
+                                </div>
+                                <div class="row">
+                                    <label><b>Password</b></label><br />
+                                    <input class="form-control" type="password" asp-for="@Model.Password" required />
+
+                                </div>
+
+                                <hr />
+
+                                <div class="row mt-2">
+                                    <button type="submit" id="loginBtn" class="btn btn-block btn-gold"><i class="fas fa-sign-in-alt"></i> Login</button>
+                                </div>
+                                <div class="row mt-2">
+                                    <a asp-action="Index" asp-controller="Register" class="btn btn-block btn-gold"><i class="fas fa-user-plus"></i> Register Now</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
+            </div>
+
+        </div>
+        <div class="py-4" style="background-color: #e4e2da;">
+            <div class="row px-3">
+                <small class="ml-4 ml-sm-5 mb-2" style="color: #a68245;">Copyright &copy; @DateTime.Today.Year. All rights reserved.</small>
             </div>
         </div>
     </div>

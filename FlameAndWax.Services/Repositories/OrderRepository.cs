@@ -28,8 +28,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO OrdersTable(CustomerId,DateOrdered,TotalCost,ModeOfPayment,Courier)" +
-                "VALUES(@customerId,@dateOrdered,@totalCost,@modeOfPayment,@courier);" +
+            var queryString = "INSERT INTO OrdersTable(CustomerId,DateOrdered,TotalCost,ModeOfPayment,Courier,Status)" +
+                "VALUES(@customerId,@dateOrdered,@totalCost,@modeOfPayment,@courier,@status);" +
                 "SELECT SCOPE_IDENTITY() as fk;";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@customerId", Data.Customer.CustomerId);
@@ -37,6 +37,7 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@totalCost", Data.TotalCost);
             command.Parameters.AddWithValue("@modeOfPayment", Data.ModeOfPayment.ToString());
             command.Parameters.AddWithValue("@courier", Data.Courier.ToString());
+            command.Parameters.AddWithValue("@status", Constants.OrderDetailStatus.Pending.ToString());
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
