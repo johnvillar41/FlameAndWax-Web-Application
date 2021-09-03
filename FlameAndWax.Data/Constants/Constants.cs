@@ -1,19 +1,12 @@
 ﻿namespace FlameAndWax.Data.Constants
 {
     public class Constants
-    {       
-        public enum ReviewScore
+    {
+        public enum Category
         {
-            Excellent = 5,
-            VeryGood = 4,
-            Good = 3,
-            Poor = 2,
-            VeryPoor = 1
-        }
-        public enum ModeOfPayment
-        {
-            Cash,
-            Cheque
+            Candle,
+            Soap,
+            Diffuser
         }
         public enum Courier
         {
@@ -32,7 +25,12 @@
         {
             Deactivated,
             Activated
-        }
+        }        
+        public enum ModeOfPayment
+        {
+            Cash,
+            Cheque
+        }                        
         public enum OrderStatus
         {
             Pending,
@@ -41,11 +39,13 @@
             Finished,                       
             Cancelled
         }
-        public enum Category
+        public enum ReviewScore
         {
-            Candle,
-            Soap,
-            Diffuser
+            Excellent = 5,
+            VeryGood = 4,
+            Good = 3,
+            Poor = 2,
+            VeryPoor = 1
         }
         public enum Roles
         {
