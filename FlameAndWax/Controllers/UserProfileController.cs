@@ -118,10 +118,10 @@ namespace FlameAndWax.Controllers
         {
             fileToDelete = Path.Combine(_webHostEnvironment.WebRootPath, fileToDelete);
             FileInfo fileInfo = new FileInfo(fileToDelete);
-            if (fileInfo != null)
-            {
-                System.IO.File.Delete(fileToDelete);
+            if (fileInfo != null && fileInfo.Exists)
+            {                
                 fileInfo.Delete();
+                GC.Collect();
             }
         }
     }
