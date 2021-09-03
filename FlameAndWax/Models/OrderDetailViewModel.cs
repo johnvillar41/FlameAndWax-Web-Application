@@ -8,6 +8,6 @@ namespace FlameAndWax.Models
         public string ProductPictureLink { get; set; }
         public int ProductQuantityOrdered { get; set; }
         public double SubTotalPrice { get; set; }
-        public OrderDetailStatus Status { get; set; }
+        public OrderStatus Status { get; set; }
     }
 }

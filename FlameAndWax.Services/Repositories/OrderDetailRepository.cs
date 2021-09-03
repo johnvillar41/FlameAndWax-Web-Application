@@ -62,7 +62,7 @@ namespace FlameAndWax.Services.Repositories
                 var productId = int.Parse(reader["ProductId"].ToString());
                 var totalPrice = double.Parse(reader["TotalPrice"].ToString());
                 var quantity = int.Parse(reader["Quantity"].ToString());
-                var status = ServiceHelper.ConvertStringtoOrderDetailStatus(reader["Status"].ToString());
+                var status = ServiceHelper.ConvertStringtoOrderStatus(reader["Status"].ToString());
 
                 var product = await _productRepository.Fetch(productId, connectionString);
                 return new OrderDetailModel
@@ -97,7 +97,7 @@ namespace FlameAndWax.Services.Repositories
                 var productId = int.Parse(reader["ProductId"].ToString());
                 var totalPrice = double.Parse(reader["TotalPrice"].ToString());
                 var quantity = int.Parse(reader["Quantity"].ToString());
-                var status = ServiceHelper.ConvertStringtoOrderDetailStatus(reader["Status"].ToString());
+                var status = ServiceHelper.ConvertStringtoOrderStatus(reader["Status"].ToString());
 
                 var product = await _productRepository.Fetch(productId, connectionString);
                 orderDetails.Add(
@@ -131,7 +131,7 @@ namespace FlameAndWax.Services.Repositories
                 var productId = int.Parse(reader["ProductId"].ToString());
                 var totalPrice = double.Parse(reader["TotalPrice"].ToString());
                 var quantity = int.Parse(reader["Quantity"].ToString());
-                var status = ServiceHelper.ConvertStringtoOrderDetailStatus(reader["Status"].ToString());
+                var status = ServiceHelper.ConvertStringtoOrderStatus(reader["Status"].ToString());
 
                 var product = await _productRepository.Fetch(productId, connectionString);
                 orderDetails.Add(

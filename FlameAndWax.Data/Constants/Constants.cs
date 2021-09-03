@@ -41,14 +41,6 @@
             Finished,                       
             Cancelled
         }
-        public enum OrderDetailStatus
-        {
-            Pending,
-            Processing,
-            Shipping,
-            Finished,
-            Cancelled
-        }
         public enum Category
         {
             Candle,

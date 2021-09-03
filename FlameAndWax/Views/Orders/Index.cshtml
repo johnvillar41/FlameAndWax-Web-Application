@@ -126,19 +126,19 @@
                                                 <td class="text-center"> @orderDetail.ProductQuantityOrdered</td>
                                                 @switch (orderDetail.Status)
                                                 {
-                                                    case Constants.OrderDetailStatus.Pending:
+                                                    case Constants.OrderStatus.Pending:
                                                         <td> <span class="badge badge-pill badge-info">@orderDetail.Status.ToString()&nbsp;<i class="fas fa-stopwatch"></i></span></td>
                                                         break;
-                                                    case Constants.OrderDetailStatus.Processing:
+                                                    case Constants.OrderStatus.Processing:
                                                         <td> <span class="badge badge-pill badge-warning">@orderDetail.Status.ToString()&nbsp;<i class="fas fa-cogs"></i></span></td>
                                                         break;
-                                                    case Constants.OrderDetailStatus.Shipping:
+                                                    case Constants.OrderStatus.Shipping:
                                                         <td> <span class="badge badge-pill badge-primary">@orderDetail.Status.ToString()&nbsp;<i class="fas fa-shipping-fast"></i></span></td>
                                                         break;
-                                                    case Constants.OrderDetailStatus.Finished:
+                                                    case Constants.OrderStatus.Finished:
                                                         <td> <span class="badge badge-pill badge-success">@orderDetail.Status.ToString()&nbsp;<i class="fas fa-check-circle"></i></span></td>
                                                         break;
-                                                    case Constants.OrderDetailStatus.Cancelled:
+                                                    case Constants.OrderStatus.Cancelled:
                                                         <td> <span class="badge badge-pill badge-danger">@orderDetail.Status.ToString()&nbsp;<i class="fas fa-times-circle"></i></span></td>
                                                         break;
                                                     default:

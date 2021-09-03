@@ -10,6 +10,6 @@ namespace FlameAndWax.Data.Models
         public ProductModel Product { get; set; }       
         public double TotalPrice { get; set; }
         public int Quantity { get; set; }
-        public OrderDetailStatus Status { get; set; }
+        public OrderStatus Status { get; set; }
     }
 }

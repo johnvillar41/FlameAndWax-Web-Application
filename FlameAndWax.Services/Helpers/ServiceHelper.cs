@@ -80,26 +80,7 @@ namespace FlameAndWax.Services.Helpers
                 default:
                     return Constants.OrderStatus.Pending;
             }
-        }
-
-        public static Constants.OrderDetailStatus ConvertStringtoOrderDetailStatus(string orderStatus)
-        {
-            switch (orderStatus)
-            {
-                case nameof(Constants.OrderDetailStatus.Pending):
-                    return Constants.OrderDetailStatus.Pending;
-                case nameof(Constants.OrderDetailStatus.Processing):
-                    return Constants.OrderDetailStatus.Processing;
-                case nameof(Constants.OrderDetailStatus.Shipping):
-                    return Constants.OrderDetailStatus.Shipping;
-                case nameof(Constants.OrderDetailStatus.Finished):
-                    return Constants.OrderDetailStatus.Finished;
-                case nameof(Constants.OrderDetailStatus.Cancelled):
-                    return Constants.OrderDetailStatus.Cancelled;
-                default:
-                    return Constants.OrderDetailStatus.Pending;
-            }
-        }       
+        }     
 
         public static Constants.Category ConvertStringToConstant(string value)
         {
