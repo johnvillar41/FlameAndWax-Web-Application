@@ -173,6 +173,26 @@ failureAddToCart = function (response) {
 
 }
 
+//Reloads page on back button trigger
+window.addEventListener("pageshow", function (event) {
+    var historyPage = event.persisted ||
+        (typeof window.performance != "undefined" &&
+            window.performance.navigation.type === 2);
+    if (historyPage) {
+        // Handle page restore.
+        window.location.reload();
+    }
+});
+
+//Scrolls up after pagination
+scrollUp = function () {
+    $('body,html').animate({
+        scrollTop: 0
+    }, 600);
+}
+
+//Registraing new User Functions-----------------------------------------------------
+
 //For Registering new User
 $('#registerUser').click(function () {
     registrationComplete = function (xhr) {
@@ -196,16 +216,29 @@ $('#registerUser').click(function () {
     }
 });
 
-//Reloads page on back button trigger
-window.addEventListener("pageshow", function (event) {
-    var historyPage = event.persisted ||
-        (typeof window.performance != "undefined" &&
-            window.performance.navigation.type === 2);
-    if (historyPage) {
-        // Handle page restore.
-        window.location.reload();
-    }
-});
+//Error registration
+errorContent = function (response) {    
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+    
+    Toast.fire({
+        icon: 'error',
+        title: response.responseJSON.errorContent    
+    });
+}
+
+//Registraing new User Functions-----------------------------------------------------
+
+//Login Functions----------------------------------------------------
 
 //Login User
 $('#loginBtn').click(function () {
@@ -226,11 +259,6 @@ $('#loginBtn').click(function () {
                 icon: 'success',
                 title: 'Login Successfull!'
             });
-        } else {
-            Toast.fire({
-                icon: 'error',
-                title: 'Login credentials not found!'
-            });
         }
     }
 });
@@ -240,15 +268,8 @@ loginSuccess = function (response) {
     window.location.href = response;
 }
 
-//Scrolls up after pagination
-scrollUp = function () {
-    $('body,html').animate({
-        scrollTop: 0
-    }, 600);
-}
-
-//Error registration
-errorContent = function (response) {    
+//Login Error
+errorLogin = function (response) {
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -260,9 +281,11 @@ errorContent = function (response) {
             toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
     });
-    
+
     Toast.fire({
         icon: 'error',
-        title: response.responseJSON.errorContent    
+        title: response.responseJSON.errorContent
     });
 }
+
+//Login Functions----------------------------------------------------
