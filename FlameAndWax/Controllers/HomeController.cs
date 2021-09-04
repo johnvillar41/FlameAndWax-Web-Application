@@ -67,33 +67,8 @@ namespace FlameAndWax.Controllers
             return View(newProducts);
         }
 
-        public async Task<IActionResult> ViewCategorizedProducts(string category)
-        {
-            var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category), ConnectionString);
-            if (categorizedProductsServiceResult.HasError)
-            {
-                var error = new ErrorViewModel
-                {
-                    ErrorContent = categorizedProductsServiceResult.ErrorContent
-                };
-                return View("Error", error);
-            }
-
-            List<ProductViewModel> productViewModels = new List<ProductViewModel>();
-            foreach (var product in categorizedProductsServiceResult.Result)
-            {
-                productViewModels.Add(
-                        new ProductViewModel
-                        {
-                            ProductId = product.ProductId,
-                            ProductName = product.ProductName,
-                            ProductDescription = product.ProductDescription,
-                            ProductPrice = product.ProductPrice,
-                            PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink
-                        }
-                    );
-            }
-
+        public IActionResult ViewCategorizedProducts(string category)
+        {           
             return RedirectToAction("Index" , "Products" , new { pageNumber = 1, productCategory = category});
         }
 
