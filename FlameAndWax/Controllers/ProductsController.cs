@@ -39,20 +39,12 @@ namespace FlameAndWax.Controllers
             if (products.Count() == 0)
             {
                 var productServiceResult = await _customerService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
-                if (productServiceResult.HasError)
-                {
-                    var error = new ErrorViewModel
-                    {
-                        ErrorContent = productServiceResult.ErrorContent
-                    };
-                    return View("Error", error);
-                }
+                if (productServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = productServiceResult.ErrorContent });
 
                 var productsViewModel = new List<ProductViewModel>();
                 BuildProductViewModels(productsViewModel, productServiceResult.Result);
                 return View(productsViewModel);
             }
-
             return View(products);
         }
 
@@ -66,14 +58,7 @@ namespace FlameAndWax.Controllers
             ViewData["ProductCount"] = (int)totalNumberOfPages;
 
             var productServiceResult = await _customerService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
-            if (productServiceResult.HasError)
-            {
-                var error = new ErrorViewModel
-                {
-                    ErrorContent = productServiceResult.ErrorContent
-                };
-                return View("Error", error);
-            }
+            if (productServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = productServiceResult.ErrorContent });
 
             var productsViewModel = new List<ProductViewModel>();
             BuildProductViewModels(productsViewModel, productServiceResult.Result);
@@ -93,62 +78,24 @@ namespace FlameAndWax.Controllers
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
             var customerReview = new CustomerReviewModel
             {
-                ReviewScore = (Constants.ReviewScore)(int)ServiceHelper.BuildReviewScore(rate), //Default value for now to be fixed later,
+                ReviewScore = (Constants.ReviewScore)(int)ServiceHelper.BuildReviewScore(rate),
                 ReviewDetail = reviewDetail,
-                Customer = new CustomerModel
-                {
-                    CustomerId = int.Parse(customerIdLoggedIn)
-                },
-                Product = new ProductModel
-                {
-                    ProductId = productId
-                }
+                Customer = new CustomerModel { CustomerId = int.Parse(customerIdLoggedIn) },
+                Product = new ProductModel { ProductId = productId }
             };
             var reviewServiceResult = await _customerService.AddCustomerReview(customerReview, ConnectionString);
             var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(productId, ConnectionString);
-            if (customerServiceReviewResult.HasError)
-            {
-                var error = new ErrorViewModel
-                {
-                    ErrorContent = customerServiceReviewResult.ErrorContent
-                };
-                return View("Error", error);
-            }
+            if (customerServiceReviewResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = customerServiceReviewResult.ErrorContent });
 
-            var customerReviewModels = new List<CustomerReviewViewModel>();
-            foreach (var customerReviewResult in customerServiceReviewResult.Result)
-            {
-                customerReviewModels.Add(
-                        new CustomerReviewViewModel
-                        {
-                            ReviewId = customerReviewResult.ReviewId,
-                            ProductId = customerReviewResult.Product.ProductId,
-                            ReviewDetail = customerReviewResult.ReviewDetail,
-                            ReviewScore = ServiceHelper.BuildReviewScore(rate),//TODO FIX THIS STATIC VALUE
-                            Customer = new CustomerViewModel
-                            {
-                                CustomerId = customerReviewResult.Customer.CustomerId,
-                                CustomerName = customerReviewResult.Customer.CustomerName,
-                                ContactNumber = customerReviewResult.Customer.ContactNumber,
-                                ProfilePictureLink = customerReviewResult.Customer.ProfilePictureLink
-                            }
-                        }
-                    );
-            }
-            return PartialView("ProductReviewPartial", customerReviewModels);
+            var customerReviewViewModels = new List<CustomerReviewViewModel>();
+            foreach (var customerReviewResult in customerServiceReviewResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReview);
+            return PartialView("ProductReviewPartial", customerReviewViewModels);
         }
 
         public async Task<IActionResult> Sort(string category)
         {
             var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category), ConnectionString);
-            if (categorizedProductsServiceResult.HasError)
-            {
-                var error = new ErrorViewModel
-                {
-                    ErrorContent = categorizedProductsServiceResult.ErrorContent
-                };
-                return View("Error", error);
-            }
+            if (categorizedProductsServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = categorizedProductsServiceResult.ErrorContent });
 
             var productsViewModel = new List<ProductViewModel>();
             BuildProductViewModels(productsViewModel, categorizedProductsServiceResult.Result);
@@ -158,46 +105,14 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> Details(int productId)
         {
             var productServiceResult = await _customerService.FetchProductDetail(productId, ConnectionString);
-            if (productServiceResult.HasError)
-            {
-                var error = new ErrorViewModel
-                {
-                    ErrorContent = productServiceResult.ErrorContent
-                };
-                return View("Error", error);
-            }
+            if (productServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = productServiceResult.ErrorContent });
 
             var customerReviewServiceResult = await _customerService.FetchCustomerReviewsInAProduct(productId, ConnectionString);
-            if (customerReviewServiceResult.HasError)
-            {
-                var error = new ErrorViewModel
-                {
-                    ErrorContent = customerReviewServiceResult.ErrorContent
-                };
-                return View("Error", error);
-            }
+            if (customerReviewServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = customerReviewServiceResult.ErrorContent });
 
             var customerReviewViewModels = new List<CustomerReviewViewModel>();
-            foreach (var customerReview in customerReviewServiceResult.Result)
-            {
-                customerReviewViewModels.Add(
-                        new CustomerReviewViewModel
-                        {
-                            ReviewId = customerReview.ReviewId,
-                            ProductId = customerReview.Product.ProductId,
-                            ReviewDetail = customerReview.ReviewDetail,
-                            ReviewScore = customerReview.ReviewScore,
-                            Customer = new CustomerViewModel
-                            {
-                                CustomerId = customerReview.Customer.CustomerId,
-                                CustomerName = customerReview.Customer.CustomerName,
-                                ContactNumber = customerReview.Customer.ContactNumber,
-                                ProfilePictureLink = customerReview.Customer.ProfilePictureLink
-                            }
-                        }
-                    );
-            }
-            customerReviewViewModels.Reverse();
+            foreach (var customerReview in customerReviewServiceResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReview);
+
             var productDetailViewModel = new ProductDetailViewModel
             {
                 ProductId = productId,
@@ -237,6 +152,26 @@ namespace FlameAndWax.Controllers
                     UnitsInStock = product.UnitsInStock
                 });
             }
+        }
+
+        private void BuildReviewViewModels(List<CustomerReviewViewModel> customerReviewViewModels, CustomerReviewModel customerReview)
+        {
+            customerReviewViewModels.Add(
+                new CustomerReviewViewModel
+                {
+                    ReviewId = customerReview.ReviewId,
+                    ProductId = customerReview.Product.ProductId,
+                    ReviewDetail = customerReview.ReviewDetail,
+                    ReviewScore = customerReview.ReviewScore,
+                    Customer = new CustomerViewModel
+                    {
+                        CustomerId = customerReview.Customer.CustomerId,
+                        CustomerName = customerReview.Customer.CustomerName,
+                        ContactNumber = customerReview.Customer.ContactNumber,
+                        ProfilePictureLink = customerReview.Customer.ProfilePictureLink
+                    }
+                }
+            );
         }
     }
 
