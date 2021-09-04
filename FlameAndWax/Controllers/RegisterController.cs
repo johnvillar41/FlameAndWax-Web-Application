@@ -50,8 +50,10 @@ namespace FlameAndWax.Controllers
                 ProfilePictureLink = await BuildProfilePictureLink(newUser.ProfilePictureFile)
             };
 
-            await _customerService.Register(customerModel, ConnectionString);
-            return RedirectToAction(nameof(Index));
+            var registerServiceResult = await _customerService.Register(customerModel, ConnectionString);
+            if (registerServiceResult.HasError) return BadRequest(new { errorContent = registerServiceResult.ErrorContent});
+
+            return Ok();
         }
 
         private async Task<string> BuildProfilePictureLink(IFormFile profilePictureFile)
