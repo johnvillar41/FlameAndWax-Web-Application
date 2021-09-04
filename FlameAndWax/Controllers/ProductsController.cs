@@ -92,7 +92,8 @@ namespace FlameAndWax.Controllers
             if (customerServiceReviewResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = customerServiceReviewResult.ErrorContent });
 
             var customerReviewViewModels = new List<CustomerReviewViewModel>();
-            foreach (var customerReviewResult in customerServiceReviewResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReview);
+            foreach (var customerReviewResult in customerServiceReviewResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReviewResult);
+
             return PartialView("ProductReviewPartial", customerReviewViewModels);
         }
 
@@ -158,24 +159,25 @@ namespace FlameAndWax.Controllers
             }
         }
 
-        private void BuildReviewViewModels(List<CustomerReviewViewModel> customerReviewViewModels, CustomerReviewModel customerReview)
+        private void BuildReviewViewModels(List<CustomerReviewViewModel> customerReviewViewModels, CustomerReviewModel customerReviewResult)
         {
             customerReviewViewModels.Add(
                 new CustomerReviewViewModel
                 {
-                    ReviewId = customerReview.ReviewId,
-                    ProductId = customerReview.Product.ProductId,
-                    ReviewDetail = customerReview.ReviewDetail,
-                    ReviewScore = customerReview.ReviewScore,
+                    ReviewId = customerReviewResult.ReviewId,
+                    ProductId = customerReviewResult.Product.ProductId,
+                    ReviewDetail = customerReviewResult.ReviewDetail,
+                    ReviewScore = customerReviewResult.ReviewScore,
                     Customer = new CustomerViewModel
                     {
-                        CustomerId = customerReview.Customer.CustomerId,
-                        CustomerName = customerReview.Customer.CustomerName,
-                        ContactNumber = customerReview.Customer.ContactNumber,
-                        ProfilePictureLink = customerReview.Customer.ProfilePictureLink
+                        CustomerId = customerReviewResult.Customer.CustomerId,
+                        CustomerName = customerReviewResult.Customer.CustomerName,
+                        ContactNumber = customerReviewResult.Customer.ContactNumber,
+                        ProfilePictureLink = customerReviewResult.Customer.ProfilePictureLink
                     }
                 }
             );
+
         }
     }
 
