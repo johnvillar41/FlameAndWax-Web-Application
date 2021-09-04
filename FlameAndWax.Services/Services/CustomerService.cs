@@ -148,6 +148,16 @@ namespace FlameAndWax.Services.Services
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(null, true, e.Message); }
         }
 
+        public async Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrdersByStatus(int customerId, Constants.OrderStatus status, string connectionString)
+        {
+            try
+            {
+                var categorizedOrders = await _orderRepository.FetchCategorizedOrders(customerId, status, connectionString);
+                return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(categorizedOrders, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(null, true, e.Message); }
+        }
+
         public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(Constants.Category category, string connectionString)
         {
             try
