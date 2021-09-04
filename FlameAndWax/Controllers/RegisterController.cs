@@ -19,7 +19,7 @@ namespace FlameAndWax.Controllers
         private readonly ICustomerService _customerService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private string ConnectionString { get; set; }
+        private string ConnectionString { get; }
         public RegisterController(
             ICustomerService customerService,
             IConfiguration configuration,

@@ -21,7 +21,7 @@ namespace FlameAndWax.Controllers
         private readonly ICustomerService _customerService;
         private readonly IConfiguration _configuration;
 
-        private string ConnectionString { get; set; }
+        private string ConnectionString { get; }
 
         public CartController(ICustomerService customerService, IConfiguration configuration)
         {
@@ -127,7 +127,7 @@ namespace FlameAndWax.Controllers
             Cart.AddCartItem(productViewModel, user);
             var cartItems = Cart.GetCartItems(user);
             var cartItemCount = cartItems.Count();
-            return Ok(cartItemCount);            
+            return Ok(cartItemCount);
         }
     }
 }

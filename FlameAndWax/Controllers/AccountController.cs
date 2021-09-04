@@ -20,7 +20,7 @@ namespace FlameAndWax.Controllers
         private readonly ICustomerService _customerService;
         private readonly IConfiguration _configuration;
 
-        private string ConnectionString { get; set; }
+        private string ConnectionString { get; }
 
         public AccountController(ICustomerService customerService, IConfiguration configuration)
         {
