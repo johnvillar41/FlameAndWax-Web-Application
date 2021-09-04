@@ -1,4 +1,5 @@
 ﻿using FlameAndWax.Data.Constants;
+using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Services.Interfaces;
@@ -40,33 +41,7 @@ namespace FlameAndWax.Controllers
                 if (orderDetailsServiceResult.HasError)
                     return View("Error", new ErrorViewModel { ErrorContent = orderDetailsServiceResult.ErrorContent });
 
-                var orderDetails = new List<OrderDetailViewModel>();
-                foreach (var orderDetail in orderDetailsServiceResult.Result)
-                {
-                    orderDetails.Add(
-                            new OrderDetailViewModel
-                            {
-                                ProductId = orderDetail.Product.ProductId,
-                                ProductPictureLink = orderDetail.Product.ProductGallery.FirstOrDefault().PhotoLink,
-                                ProductQuantityOrdered = orderDetail.Quantity,
-                                SubTotalPrice = orderDetail.TotalPrice,
-                                Status = orderDetail.Status
-                            }
-                        );
-                }
-
-                orderViewModels.Add(
-                        new OrderViewModel
-                        {
-                            OrderId = order.OrderId,
-                            Date = order.DateOrdered,
-                            ModeOfPayment = order.ModeOfPayment,
-                            Courier = order.Courier,
-                            TotalCost = order.TotalCost,
-                            Status = order.Status,
-                            OrderDetails = orderDetails
-                        }
-                    );
+                BuildOrderViewModels(orderDetailsServiceResult.Result, orderViewModels, order);
             }
             return View(orderViewModels);
         }
@@ -86,74 +61,44 @@ namespace FlameAndWax.Controllers
                 if (orderDetailsServiceResult.HasError)
                     return View("Error", new ErrorViewModel { ErrorContent = categorizedOrdersServiceResult.ErrorContent });
 
-                var orderDetails = new List<OrderDetailViewModel>();
-                foreach (var orderDetail in orderDetailsServiceResult.Result)
-                {
-                    orderDetails.Add(
-                            new OrderDetailViewModel
-                            {
-                                ProductId = orderDetail.Product.ProductId,
-                                ProductPictureLink = orderDetail.Product.ProductGallery.FirstOrDefault().PhotoLink,
-                                ProductQuantityOrdered = orderDetail.Quantity,
-                                SubTotalPrice = orderDetail.TotalPrice,
-                                Status = orderDetail.Status
-                            }
-                        );
-                }
+                BuildOrderViewModels(orderDetailsServiceResult.Result, orderViewModels, order);
+            }
+            return PartialView("OrdersPartialView", orderViewModels);
 
-                orderViewModels.Add(
-                        new OrderViewModel
+        }
+        private void BuildOrderViewModels(
+            IEnumerable<OrderDetailModel> orderDetailServiceResult,
+            List<OrderViewModel> orderViewModels,
+            OrderModel order)
+        {
+
+            var orderDetails = new List<OrderDetailViewModel>();
+            foreach (var orderDetail in orderDetailServiceResult)
+            {
+                orderDetails.Add(
+                        new OrderDetailViewModel
                         {
-                            OrderId = order.OrderId,
-                            Date = order.DateOrdered,
-                            ModeOfPayment = order.ModeOfPayment,
-                            Courier = order.Courier,
-                            TotalCost = order.TotalCost,
-                            Status = order.Status,
-                            OrderDetails = orderDetails
+                            ProductId = orderDetail.Product.ProductId,
+                            ProductPictureLink = orderDetail.Product.ProductGallery.FirstOrDefault().PhotoLink,
+                            ProductQuantityOrdered = orderDetail.Quantity,
+                            SubTotalPrice = orderDetail.TotalPrice,
+                            Status = orderDetail.Status
                         }
                     );
             }
-            return PartialView(orderViewModels);
 
-            // For order details
-            //var orderDetails = new List<OrderDetailViewModel>();
-            //foreach (var orderDetail in categorizedOrdersServiceResult.Result)
-            //{
-            //    var orderDetailsServiceResult = await _customerService.FetchOrderDetails(orderDetail.OrderId, ConnectionString);
-            //    if (orderDetailsServiceResult.HasError)
-            //        return View("Error", new ErrorViewModel { ErrorContent = orderDetailsServiceResult.ErrorContent });
-
-            //    orderDetails.Add(
-            //            new OrderDetailViewModel
-            //            {
-            //                ProductId = orderDetail.,
-            //                ProductPictureLink = orderDetail.Product.ProductGallery.FirstOrDefault().PhotoLink,
-            //                ProductQuantityOrdered = orderDetail.Quantity,
-            //                SubTotalPrice = orderDetail.TotalPrice,
-            //                Status = orderDetail.Status
-            //            }
-            //        );
-            //}
-
-            //// For entire orders
-            //var orders = new List<OrderViewModel>();
-            //foreach (var order in categorizedOrdersServiceResult.Result)
-            //{
-            //    orders.Add(new OrderViewModel
-            //    {
-            //        OrderId = order.OrderId,
-            //        Date = order.DateOrdered,
-            //        TotalCost = order.TotalCost,
-            //        ModeOfPayment = order.ModeOfPayment,
-            //        Courier = order.Courier,
-            //        Status = order.Status,
-            //        OrderDetails = orderDetails
-            //    });
-
-            //}
-
-            //return PartialView("ProductsPartial", orders);
+            orderViewModels.Add(
+                    new OrderViewModel
+                    {
+                        OrderId = order.OrderId,
+                        Date = order.DateOrdered,
+                        ModeOfPayment = order.ModeOfPayment,
+                        Courier = order.Courier,
+                        TotalCost = order.TotalCost,
+                        Status = order.Status,
+                        OrderDetails = orderDetails
+                    }
+                );
         }
     }
 }
