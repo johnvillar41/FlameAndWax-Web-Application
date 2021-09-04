@@ -2,6 +2,7 @@
 @using FlameAndWax.Data.Constants;
 @{
     ViewData["Title"] = "Products";
+
 }
 <div class="container">
     <div class="row">
@@ -40,6 +41,9 @@
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
+                @{                  
+
+                }
                 <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="Index" asp-route-pageNumber="1">1</a></li>
                 <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="Index" asp-route-pageNumber="2">2</a></li>
                 <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="Index" asp-route-pageNumber="3">3</a></li>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FlameAndWax.Data.Repositories.Interfaces
+namespace FlameAndWax.Services.Repositories.Interfaces
 {
     public interface IProductRepository : IBaseRepository<ProductModel>
     {
@@ -11,5 +11,6 @@ namespace FlameAndWax.Data.Repositories.Interfaces
         Task UpdateAddUnitsOnOrder(int productId, int quantity, string connectionString);
         Task<IEnumerable<ProductModel>> FetchNewArrivedProducts(string connectionString);
         Task<IEnumerable<ProductModel>> FetchCategorizedProducts(Constants.Constants.Category category, string connectionString);
+        Task<int> FetchTotalNumberOfProducts(string connectionString);
     }
 }

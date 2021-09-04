@@ -66,7 +66,7 @@ namespace FlameAndWax.Services.Repositories
                     UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                     UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
                     UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
-                    ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(id,connectionString),
+                    ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(id, connectionString),
                     Category = ServiceHelper.ConvertStringToConstant(categoryString)
                 };
             }
@@ -99,7 +99,7 @@ namespace FlameAndWax.Services.Repositories
                             UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                             UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
                             UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
-                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString()),connectionString),
+                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString()), connectionString),
                             Category = ServiceHelper.ConvertStringToConstant(categoryString)
                         }
                     );
@@ -107,7 +107,7 @@ namespace FlameAndWax.Services.Repositories
             return products;
         }
 
-        public async Task<IEnumerable<ProductModel>> FetchCategorizedProducts(Constants.Category category,string connectionString)
+        public async Task<IEnumerable<ProductModel>> FetchCategorizedProducts(Constants.Category category, string connectionString)
         {
             List<ProductModel> categorizedProducts = new List<ProductModel>();
 
@@ -130,7 +130,7 @@ namespace FlameAndWax.Services.Repositories
                             ProductPrice = int.Parse(reader["ProductPrice"].ToString()),
                             QuantityPerUnit = int.Parse(reader["QuantityPerUnit"].ToString()),
                             UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
-                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString()),connectionString),
+                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString()), connectionString),
                             UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
                             UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
                             Category = ServiceHelper.ConvertStringToConstant(categoryString),
@@ -221,6 +221,21 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@quantity", quantity);
             command.Parameters.AddWithValue("@productId", productId);
             await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task<int> FetchTotalNumberOfProducts(string connectionString)
+        {
+            var totalNumberOfProducts = 0;
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            var queryString = "SELECT COUNT(ProductId) FROM ProductsTable as total";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                totalNumberOfProducts = int.Parse(reader["total"].ToString());
+            }
+            return totalNumberOfProducts;
         }
     }
 }
