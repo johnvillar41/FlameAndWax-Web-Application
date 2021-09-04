@@ -1,5 +1,4 @@
 using FlameAndWax.Data.Repositories;
-using FlameAndWax.Data.Repositories.Interfaces;
 using FlameAndWax.Services.Repositories;
 using FlameAndWax.Services.Repositories.Interfaces;
 using FlameAndWax.Services.Services;
@@ -7,7 +6,6 @@ using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

@@ -1,5 +1,4 @@
 ﻿using FlameAndWax.Data.Models;
-using FlameAndWax.Data.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

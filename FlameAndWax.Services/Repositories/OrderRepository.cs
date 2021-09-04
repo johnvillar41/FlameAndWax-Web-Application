@@ -1,11 +1,10 @@
 ﻿using FlameAndWax.Data.Constants;
 using FlameAndWax.Data.Models;
-using FlameAndWax.Data.Repositories.Interfaces;
 using FlameAndWax.Services.Helpers;
+using FlameAndWax.Services.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FlameAndWax.Services.Repositories

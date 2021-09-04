@@ -1,6 +1,7 @@
 ﻿using FlameAndWax.Data.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Services.Repositories.Interfaces
 {
@@ -10,7 +11,7 @@ namespace FlameAndWax.Services.Repositories.Interfaces
         Task ModifyNumberOfUnitsInOrder(int productId, int numberOfUnitsToBeAdded, string connectionString);
         Task UpdateAddUnitsOnOrder(int productId, int quantity, string connectionString);
         Task<IEnumerable<ProductModel>> FetchNewArrivedProducts(string connectionString);
-        Task<IEnumerable<ProductModel>> FetchCategorizedProducts(Constants.Constants.Category category, string connectionString);
+        Task<IEnumerable<ProductModel>> FetchCategorizedProducts(Category category, string connectionString);
         Task<int> FetchTotalNumberOfProducts(string connectionString);
     }
 }
