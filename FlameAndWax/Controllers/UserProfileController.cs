@@ -120,9 +120,9 @@ namespace FlameAndWax.Controllers
             FileInfo fileInfo = new FileInfo(fileToDelete);
             if (fileInfo != null && fileInfo.Exists)
             {                
-                fileInfo.Delete();
-                GC.Collect();
+                fileInfo.Delete();                
             }
+            GC.Collect();
         }
     }
 }
