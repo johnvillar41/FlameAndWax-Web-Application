@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<FlameAndWax.Models.ProductViewModel>;
 @using FlameAndWax.Data.Constants;
 @{
-    ViewData["Title"] = "Products";    
+    ViewData["Title"] = "Products";
 }
 <div class="container">
     <div class="row">
@@ -37,7 +37,7 @@
             <ul class="pagination">
                 @for (int i = 1; i <= totalCount; i++)
                 {
-                    <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="PageProducts" asp-route-pageNumber="@i" data-ajax="true" data-ajax-loading="#loader" data-ajax-update="#content">@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="PageProducts" asp-route-pageNumber="@i" data-ajax="true" data-ajax-loading="#loader" data-ajax-update="#content" data-ajax-success="scrollUp">@i</a></li>
                 }
             </ul>
         </nav>
@@ -47,10 +47,10 @@
     </div>
     <div class="row mt-2">
         <nav aria-label="Page navigation example">
-            <ul class="pagination">               
+            <ul class="pagination">
                 @for (int i = 1; i <= totalCount; i++)
                 {
-                    <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="PageProducts" asp-route-pageNumber="@i" data-ajax="true" data-ajax-loading="#loader" data-ajax-update="#content">@i</a></li>
+                    <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="PageProducts" asp-route-pageNumber="@i" data-ajax="true" data-ajax-loading="#loader" data-ajax-update="#content" data-ajax-success="scrollUp">@i</a></li>
                 }
             </ul>
         </nav>

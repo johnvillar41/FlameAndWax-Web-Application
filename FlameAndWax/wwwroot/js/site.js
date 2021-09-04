@@ -244,3 +244,10 @@ $('#loginBtn').click(function () {
 loginSuccess = function (response) {
     window.location.href = response;
 }
+
+//Scrolls up after pagination
+scrollUp = function () {
+    $('body,html').animate({
+        scrollTop: 0
+    }, 600);
+}
