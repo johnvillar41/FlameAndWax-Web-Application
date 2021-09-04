@@ -16,7 +16,8 @@ namespace FlameAndWax.Services.Services.Interfaces
         Task<ServiceResult<Boolean>> AddCustomerReview(CustomerReviewModel customerReview, string connectionString);       
         Task<ServiceResult<Boolean>> CheckoutOrder(OrderModel order,string usernameLoggedIn, string connectionString);
    
-        Task<ServiceResult<double>> FetchProductPrice(int productId, string connectionString);        
+        Task<ServiceResult<double>> FetchProductPrice(int productId, string connectionString);
+        Task<ServiceResult<int>> FetchTotalNumberOfProducts(string connection);
 
         Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId, string connectionString);       
         Task<ServiceResult<ProductModel>> FetchProductDetail(int productId, string connectionString);

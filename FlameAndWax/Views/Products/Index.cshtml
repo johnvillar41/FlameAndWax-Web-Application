@@ -31,7 +31,7 @@
 <hr />
 <div class="container">
     <div class="row" id="content">
-        @await Html.PartialAsync("../Products/ProductsPartial")
+        @await Html.PartialAsync("../Products/ProductsPartial", Model)
     </div>
     <div class="row mt-2">
         <nav aria-label="Page navigation example">
@@ -41,12 +41,13 @@
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                @{                  
-
+                @{
+                    var totalCount = (int)ViewData["ProductCount"];
                 }
-                <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="Index" asp-route-pageNumber="1">1</a></li>
-                <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="Index" asp-route-pageNumber="2">2</a></li>
-                <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="Index" asp-route-pageNumber="3">3</a></li>
+                @for (int i = 1; i <= totalCount; i++)
+                {
+                    <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="PageProducts" asp-route-pageNumber="@i" data-ajax="true" data-ajax-loading="#loader" data-ajax-update="#content">@i</a></li>
+                }
                 <li class="page-item">
                     <a class="page-link" href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>

@@ -30,6 +30,12 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> Index(List<ProductViewModel> products, int pageNumber = 1, int pageSize = 9)
         {
+            var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProducts(ConnectionString);
+            if (totalNumberOfProductsServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = totalNumberOfProductsServiceResult.ErrorContent });
+
+            var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfProductsServiceResult.Result / 9);
+            ViewData["ProductCount"] = (int)totalNumberOfPages;
+
             if (products.Count() == 0)
             {
                 var productServiceResult = await _customerService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
@@ -43,25 +49,37 @@ namespace FlameAndWax.Controllers
                 }
 
                 var productsViewModel = new List<ProductViewModel>();
-                foreach (var product in productServiceResult.Result)
-                {
-                    productsViewModel.Add(new ProductViewModel
-                    {
-                        ProductId = product.ProductId,
-                        ProductName = product.ProductName,
-                        ProductDescription = product.ProductDescription,
-                        ProductPrice = product.ProductPrice,
-                        PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink,
-                        StockQuantity = product.UnitsInStock * product.QuantityPerUnit,
-                        QuantityPerUnit = product.QuantityPerUnit,
-                        UnitsInStock = product.UnitsInStock
-                    });
-                }
+                BuildProductViewModels(productsViewModel, productServiceResult.Result);
                 return View(productsViewModel);
             }
 
             return View(products);
         }
+
+        public async Task<IActionResult> PageProducts(int pageNumber = 1, int pageSize = 9)
+        {
+            //Determine total number of products for pagination numbers
+            var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProducts(ConnectionString);
+            if (totalNumberOfProductsServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = totalNumberOfProductsServiceResult.ErrorContent });
+
+            var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfProductsServiceResult.Result / 9);
+            ViewData["ProductCount"] = (int)totalNumberOfPages;
+
+            var productServiceResult = await _customerService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
+            if (productServiceResult.HasError)
+            {
+                var error = new ErrorViewModel
+                {
+                    ErrorContent = productServiceResult.ErrorContent
+                };
+                return View("Error", error);
+            }
+
+            var productsViewModel = new List<ProductViewModel>();
+            BuildProductViewModels(productsViewModel, productServiceResult.Result);
+            return PartialView("ProductsPartial", productsViewModel);
+        }
+
         [Authorize(Roles = nameof(Constants.Roles.Customer))]
         public IActionResult AddToCart(int _productId)
         {
@@ -132,24 +150,9 @@ namespace FlameAndWax.Controllers
                 return View("Error", error);
             }
 
-            var products = new List<ProductViewModel>();
-            foreach (var product in categorizedProductsServiceResult.Result)
-            {
-                products.Add(new ProductViewModel
-                {
-                    ProductId = product.ProductId,
-                    ProductName = product.ProductName,
-                    ProductDescription = product.ProductDescription,
-                    ProductPrice = product.ProductPrice,
-                    PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink,
-                    StockQuantity = product.UnitsInStock * product.QuantityPerUnit,
-                    QuantityPerUnit = product.QuantityPerUnit,
-                    UnitsInStock = product.UnitsInStock
-                });
-
-            }
-
-            return PartialView("ProductsPartial", products);
+            var productsViewModel = new List<ProductViewModel>();
+            BuildProductViewModels(productsViewModel, categorizedProductsServiceResult.Result);
+            return PartialView("ProductsPartial", productsViewModel);
         }
 
         public async Task<IActionResult> Details(int productId)
@@ -218,5 +221,23 @@ namespace FlameAndWax.Controllers
 
             return View(productDetailViewModel);
         }
+        private void BuildProductViewModels(List<ProductViewModel> productsViewModel, IEnumerable<ProductModel> productServiceResult)
+        {
+            foreach (var product in productServiceResult)
+            {
+                productsViewModel.Add(new ProductViewModel
+                {
+                    ProductId = product.ProductId,
+                    ProductName = product.ProductName,
+                    ProductDescription = product.ProductDescription,
+                    ProductPrice = product.ProductPrice,
+                    PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink,
+                    StockQuantity = product.UnitsInStock * product.QuantityPerUnit,
+                    QuantityPerUnit = product.QuantityPerUnit,
+                    UnitsInStock = product.UnitsInStock
+                });
+            }
+        }
     }
+
 }

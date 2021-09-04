@@ -275,5 +275,15 @@ namespace FlameAndWax.Services.Services
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
         }
+
+        public async Task<ServiceResult<int>> FetchTotalNumberOfProducts(string connection)
+        {
+            try
+            {
+                var totalNumberOfProducts = await _productRepository.FetchTotalNumberOfProducts(connection);
+                return ServiceHelper.BuildServiceResult<int>(totalNumberOfProducts, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }
+        }
     }
 }

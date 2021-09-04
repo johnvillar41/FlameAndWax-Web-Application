@@ -227,12 +227,12 @@ namespace FlameAndWax.Services.Repositories
             var totalNumberOfProducts = 0;
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT COUNT(ProductId) FROM ProductsTable as total";
+            var queryString = "SELECT COUNT(ProductId) as total FROM ProductsTable";
             using SqlCommand command = new SqlCommand(queryString, connection);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
-                totalNumberOfProducts = int.Parse(reader["total"].ToString());
+                totalNumberOfProducts = int.Parse(reader["total"].ToString());                
             }
             return totalNumberOfProducts;
         }
