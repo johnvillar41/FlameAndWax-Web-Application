@@ -94,7 +94,7 @@ namespace FlameAndWax.Controllers
                     );
             }
 
-            return View("../Products/Index", productViewModels);
+            return RedirectToAction("Index" , "Products" , new { pageNumber = 1, productCategory = category});
         }
 
         public IActionResult SeeMore(int id)

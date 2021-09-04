@@ -28,7 +28,7 @@ namespace FlameAndWax.Controllers
             ConnectionString = _configaration.GetConnectionString("FlameAndWaxDBConnection");
         }
 
-        public async Task<IActionResult> Index(List<ProductViewModel> products, int pageNumber = 1, int pageSize = 9)
+        public async Task<IActionResult> Index(List<ProductViewModel> products, string productCategory = "", int pageNumber = 1, int pageSize = 9)
         {
             var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProducts(ConnectionString);
             if (totalNumberOfProductsServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = totalNumberOfProductsServiceResult.ErrorContent });
@@ -36,16 +36,20 @@ namespace FlameAndWax.Controllers
             var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfProductsServiceResult.Result / 9);
             ViewData["ProductCount"] = (int)totalNumberOfPages;
 
-            if (products.Count() == 0)
+            var productsViewModel = new List<ProductViewModel>();
+            if (products.Count() == 0 && productCategory.Length == 0)
             {
                 var productServiceResult = await _customerService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
                 if (productServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = productServiceResult.ErrorContent });
-
-                var productsViewModel = new List<ProductViewModel>();
                 BuildProductViewModels(productsViewModel, productServiceResult.Result);
                 return View(productsViewModel);
             }
-            return View(products);
+
+            var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(productCategory), ConnectionString);
+            if (categorizedProductsServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = categorizedProductsServiceResult.ErrorContent });
+
+            BuildProductViewModels(productsViewModel, categorizedProductsServiceResult.Result);
+            return View(productsViewModel);
         }
 
         public async Task<IActionResult> PageProducts(int pageNumber = 1, int pageSize = 9)
