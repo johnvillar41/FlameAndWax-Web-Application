@@ -54,12 +54,10 @@ namespace FlameAndWax.Controllers
                 if (Url.IsLocalUrl(returnUrl))
                 {
                     return Json(returnUrl);
-                }
-
-                returnUrl = "/Home/Index";
-                return Json(returnUrl);
+                }                
             }
-            return View(nameof(Login));
+            returnUrl = "/Home/Index";
+            return Json(returnUrl);
         }
 
         public async Task<IActionResult> ProcessLogout()
