@@ -31,7 +31,7 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> Index(List<ProductViewModel> products, string productCategory = "", int pageNumber = 1, int pageSize = 9)
         {
             var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProducts(ConnectionString);
-            if (totalNumberOfProductsServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = totalNumberOfProductsServiceResult.ErrorContent });
+            if (totalNumberOfProductsServiceResult.HasError) return BadRequest(new { errorContent = totalNumberOfProductsServiceResult.ErrorContent });
 
             var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfProductsServiceResult.Result / 9);
             ViewData["ProductCount"] = (int)totalNumberOfPages;
@@ -40,13 +40,13 @@ namespace FlameAndWax.Controllers
             if (products.Count() == 0 && productCategory.Length == 0)
             {
                 var productServiceResult = await _customerService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
-                if (productServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = productServiceResult.ErrorContent });
+                if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
                 BuildProductViewModels(productsViewModel, productServiceResult.Result);
                 return View(productsViewModel);
             }
 
             var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(productCategory), ConnectionString);
-            if (categorizedProductsServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = categorizedProductsServiceResult.ErrorContent });
+            if (categorizedProductsServiceResult.HasError) return BadRequest(new { errorContent = categorizedProductsServiceResult.ErrorContent });
 
             BuildProductViewModels(productsViewModel, categorizedProductsServiceResult.Result);
             return View(productsViewModel);
@@ -56,13 +56,13 @@ namespace FlameAndWax.Controllers
         {
             //Determine total number of products for pagination numbers
             var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProducts(ConnectionString);
-            if (totalNumberOfProductsServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = totalNumberOfProductsServiceResult.ErrorContent });
+            if (totalNumberOfProductsServiceResult.HasError) return BadRequest(new { errorContent = totalNumberOfProductsServiceResult.ErrorContent });
 
             var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfProductsServiceResult.Result / 9);
             ViewData["ProductCount"] = (int)totalNumberOfPages;
 
             var productServiceResult = await _customerService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
-            if (productServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = productServiceResult.ErrorContent });
+            if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
 
             var productsViewModel = new List<ProductViewModel>();
             BuildProductViewModels(productsViewModel, productServiceResult.Result);
@@ -89,7 +89,7 @@ namespace FlameAndWax.Controllers
             };
             var reviewServiceResult = await _customerService.AddCustomerReview(customerReview, ConnectionString);
             var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(productId, ConnectionString);
-            if (customerServiceReviewResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = customerServiceReviewResult.ErrorContent });
+            if (customerServiceReviewResult.HasError) return BadRequest(new { errorContent = customerServiceReviewResult.ErrorContent });
 
             var customerReviewViewModels = new List<CustomerReviewViewModel>();
             foreach (var customerReviewResult in customerServiceReviewResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReviewResult);
@@ -100,7 +100,7 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> Sort(string category)
         {
             var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category), ConnectionString);
-            if (categorizedProductsServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = categorizedProductsServiceResult.ErrorContent });
+            if (categorizedProductsServiceResult.HasError) return BadRequest(new { errorContent = categorizedProductsServiceResult.ErrorContent });
 
             var productsViewModel = new List<ProductViewModel>();
             BuildProductViewModels(productsViewModel, categorizedProductsServiceResult.Result);
@@ -110,10 +110,10 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> Details(int productId)
         {
             var productServiceResult = await _customerService.FetchProductDetail(productId, ConnectionString);
-            if (productServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = productServiceResult.ErrorContent });
+            if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
 
             var customerReviewServiceResult = await _customerService.FetchCustomerReviewsInAProduct(productId, ConnectionString);
-            if (customerReviewServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = customerReviewServiceResult.ErrorContent });
+            if (customerReviewServiceResult.HasError) return BadRequest(new { errorContent = customerReviewServiceResult.ErrorContent });
 
             var customerReviewViewModels = new List<CustomerReviewViewModel>();
             foreach (var customerReview in customerReviewServiceResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReview);

@@ -31,15 +31,13 @@ namespace FlameAndWax.Controllers
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
             var ordersServiceResult = await _customerService.FetchOrders(int.Parse(customerIdLoggedIn), ConnectionString);
 
-            if (ordersServiceResult.HasError)
-                return PartialView("Error", new ErrorViewModel { ErrorContent = ordersServiceResult.ErrorContent });
+            if (ordersServiceResult.HasError) return BadRequest(new { errorContent = ordersServiceResult.ErrorContent });
 
             var orderViewModels = new List<OrderViewModel>();
             foreach (var order in ordersServiceResult.Result)
             {
                 var orderDetailsServiceResult = await _customerService.FetchOrderDetails(order.OrderId, ConnectionString);
-                if (orderDetailsServiceResult.HasError)
-                    return View("Error", new ErrorViewModel { ErrorContent = orderDetailsServiceResult.ErrorContent });
+                if (orderDetailsServiceResult.HasError) return BadRequest(new { errorContent = orderDetailsServiceResult.ErrorContent });
 
                 BuildOrderViewModels(orderDetailsServiceResult.Result, orderViewModels, order);
             }
@@ -51,20 +49,17 @@ namespace FlameAndWax.Controllers
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
             var categorizedOrdersServiceResult = await _customerService.FetchOrdersByStatus(int.Parse(customerIdLoggedIn), ServiceHelper.ConvertStringtoOrderStatus(status), ConnectionString);
 
-            if (categorizedOrdersServiceResult.HasError)
-                return PartialView("Error", new ErrorViewModel { ErrorContent = categorizedOrdersServiceResult.ErrorContent });
+            if (categorizedOrdersServiceResult.HasError) return BadRequest(new { errorContent = categorizedOrdersServiceResult.ErrorContent });
 
             var orderViewModels = new List<OrderViewModel>();
             foreach (var order in categorizedOrdersServiceResult.Result)
             {
                 var orderDetailsServiceResult = await _customerService.FetchOrderDetails(order.OrderId, ConnectionString);
-                if (orderDetailsServiceResult.HasError)
-                    return View("Error", new ErrorViewModel { ErrorContent = categorizedOrdersServiceResult.ErrorContent });
+                if (orderDetailsServiceResult.HasError) return BadRequest(new { errorContent = orderDetailsServiceResult.ErrorContent });
 
                 BuildOrderViewModels(orderDetailsServiceResult.Result, orderViewModels, order);
             }
             return PartialView("OrdersPartialView", orderViewModels);
-
         }
         private void BuildOrderViewModels(
             IEnumerable<OrderDetailModel> orderDetailServiceResult,

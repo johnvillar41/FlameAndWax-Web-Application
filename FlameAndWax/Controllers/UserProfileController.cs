@@ -35,7 +35,7 @@ namespace FlameAndWax.Controllers
         {
             var userId = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
             var accountDetailServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId), ConnectionString);
-            if (accountDetailServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = accountDetailServiceResult.ErrorContent });
+            if (accountDetailServiceResult.HasError) return BadRequest(new { errorContent = accountDetailServiceResult.ErrorContent });
 
             var userProfile = new UserProfileViewModel
             {
@@ -74,16 +74,16 @@ namespace FlameAndWax.Controllers
             customerModel.Address = userProfile.Address;
 
             var customerServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId), ConnectionString);
-            if (customerServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = customerServiceResult.ErrorContent });
+            if (customerServiceResult.HasError) return BadRequest(new { errorContent = customerServiceResult.ErrorContent });
 
-            if(userProfile.ProfilePictureFile != null)
+            if (userProfile.ProfilePictureFile != null)
                 DeleteOldProfilePicture(customerServiceResult.Result.ProfilePictureLink);
 
             var modifyServiceResult = await _customerService.ModifyAccountDetails(customerModel, int.Parse(userId), ConnectionString);
-            if (modifyServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = modifyServiceResult.ErrorContent });
+            if (modifyServiceResult.HasError) return BadRequest(new { errorContent = modifyServiceResult.ErrorContent });
 
             var accountDetailServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId), ConnectionString);
-            if (accountDetailServiceResult.HasError) return View("Error", new ErrorViewModel { ErrorContent = accountDetailServiceResult.ErrorContent });
+            if (accountDetailServiceResult.HasError) return BadRequest(new { errorContent = accountDetailServiceResult.ErrorContent });
 
             var userProfileViewModel = new UserProfileViewModel
             {
@@ -119,8 +119,8 @@ namespace FlameAndWax.Controllers
             fileToDelete = Path.Combine(_webHostEnvironment.WebRootPath, fileToDelete);
             FileInfo fileInfo = new FileInfo(fileToDelete);
             if (fileInfo != null && fileInfo.Exists)
-            {                
-                fileInfo.Delete();                
+            {
+                fileInfo.Delete();
             }
             GC.Collect();
         }
