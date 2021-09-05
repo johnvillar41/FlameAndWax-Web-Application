@@ -255,11 +255,17 @@ namespace FlameAndWax.Services.Services
             try
             {
                 var customerRespositoryResult = await _customerRepository.Add(registeredCredentials, connectionString);
-                if(customerRespositoryResult == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Adding Customer");
-                
+                if (customerRespositoryResult == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Adding Customer");
+
                 return ServiceHelper.BuildServiceResult<bool>(true, false, null);
             }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
+            catch (System.Data.SqlClient.SqlException e)
+            {
+                if (e.Message.Equals($"Cannot insert duplicate key row in object 'dbo.CustomerTable' with unique index 'IX_CustomerTable'. The duplicate key value is ({registeredCredentials.Username}).\r\nThe statement has been terminated."))
+                    return ServiceHelper.BuildServiceResult<bool>(false, true, "Duplicate Username! Please try a different username");
+
+                return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message);
+            }
         }
 
         public async Task<ServiceResult<bool>> SendMessage(MessageModel newMessage, string connectionString)
@@ -269,8 +275,8 @@ namespace FlameAndWax.Services.Services
             try
             {
                 var messageRepositoryResult = await _messageRepository.Add(newMessage, connectionString);
-                if(messageRepositoryResult == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Adding Message");
-                
+                if (messageRepositoryResult == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Adding Message");
+
                 return ServiceHelper.BuildServiceResult<bool>(true, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
