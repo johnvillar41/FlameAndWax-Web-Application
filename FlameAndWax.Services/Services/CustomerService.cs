@@ -272,8 +272,8 @@ namespace FlameAndWax.Services.Services
             {
                 if (e.Message.Equals($"Cannot insert duplicate key row in object 'dbo.CustomerTable' with unique index 'IX_CustomerTable'. The duplicate key value is ({registeredCredentials.Username}).\r\nThe statement has been terminated."))
                     return ServiceHelper.BuildServiceResult<bool>(false, true, "Duplicate Username! Please try a different username");
-                //Add switch case for parameters that have space values
-                return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message);
+                
+                return ServiceHelper.BuildServiceResult<bool>(false, true, "Please Fill all the missing fields!");
             }
         }
 
