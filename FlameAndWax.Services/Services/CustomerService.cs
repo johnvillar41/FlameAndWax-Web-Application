@@ -233,7 +233,16 @@ namespace FlameAndWax.Services.Services
                 else
                     return ServiceHelper.BuildServiceResult<int>(-1, true, "Invalid User");
             }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }
+            catch (System.Data.SqlClient.SqlException e)
+            {                
+                if (e.Message.Equals("The parameterized query '(@username nvarchar(4000),@password nvarchar(4000))SELECT Custom' expects the parameter '@username', which was not supplied."))
+                    return ServiceHelper.BuildServiceResult<int>(-1, true, "Please enter username and password!");
+                if (e.Message.Equals($"The parameterized query '(@username nvarchar(4000),@password nvarchar({(loginCredentials.Password == null ? 0 : loginCredentials.Password.Length)}))SELECT CustomerI' expects the parameter '@username', which was not supplied."))
+                    return ServiceHelper.BuildServiceResult<int>(-1, true, "Please enter a valid username!");
+                if(e.Message.Equals($"The parameterized query '(@username nvarchar({(loginCredentials.Username == null ? 0 : loginCredentials.Username.Length)}),@password nvarchar(4000))SELECT CustomerI' expects the parameter '@password', which was not supplied."))
+                    return ServiceHelper.BuildServiceResult<int>(-1, true, "Please enter a valid password!");
+                return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message);
+            }
         }
 
         public async Task<ServiceResult<bool>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId, string connectionString)
@@ -263,7 +272,7 @@ namespace FlameAndWax.Services.Services
             {
                 if (e.Message.Equals($"Cannot insert duplicate key row in object 'dbo.CustomerTable' with unique index 'IX_CustomerTable'. The duplicate key value is ({registeredCredentials.Username}).\r\nThe statement has been terminated."))
                     return ServiceHelper.BuildServiceResult<bool>(false, true, "Duplicate Username! Please try a different username");
-
+                //Add switch case for parameters that have space values
                 return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message);
             }
         }
