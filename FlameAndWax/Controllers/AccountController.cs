@@ -36,10 +36,10 @@ namespace FlameAndWax.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ProcessLogin(LoginViewModel loginCredentials, string returnUrl)
-        {
-           
-
+        {         
             var isAuthenticatedServiceResult = await _customerService.Login(new CustomerModel { Username = loginCredentials.Username, Password = loginCredentials.Password }, ConnectionString);
             if (isAuthenticatedServiceResult.HasError) return BadRequest(new { errorContent = isAuthenticatedServiceResult.ErrorContent });
 

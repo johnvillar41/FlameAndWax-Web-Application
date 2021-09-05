@@ -26,6 +26,7 @@ namespace FlameAndWax.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(MessageModel messageModel)
         {
             var customerServiceResult = await _customerService.SendMessage(messageModel, ConnectionString);

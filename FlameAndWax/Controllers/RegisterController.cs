@@ -35,7 +35,9 @@ namespace FlameAndWax.Controllers
         {
             return View();
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterUser(UserProfileViewModel newUser)
         {
             var customerModel = new CustomerModel
