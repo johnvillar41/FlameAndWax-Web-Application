@@ -45,23 +45,23 @@ $('#sendMessage').click(function () {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         });
+        if (xhr.status == "200") {
+            Toast.fire({
+                icon: 'success',
+                title: 'Message Submitted!'
+            });
 
-        var x = document.getElementById("completed");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-            if (xhr.status == "200") {
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Message Submitted!'
-                });
+            document.getElementById('name').value = "";
+            document.getElementById('email').value = "";
+            document.getElementById('phone').value = "";
+            document.getElementById('message').value = "";
 
-                document.getElementById('name').value = "";
-                document.getElementById('email').value = "";
-                document.getElementById('phone').value = "";
-                document.getElementById('message').value = "";
+            var x = document.getElementById("completed");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
             }
-        } else {
-            x.style.display = "none";
         }
     }
 });
@@ -105,20 +105,6 @@ checkIfCartHasItems = function (cartItems) {
         return false;
     }
     return true;
-}
-
-//For prompting successfull comment
-completedComment = function () {
-    var x = document.getElementById("completedComment");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-        document.getElementById("name").value = "";
-        document.getElementById("email").value = "";
-        document.getElementById("phone").value = "";
-        document.getElementById("message").value = "";
-    } else {
-        x.style.display = "none";
-    }
 }
 
 //User profile password validation
