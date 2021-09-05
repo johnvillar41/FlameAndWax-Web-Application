@@ -45,10 +45,12 @@ $('#sendMessage').click(function () {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         });
-        if (xhr.status == "200") {
+        if (xhr.status == "200") {           
             Toast.fire({
                 icon: 'success',
-                title: 'Message Submitted!'
+                title: '<span style="color: #006400"><b>Success</b></span> Message Submitted!',
+                background: '#CCFFCC',
+                iconColor: '#006400',
             });
 
             document.getElementById('name').value = "";
@@ -80,12 +82,14 @@ $('#cartComplete').click(function () {
                     toast.addEventListener('mouseenter', Swal.stopTimer)
                     toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
-            });
-
+            });            
             Toast.fire({
                 icon: 'success',
-                title: 'Cart Submitted!'
-            })
+                title: '<span style="color: #006400"><b>Success</b></span> Cart Submitted!',
+                background: '#CCFFCC',
+                iconColor: '#006400',
+            });
+
             document.getElementById('totalCartCount').innerHTML = "0";
         } else {
 
@@ -143,16 +147,20 @@ $('#addtoCartBtn').click(function () {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         })
-        if (xhr.status == "200") {
+        if (xhr.status == "200") {            
             Toast.fire({
                 icon: 'success',
-                title: 'Added to cart!'
-            })
+                title: '<span style="color: #006400"><b>Success</b></span> Added to cart!',
+                background: '#CCFFCC',
+                iconColor: '#006400',
+            });
         } else {
             Toast.fire({
                 icon: 'error',
-                title: 'Failed to add!'
-            })
+                title: '<span style="color: #8b0000"><b>Error</b></span> Adding item to cart!',
+                background: '#FF7F7F',
+                iconColor: '#8b0000',
+            });
         }
     }
 });
@@ -170,11 +178,13 @@ $('#deleteCartItem').click(function () {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         })
-        if (xhr.status == "200") {
+        if (xhr.status == "200") {           
             Toast.fire({
                 icon: 'success',
-                title: 'Removed item from cart!'
-            })
+                title: '<span style="color: #006400"><b>Success</b></span> Removed item from cart!',
+                background: '#CCFFCC',
+                iconColor: '#006400',
+            });
 
             let totalCartNumValue = Number(document.getElementById('totalCartCount').innerHTML);
             totalCartNumValue--;
@@ -228,10 +238,12 @@ $('#registerUser').click(function () {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         });
-        if (xhr.status == "200") {
+        if (xhr.status == "200") {           
             Toast.fire({
                 icon: 'success',
-                title: 'Registered new user!'
+                title: '<span style="color: #006400"><b>Success</b></span> Registered new user!',
+                background: '#CCFFCC',
+                iconColor: '#006400',
             });
         }
     }
@@ -255,10 +267,12 @@ $('#loginBtn').click(function () {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         });
-        if (xhr.status == "200") {
+        if (xhr.status == "200") {           
             Toast.fire({
                 icon: 'success',
-                title: 'Login Successfull!'
+                title: '<span style="color: #006400"><b>Success</b></span> Logging Successfull!',
+                background: '#CCFFCC',
+                iconColor: '#006400',
             });
         }
     }
@@ -284,9 +298,11 @@ errorContent = function (response) {
             toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
     });
-
+   
     Toast.fire({
         icon: 'error',
-        title: response.responseJSON.errorContent
+        title: '<span style="color: #8b0000"><b>Error!</b></span> ' + response.responseJSON.errorContent,
+        background: '#FF7F7F',
+        iconColor: '#8b0000',
     });
 }
