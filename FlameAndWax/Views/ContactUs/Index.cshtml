@@ -44,7 +44,7 @@
         <div class="col-md-6">
             <form method="post" asp-action="Index" asp-controller="ContactUs" id="myform"               
                   data-ajax="true" data-ajax-loading="#loader" data-ajax-complete="completed"
-                  data-ajax-method="post">
+                  data-ajax-method="post" data-ajax-failure="errorContent">
                 <div class="card p-3 box-shadow" style="background-color: #e4e2da">
                     <h4 class="text-left">Send us a message!</h4><br />
                     <input class="form-control" placeholder="Enter Name" asp-for="@Model.Name" id="name" required/><br />
@@ -52,7 +52,7 @@
                     <input class="form-control" placeholder="Enter PhoneNumber" asp-for="@Model.PhoneNumber" id="phone" required/><br />
                     <textarea class="form-control" placeholder="Message" rows="4" asp-for="@Model.Message" id="message" required></textarea><br />
                     
-                    <button type="submit" id="#sendMessage" class="btn btn-gold btn-block"><i class="fas fa-paper-plane"></i> Send</button>
+                    <button type="submit" id="sendMessage" class="btn btn-gold btn-block"><i class="fas fa-paper-plane"></i> Send</button>
                 </div>
                 <div class="spinner-border" role="status" id="loader" style="display:none;">
                     <span class="sr-only">Loading...</span>

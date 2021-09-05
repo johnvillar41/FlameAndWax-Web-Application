@@ -31,6 +31,41 @@ $('#submit').click(function () {
     }
 });
 
+//For saving User profile
+$('#sendMessage').click(function () {
+    completed = function (xhr) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        var x = document.getElementById("completed");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+            if (xhr.status == "200") {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Message Submitted!'
+                });
+
+                document.getElementById('name').value = "";
+                document.getElementById('email').value = "";
+                document.getElementById('phone').value = "";
+                document.getElementById('message').value = "";
+            }
+        } else {
+            x.style.display = "none";
+        }
+    }
+});
+
 //For cart submission trigger
 $('#cartComplete').click(function () {
     cartComplete = function (xhr) {
@@ -45,7 +80,7 @@ $('#cartComplete').click(function () {
                     toast.addEventListener('mouseenter', Swal.stopTimer)
                     toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
-            })
+            });
 
             Toast.fire({
                 icon: 'success',
@@ -216,26 +251,6 @@ $('#registerUser').click(function () {
     }
 });
 
-//Error registration
-errorContent = function (response) {    
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    });
-    
-    Toast.fire({
-        icon: 'error',
-        title: response.responseJSON.errorContent    
-    });
-}
-
 //Registraing new User Functions-----------------------------------------------------
 
 //Login Functions----------------------------------------------------
@@ -267,9 +282,11 @@ $('#loginBtn').click(function () {
 loginSuccess = function (response) {
     window.location.href = response;
 }
+//Login Functions----------------------------------------------------
 
-//Login Error
-errorLogin = function (response) {
+
+//Error Messages
+errorContent = function (response) {
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -287,5 +304,3 @@ errorLogin = function (response) {
         title: response.responseJSON.errorContent
     });
 }
-
-//Login Functions----------------------------------------------------

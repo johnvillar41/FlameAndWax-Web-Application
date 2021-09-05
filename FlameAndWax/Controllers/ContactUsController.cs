@@ -29,15 +29,9 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> Index(MessageModel messageModel)
         {
             var customerServiceResult = await _customerService.SendMessage(messageModel, ConnectionString);
-            if (customerServiceResult.HasError)
-            {
-                var error = new ErrorViewModel
-                {
-                    ErrorContent = customerServiceResult.ErrorContent
-                };
-                return View("Error", error);
-            }
-            return RedirectToAction(nameof(Index));
+            if (customerServiceResult.HasError) return BadRequest(new { errorContent = customerServiceResult.ErrorContent});
+           
+            return Ok();
         }
     }
 }
