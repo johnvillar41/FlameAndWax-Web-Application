@@ -288,7 +288,7 @@ namespace FlameAndWax.Services.Services
 
                 return ServiceHelper.BuildServiceResult<bool>(true, false, null);
             }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
+            catch (System.Data.SqlClient.SqlException) { return ServiceHelper.BuildServiceResult<bool>(false, true, "Please fill up all missing fields!"); }
         }
 
         public async Task<ServiceResult<int>> FetchTotalNumberOfProducts(string connection)
