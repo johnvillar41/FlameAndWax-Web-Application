@@ -3,6 +3,7 @@ using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace FlameAndWax.Controllers
 {
+    [Authorize(Roles = nameof(Constants.Roles.Customer))]
     public class OrdersController : Controller
     {
         private readonly ICustomerService _customerService;

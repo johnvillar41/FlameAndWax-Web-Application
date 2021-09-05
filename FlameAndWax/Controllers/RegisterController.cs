@@ -1,6 +1,8 @@
-﻿using FlameAndWax.Data.Models;
+﻿using FlameAndWax.Data.Constants;
+using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
 using FlameAndWax.Services.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +16,7 @@ using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Controllers
 {
+    [Authorize(Roles = nameof(Constants.Roles.Customer))]
     public class RegisterController : Controller
     {
         private readonly ICustomerService _customerService;
