@@ -2,6 +2,7 @@
 {
     public class Constants
     {
+        public const string ALL_PRODUCTS = "All Products";
         public enum Category
         {
             Candle,

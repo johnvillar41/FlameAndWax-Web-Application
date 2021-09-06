@@ -73,11 +73,11 @@ namespace FlameAndWax.Controllers
 
             return PartialView("ProductReviewPartial", customerReviewViewModels);
         }
-        public async Task<IActionResult> PageProducts(int pageNumber = 1, int pageSize = 9, string category = null)
+        public async Task<IActionResult> PageProducts(int pageNumber = 1, int pageSize = 9, string category = Constants.ALL_PRODUCTS)
         {
             //Determine total number of products for pagination numbers
             ServiceResult<int> totalProductCount;
-            if(category == "All Products")
+            if(category.Equals(Constants.ALL_PRODUCTS))
                 totalProductCount = await _customerService.FetchTotalNumberOfProductsByCategory(null, ConnectionString);
             else
                 totalProductCount = await _customerService.FetchTotalNumberOfProductsByCategory(ServiceHelper.ConvertStringToConstant(category), ConnectionString);
@@ -90,7 +90,7 @@ namespace FlameAndWax.Controllers
 
             var productsViewModel = new List<ProductViewModel>();
             ServiceResult<IEnumerable<ProductModel>> productModels;
-            if (category.Equals("All Products"))
+            if (category.Equals(Constants.ALL_PRODUCTS))
             {
                 productModels = await _customerService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
                 if (productModels.HasError) return BadRequest(new { errorContent = productModels.ErrorContent });
