@@ -4,6 +4,7 @@ using FlameAndWax.Services.Services.BaseInterface.Interface;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Services.Services.Interfaces
 {
@@ -17,7 +18,7 @@ namespace FlameAndWax.Services.Services.Interfaces
         Task<ServiceResult<Boolean>> CheckoutOrder(OrderModel order,string usernameLoggedIn, string connectionString);
    
         Task<ServiceResult<double>> FetchProductPrice(int productId, string connectionString);
-        Task<ServiceResult<int>> FetchTotalNumberOfProducts(string connection);
+        Task<ServiceResult<int>> FetchTotalNumberOfProductsByCategory(Category? category,string connection);
 
         Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId, string connectionString);       
         Task<ServiceResult<ProductModel>> FetchProductDetail(int productId, string connectionString);

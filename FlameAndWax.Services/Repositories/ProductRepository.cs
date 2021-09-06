@@ -5,6 +5,7 @@ using FlameAndWax.Services.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Services.Repositories
 {
@@ -222,17 +223,26 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<int> FetchTotalNumberOfProducts(string connectionString)
+        public async Task<int> FetchTotalNumberOfProducts(Category? category, string connectionString)
         {
             var totalNumberOfProducts = 0;
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT COUNT(ProductId) as total FROM ProductsTable";
+            var queryString = "";
+            if (category == null)
+                queryString = "SELECT COUNT(ProductId) as total FROM ProductsTable";
+            else
+                queryString = "SELECT COUND(ProductId) as total FROM ProductsTable WHERE Category = @category";
+
             using SqlCommand command = new SqlCommand(queryString, connection);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
+
+            if (category != null)
+                command.Parameters.AddWithValue("@category", category.ToString());
+
             if (await reader.ReadAsync())
             {
-                totalNumberOfProducts = int.Parse(reader["total"].ToString());                
+                totalNumberOfProducts = int.Parse(reader["total"].ToString());
             }
             return totalNumberOfProducts;
         }

@@ -6,6 +6,7 @@ using FlameAndWax.Services.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Services.Services
 {
@@ -291,11 +292,11 @@ namespace FlameAndWax.Services.Services
             catch (System.Data.SqlClient.SqlException) { return ServiceHelper.BuildServiceResult<bool>(false, true, "Please fill up all missing fields!"); }
         }
 
-        public async Task<ServiceResult<int>> FetchTotalNumberOfProducts(string connection)
+        public async Task<ServiceResult<int>> FetchTotalNumberOfProductsByCategory(Category? category,string connection)
         {
             try
             {
-                var totalNumberOfProducts = await _productRepository.FetchTotalNumberOfProducts(connection);
+                var totalNumberOfProducts = await _productRepository.FetchTotalNumberOfProducts(category, connection);
                 return ServiceHelper.BuildServiceResult<int>(totalNumberOfProducts, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }

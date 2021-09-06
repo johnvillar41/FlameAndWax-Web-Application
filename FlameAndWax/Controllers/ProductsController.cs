@@ -30,7 +30,7 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> Index(List<ProductViewModel> products, string productCategory = "", int pageNumber = 1, int pageSize = 9)
         {
-            var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProducts(ConnectionString);
+            var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProductsByCategory(null, ConnectionString);
             if (totalNumberOfProductsServiceResult.HasError) return BadRequest(new { errorContent = totalNumberOfProductsServiceResult.ErrorContent });
 
             var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfProductsServiceResult.Result / 9);
@@ -55,7 +55,7 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> PageProducts(int pageNumber = 1, int pageSize = 9)
         {
             //Determine total number of products for pagination numbers
-            var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProducts(ConnectionString);
+            var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProductsByCategory(null, ConnectionString);
             if (totalNumberOfProductsServiceResult.HasError) return BadRequest(new { errorContent = totalNumberOfProductsServiceResult.ErrorContent });
 
             var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfProductsServiceResult.Result / 9);
