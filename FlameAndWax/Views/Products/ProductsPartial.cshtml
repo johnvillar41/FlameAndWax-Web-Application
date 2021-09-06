@@ -3,13 +3,13 @@
 
 @if (Model.Count() == 0)
 {
-<div class="row">
-    <div class="mx-auto">
-        <div class="row">
-            <lottie-player src="https://assets3.lottiefiles.com/temp/lf20_Celp8h.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+    <div class="row">
+        <div class="mx-auto">
+            <div class="row">
+                <lottie-player src="https://assets3.lottiefiles.com/temp/lf20_Celp8h.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+            </div>
         </div>
     </div>
-</div>
 }
 @{
     var totalCount = (int)ViewData["ProductCount"];
@@ -85,7 +85,7 @@
         <ul class="pagination">
             @for (int i = 1; i <= totalCount; i++)
             {
-                <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="PageProducts" asp-route-pageNumber="@i" data-ajax="true" data-ajax-loading="#loader" data-ajax-update="#content" data-ajax-success="scrollUp">@i</a></li>
+                <li class="page-item"><a class="page-link" asp-controller="Products" asp-route-category="@category" asp-action="PageProducts" asp-route-pageNumber="@i" data-ajax="true" data-ajax-loading="#loader" data-ajax-update="#content" data-ajax-success="scrollUp">@i</a></li>
             }
         </ul>
     </nav>
