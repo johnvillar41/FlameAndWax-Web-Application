@@ -135,35 +135,38 @@ update = function (text) {
 
 //Add to Cart trigger
 $('#addtoCartBtn').click(function () {
-    addToCart = function (xhr) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        })
-        if (xhr.status == "200") {            
-            Toast.fire({
-                icon: 'success',
-                title: '<span style="color: #006400"><b>Success</b></span> Added to cart!',
-                background: '#CCFFCC',
-                iconColor: '#006400',
-            });
-        } else {
-            Toast.fire({
-                icon: 'error',
-                title: '<span style="color: #8b0000"><b>Error</b></span> Adding item to cart!',
-                background: '#FF7F7F',
-                iconColor: '#8b0000',
-            });
-        }
-    }
+    addToCart();
 });
+
+//Add to cart mixin display
+addToCart = function (xhr) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+    if (xhr.status == "200") {
+        Toast.fire({
+            icon: 'success',
+            title: '<span style="color: #006400"><b>Success</b></span> Added to cart!',
+            background: '#CCFFCC',
+            iconColor: '#006400',
+        });
+    } else {
+        Toast.fire({
+            icon: 'error',
+            title: '<span style="color: #8b0000"><b>Error</b></span> Adding item to cart!',
+            background: '#FF7F7F',
+            iconColor: '#8b0000',
+        });
+    }
+}
 
 $('#deleteCartItem').click(function () {
     negateTotalNumberOfCart = function (xhr) {

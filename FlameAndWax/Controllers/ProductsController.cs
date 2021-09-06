@@ -29,7 +29,7 @@ namespace FlameAndWax.Controllers
             ConnectionString = _configaration.GetConnectionString("FlameAndWaxDBConnection");
         }
 
-        public async Task<IActionResult> Index(string productCategory = "All Products", int pageNumber = 1, int pageSize = 9)
+        public async Task<IActionResult> Index(string productCategory = Constants.ALL_PRODUCTS, int pageNumber = 1, int pageSize = 9)
         {
             var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProductsByCategory(null, ConnectionString);
             if (totalNumberOfProductsServiceResult.HasError) return BadRequest(new { errorContent = totalNumberOfProductsServiceResult.ErrorContent });
