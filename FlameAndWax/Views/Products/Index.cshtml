@@ -17,6 +17,7 @@
                 Category <i class="fas fa-caret-square-down"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" onclick="update('All Products')" asp-action="Sort" asp-controller="Products" asp-route-category="All Products" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">All Products</a>
                 <a class="dropdown-item" onclick="update('Candle')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Candle)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Candle</a>
                 <a class="dropdown-item" onclick="update('Soap')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Soap)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Soap</a>
                 <a class="dropdown-item" onclick="update('Diffuser')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Diffuser)" data-ajax="true" data-ajax-update="#content" data-ajax-loading="#loader">Diffuser</a>
