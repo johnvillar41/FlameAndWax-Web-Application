@@ -107,15 +107,18 @@ namespace FlameAndWax.Services.Repositories
             return products;
         }
 
-        public async Task<IEnumerable<ProductModel>> FetchCategorizedProducts(Constants.Category category, string connectionString)
+        public async Task<IEnumerable<ProductModel>> FetchPaginatedCategorizedProducts(int pageNumber, int pageSize, Category category, string connectionString)
         {
             List<ProductModel> categorizedProducts = new List<ProductModel>();
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM ProductsTable WHERE Category = @category";
+            var queryString = "SELECT * FROM ProductsTable WHERE Category = @category ORDER by ProductId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
+                "FETCH NEXT @PageSize ROWS ONLY";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@category", category.ToString());
+            command.Parameters.AddWithValue("@PageNumber", pageNumber);
+            command.Parameters.AddWithValue("@PageSize", pageSize);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -232,14 +235,14 @@ namespace FlameAndWax.Services.Repositories
             if (category == null)
                 queryString = "SELECT COUNT(ProductId) as total FROM ProductsTable";
             else
-                queryString = "SELECT COUND(ProductId) as total FROM ProductsTable WHERE Category = @category";
+                queryString = "SELECT COUNT(ProductId) as total FROM ProductsTable WHERE Category = @category";
 
             using SqlCommand command = new SqlCommand(queryString, connection);
-            using SqlDataReader reader = await command.ExecuteReaderAsync();
-
             if (category != null)
                 command.Parameters.AddWithValue("@category", category.ToString());
 
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+           
             if (await reader.ReadAsync())
             {
                 totalNumberOfProducts = int.Parse(reader["total"].ToString());

@@ -45,29 +45,14 @@ namespace FlameAndWax.Controllers
                 return View(productsViewModel);
             }
 
-            var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(productCategory), ConnectionString);
+            var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(pageNumber, pageSize, ServiceHelper.ConvertStringToConstant(productCategory), ConnectionString);
             if (categorizedProductsServiceResult.HasError) return BadRequest(new { errorContent = categorizedProductsServiceResult.ErrorContent });
 
             BuildProductViewModels(productsViewModel, categorizedProductsServiceResult.Result);
             return View(productsViewModel);
         }
 
-        public async Task<IActionResult> PageProducts(int pageNumber = 1, int pageSize = 9)
-        {
-            //Determine total number of products for pagination numbers
-            var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProductsByCategory(null, ConnectionString);
-            if (totalNumberOfProductsServiceResult.HasError) return BadRequest(new { errorContent = totalNumberOfProductsServiceResult.ErrorContent });
 
-            var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfProductsServiceResult.Result / 9);
-            ViewData["ProductCount"] = (int)totalNumberOfPages;
-
-            var productServiceResult = await _customerService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
-            if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
-
-            var productsViewModel = new List<ProductViewModel>();
-            BuildProductViewModels(productsViewModel, productServiceResult.Result);
-            return PartialView("ProductsPartial", productsViewModel);
-        }
 
         [Authorize(Roles = nameof(Constants.Roles.Customer))]
         public IActionResult AddToCart(int _productId)
@@ -96,15 +81,27 @@ namespace FlameAndWax.Controllers
 
             return PartialView("ProductReviewPartial", customerReviewViewModels);
         }
-
-        public async Task<IActionResult> Sort(string category)
+        public async Task<IActionResult> PageProducts(int pageNumber = 1, int pageSize = 9, string category = null)
         {
-            var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(ServiceHelper.ConvertStringToConstant(category), ConnectionString);
+            //Determine total number of products for pagination numbers
+            var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProductsByCategory(ServiceHelper.ConvertStringToConstant(category), ConnectionString);
+            if (totalNumberOfProductsServiceResult.HasError) return BadRequest(new { errorContent = totalNumberOfProductsServiceResult.ErrorContent });
+
+            var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfProductsServiceResult.Result / 9);
+            ViewData["ProductCount"] = (int)totalNumberOfPages;
+            ViewData["ProductCategory"] = category;
+
+            var categorizedProductsServiceResult = await _customerService.FetchProductByCategory(pageNumber, pageSize, ServiceHelper.ConvertStringToConstant(category), ConnectionString);
             if (categorizedProductsServiceResult.HasError) return BadRequest(new { errorContent = categorizedProductsServiceResult.ErrorContent });
 
             var productsViewModel = new List<ProductViewModel>();
             BuildProductViewModels(productsViewModel, categorizedProductsServiceResult.Result);
             return PartialView("ProductsPartial", productsViewModel);
+        }
+
+        public IActionResult Sort(string category)
+        {
+            return RedirectToAction("PageProducts", new { category });
         }
 
         public async Task<IActionResult> Details(int productId)

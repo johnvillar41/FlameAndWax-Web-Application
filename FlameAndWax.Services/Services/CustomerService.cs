@@ -158,11 +158,11 @@ namespace FlameAndWax.Services.Services
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(null, true, e.Message); }
         }
 
-        public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(Constants.Category category, string connectionString)
+        public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(int pageNumber, int pageSize, Category category, string connectionString)
         {
             try
             {
-                var categorizedProducts = await _productRepository.FetchCategorizedProducts(category, connectionString);
+                var categorizedProducts = await _productRepository.FetchPaginatedCategorizedProducts(pageNumber, pageSize, category, connectionString);
                 return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(categorizedProducts, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(null, true, e.Message); }
@@ -235,12 +235,12 @@ namespace FlameAndWax.Services.Services
                     return ServiceHelper.BuildServiceResult<int>(-1, true, "Invalid User");
             }
             catch (System.Data.SqlClient.SqlException e)
-            {                
+            {
                 if (e.Message.Equals("The parameterized query '(@username nvarchar(4000),@password nvarchar(4000))SELECT Custom' expects the parameter '@username', which was not supplied."))
                     return ServiceHelper.BuildServiceResult<int>(-1, true, "Please enter username and password!");
                 if (e.Message.Equals($"The parameterized query '(@username nvarchar(4000),@password nvarchar({(loginCredentials.Password == null ? 0 : loginCredentials.Password.Length)}))SELECT CustomerI' expects the parameter '@username', which was not supplied."))
                     return ServiceHelper.BuildServiceResult<int>(-1, true, "Please enter a valid username!");
-                if(e.Message.Equals($"The parameterized query '(@username nvarchar({(loginCredentials.Username == null ? 0 : loginCredentials.Username.Length)}),@password nvarchar(4000))SELECT CustomerI' expects the parameter '@password', which was not supplied."))
+                if (e.Message.Equals($"The parameterized query '(@username nvarchar({(loginCredentials.Username == null ? 0 : loginCredentials.Username.Length)}),@password nvarchar(4000))SELECT CustomerI' expects the parameter '@password', which was not supplied."))
                     return ServiceHelper.BuildServiceResult<int>(-1, true, "Please enter a valid password!");
                 return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message);
             }
@@ -273,7 +273,7 @@ namespace FlameAndWax.Services.Services
             {
                 if (e.Message.Equals($"Cannot insert duplicate key row in object 'dbo.CustomerTable' with unique index 'IX_CustomerTable'. The duplicate key value is ({registeredCredentials.Username}).\r\nThe statement has been terminated."))
                     return ServiceHelper.BuildServiceResult<bool>(false, true, "Duplicate Username! Please try a different username");
-                
+
                 return ServiceHelper.BuildServiceResult<bool>(false, true, "Please Fill all the missing fields!");
             }
         }
@@ -292,7 +292,7 @@ namespace FlameAndWax.Services.Services
             catch (System.Data.SqlClient.SqlException) { return ServiceHelper.BuildServiceResult<bool>(false, true, "Please fill up all missing fields!"); }
         }
 
-        public async Task<ServiceResult<int>> FetchTotalNumberOfProductsByCategory(Category? category,string connection)
+        public async Task<ServiceResult<int>> FetchTotalNumberOfProductsByCategory(Category? category, string connection)
         {
             try
             {

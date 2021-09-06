@@ -28,32 +28,6 @@
     </div>
 </div>
 <hr />
-<div class="container">
-    @{
-        var totalCount = (int)ViewData["ProductCount"];
-    }
-    <div class="row mt-2">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                @for (int i = 1; i <= totalCount; i++)
-                {
-                    <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="PageProducts" asp-route-pageNumber="@i" data-ajax="true" data-ajax-loading="#loader" data-ajax-update="#content" data-ajax-success="scrollUp">@i</a></li>
-                }
-            </ul>
-        </nav>
-    </div>
-    <div class="row" id="content">
-        @await Html.PartialAsync("../Products/ProductsPartial", Model)
-    </div>
-    <div class="row mt-2">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                @for (int i = 1; i <= totalCount; i++)
-                {
-                    <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="PageProducts" asp-route-pageNumber="@i" data-ajax="true" data-ajax-loading="#loader" data-ajax-update="#content" data-ajax-success="scrollUp">@i</a></li>
-                }
-            </ul>
-        </nav>
-    </div>
-
+<div class="container" id="content">
+    @await Html.PartialAsync("../Products/ProductsPartial", Model)
 </div>
