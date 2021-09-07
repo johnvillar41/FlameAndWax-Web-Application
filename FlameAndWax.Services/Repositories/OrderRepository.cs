@@ -191,16 +191,19 @@ namespace FlameAndWax.Services.Repositories
             return orders;
         }
 
-        public async Task<IEnumerable<OrderModel>> FetchCategorizedOrders(int customerId, Constants.OrderStatus status, string connectionString)
+        public async Task<IEnumerable<OrderModel>> FetchPaginatedCategorizedOrders(int pageNumber,int pageSize, int customerId, Constants.OrderStatus orderStatus, string connectionString)
         {
-            List<OrderModel> categorizedOrders = new List<OrderModel>();
+            List<OrderModel> orders = new List<OrderModel>();
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM OrdersTable WHERE CustomerId = @customerId AND Status = @status ORDER BY DateOrdered DESC";
+            var queryString = "SELECT * FROM OrdersTable  WHERE CustomerId = @customerId AND Status = @status ORDER by OrderId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
+                "FETCH NEXT @PageSize ROWS ONLY";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@customerId", customerId);
-            command.Parameters.AddWithValue("@status", status.ToString());
+            command.Parameters.AddWithValue("@PageNumber", pageNumber);
+            command.Parameters.AddWithValue("@PageSize", pageSize);
+            command.Parameters.AddWithValue("@status", orderStatus.ToString());
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -221,9 +224,9 @@ namespace FlameAndWax.Services.Repositories
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
-                var convertedStatus = ServiceHelper.ConvertStringtoOrderStatus(reader["Status"].ToString());
+                var status = ServiceHelper.ConvertStringtoOrderStatus(reader["Status"].ToString());
 
-                categorizedOrders.Add(
+                orders.Add(
                         new OrderModel
                         {
                             OrderId = orderId,
@@ -234,11 +237,11 @@ namespace FlameAndWax.Services.Repositories
                             TotalCost = totalCost,
                             ModeOfPayment = modeOfPayment,
                             Courier = courier,
-                            Status = convertedStatus
+                            Status = status
                         }
                     );
             }
-            return categorizedOrders;
+            return orders;
         }
 
         public Task Update(OrderModel data, int id, string connectionString)

@@ -30,6 +30,6 @@ namespace FlameAndWax.Services.Services.Interfaces
         Task<ServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int productId, string connectionString);
         Task<ServiceResult<IEnumerable<ProductModel>>> FetchNewArrivedProducts(string connectionString);
         Task<ServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(int pageNumber, int pageSize, Category category, string connectionString);
-        Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrdersByStatus(int customerId, OrderStatus status, string connectionString);
+        Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrdersByStatus(int pageNumber,int pageSize ,int customerId, OrderStatus status, string connectionString);
     }
 }
