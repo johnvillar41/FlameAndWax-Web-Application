@@ -301,5 +301,15 @@ namespace FlameAndWax.Services.Services
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }
         }
+
+        public async Task<ServiceResult<int>> FetchTotalNumberOfOrdersByOrderStatus(OrderStatus? orderStatus, string connection)
+        {
+            try
+            {
+                var totalNumberOfProducts = await _orderRepository.FetchTotalNumberOfOrders(orderStatus, connection);
+                return ServiceHelper.BuildServiceResult<int>(totalNumberOfProducts, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }
+        }
     }
 }

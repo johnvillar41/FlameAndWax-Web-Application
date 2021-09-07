@@ -32,8 +32,13 @@ namespace FlameAndWax.Controllers
         {
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
             var ordersServiceResult = await _customerService.FetchOrders(pageNumber, pageSize, int.Parse(customerIdLoggedIn), ConnectionString);
-
             if (ordersServiceResult.HasError) return BadRequest(new { errorContent = ordersServiceResult.ErrorContent });
+
+            var totalNumberOfOrdersServiceResult = await _customerService.FetchTotalNumberOfOrdersByOrderStatus(null, ConnectionString);
+
+            var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfOrdersServiceResult.Result / 9);
+            ViewData["OrderCount"] = (int)totalNumberOfPages;
+            ViewData["OrderStatus"] = Constants.ALL_ORDERS;
 
             var orderViewModels = new List<OrderViewModel>();
             foreach (var order in ordersServiceResult.Result)
@@ -46,12 +51,17 @@ namespace FlameAndWax.Controllers
             return View(orderViewModels);
         }
 
-        public async Task<IActionResult> Sort(string status)
+        public async Task<IActionResult> PageOrders(string orderStatus, int pageNumber = 1, int pageSize = 5)
         {
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
-            var categorizedOrdersServiceResult = await _customerService.FetchOrdersByStatus(int.Parse(customerIdLoggedIn), ServiceHelper.ConvertStringtoOrderStatus(status), ConnectionString);
-
+            var categorizedOrdersServiceResult = await _customerService.FetchOrdersByStatus(int.Parse(customerIdLoggedIn), ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString);
             if (categorizedOrdersServiceResult.HasError) return BadRequest(new { errorContent = categorizedOrdersServiceResult.ErrorContent });
+
+            var totalNumberOfOrdersServiceResult = await _customerService.FetchTotalNumberOfOrdersByOrderStatus(ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString);
+
+            var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfOrdersServiceResult.Result / pageSize);
+            ViewData["OrderCount"] = (int)totalNumberOfPages;
+            ViewData["OrderStatus"] = orderStatus;
 
             var orderViewModels = new List<OrderViewModel>();
             foreach (var order in categorizedOrdersServiceResult.Result)
@@ -63,6 +73,12 @@ namespace FlameAndWax.Controllers
             }
             return PartialView("OrdersPartialView", orderViewModels);
         }
+
+        public IActionResult Sort(string status)
+        {           
+            return RedirectToAction(nameof(PageOrders), new{orderStatus = status});
+        }
+
         private void BuildOrderViewModels(
             IEnumerable<OrderDetailModel> orderDetailServiceResult,
             List<OrderViewModel> orderViewModels,

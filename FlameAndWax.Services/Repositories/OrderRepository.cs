@@ -145,10 +145,12 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM OrdersTable ORDER by OrderId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
-                "FETCH NEXT @PageSize ROWS ONLY ORDER BY DateOrdered DESC WHERE CustomerId = @customerId";
+            var queryString = "SELECT * FROM OrdersTable  WHERE CustomerId = @customerId ORDER by OrderId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
+                "FETCH NEXT @PageSize ROWS ONLY";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@customerId", customerId);
+            command.Parameters.AddWithValue("@PageNumber", pageNumber);
+            command.Parameters.AddWithValue("@PageSize", pageSize);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -242,6 +244,30 @@ namespace FlameAndWax.Services.Repositories
         public Task Update(OrderModel data, int id, string connectionString)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<int> FetchTotalNumberOfOrders(Constants.OrderStatus? orderStatus, string connectionString)
+        {
+            var totalNumberOfProducts = 0;
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            var queryString = "";
+            if (orderStatus == null)
+                queryString = "SELECT COUNT(OrderId) as total FROM OrdersTable";
+            else
+                queryString = "SELECT COUNT(OrderId) as total FROM OrdersTable WHERE Status = @orderStatus";
+
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            if (orderStatus != null)
+                command.Parameters.AddWithValue("@orderStatus", orderStatus.ToString());
+
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+           
+            if (await reader.ReadAsync())
+            {
+                totalNumberOfProducts = int.Parse(reader["total"].ToString());
+            }
+            return totalNumberOfProducts;
         }
     }
 }

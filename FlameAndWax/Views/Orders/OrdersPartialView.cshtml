@@ -2,6 +2,22 @@
 @{
     var dropDownId = 0;
 }
+
+@{
+    var totalCount = (int)ViewData["OrderCount"];
+    var orderStatus = ViewData["OrderStatus"];
+}
+<div class="row mt-2">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            @for (int i = 1; i <= totalCount; i++)
+            {
+                <li class="page-item"><a class="page-link" asp-controller="Orders" asp-route-orderStatus="@orderStatus" asp-action="PageOrders" asp-route-pageNumber="@i" data-ajax="true" data-ajax-loading="#loader" data-ajax-update="#content" data-ajax-success="scrollUp">@i</a></li>
+            }
+        </ul>
+    </nav>
+</div>
+
 @foreach (var order in Model)
 {
     dropDownId++;
@@ -143,3 +159,14 @@
     </div>
 
 }
+
+<div class="row mt-2">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            @for (int i = 1; i <= totalCount; i++)
+            {
+                <li class="page-item"><a class="page-link" asp-controller="Products" asp-route-category="@orderStatus" asp-action="PageProducts" asp-route-pageNumber="@i" data-ajax="true" data-ajax-loading="#loader" data-ajax-update="#content" data-ajax-success="scrollUp">@i</a></li>
+            }
+        </ul>
+    </nav>
+</div>
