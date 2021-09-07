@@ -49,29 +49,7 @@ namespace FlameAndWax.Services.Services
             catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
 
             return ServiceHelper.BuildServiceResult<bool>(true, false, null);
-        }
-
-        public async Task<ServiceResult<bool>> AddOrderTransaction(OrderModel newOrder, string connectionString)
-        {
-            if (newOrder == null) return ServiceHelper.BuildServiceResult<bool>(false, true, "OrderModel not defined!");
-
-            try
-            {
-                var orderRepositoryResult = await _orderRepository.Add(newOrder, connectionString);
-                if (orderRepositoryResult == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Failed to add order item");
-
-                var orderDetails = newOrder.OrderDetails;
-                foreach (var orderDetail in orderDetails)
-                {
-                    var orderDetailRepositoryResult = await _orderDetailRepository.Add(orderDetail, connectionString);
-                    if (orderDetailRepositoryResult == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Failed to add order details");
-
-                    await _productRepository.ModifyNumberOfUnitsInOrder(orderDetail.Product.ProductId, orderDetail.Quantity, connectionString);
-                }
-                return ServiceHelper.BuildServiceResult<bool>(true, false, null);
-            }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
-        }
+        }        
 
         public async Task<ServiceResult<bool>> CheckIfCustomerHasOrderedAProduct(string customerUsername, int productId, string connectionString)
         {
