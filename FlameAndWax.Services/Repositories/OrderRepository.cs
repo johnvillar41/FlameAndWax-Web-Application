@@ -242,7 +242,5 @@ namespace FlameAndWax.Services.Repositories
         {
             throw new NotImplementedException();
         }
-
-
     }
 }
