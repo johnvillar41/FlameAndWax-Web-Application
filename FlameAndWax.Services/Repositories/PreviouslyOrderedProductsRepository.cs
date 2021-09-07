@@ -1,5 +1,4 @@
-﻿using FlameAndWax.Data.Constants;
-using FlameAndWax.Data.Models;
+﻿using FlameAndWax.Data.Models;
 using FlameAndWax.Services.Repositories.Interfaces;
 using System.Data.SqlClient;
 using System.Threading.Tasks;

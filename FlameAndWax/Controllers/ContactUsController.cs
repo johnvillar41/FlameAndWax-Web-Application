@@ -1,5 +1,4 @@
 ﻿using FlameAndWax.Data.Models;
-using FlameAndWax.Models;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

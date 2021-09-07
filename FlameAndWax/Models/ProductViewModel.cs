@@ -1,8 +1,4 @@
-﻿using FlameAndWax.Data.Models;
-using System.Collections;
-using System.Collections.Generic;
-
-namespace FlameAndWax.Models
+﻿namespace FlameAndWax.Models
 {
     public class ProductViewModel
     {

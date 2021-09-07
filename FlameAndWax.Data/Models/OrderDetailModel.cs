@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using static FlameAndWax.Data.Constants.Constants;
+﻿using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Data.Models
 {

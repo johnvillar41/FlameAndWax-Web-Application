@@ -1,5 +1,4 @@
-﻿using FlameAndWax.Data.Constants;
-using FlameAndWax.Data.Models;
+﻿using FlameAndWax.Data.Models;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Repositories.Interfaces;
 using System.Collections.Generic;

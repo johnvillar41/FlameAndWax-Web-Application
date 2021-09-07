@@ -1,8 +1,5 @@
 ﻿using FlameAndWax.Data.Constants;
 using FlameAndWax.Services.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FlameAndWax.Services.Helpers
 {
