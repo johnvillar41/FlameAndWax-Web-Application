@@ -30,15 +30,10 @@ namespace FlameAndWax.Controllers
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
 
-        public IActionResult Index(List<ProductViewModel> cartItems)
+        public IActionResult Index()
         {
-            if (cartItems.Count() == 0)
-            {
-                var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-                return View(Cart.GetCartItems(userLoggedIn));
-            }
-
-            return View(cartItems);
+            var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+            return View(Cart.GetCartItems(userLoggedIn));
         }
 
         public IActionResult DeleteCartItem(int productId)
