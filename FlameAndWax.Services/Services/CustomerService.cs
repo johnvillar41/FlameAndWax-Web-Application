@@ -134,19 +134,7 @@ namespace FlameAndWax.Services.Services
                 return ServiceHelper.BuildServiceResult<IEnumerable<OrderDetailModel>>(orderDetails, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<OrderDetailModel>>(null, true, e.Message); }
-        }
-
-        public async Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrders(int pageNumber, int pageSize, int customerId = 0, string connectionString = "")
-        {
-            try
-            {
-                if (customerId == 0)
-                    return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(null, true, "Customer Id not defined!");
-                var ordersFromCustomer = await _orderRepository.FetchPaginatedOrdersFromCustomer(pageNumber, pageSize, customerId, connectionString);
-                return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(ordersFromCustomer, false, null);
-            }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(null, true, e.Message); }
-        }
+        }        
 
         public async Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrdersByStatus(int pageNumber,int pageSize,int customerId, Constants.OrderStatus status, string connectionString)
         {

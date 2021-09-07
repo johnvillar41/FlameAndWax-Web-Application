@@ -6,8 +6,7 @@ using static FlameAndWax.Data.Constants.Constants;
 namespace FlameAndWax.Services.Repositories.Interfaces
 {
     public interface IOrderRepository : IBaseRepository<OrderModel>
-    {
-        Task<IEnumerable<OrderModel>> FetchPaginatedOrdersFromCustomer(int pageNumber, int pageSize, int customerId, string connectionString);
+    {        
         Task<IEnumerable<OrderModel>> FetchPaginatedCategorizedOrders(int pageNumber, int pagSize, int customerId, OrderStatus category, string connectionString);
         Task<int> FetchTotalNumberOfOrders(OrderStatus? orderStatus, string connection);        
     }

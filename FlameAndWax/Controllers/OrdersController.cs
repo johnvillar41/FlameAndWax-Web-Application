@@ -28,10 +28,10 @@ namespace FlameAndWax.Controllers
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
 
-        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5)
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 3)
         {
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
-            var ordersServiceResult = await _customerService.FetchOrders(pageNumber, pageSize, int.Parse(customerIdLoggedIn), ConnectionString);
+            var ordersServiceResult = await _customerService.FetchOrdersByStatus(pageNumber, pageSize, int.Parse(customerIdLoggedIn), Constants.OrderStatus.Pending, ConnectionString);
             if (ordersServiceResult.HasError) return BadRequest(new { errorContent = ordersServiceResult.ErrorContent });
 
             var totalNumberOfOrdersServiceResult = await _customerService.FetchTotalNumberOfOrdersByOrderStatus(Constants.OrderStatus.Pending, ConnectionString);
@@ -54,7 +54,7 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> PageOrders(string orderStatus = nameof(Constants.OrderStatus.Pending), int pageNumber = 1, int pageSize = 3)
         {
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
-            var categorizedOrdersServiceResult = await _customerService.FetchOrdersByStatus(pageNumber,pageSize,int.Parse(customerIdLoggedIn), ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString);
+            var categorizedOrdersServiceResult = await _customerService.FetchOrdersByStatus(pageNumber, pageSize, int.Parse(customerIdLoggedIn), ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString);
             if (categorizedOrdersServiceResult.HasError) return BadRequest(new { errorContent = categorizedOrdersServiceResult.ErrorContent });
 
             var totalNumberOfOrdersServiceResult = await _customerService.FetchTotalNumberOfOrdersByOrderStatus(ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString);
@@ -75,8 +75,8 @@ namespace FlameAndWax.Controllers
         }
 
         public IActionResult Sort(string status)
-        {           
-            return RedirectToAction(nameof(PageOrders), new{orderStatus = status});
+        {
+            return RedirectToAction(nameof(PageOrders), new { orderStatus = status });
         }
 
         private void BuildOrderViewModels(

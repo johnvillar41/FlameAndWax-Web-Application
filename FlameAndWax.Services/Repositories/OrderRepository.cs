@@ -139,58 +139,6 @@ namespace FlameAndWax.Services.Repositories
             return orders;
         }
 
-        public async Task<IEnumerable<OrderModel>> FetchPaginatedOrdersFromCustomer(int pageNumber, int pageSize, int customerId, string connectionString)
-        {
-            List<OrderModel> orders = new List<OrderModel>();
-
-            using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
-            var queryString = "SELECT * FROM OrdersTable  WHERE CustomerId = @customerId ORDER by OrderId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
-                "FETCH NEXT @PageSize ROWS ONLY";
-            using SqlCommand command = new SqlCommand(queryString, connection);
-            command.Parameters.AddWithValue("@customerId", customerId);
-            command.Parameters.AddWithValue("@PageNumber", pageNumber);
-            command.Parameters.AddWithValue("@PageSize", pageSize);
-            using SqlDataReader reader = await command.ExecuteReaderAsync();
-            while (await reader.ReadAsync())
-            {
-                var orderId = int.Parse(reader["OrderId"].ToString());
-
-                var employeeId = -1;
-                EmployeeModel employee = null;
-                if (!reader.IsDBNull(2))
-                {
-                    employeeId = int.Parse(reader["EmployeeId"].ToString());
-                    employee = await _employeeRepository.Fetch(employeeId, connectionString);
-                }
-
-                var totalCost = double.Parse(reader["TotalCost"].ToString());
-
-                var customer = await _customerRepository.Fetch(customerId, connectionString);
-                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId, connectionString);
-
-                var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
-                var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
-                var status = ServiceHelper.ConvertStringtoOrderStatus(reader["Status"].ToString());
-
-                orders.Add(
-                        new OrderModel
-                        {
-                            OrderId = orderId,
-                            Customer = customer,
-                            Employee = employee,
-                            OrderDetails = orderDetails,
-                            DateOrdered = DateTime.Parse(reader["DateOrdered"].ToString()),
-                            TotalCost = totalCost,
-                            ModeOfPayment = modeOfPayment,
-                            Courier = courier,
-                            Status = status
-                        }
-                    );
-            }
-            return orders;
-        }
-
         public async Task<IEnumerable<OrderModel>> FetchPaginatedCategorizedOrders(int pageNumber,int pageSize, int customerId, Constants.OrderStatus orderStatus, string connectionString)
         {
             List<OrderModel> orders = new List<OrderModel>();
