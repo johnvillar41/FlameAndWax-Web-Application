@@ -28,10 +28,10 @@ namespace FlameAndWax.Controllers
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5)
         {
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
-            var ordersServiceResult = await _customerService.FetchOrders(int.Parse(customerIdLoggedIn), ConnectionString);
+            var ordersServiceResult = await _customerService.FetchOrders(pageNumber, pageSize, int.Parse(customerIdLoggedIn), ConnectionString);
 
             if (ordersServiceResult.HasError) return BadRequest(new { errorContent = ordersServiceResult.ErrorContent });
 

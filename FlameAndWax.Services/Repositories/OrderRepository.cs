@@ -69,7 +69,7 @@ namespace FlameAndWax.Services.Repositories
                 var orderId = int.Parse(reader["OrderId"].ToString());
                 var customerId = int.Parse(reader["CustomerId"].ToString());
                 var employeeId = int.Parse(reader["EmployeeId"].ToString());
-                var totalCost = double.Parse(reader["TotalCost"].ToString());                
+                var totalCost = double.Parse(reader["TotalCost"].ToString());
 
                 var customer = await _customerRepository.Fetch(customerId, connectionString);
                 var employee = await _employeeRepository.Fetch(employeeId, connectionString);
@@ -139,13 +139,14 @@ namespace FlameAndWax.Services.Repositories
             return orders;
         }
 
-        public async Task<IEnumerable<OrderModel>> FetchOrdersFromCustomer(int customerId, string connectionString)
+        public async Task<IEnumerable<OrderModel>> FetchPaginatedOrdersFromCustomer(int pageNumber, int pageSize, int customerId, string connectionString)
         {
             List<OrderModel> orders = new List<OrderModel>();
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM OrdersTable WHERE CustomerId = @customerId ORDER BY DateOrdered DESC";
+            var queryString = "SELECT * FROM OrdersTable ORDER by OrderId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
+                "FETCH NEXT @PageSize ROWS ONLY ORDER BY DateOrdered DESC WHERE CustomerId = @customerId";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@customerId", customerId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
