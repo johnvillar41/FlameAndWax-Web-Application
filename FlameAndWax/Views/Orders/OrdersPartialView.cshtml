@@ -196,8 +196,8 @@
             <ul class="pagination">
                 @for (int i = 1; i <= totalCount; i++)
                 {
-                    <li class="page-item"><a class="page-link" asp-controller="Products" asp-route-category="@orderStatus"
-                        asp-action="PageProducts" asp-route-pageNumber="@i" data-ajax="true" data-ajax-loading="#loader"
+                    <li class="page-item"><a class="page-link" asp-controller="Orders" asp-route-orderStatus="@orderStatus"
+                        asp-action="PageOrders" asp-route-pageNumber="@i" data-ajax="true" data-ajax-loading="#loader"
                         data-ajax-update="#ordersPanel" data-ajax-success="scrollUp">@i</a></li>
                 }
             </ul>
