@@ -3,6 +3,7 @@
     public class Constants
     {
         public const string ALL_PRODUCTS = "All Products";
+        public const string ALL_ORDERS = "All Orders";
         public enum Category
         {
             Candle,

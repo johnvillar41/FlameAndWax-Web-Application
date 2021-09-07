@@ -238,7 +238,7 @@ namespace FlameAndWax.Services.Repositories
             return categorizedOrders;
         }
 
-        public async Task Update(OrderModel data, int id, string connectionString)
+        public Task Update(OrderModel data, int id, string connectionString)
         {
             throw new NotImplementedException();
         }
