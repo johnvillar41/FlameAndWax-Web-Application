@@ -41,13 +41,8 @@ namespace FlameAndWax.Controllers
             ViewData["OrderStatus"] = nameof(Constants.OrderStatus.Pending);
 
             var orderViewModels = new List<OrderViewModel>();
-            foreach (var order in ordersServiceResult.Result)
-            {
-                var orderDetailsServiceResult = await _customerService.FetchOrderDetails(order.OrderId, ConnectionString);
-                if (orderDetailsServiceResult.HasError) return BadRequest(new { errorContent = orderDetailsServiceResult.ErrorContent });
-
-                BuildOrderViewModels(orderDetailsServiceResult.Result, orderViewModels, order);
-            }
+            foreach (var order in ordersServiceResult.Result) BuildOrderViewModels(order.OrderDetails, orderViewModels, order);         
+                
             return View(orderViewModels);
         }
 
@@ -64,13 +59,8 @@ namespace FlameAndWax.Controllers
             ViewData["OrderStatus"] = orderStatus;
 
             var orderViewModels = new List<OrderViewModel>();
-            foreach (var order in categorizedOrdersServiceResult.Result)
-            {
-                var orderDetailsServiceResult = await _customerService.FetchOrderDetails(order.OrderId, ConnectionString);
-                if (orderDetailsServiceResult.HasError) return BadRequest(new { errorContent = orderDetailsServiceResult.ErrorContent });
+            foreach (var order in categorizedOrdersServiceResult.Result) BuildOrderViewModels(order.OrderDetails, orderViewModels, order);
 
-                BuildOrderViewModels(orderDetailsServiceResult.Result, orderViewModels, order);
-            }
             return PartialView("OrdersPartialView", orderViewModels);
         }
 

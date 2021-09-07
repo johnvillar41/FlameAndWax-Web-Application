@@ -122,19 +122,7 @@ namespace FlameAndWax.Services.Services
                 return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(newArrivals, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(null, true, e.Message); }
-        }
-
-        public async Task<ServiceResult<IEnumerable<OrderDetailModel>>> FetchOrderDetails(int orderId = 0, string connectionString = "")
-        {
-            try
-            {
-                if (orderId == 0)
-                    return ServiceHelper.BuildServiceResult<IEnumerable<OrderDetailModel>>(null, true, "Order Id not defined!");
-                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId, connectionString);
-                return ServiceHelper.BuildServiceResult<IEnumerable<OrderDetailModel>>(orderDetails, false, null);
-            }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<OrderDetailModel>>(null, true, e.Message); }
-        }        
+        }         
 
         public async Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrdersByStatus(int pageNumber,int pageSize,int customerId, Constants.OrderStatus status, string connectionString)
         {
