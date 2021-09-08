@@ -132,6 +132,20 @@ namespace FlameAndWax.Services.Repositories
             return customerReviews;
         }
 
+        public async Task<int> FetchTotalNumberOfReviewsOnAProduct(int productId, string connectionString)
+        {
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            var queryString = "SELECT COUNT(ReviewId) as total FROM CustomerReviewTable";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return int.Parse(reader["total"].ToString());
+            }
+            return -1;
+        }
+
         public async Task Update(CustomerReviewModel data, int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);

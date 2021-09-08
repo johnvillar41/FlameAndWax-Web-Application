@@ -109,6 +109,17 @@ namespace FlameAndWax.Controllers
             return RedirectToAction("PageProducts", new { category });
         }
 
+        public async Task<IActionResult> PageCustomerReviews(int pageNumber = 1, int pageSize = 5, int productId = -1)
+        {
+            var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(pageNumber, pageSize, productId, ConnectionString);
+            if (customerServiceReviewResult.HasError) return BadRequest(new { errorContent = customerServiceReviewResult.ErrorContent });
+
+            var customerReviewViewModels = new List<CustomerReviewViewModel>();
+            foreach (var customerReviewResult in customerServiceReviewResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReviewResult);
+
+            return PartialView("ProductReviewPartial", customerReviewViewModels);
+        }
+
         public async Task<IActionResult> Details(int productId)
         {
             var productServiceResult = await _customerService.FetchProductDetail(productId, ConnectionString);
@@ -116,6 +127,10 @@ namespace FlameAndWax.Controllers
 
             var customerReviewServiceResult = await _customerService.FetchCustomerReviewsInAProduct(1, 5, productId, ConnectionString);
             if (customerReviewServiceResult.HasError) return BadRequest(new { errorContent = customerReviewServiceResult.ErrorContent });
+
+            var totalReviewCountServiceResult = await _customerService.FetchTotalNumberOfReviews(productId, ConnectionString);
+            var totalNumberOfPages = Math.Ceiling((decimal)totalReviewCountServiceResult.Result / 5);
+            ViewData["ProductCount"] = (int)totalNumberOfPages;
 
             var customerReviewViewModels = new List<CustomerReviewViewModel>();
             foreach (var customerReview in customerReviewServiceResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReview);
