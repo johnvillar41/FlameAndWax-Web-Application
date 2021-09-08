@@ -31,6 +31,31 @@ $('#submit').click(function () {
     }
 });
 
+//For adding productReview
+$('#btnAddReview').click(function () {
+    completedReviewComment = function (xhr) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+        if (xhr.status == "200") {
+            Toast.fire({
+                icon: 'success',
+                title: '<span style="color: #006400"><b>Success</b></span> Comment Submitted!',
+                background: '#CCFFCC',
+                iconColor: '#006400',
+            });
+        }
+    }
+});
+
 //For saving User profile
 $('#sendMessage').click(function () {
     completed = function (xhr) {
@@ -45,7 +70,7 @@ $('#sendMessage').click(function () {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         });
-        if (xhr.status == "200") {           
+        if (xhr.status == "200") {
             Toast.fire({
                 icon: 'success',
                 title: '<span style="color: #006400"><b>Success</b></span> Message Submitted!',
@@ -82,7 +107,7 @@ $('#cartComplete').click(function () {
                     toast.addEventListener('mouseenter', Swal.stopTimer)
                     toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
-            });            
+            });
             Toast.fire({
                 icon: 'success',
                 title: '<span style="color: #006400"><b>Success</b></span> Cart Submitted!',
@@ -181,7 +206,7 @@ $('#deleteCartItem').click(function () {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         })
-        if (xhr.status == "200") {           
+        if (xhr.status == "200") {
             Toast.fire({
                 icon: 'success',
                 title: '<span style="color: #006400"><b>Success</b></span> Removed item from cart!',
@@ -241,7 +266,7 @@ $('#registerUser').click(function () {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         });
-        if (xhr.status == "200") {           
+        if (xhr.status == "200") {
             Toast.fire({
                 icon: 'success',
                 title: '<span style="color: #006400"><b>Success</b></span> Registered new user!',
@@ -270,7 +295,7 @@ $('#loginBtn').click(function () {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         });
-        if (xhr.status == "200") {           
+        if (xhr.status == "200") {
             Toast.fire({
                 icon: 'success',
                 title: '<span style="color: #006400"><b>Success</b></span> Logging Successfull!',
@@ -301,7 +326,7 @@ errorContent = function (response) {
             toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
     });
-   
+
     Toast.fire({
         icon: 'error',
         title: '<span style="color: #8b0000"><b>Error!</b></span> ' + response.responseJSON.errorContent,

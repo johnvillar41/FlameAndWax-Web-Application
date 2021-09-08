@@ -40,7 +40,7 @@ namespace FlameAndWax.Controllers
             if (totalNumberOfProductsServiceResult.HasError) return BadRequest(new { errorContent = totalNumberOfProductsServiceResult.ErrorContent });
 
             //Determine total count of Products for pagination
-            var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfProductsServiceResult.Result / 9);
+            var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfProductsServiceResult.Result / pageSize);
             ViewData["ProductCount"] = (int)totalNumberOfPages;
             ViewData["ProductCategory"] = productCategory;
 
@@ -63,7 +63,7 @@ namespace FlameAndWax.Controllers
 
             if (totalProductCount.HasError) return BadRequest(new { errorContent = totalProductCount.ErrorContent });
 
-            var totalNumberOfPages = Math.Ceiling((decimal)totalProductCount.Result / 9);
+            var totalNumberOfPages = Math.Ceiling((decimal)totalProductCount.Result / pageSize);
             ViewData["ProductCount"] = (int)totalNumberOfPages;
             ViewData["ProductCategory"] = category;
 
@@ -91,6 +91,7 @@ namespace FlameAndWax.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = nameof(Constants.Roles.Customer))]
         public async Task<IActionResult> AddProductReview(string reviewDetail, int productId, int rate)
         {
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;

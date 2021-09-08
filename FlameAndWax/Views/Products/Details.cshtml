@@ -90,18 +90,7 @@
             <div class="col-6">
                 <h4>Ratings and Reviews</h4>
                 <h6>Total of @Model.CustomerReviews.Count() Reviews</h6>
-            </div>
-
-            <!-- Alert -->
-            <div class="col-6">
-                <div class="alert alert-warning alert-dismissible fade show" role="alert" id="completedComment" style="display:none;">
-                    <strong>Congratulations!</strong> You have added a comment below.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-
+            </div>           
         </div>
 
         <!-- Review Stars -->
@@ -110,7 +99,7 @@
                 @if (Model.IsProductBoughtByLoggedInCustomer)
                 {
                     <form method="get" asp-controller="Products" asp-action="AddProductReview"
-                          data-ajax="true" data-ajax-update="#content" data-ajax-loading="#overlayLoadingDiv" data-ajax-complete="completedComment">
+                          data-ajax="true" data-ajax-update="#content" data-ajax-loading="#overlayLoadingDiv" data-ajax-complete="completedReviewComment">
                         <div class="rate">
                             <input type="radio" required id="star5" name="rate" value="5" />
                             <label for="star5" title="text">5 stars</label>
@@ -125,7 +114,7 @@
                         </div>
                         <input type="hidden" name="productId" value="@Model.ProductId" />
                         <textarea type="text" required name="reviewDetail" class="form-control" placeholder="Enter Review Detail" rows="5"></textarea>
-                        <button type="submit" class="btn btn-gold mt-1">Post Review <i class="fas fa-paper-plane"></i></button>
+                        <button type="submit" class="btn btn-gold mt-1" id="btnAddReview">Post Review <i class="fas fa-paper-plane"></i></button>
 
                     </form>
                 }
