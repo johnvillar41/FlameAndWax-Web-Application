@@ -136,8 +136,9 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT COUNT(ReviewId) as total FROM CustomerReviewTable";
+            var queryString = "SELECT COUNT(ReviewId) as total FROM CustomerReviewTable WHERE ProductId = @productId";
             using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@productId", productId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {

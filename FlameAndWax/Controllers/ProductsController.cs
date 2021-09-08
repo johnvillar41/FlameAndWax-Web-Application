@@ -34,6 +34,7 @@ namespace FlameAndWax.Controllers
             var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProductsByCategory(null, ConnectionString);
             if (totalNumberOfProductsServiceResult.HasError) return BadRequest(new { errorContent = totalNumberOfProductsServiceResult.ErrorContent });
 
+            //Determine total count of Products for pagination
             var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfProductsServiceResult.Result / 9);
             ViewData["ProductCount"] = (int)totalNumberOfPages;
             ViewData["ProductCategory"] = productCategory;
@@ -67,6 +68,9 @@ namespace FlameAndWax.Controllers
             var reviewServiceResult = await _customerService.AddCustomerReview(customerReview, ConnectionString);
             var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(1, 5, productId, ConnectionString);
             if (customerServiceReviewResult.HasError) return BadRequest(new { errorContent = customerServiceReviewResult.ErrorContent });
+
+            var totalNumberOfPagesObjectResult = await FetchTotalNumberOfPages(productId);
+            if (totalNumberOfPagesObjectResult != null) return totalNumberOfPagesObjectResult;
 
             var customerReviewViewModels = new List<CustomerReviewViewModel>();
             foreach (var customerReviewResult in customerServiceReviewResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReviewResult);
@@ -114,6 +118,9 @@ namespace FlameAndWax.Controllers
             var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(pageNumber, pageSize, productId, ConnectionString);
             if (customerServiceReviewResult.HasError) return BadRequest(new { errorContent = customerServiceReviewResult.ErrorContent });
 
+            var totalNumberOfPagesObjectResult = await FetchTotalNumberOfPages(productId);
+            if (totalNumberOfPagesObjectResult != null) return totalNumberOfPagesObjectResult;
+
             var customerReviewViewModels = new List<CustomerReviewViewModel>();
             foreach (var customerReviewResult in customerServiceReviewResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReviewResult);
 
@@ -128,9 +135,8 @@ namespace FlameAndWax.Controllers
             var customerReviewServiceResult = await _customerService.FetchCustomerReviewsInAProduct(1, 5, productId, ConnectionString);
             if (customerReviewServiceResult.HasError) return BadRequest(new { errorContent = customerReviewServiceResult.ErrorContent });
 
-            var totalReviewCountServiceResult = await _customerService.FetchTotalNumberOfReviews(productId, ConnectionString);
-            var totalNumberOfPages = Math.Ceiling((decimal)totalReviewCountServiceResult.Result / 5);
-            ViewData["ProductCount"] = (int)totalNumberOfPages;
+            var totalNumberOfPagesObjectResult = await FetchTotalNumberOfPages(productId);
+            if (totalNumberOfPagesObjectResult != null) return totalNumberOfPagesObjectResult;
 
             var customerReviewViewModels = new List<CustomerReviewViewModel>();
             foreach (var customerReview in customerReviewServiceResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReview);
@@ -158,6 +164,19 @@ namespace FlameAndWax.Controllers
 
             return View(productDetailViewModel);
         }
+
+        private async Task<ObjectResult> FetchTotalNumberOfPages(int productId)
+        {
+            //Determine total number of pages for reviews
+            var totalReviewCountServiceResult = await _customerService.FetchTotalNumberOfReviews(productId, ConnectionString);
+            if (totalReviewCountServiceResult.HasError) return BadRequest(new { errorContent = totalReviewCountServiceResult.ErrorContent });
+            var totalNumberOfPages = Math.Ceiling((decimal)totalReviewCountServiceResult.Result / 5);
+            ViewData["CustomerReviewCount"] = (int)totalNumberOfPages;
+            ViewData["ProductId"] = productId;
+
+            return null;
+        }
+
         private void BuildProductViewModels(List<ProductViewModel> productsViewModel, IEnumerable<ProductModel> productServiceResult)
         {
             foreach (var product in productServiceResult)
@@ -194,8 +213,6 @@ namespace FlameAndWax.Controllers
                     }
                 }
             );
-
         }
     }
-
 }
