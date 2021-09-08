@@ -43,7 +43,7 @@ namespace FlameAndWax.Controllers
             var productServiceResult = await _customerService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
             if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
             BuildProductViewModels(productsViewModel, productServiceResult.Result);
-            return View(productsViewModel);           
+            return View(productsViewModel);
         }
 
         [Authorize(Roles = nameof(Constants.Roles.Customer))]
@@ -65,7 +65,7 @@ namespace FlameAndWax.Controllers
                 Product = new ProductModel { ProductId = productId }
             };
             var reviewServiceResult = await _customerService.AddCustomerReview(customerReview, ConnectionString);
-            var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(productId, ConnectionString);
+            var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(1, 5, productId, ConnectionString);
             if (customerServiceReviewResult.HasError) return BadRequest(new { errorContent = customerServiceReviewResult.ErrorContent });
 
             var customerReviewViewModels = new List<CustomerReviewViewModel>();
@@ -77,7 +77,7 @@ namespace FlameAndWax.Controllers
         {
             //Determine total number of products for pagination numbers
             ServiceResult<int> totalProductCount;
-            if(category.Equals(Constants.ALL_PRODUCTS))
+            if (category.Equals(Constants.ALL_PRODUCTS))
                 totalProductCount = await _customerService.FetchTotalNumberOfProductsByCategory(null, ConnectionString);
             else
                 totalProductCount = await _customerService.FetchTotalNumberOfProductsByCategory(ServiceHelper.ConvertStringToConstant(category), ConnectionString);
@@ -114,7 +114,7 @@ namespace FlameAndWax.Controllers
             var productServiceResult = await _customerService.FetchProductDetail(productId, ConnectionString);
             if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
 
-            var customerReviewServiceResult = await _customerService.FetchCustomerReviewsInAProduct(productId, ConnectionString);
+            var customerReviewServiceResult = await _customerService.FetchCustomerReviewsInAProduct(1, 5, productId, ConnectionString);
             if (customerReviewServiceResult.HasError) return BadRequest(new { errorContent = customerReviewServiceResult.ErrorContent });
 
             var customerReviewViewModels = new List<CustomerReviewViewModel>();

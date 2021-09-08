@@ -100,13 +100,14 @@ namespace FlameAndWax.Services.Repositories
             return customerReviews;
         }
 
-        public async Task<IEnumerable<CustomerReviewModel>> FetchReviewsOfAProduct(int productId, string connectionString)
+        public async Task<IEnumerable<CustomerReviewModel>> FetchPaginatedReviewsOfAProduct(int pageSize, int pageNumber, int productId, string connectionString)
         {
             List<CustomerReviewModel> customerReviews = new List<CustomerReviewModel>();
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM CustomerReviewTable WHERE ProductId = @productId ORDER BY ReviewId DESC";
+            var queryString = "SELECT * FROM CustomerReviewTable WHERE ProductId = @productId ORDER by ReviewId DESC OFFSET (@PageNumber - 1) * @PageSize ROWS " +
+            "FETCH NEXT @PageSize ROWS ONLY";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@productId", productId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();

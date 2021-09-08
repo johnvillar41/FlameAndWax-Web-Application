@@ -42,16 +42,7 @@ namespace FlameAndWax.Controllers
 
             var newProducts = new List<ProductViewModel>();
             foreach (var newProduct in productServiceResult.Result)
-            {
-                var reviewResult = await _customerService.FetchCustomerReviewsInAProduct(newProduct.ProductId, ConnectionString);
-                if (reviewResult.HasError)
-                {
-                    var error = new ErrorViewModel
-                    {
-                        ErrorContent = productServiceResult.ErrorContent
-                    };
-                    return View("Error", error);
-                }
+            {                
                 newProducts.Add(
                         new ProductViewModel
                         {

@@ -82,11 +82,11 @@ namespace FlameAndWax.Services.Services
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(null, true, e.Message); }
         }
 
-        public async Task<ServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int productId, string connectionString)
+        public async Task<ServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int pageNumber, int pageSize, int productId, string connectionString)
         {
             try
             {
-                var customerReviews = await _customerReviewRepository.FetchReviewsOfAProduct(productId, connectionString);
+                var customerReviews = await _customerReviewRepository.FetchPaginatedReviewsOfAProduct(pageNumber,pageSize, productId, connectionString);
                 return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(customerReviews, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(null, true, e.Message); }
