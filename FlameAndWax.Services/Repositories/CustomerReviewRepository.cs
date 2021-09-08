@@ -100,7 +100,7 @@ namespace FlameAndWax.Services.Repositories
             return customerReviews;
         }
 
-        public async Task<IEnumerable<CustomerReviewModel>> FetchPaginatedReviewsOfAProduct(int pageSize, int pageNumber, int productId, string connectionString)
+        public async Task<IEnumerable<CustomerReviewModel>> FetchPaginatedReviewsOfAProduct(int pageNumber, int pageSize, int productId, string connectionString)
         {
             List<CustomerReviewModel> customerReviews = new List<CustomerReviewModel>();
 
@@ -110,6 +110,8 @@ namespace FlameAndWax.Services.Repositories
             "FETCH NEXT @PageSize ROWS ONLY";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@productId", productId);
+            command.Parameters.AddWithValue("@PageNumber", pageNumber);
+            command.Parameters.AddWithValue("@PageSize", pageSize);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
