@@ -29,6 +29,11 @@ namespace FlameAndWax.Controllers
             ConnectionString = _configaration.GetConnectionString("FlameAndWaxDBConnection");
         }
 
+        public IActionResult Sort(string category)
+        {
+            return RedirectToAction("PageProducts", new { category });
+        }
+
         public async Task<IActionResult> Index(string productCategory = Constants.ALL_PRODUCTS, int pageNumber = 1, int pageSize = 9)
         {
             var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProductsByCategory(null, ConnectionString);
@@ -47,36 +52,6 @@ namespace FlameAndWax.Controllers
             return View(productsViewModel);
         }
 
-        [Authorize(Roles = nameof(Constants.Roles.Customer))]
-        public IActionResult AddToCart(int _productId)
-        {
-            var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-            return RedirectToAction("AddToCart", "Cart", new { productId = _productId, user = userLoggedIn });
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> AddProductReview(string reviewDetail, int productId, int rate)
-        {
-            var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
-            var customerReview = new CustomerReviewModel
-            {
-                ReviewScore = (Constants.ReviewScore)(int)ServiceHelper.BuildReviewScore(rate),
-                ReviewDetail = reviewDetail,
-                Customer = new CustomerModel { CustomerId = int.Parse(customerIdLoggedIn) },
-                Product = new ProductModel { ProductId = productId }
-            };
-            var reviewServiceResult = await _customerService.AddCustomerReview(customerReview, ConnectionString);
-            var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(1, 5, productId, ConnectionString);
-            if (customerServiceReviewResult.HasError) return BadRequest(new { errorContent = customerServiceReviewResult.ErrorContent });
-
-            var totalNumberOfPagesObjectResult = await FetchTotalNumberOfPages(productId);
-            if (totalNumberOfPagesObjectResult != null) return totalNumberOfPagesObjectResult;
-
-            var customerReviewViewModels = new List<CustomerReviewViewModel>();
-            foreach (var customerReviewResult in customerServiceReviewResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReviewResult);
-
-            return PartialView("ProductReviewPartial", customerReviewViewModels);
-        }
         public async Task<IActionResult> PageProducts(int pageNumber = 1, int pageSize = 9, string category = Constants.ALL_PRODUCTS)
         {
             //Determine total number of products for pagination numbers
@@ -108,9 +83,35 @@ namespace FlameAndWax.Controllers
             return PartialView("ProductsPartial", productsViewModel);
         }
 
-        public IActionResult Sort(string category)
+        [Authorize(Roles = nameof(Constants.Roles.Customer))]
+        public IActionResult AddToCart(int _productId)
         {
-            return RedirectToAction("PageProducts", new { category });
+            var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+            return RedirectToAction("AddToCart", "Cart", new { productId = _productId, user = userLoggedIn });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddProductReview(string reviewDetail, int productId, int rate)
+        {
+            var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
+            var customerReview = new CustomerReviewModel
+            {
+                ReviewScore = (Constants.ReviewScore)(int)ServiceHelper.BuildReviewScore(rate),
+                ReviewDetail = reviewDetail,
+                Customer = new CustomerModel { CustomerId = int.Parse(customerIdLoggedIn) },
+                Product = new ProductModel { ProductId = productId }
+            };
+            var reviewServiceResult = await _customerService.AddCustomerReview(customerReview, ConnectionString);
+            var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(1, 5, productId, ConnectionString);
+            if (customerServiceReviewResult.HasError) return BadRequest(new { errorContent = customerServiceReviewResult.ErrorContent });
+
+            var totalNumberOfPagesObjectResult = await FetchTotalNumberOfPages(productId);
+            if (totalNumberOfPagesObjectResult != null) return totalNumberOfPagesObjectResult;
+
+            var customerReviewViewModels = new List<CustomerReviewViewModel>();
+            foreach (var customerReviewResult in customerServiceReviewResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReviewResult);
+
+            return PartialView("ProductReviewPartial", customerReviewViewModels);
         }
 
         public async Task<IActionResult> PageCustomerReviews(int pageNumber = 1, int pageSize = 5, int productId = -1)
