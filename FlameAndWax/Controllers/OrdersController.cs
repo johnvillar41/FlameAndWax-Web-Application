@@ -17,13 +17,13 @@ namespace FlameAndWax.Controllers
     [Authorize(Roles = nameof(Constants.Roles.Customer))]
     public class OrdersController : Controller
     {
-        private readonly ICustomerService _customerService;
+        private readonly IOrdersService _ordersService;
         private readonly IConfiguration _configuration;
         private string ConnectionString { get; }
 
-        public OrdersController(ICustomerService customerService, IConfiguration configuration)
+        public OrdersController(IOrdersService ordersService, IConfiguration configuration)
         {
-            _customerService = customerService;
+            _ordersService = ordersService;
             _configuration = configuration;
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
@@ -31,10 +31,10 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 3)
         {
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
-            var ordersServiceResult = await _customerService.FetchOrdersByStatus(pageNumber, pageSize, int.Parse(customerIdLoggedIn), Constants.OrderStatus.Pending, ConnectionString);
+            var ordersServiceResult = await _ordersService.FetchOrdersByStatus(pageNumber, pageSize, int.Parse(customerIdLoggedIn), Constants.OrderStatus.Pending, ConnectionString);
             if (ordersServiceResult.HasError) return BadRequest(new { errorContent = ordersServiceResult.ErrorContent });
 
-            var totalNumberOfOrdersServiceResult = await _customerService.FetchTotalNumberOfOrdersByOrderStatus(Constants.OrderStatus.Pending, ConnectionString);
+            var totalNumberOfOrdersServiceResult = await _ordersService.FetchTotalNumberOfOrdersByOrderStatus(Constants.OrderStatus.Pending, ConnectionString);
 
             var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfOrdersServiceResult.Result / pageSize);
             ViewData["OrderCount"] = (int)totalNumberOfPages;
@@ -49,10 +49,10 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> PageOrders(string orderStatus = nameof(Constants.OrderStatus.Pending), int pageNumber = 1, int pageSize = 3)
         {
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
-            var categorizedOrdersServiceResult = await _customerService.FetchOrdersByStatus(pageNumber, pageSize, int.Parse(customerIdLoggedIn), ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString);
+            var categorizedOrdersServiceResult = await _ordersService.FetchOrdersByStatus(pageNumber, pageSize, int.Parse(customerIdLoggedIn), ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString);
             if (categorizedOrdersServiceResult.HasError) return BadRequest(new { errorContent = categorizedOrdersServiceResult.ErrorContent });
 
-            var totalNumberOfOrdersServiceResult = await _customerService.FetchTotalNumberOfOrdersByOrderStatus(ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString);
+            var totalNumberOfOrdersServiceResult = await _ordersService.FetchTotalNumberOfOrdersByOrderStatus(ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString);
 
             var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfOrdersServiceResult.Result / pageSize);
             ViewData["OrderCount"] = (int)totalNumberOfPages;

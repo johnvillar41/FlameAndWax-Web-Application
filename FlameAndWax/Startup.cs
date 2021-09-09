@@ -51,6 +51,7 @@ namespace FlameAndWax
             services.AddSingleton<IHomeService, HomeService>();
             services.AddSingleton<ICartService, CartService>();
             services.AddSingleton<IContactUsService, ContactUsService>();
+            services.AddSingleton<IOrdersService, OrdersService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

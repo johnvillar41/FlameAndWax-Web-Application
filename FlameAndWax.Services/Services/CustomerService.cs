@@ -92,15 +92,7 @@ namespace FlameAndWax.Services.Services
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(null, true, e.Message); }
         }             
 
-        public async Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrdersByStatus(int pageNumber,int pageSize,int customerId, Constants.OrderStatus status, string connectionString)
-        {
-            try
-            {
-                var categorizedOrders = await _orderRepository.FetchPaginatedCategorizedOrders(pageNumber,pageSize,customerId, status, connectionString);
-                return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(categorizedOrders, false, null);
-            }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(null, true, e.Message); }
-        }
+        
 
         public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(int pageNumber, int pageSize, Category category, string connectionString)
         {
@@ -142,15 +134,7 @@ namespace FlameAndWax.Services.Services
             catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }
         }
 
-        public async Task<ServiceResult<int>> FetchTotalNumberOfOrdersByOrderStatus(OrderStatus? orderStatus, string connection)
-        {
-            try
-            {
-                var totalNumberOfProducts = await _orderRepository.FetchTotalNumberOfOrders(orderStatus, connection);
-                return ServiceHelper.BuildServiceResult<int>(totalNumberOfProducts, false, null);
-            }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }
-        }
+       
 
         public async Task<ServiceResult<int>> FetchTotalNumberOfReviews(int productId, string connectionString)
         {

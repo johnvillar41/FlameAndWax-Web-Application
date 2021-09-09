@@ -15,7 +15,7 @@ namespace FlameAndWax.Services.Services.Interfaces
 
         
         Task<ServiceResult<int>> FetchTotalNumberOfProductsByCategory(Category? category, string connection);
-        Task<ServiceResult<int>> FetchTotalNumberOfOrdersByOrderStatus(OrderStatus? orderStatus, string connection);
+       
         Task<ServiceResult<int>> FetchTotalNumberOfReviews(int productId, string connectionString);
 
         Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId, string connectionString);
@@ -24,7 +24,7 @@ namespace FlameAndWax.Services.Services.Interfaces
         Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts(int pageNumber, int pageSize, string connectionString);
         Task<ServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int pageNumber, int pageSize, int productId, string connectionString);        
         Task<ServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(int pageNumber, int pageSize, Category category, string connectionString);
-        Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrdersByStatus(int pageNumber, int pageSize, int customerId, OrderStatus status, string connectionString);
+        
     }
 }
 
