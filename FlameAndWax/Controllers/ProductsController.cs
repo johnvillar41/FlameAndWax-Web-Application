@@ -103,6 +103,8 @@ namespace FlameAndWax.Controllers
                 Product = new ProductModel { ProductId = productId }
             };
             var reviewServiceResult = await _customerService.AddCustomerReview(customerReview, ConnectionString);
+            if (reviewServiceResult.HasError) return BadRequest(new { errorContent = reviewServiceResult.ErrorContent });
+
             var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(1, 5, productId, ConnectionString);
             if (customerServiceReviewResult.HasError) return BadRequest(new { errorContent = customerServiceReviewResult.ErrorContent });
 

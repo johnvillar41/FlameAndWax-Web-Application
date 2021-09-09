@@ -30,19 +30,11 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> Index()
         {
             var productServiceResult = await _customerService.FetchNewArrivedProducts(ConnectionString);
-            if (productServiceResult.HasError)
-            {
-                var error = new ErrorViewModel
-                {
-                    ErrorContent = productServiceResult.ErrorContent
-                };
-                return View("Error", error);
-            }
-
+            if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
 
             var newProducts = new List<ProductViewModel>();
             foreach (var newProduct in productServiceResult.Result)
-            {                
+            {
                 newProducts.Add(
                         new ProductViewModel
                         {
@@ -59,8 +51,8 @@ namespace FlameAndWax.Controllers
         }
 
         public IActionResult ViewCategorizedProducts(string category)
-        {           
-            return RedirectToAction("Index" , "Products" , new { pageNumber = 1, productCategory = category});
+        {
+            return RedirectToAction("Index", "Products", new { pageNumber = 1, productCategory = category });
         }
 
         public IActionResult SeeMore(int id)
