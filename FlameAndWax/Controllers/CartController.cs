@@ -17,14 +17,14 @@ namespace FlameAndWax.Controllers
     [Authorize(Roles = nameof(Constants.Roles.Customer))]
     public class CartController : Controller
     {
-        private readonly ICustomerService _customerService;
+        private readonly ICartService _cartService;
         private readonly IConfiguration _configuration;
 
         private string ConnectionString { get; }
 
-        public CartController(ICustomerService customerService, IConfiguration configuration)
+        public CartController(ICartService cartService, IConfiguration configuration)
         {
-            _customerService = customerService;
+            _cartService = cartService;
             _configuration = configuration;
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
@@ -65,7 +65,7 @@ namespace FlameAndWax.Controllers
             {
                 var subTotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);
                 totalOrderCost += subTotalCost;
-                var productPriceServiceResult = await _customerService.FetchProductPrice(cartItem.ProductId, ConnectionString);
+                var productPriceServiceResult = await _cartService.FetchProductPrice(cartItem.ProductId, ConnectionString);
                 if (productPriceServiceResult.HasError) return RedirectToAction("Index", "Error", new { productPriceServiceResult.ErrorContent });
                 orderDetails.Add(
                     new OrderDetailModel
@@ -93,7 +93,7 @@ namespace FlameAndWax.Controllers
                 OrderDetails = orderDetails,
                 Courier = courierType
             };
-            var primaryKeyServiceResult = await _customerService.CheckoutOrder(order, userLoggedInUsername, ConnectionString);
+            var primaryKeyServiceResult = await _cartService.CheckoutOrder(order, userLoggedInUsername, ConnectionString);
 
             if (primaryKeyServiceResult.HasError) return RedirectToAction("Index", "Error", new { primaryKeyServiceResult.ErrorContent });
 
@@ -105,7 +105,7 @@ namespace FlameAndWax.Controllers
         {
             if (productId == 0) return View(Cart.GetCartItems(user));
 
-            var productServiceResult = await _customerService.FetchProductDetail(productId, ConnectionString);
+            var productServiceResult = await _cartService.FetchProductDetail(productId, ConnectionString);
             if (productServiceResult.HasError) return RedirectToAction("Index", "Error", new { productServiceResult.ErrorContent });
 
             var productViewModel = new ProductViewModel

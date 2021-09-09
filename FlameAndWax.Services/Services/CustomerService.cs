@@ -112,58 +112,11 @@ namespace FlameAndWax.Services.Services
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(null, true, e.Message); }
         }
 
-        public async Task<ServiceResult<ProductModel>> FetchProductDetail(int productId, string connectionString)
-        {
-            try
-            {
-                var productDetail = await _productRepository.Fetch(productId, connectionString);
-                return ServiceHelper.BuildServiceResult<ProductModel>(productDetail, false, null);
-            }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<ProductModel>(null, true, e.Message); }
-        }
+        
 
-        public async Task<ServiceResult<double>> FetchProductPrice(int productId, string connectionString)
-        {
-            try
-            {
-                var productPrice = await _productRepository.Fetch(productId, connectionString);
-                return ServiceHelper.BuildServiceResult<double>(productPrice.ProductPrice, false, null);
-            }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<double>(-0.1, true, e.Message); }
-        }
+        
 
-        public async Task<ServiceResult<bool>> CheckoutOrder(OrderModel order, string usernameLoggedIn, string connectionString)
-        {
-            try
-            {
-                var primaryKey = await _orderRepository.Add(order, connectionString);
-                if (primaryKey == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Inserting Order");
-
-                foreach (var orderDetail in order.OrderDetails)
-                {
-                    orderDetail.OrderId = primaryKey;
-                    var primaryKeyOrderDetail = await _orderDetailRepository.Add(orderDetail, connectionString);
-                    if (primaryKeyOrderDetail == -1)
-                        return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Inserting OrderDetail");
-
-                    var previouslyOrderedModel = new PreviouslyOrderedProductModel
-                    {
-                        ProductId = orderDetail.Product.ProductId,
-                        CustomerUsername = usernameLoggedIn
-                    };
-
-                    var result = await _previouslyOrderedProductsRepository.AddPreviouslyOrderedProducts(previouslyOrderedModel, connectionString);
-                    if (result == -1)
-                        return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Adding Previous Orders");
-
-                    await _productRepository.UpdateAddUnitsOnOrder(orderDetail.Product.ProductId, orderDetail.Quantity, connectionString);
-                }
-
-
-                return ServiceHelper.BuildServiceResult<bool>(true, false, null);
-            }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
-        }
+        
 
         public async Task<ServiceResult<bool>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId, string connectionString)
         {
@@ -221,6 +174,11 @@ namespace FlameAndWax.Services.Services
                 return ServiceHelper.BuildServiceResult<int>(totalNumberOfReviews, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }
+        }
+
+        public Task<ServiceResult<ProductModel>> FetchProductDetail(int productId, string connectionString)
+        {
+            throw new NotImplementedException();
         }
     }
 }

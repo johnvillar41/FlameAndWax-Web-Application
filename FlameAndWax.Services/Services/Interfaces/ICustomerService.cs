@@ -12,10 +12,9 @@ namespace FlameAndWax.Services.Services.Interfaces
         Task<ServiceResult<Boolean>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId, string connectionString);
         Task<ServiceResult<Boolean>> SendMessage(MessageModel newMessage, string connectionString);
         Task<ServiceResult<Boolean>> CheckIfCustomerHasOrderedAProduct(string customerUsername, int productId, string connectionString);
-        Task<ServiceResult<Boolean>> AddCustomerReview(CustomerReviewModel customerReview, string connectionString);
-        Task<ServiceResult<Boolean>> CheckoutOrder(OrderModel order, string usernameLoggedIn, string connectionString);
+        Task<ServiceResult<Boolean>> AddCustomerReview(CustomerReviewModel customerReview, string connectionString);      
 
-        Task<ServiceResult<double>> FetchProductPrice(int productId, string connectionString);
+        
         Task<ServiceResult<int>> FetchTotalNumberOfProductsByCategory(Category? category, string connection);
         Task<ServiceResult<int>> FetchTotalNumberOfOrdersByOrderStatus(OrderStatus? orderStatus, string connection);
         Task<ServiceResult<int>> FetchTotalNumberOfReviews(int productId, string connectionString);
