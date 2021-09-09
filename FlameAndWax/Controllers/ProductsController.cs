@@ -36,49 +36,44 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> Index(string productCategory = Constants.ALL_PRODUCTS, int pageNumber = 1, int pageSize = 9)
         {
-            var totalNumberOfProductsServiceResult = await _productService.FetchTotalNumberOfProductsByCategory(null, ConnectionString);
-            if (totalNumberOfProductsServiceResult.HasError) return BadRequest(new { errorContent = totalNumberOfProductsServiceResult.ErrorContent });
+            var productServiceResult = await _productService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
+            if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
 
             //Determine total count of Products for pagination
-            var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfProductsServiceResult.Result / pageSize);
+            var totalNumberOfPages = Math.Ceiling((decimal)productServiceResult.TotalProductCount / pageSize);
             ViewData["ProductCount"] = (int)totalNumberOfPages;
             ViewData["ProductCategory"] = productCategory;
 
             var productsViewModel = new List<ProductViewModel>();
-
-            var productServiceResult = await _productService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
-            if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
             BuildProductViewModels(productsViewModel, productServiceResult.Result);
             return View(productsViewModel);
         }
 
         public async Task<IActionResult> PageProducts(int pageNumber = 1, int pageSize = 9, string category = Constants.ALL_PRODUCTS)
         {
-            //Determine total number of products for pagination numbers
-            ServiceResult<int> totalProductCount;
-            if (category.Equals(Constants.ALL_PRODUCTS))
-                totalProductCount = await _productService.FetchTotalNumberOfProductsByCategory(null, ConnectionString);
-            else
-                totalProductCount = await _productService.FetchTotalNumberOfProductsByCategory(ServiceHelper.ConvertStringToConstant(category), ConnectionString);
-
-            if (totalProductCount.HasError) return BadRequest(new { errorContent = totalProductCount.ErrorContent });
-
-            var totalNumberOfPages = Math.Ceiling((decimal)totalProductCount.Result / pageSize);
-            ViewData["ProductCount"] = (int)totalNumberOfPages;
-            ViewData["ProductCategory"] = category;
-
             var productsViewModel = new List<ProductViewModel>();
-            ServiceResult<IEnumerable<ProductModel>> productModels;
+            decimal totalNumberOfPages;
+            PagedServiceResult<IEnumerable<ProductModel>> productModels;
             if (category.Equals(Constants.ALL_PRODUCTS))
             {
                 productModels = await _productService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
                 if (productModels.HasError) return BadRequest(new { errorContent = productModels.ErrorContent });
+
+                totalNumberOfPages = Math.Ceiling((decimal)productModels.TotalProductCount / pageSize);
+                ViewData["ProductCount"] = (int)totalNumberOfPages;
+                ViewData["ProductCategory"] = category;
+
                 BuildProductViewModels(productsViewModel, productModels.Result);
                 return PartialView("ProductsPartial", productsViewModel);
             }
 
             productModels = await _productService.FetchProductByCategory(pageNumber, pageSize, ServiceHelper.ConvertStringToConstant(category), ConnectionString);
             if (productModels.HasError) return BadRequest(new { errorContent = productModels.ErrorContent });
+
+            totalNumberOfPages = Math.Ceiling((decimal)productModels.TotalProductCount / pageSize);
+            ViewData["ProductCount"] = (int)totalNumberOfPages;
+            ViewData["ProductCategory"] = category;
+            
             BuildProductViewModels(productsViewModel, productModels.Result);
             return PartialView("ProductsPartial", productsViewModel);
         }

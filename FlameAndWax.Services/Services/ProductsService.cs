@@ -50,7 +50,7 @@ namespace FlameAndWax.Services.Services
             catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
 
             return ServiceHelper.BuildServiceResult<bool>(true, false, null);
-        }        
+        }
 
         public async Task<ServiceResult<bool>> CheckIfCustomerHasOrderedAProduct(string customerUsername, int productId, string connectionString)
         {
@@ -62,45 +62,77 @@ namespace FlameAndWax.Services.Services
             catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
         }
 
-        public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts(int pageNumber, int pageSize, string connectionString)
+        public async Task<PagedServiceResult<IEnumerable<ProductModel>>> FetchAllProducts(int pageNumber, int pageSize, string connectionString)
         {
             try
             {
                 var products = await _productRepository.FetchPaginatedResult(pageNumber, pageSize, connectionString);
-                return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(products, false, null);
+                return ServiceHelper.BuildPagedResult<IEnumerable<ProductModel>>(
+                    new ServiceResult<IEnumerable<ProductModel>>
+                    {
+                        Result = products,
+                        HasError = false,
+                        ErrorContent = null
+                    },
+                    pageNumber,
+                    await _productRepository.FetchTotalNumberOfProducts(null, connectionString)
+                );
             }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(null, true, e.Message); }
+            catch (Exception e)
+            {
+                return ServiceHelper.BuildPagedResult<IEnumerable<ProductModel>>(
+                  new ServiceResult<IEnumerable<ProductModel>>
+                  {
+                      Result = null,
+                      HasError = true,
+                      ErrorContent = e.Message
+                  },
+                  pageNumber,
+                  -1
+              );
+            }
         }
 
         public async Task<ServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int pageNumber, int pageSize, int productId, string connectionString)
         {
             try
             {
-                var customerReviews = await _customerReviewRepository.FetchPaginatedReviewsOfAProduct(pageNumber,pageSize, productId, connectionString);
+                var customerReviews = await _customerReviewRepository.FetchPaginatedReviewsOfAProduct(pageNumber, pageSize, productId, connectionString);
                 return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(customerReviews, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(null, true, e.Message); }
-        }            
+        }
 
-        public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(int pageNumber, int pageSize, Category category, string connectionString)
+        public async Task<PagedServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(int pageNumber, int pageSize, Category category, string connectionString)
         {
             try
             {
                 var categorizedProducts = await _productRepository.FetchPaginatedCategorizedProducts(pageNumber, pageSize, category, connectionString);
-                return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(categorizedProducts, false, null);
+                return ServiceHelper.BuildPagedResult<IEnumerable<ProductModel>>(
+                    new ServiceResult<IEnumerable<ProductModel>>
+                    {
+                        Result = categorizedProducts,
+                        HasError = false,
+                        ErrorContent = null
+                    },
+                    pageNumber,
+                    await _productRepository.FetchTotalNumberOfProducts(category, connectionString)
+                );
             }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(null, true, e.Message); }
-        }
-
-        public async Task<ServiceResult<int>> FetchTotalNumberOfProductsByCategory(Category? category, string connection)
-        {
-            try
+            catch (Exception e)
             {
-                var totalNumberOfProducts = await _productRepository.FetchTotalNumberOfProducts(category, connection);
-                return ServiceHelper.BuildServiceResult<int>(totalNumberOfProducts, false, null);
+                return ServiceHelper.BuildPagedResult<IEnumerable<ProductModel>>(
+                    new ServiceResult<IEnumerable<ProductModel>>
+                    {
+                        Result = null,
+                        HasError = true,
+                        ErrorContent = e.Message
+                    },
+                    pageNumber,
+                    -1
+                );
             }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }
-        }       
+        }
 
         public async Task<ServiceResult<int>> FetchTotalNumberOfReviews(int productId, string connectionString)
         {

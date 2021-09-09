@@ -57,6 +57,18 @@ namespace FlameAndWax.Services.Helpers
             };
         }
 
+        public static PagedServiceResult<T> BuildPagedResult<T>(ServiceResult<T> serviceResult, int pageNumber, int perPage)
+        {
+            return new PagedServiceResult<T>
+            {
+                Result = serviceResult.Result,
+                HasError = serviceResult.HasError,
+                ErrorContent = serviceResult.ErrorContent,
+                PageNumber = pageNumber,
+                TotalProductCount = perPage
+            };
+        }
+
         public static Constants.Category ConvertStringToConstant(string value)
         {
             switch (value)
@@ -115,7 +127,7 @@ namespace FlameAndWax.Services.Helpers
                 default:
                     return Constants.OrderStatus.Pending;
             }
-        }     
-                    
+        }
+
     }
 }
