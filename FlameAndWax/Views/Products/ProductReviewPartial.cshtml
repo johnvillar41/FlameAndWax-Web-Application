@@ -12,7 +12,8 @@
             {
                 <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="PageCustomerReviews"
                     asp-route-pageNumber="@i" asp-route-productId="@Model.FirstOrDefault().ProductId" data-ajax="true"
-                    data-ajax-loading="#loader" data-ajax-update="#content">@i</a>
+                    data-ajax-loading="#loader" data-ajax-update="#content" data-ajax-success="animateCustomerReview"
+                    id="pageCustomerReview">@i</a>
                 </li>
             }
         </ul>
@@ -38,18 +39,17 @@
 
 }
 
-
-@foreach (var customerReview in Model)
-{
-    <div class="col-12 mb-2">
-        <div class="card card0 card2">
+<div id="customerReviewCards" class="col-12 mb-2" style="display:none;">
+    @foreach (var customerReview in Model)
+    {
+        <div class="card card0 card2 mb-2">
             <div class="card-header" style="background-color: #D3D3D3;">
 
                 <!--
-                                                    Possible additions:
-                                                    - Sort function (by date, by rating)
-                                                    - Limit char. num that can be viewed (100 chars.), requires "See More" to look at entire review
-                                                -->
+                                                            Possible additions:
+                                                            - Sort function (by date, by rating)
+                                                            - Limit char. num that can be viewed (100 chars.), requires "See More" to look at entire review
+                                                        -->
 
             <div class="row">
                     <div class="col-12">
@@ -107,6 +107,5 @@
                 </blockquote>
             </div>
         </div>
-    </div>
-
-}
+    }
+</div>

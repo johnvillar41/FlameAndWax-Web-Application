@@ -153,6 +153,14 @@ checkIfPasswordIsEqual = function () {
     }
 }
 
+//Animate CustomerReviews 
+animateCustomerReview = function (xhr) {
+    $('#customerReviewCards').fadeIn();
+}
+
+
+
+
 //Updates the text for dropdown on Products
 update = function (text) {
     document.getElementById("dropdownMenuButton").innerHTML = text + ' <i class="fas fa-caret-square-down"></i>';
