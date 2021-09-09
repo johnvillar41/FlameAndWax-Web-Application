@@ -52,6 +52,7 @@ $('#btnAddReview').click(function () {
                 background: '#CCFFCC',
                 iconColor: '#006400',
             });
+            animateCustomerReview();
         }
     }
 });
@@ -89,6 +90,7 @@ $('#sendMessage').click(function () {
             } else {
                 x.style.display = "none";
             }
+            
         }
     }
 });
@@ -154,7 +156,7 @@ checkIfPasswordIsEqual = function () {
 }
 
 //Animation 
-animateCustomerReview = function (xhr) {
+animateCustomerReview = function () {
     $('#customerReviewCards').fadeIn();
 }
 
