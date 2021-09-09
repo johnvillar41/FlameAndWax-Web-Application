@@ -9,7 +9,7 @@ namespace FlameAndWax.Services.Services.Interfaces
 {
     public interface ICustomerService
     {
-        Task<ServiceResult<Boolean>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId, string connectionString);        
+        
         Task<ServiceResult<Boolean>> CheckIfCustomerHasOrderedAProduct(string customerUsername, int productId, string connectionString);
         Task<ServiceResult<Boolean>> AddCustomerReview(CustomerReviewModel customerReview, string connectionString);      
 
@@ -18,7 +18,7 @@ namespace FlameAndWax.Services.Services.Interfaces
        
         Task<ServiceResult<int>> FetchTotalNumberOfReviews(int productId, string connectionString);
 
-        Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId, string connectionString);
+       
         Task<ServiceResult<ProductModel>> FetchProductDetail(int productId, string connectionString);
 
         Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts(int pageNumber, int pageSize, string connectionString);

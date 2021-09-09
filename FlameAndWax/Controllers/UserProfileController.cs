@@ -18,17 +18,17 @@ namespace FlameAndWax.Controllers
     [Authorize(Roles = nameof(Constants.Roles.Customer))]
     public class UserProfileController : Controller
     {
-        private readonly ICustomerService _customerService;
+        private readonly IUserProfileService _userProfileService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         private string ConnectionString { get; }
         public UserProfileController(
-            ICustomerService customerService,
+            IUserProfileService userProfileService,
             IConfiguration configuration,
             IWebHostEnvironment webHostEnvironment)
         {
-            _customerService = customerService;
+            _userProfileService = userProfileService;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
@@ -36,7 +36,7 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
-            var accountDetailServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId), ConnectionString);
+            var accountDetailServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userId), ConnectionString);
             if (accountDetailServiceResult.HasError) return BadRequest(new { errorContent = accountDetailServiceResult.ErrorContent });
 
             var userProfile = new UserProfileViewModel
@@ -76,16 +76,16 @@ namespace FlameAndWax.Controllers
             customerModel.Password = userProfile.Password;
             customerModel.Address = userProfile.Address;
 
-            var customerServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId), ConnectionString);
+            var customerServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userId), ConnectionString);
             if (customerServiceResult.HasError) return BadRequest(new { errorContent = customerServiceResult.ErrorContent });
 
             if (userProfile.ProfilePictureFile != null)
                 DeleteOldProfilePicture(customerServiceResult.Result.ProfilePictureLink);
 
-            var modifyServiceResult = await _customerService.ModifyAccountDetails(customerModel, int.Parse(userId), ConnectionString);
+            var modifyServiceResult = await _userProfileService.ModifyAccountDetails(customerModel, int.Parse(userId), ConnectionString);
             if (modifyServiceResult.HasError) return BadRequest(new { errorContent = modifyServiceResult.ErrorContent });
 
-            var accountDetailServiceResult = await _customerService.FetchAccountDetail(int.Parse(userId), ConnectionString);
+            var accountDetailServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userId), ConnectionString);
             if (accountDetailServiceResult.HasError) return BadRequest(new { errorContent = accountDetailServiceResult.ErrorContent });
 
             var userProfileViewModel = new UserProfileViewModel

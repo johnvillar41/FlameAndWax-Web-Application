@@ -61,17 +61,6 @@ namespace FlameAndWax.Services.Services
             catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
         }
 
-        public async Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId, string connectionString)
-        {
-            try
-            {
-                var customer = await _customerRepository.Fetch(customerId, connectionString);
-                if (customer == null) return ServiceHelper.BuildServiceResult<CustomerModel>(new CustomerModel(), true, "Customer not found!");
-                return ServiceHelper.BuildServiceResult<CustomerModel>(customer, false, null);
-            }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<CustomerModel>(null, false, e.Message); }
-        }
-
         public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchAllProducts(int pageNumber, int pageSize, string connectionString)
         {
             try
@@ -90,9 +79,7 @@ namespace FlameAndWax.Services.Services
                 return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(customerReviews, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(null, true, e.Message); }
-        }             
-
-        
+        }            
 
         public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(int pageNumber, int pageSize, Category category, string connectionString)
         {
@@ -104,26 +91,6 @@ namespace FlameAndWax.Services.Services
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(null, true, e.Message); }
         }
 
-        
-
-        
-
-        
-
-        public async Task<ServiceResult<bool>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId, string connectionString)
-        {
-            if (modifiedAccount == null)
-                return ServiceHelper.BuildServiceResult<bool>(false, true, "Modified Account details has no value!");
-            try
-            {
-                await _customerRepository.Update(modifiedAccount, customerId, connectionString);
-                return ServiceHelper.BuildServiceResult<bool>(true, false, null);
-            }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
-        }    
-
-        
-
         public async Task<ServiceResult<int>> FetchTotalNumberOfProductsByCategory(Category? category, string connection)
         {
             try
@@ -132,9 +99,7 @@ namespace FlameAndWax.Services.Services
                 return ServiceHelper.BuildServiceResult<int>(totalNumberOfProducts, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }
-        }
-
-       
+        }       
 
         public async Task<ServiceResult<int>> FetchTotalNumberOfReviews(int productId, string connectionString)
         {
