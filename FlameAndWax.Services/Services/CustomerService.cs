@@ -90,17 +90,7 @@ namespace FlameAndWax.Services.Services
                 return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(customerReviews, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(null, true, e.Message); }
-        }
-
-        public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchNewArrivedProducts(string connectionString)
-        {
-            try
-            {
-                var newArrivals = await _productRepository.FetchNewArrivedProducts(connectionString);
-                return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(newArrivals, false, null);
-            }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(null, true, e.Message); }
-        }         
+        }             
 
         public async Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrdersByStatus(int pageNumber,int pageSize,int customerId, Constants.OrderStatus status, string connectionString)
         {

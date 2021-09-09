@@ -1,10 +1,5 @@
-﻿using FlameAndWax.Data.Constants;
-using FlameAndWax.Data.Models;
-using FlameAndWax.Models;
-using FlameAndWax.Services.Helpers;
-using FlameAndWax.Services.Services;
+﻿using FlameAndWax.Models;
 using FlameAndWax.Services.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -15,21 +10,21 @@ namespace FlameAndWax.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ICustomerService _customerService;
+        private readonly IHomeService _homeService;
         private readonly IConfiguration _configuration;
 
         private string ConnectionString { get; }
 
-        public HomeController(ICustomerService customerService, IConfiguration configuration)
+        public HomeController(IHomeService homeService, IConfiguration configuration)
         {
-            _customerService = customerService;
+            _homeService = homeService;
             _configuration = configuration;
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
 
         public async Task<IActionResult> Index()
         {
-            var productServiceResult = await _customerService.FetchNewArrivedProducts(ConnectionString);
+            var productServiceResult = await _homeService.FetchNewArrivedProducts(ConnectionString);
             if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
 
             var newProducts = new List<ProductViewModel>();
