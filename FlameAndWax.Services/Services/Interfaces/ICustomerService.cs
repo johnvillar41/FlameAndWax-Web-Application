@@ -7,7 +7,7 @@ using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Services.Services.Interfaces
 {
-    public interface ICustomerService
+    public interface IProductsService
     {
         
         Task<ServiceResult<Boolean>> CheckIfCustomerHasOrderedAProduct(string customerUsername, int productId, string connectionString);

@@ -17,14 +17,14 @@ namespace FlameAndWax.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly ICustomerService _customerService;
+        private readonly IProductsService _productService;
         private readonly IConfiguration _configaration;
 
         private string ConnectionString { get; }
 
-        public ProductsController(ICustomerService customerService, IConfiguration configuration)
+        public ProductsController(IProductsService customerService, IConfiguration configuration)
         {
-            _customerService = customerService;
+            _productService = customerService;
             _configaration = configuration;
             ConnectionString = _configaration.GetConnectionString("FlameAndWaxDBConnection");
         }
@@ -36,7 +36,7 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> Index(string productCategory = Constants.ALL_PRODUCTS, int pageNumber = 1, int pageSize = 9)
         {
-            var totalNumberOfProductsServiceResult = await _customerService.FetchTotalNumberOfProductsByCategory(null, ConnectionString);
+            var totalNumberOfProductsServiceResult = await _productService.FetchTotalNumberOfProductsByCategory(null, ConnectionString);
             if (totalNumberOfProductsServiceResult.HasError) return BadRequest(new { errorContent = totalNumberOfProductsServiceResult.ErrorContent });
 
             //Determine total count of Products for pagination
@@ -46,7 +46,7 @@ namespace FlameAndWax.Controllers
 
             var productsViewModel = new List<ProductViewModel>();
 
-            var productServiceResult = await _customerService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
+            var productServiceResult = await _productService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
             if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
             BuildProductViewModels(productsViewModel, productServiceResult.Result);
             return View(productsViewModel);
@@ -57,9 +57,9 @@ namespace FlameAndWax.Controllers
             //Determine total number of products for pagination numbers
             ServiceResult<int> totalProductCount;
             if (category.Equals(Constants.ALL_PRODUCTS))
-                totalProductCount = await _customerService.FetchTotalNumberOfProductsByCategory(null, ConnectionString);
+                totalProductCount = await _productService.FetchTotalNumberOfProductsByCategory(null, ConnectionString);
             else
-                totalProductCount = await _customerService.FetchTotalNumberOfProductsByCategory(ServiceHelper.ConvertStringToConstant(category), ConnectionString);
+                totalProductCount = await _productService.FetchTotalNumberOfProductsByCategory(ServiceHelper.ConvertStringToConstant(category), ConnectionString);
 
             if (totalProductCount.HasError) return BadRequest(new { errorContent = totalProductCount.ErrorContent });
 
@@ -71,13 +71,13 @@ namespace FlameAndWax.Controllers
             ServiceResult<IEnumerable<ProductModel>> productModels;
             if (category.Equals(Constants.ALL_PRODUCTS))
             {
-                productModels = await _customerService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
+                productModels = await _productService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
                 if (productModels.HasError) return BadRequest(new { errorContent = productModels.ErrorContent });
                 BuildProductViewModels(productsViewModel, productModels.Result);
                 return PartialView("ProductsPartial", productsViewModel);
             }
 
-            productModels = await _customerService.FetchProductByCategory(pageNumber, pageSize, ServiceHelper.ConvertStringToConstant(category), ConnectionString);
+            productModels = await _productService.FetchProductByCategory(pageNumber, pageSize, ServiceHelper.ConvertStringToConstant(category), ConnectionString);
             if (productModels.HasError) return BadRequest(new { errorContent = productModels.ErrorContent });
             BuildProductViewModels(productsViewModel, productModels.Result);
             return PartialView("ProductsPartial", productsViewModel);
@@ -102,10 +102,10 @@ namespace FlameAndWax.Controllers
                 Customer = new CustomerModel { CustomerId = int.Parse(customerIdLoggedIn) },
                 Product = new ProductModel { ProductId = productId }
             };
-            var reviewServiceResult = await _customerService.AddCustomerReview(customerReview, ConnectionString);
+            var reviewServiceResult = await _productService.AddCustomerReview(customerReview, ConnectionString);
             if (reviewServiceResult.HasError) return BadRequest(new { errorContent = reviewServiceResult.ErrorContent });
 
-            var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(1, 5, productId, ConnectionString);
+            var customerServiceReviewResult = await _productService.FetchCustomerReviewsInAProduct(1, 5, productId, ConnectionString);
             if (customerServiceReviewResult.HasError) return BadRequest(new { errorContent = customerServiceReviewResult.ErrorContent });
 
             var totalNumberOfPagesObjectResult = await FetchTotalNumberOfPages(productId);
@@ -119,7 +119,7 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> PageCustomerReviews(int pageNumber = 1, int pageSize = 5, int productId = -1)
         {
-            var customerServiceReviewResult = await _customerService.FetchCustomerReviewsInAProduct(pageNumber, pageSize, productId, ConnectionString);
+            var customerServiceReviewResult = await _productService.FetchCustomerReviewsInAProduct(pageNumber, pageSize, productId, ConnectionString);
             if (customerServiceReviewResult.HasError) return BadRequest(new { errorContent = customerServiceReviewResult.ErrorContent });
 
             var totalNumberOfPagesObjectResult = await FetchTotalNumberOfPages(productId);
@@ -133,10 +133,10 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> Details(int productId)
         {
-            var productServiceResult = await _customerService.FetchProductDetail(productId, ConnectionString);
+            var productServiceResult = await _productService.FetchProductDetail(productId, ConnectionString);
             if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
 
-            var customerReviewServiceResult = await _customerService.FetchCustomerReviewsInAProduct(1, 5, productId, ConnectionString);
+            var customerReviewServiceResult = await _productService.FetchCustomerReviewsInAProduct(1, 5, productId, ConnectionString);
             if (customerReviewServiceResult.HasError) return BadRequest(new { errorContent = customerReviewServiceResult.ErrorContent });
 
             var totalNumberOfPagesObjectResult = await FetchTotalNumberOfPages(productId);
@@ -161,7 +161,7 @@ namespace FlameAndWax.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var loggedInUser = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-                var hasCustomerOrderedServiceResult = _customerService.CheckIfCustomerHasOrderedAProduct(loggedInUser, productId, ConnectionString).Result;
+                var hasCustomerOrderedServiceResult = _productService.CheckIfCustomerHasOrderedAProduct(loggedInUser, productId, ConnectionString).Result;
                 productDetailViewModel.IsProductBoughtByLoggedInCustomer = hasCustomerOrderedServiceResult.Result;
                 return View(productDetailViewModel);
             }
@@ -172,7 +172,7 @@ namespace FlameAndWax.Controllers
         private async Task<ObjectResult> FetchTotalNumberOfPages(int productId)
         {
             //Determine total number of pages for reviews
-            var totalReviewCountServiceResult = await _customerService.FetchTotalNumberOfReviews(productId, ConnectionString);
+            var totalReviewCountServiceResult = await _productService.FetchTotalNumberOfReviews(productId, ConnectionString);
             if (totalReviewCountServiceResult.HasError) return BadRequest(new { errorContent = totalReviewCountServiceResult.ErrorContent });
             var totalNumberOfPages = Math.Ceiling((decimal)totalReviewCountServiceResult.Result / 5);
             ViewData["CustomerReviewCount"] = (int)totalNumberOfPages;

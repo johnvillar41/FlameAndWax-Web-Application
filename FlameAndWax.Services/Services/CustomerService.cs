@@ -10,7 +10,7 @@ using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Services.Services
 {
-    public class CustomerService : ICustomerService
+    public class ProductService : IProductsService
     {
         private readonly IProductRepository _productRepository;
         private readonly IOrderRepository _orderRepository;
@@ -19,7 +19,7 @@ namespace FlameAndWax.Services.Services
         private readonly ICustomerReviewRepository _customerReviewRepository;
         private readonly IMessageRepository _messageRepository;
         private readonly IPreviouslyOrderedProductsRepository _previouslyOrderedProductsRepository;
-        public CustomerService(
+        public ProductService(
             IProductRepository productRepository,
             IOrderRepository orderRepository,
             IOrderDetailRepository orderDetailRepository,

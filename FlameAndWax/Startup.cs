@@ -46,7 +46,7 @@ namespace FlameAndWax
             services.AddSingleton<IPreviouslyOrderedProductsRepository, PreviouslyOrderedProductsRepository>();
 
             //Dependency Injection Services
-            services.AddSingleton<ICustomerService, CustomerService>();             
+            services.AddSingleton<IProductsService, ProductService>();             
             services.AddSingleton(typeof(IAccountBaseService<CustomerModel>),typeof(CustomerAccountService));            
             services.AddSingleton<IHomeService, HomeService>();
             services.AddSingleton<ICartService, CartService>();
