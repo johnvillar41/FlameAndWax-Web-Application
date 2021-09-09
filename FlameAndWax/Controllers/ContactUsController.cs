@@ -8,14 +8,14 @@ namespace FlameAndWax.Controllers
 {
     public class ContactUsController : Controller
     {
-        private readonly ICustomerService _customerService;
+        private readonly IContactUsService _contactUsService;
         private readonly IConfiguration _configuration;
 
         private string ConnectionString { get; }
 
-        public ContactUsController(ICustomerService customerService, IConfiguration configuration)
+        public ContactUsController(IContactUsService contactUsService, IConfiguration configuration)
         {
-            _customerService = customerService;
+            _contactUsService = contactUsService;
             _configuration = configuration;
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
@@ -28,7 +28,7 @@ namespace FlameAndWax.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(MessageModel messageModel)
         {
-            var customerServiceResult = await _customerService.SendMessage(messageModel, ConnectionString);
+            var customerServiceResult = await _contactUsService.SendMessage(messageModel, ConnectionString);
             if (customerServiceResult.HasError) return BadRequest(new { errorContent = customerServiceResult.ErrorContent});
            
             return Ok();
