@@ -3,6 +3,7 @@ using FlameAndWax.Data.Models;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Repositories.Interfaces;
 using FlameAndWax.Services.Services.Interfaces;
+using FlameAndWax.Services.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

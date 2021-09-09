@@ -1,5 +1,6 @@
 ﻿using FlameAndWax.Data.Models;
 using FlameAndWax.Services.Services.BaseInterface.Interface;
+using FlameAndWax.Services.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

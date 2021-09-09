@@ -2,8 +2,8 @@
 using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
 using FlameAndWax.Services.Helpers;
-using FlameAndWax.Services.Services;
 using FlameAndWax.Services.Services.Interfaces;
+using FlameAndWax.Services.Services.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

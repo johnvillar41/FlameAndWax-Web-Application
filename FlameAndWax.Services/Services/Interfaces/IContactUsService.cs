@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using FlameAndWax.Data.Models;
+using FlameAndWax.Services.Services.Models;
 
 namespace FlameAndWax.Services.Services.Interfaces
 {

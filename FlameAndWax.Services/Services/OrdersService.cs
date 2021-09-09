@@ -5,6 +5,7 @@ using FlameAndWax.Data.Models;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Repositories.Interfaces;
 using FlameAndWax.Services.Services.Interfaces;
+using FlameAndWax.Services.Services.Models;
 using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Services.Services

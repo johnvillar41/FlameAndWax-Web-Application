@@ -1,4 +1,4 @@
-﻿namespace FlameAndWax.Services.Services
+﻿namespace FlameAndWax.Services.Services.Models
 {
     public class ServiceResult<T>
     {

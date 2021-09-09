@@ -3,6 +3,7 @@ using FlameAndWax.Data.Models;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Repositories.Interfaces;
 using FlameAndWax.Services.Services.BaseInterface.Interface;
+using FlameAndWax.Services.Services.Models;
 
 namespace FlameAndWax.Services.Services.Interfaces
 {

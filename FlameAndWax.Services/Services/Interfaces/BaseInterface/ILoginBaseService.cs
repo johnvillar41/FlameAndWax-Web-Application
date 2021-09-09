@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using FlameAndWax.Services.Services.Models;
 
 namespace FlameAndWax.Services.Services.BaseInterface.Interface
 {

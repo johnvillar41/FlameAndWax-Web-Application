@@ -1,5 +1,5 @@
 ﻿using FlameAndWax.Data.Constants;
-using FlameAndWax.Services.Services;
+using FlameAndWax.Services.Services.Models;
 
 namespace FlameAndWax.Services.Helpers
 {
