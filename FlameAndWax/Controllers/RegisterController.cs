@@ -1,5 +1,6 @@
 ﻿using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
+using FlameAndWax.Services.Services.BaseInterface.Interface;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,16 +15,16 @@ namespace FlameAndWax.Controllers
 {
     public class RegisterController : Controller
     {
-        private readonly ICustomerService _customerService;
+        private readonly IAccountBaseService<CustomerModel> _accountService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private string ConnectionString { get; }
         public RegisterController(
-            ICustomerService customerService,
+            IAccountBaseService<CustomerModel> accountService,
             IConfiguration configuration,
             IWebHostEnvironment webHostEnvironment)
         {
-            _customerService = customerService;
+            _accountService = accountService;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
@@ -50,7 +51,7 @@ namespace FlameAndWax.Controllers
                 ProfilePictureLink = await BuildProfilePictureLink(newUser.ProfilePictureFile)
             };
 
-            var registerServiceResult = await _customerService.Register(customerModel, ConnectionString);
+            var registerServiceResult = await _accountService.Register(customerModel, ConnectionString);
             if (registerServiceResult.HasError) return BadRequest(new { errorContent = registerServiceResult.ErrorContent});
 
             return Ok();

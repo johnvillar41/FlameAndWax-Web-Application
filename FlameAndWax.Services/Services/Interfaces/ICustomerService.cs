@@ -7,7 +7,7 @@ using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Services.Services.Interfaces
 {
-    public interface ICustomerService : ILoginBaseService<CustomerModel>
+    public interface ICustomerService
     {
         Task<ServiceResult<Boolean>> ModifyAccountDetails(CustomerModel modifiedAccount, int customerId, string connectionString);
         Task<ServiceResult<Boolean>> SendMessage(MessageModel newMessage, string connectionString);

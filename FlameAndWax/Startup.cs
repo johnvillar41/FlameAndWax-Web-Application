@@ -1,7 +1,9 @@
+using FlameAndWax.Data.Models;
 using FlameAndWax.Data.Repositories;
 using FlameAndWax.Services.Repositories;
 using FlameAndWax.Services.Repositories.Interfaces;
 using FlameAndWax.Services.Services;
+using FlameAndWax.Services.Services.BaseInterface.Interface;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -44,9 +46,8 @@ namespace FlameAndWax
             services.AddSingleton<IPreviouslyOrderedProductsRepository, PreviouslyOrderedProductsRepository>();
 
             //Dependency Injection Services
-            services.AddSingleton<ICustomerService, CustomerService>();
-            services.AddSingleton<IEmployeeService, EmployeeService>();
-            services.AddSingleton<IAdministratorService, AdministratorService>();
+            services.AddSingleton<ICustomerService, CustomerService>();             
+            services.AddSingleton(typeof(IAccountBaseService<CustomerModel>),typeof(CustomerAccountService));            
             services.AddSingleton<IHomeService, HomeService>();
         }
 

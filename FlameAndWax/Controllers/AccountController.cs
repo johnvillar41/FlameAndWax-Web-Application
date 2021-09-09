@@ -1,6 +1,7 @@
 ﻿using FlameAndWax.Data.Constants;
 using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
+using FlameAndWax.Services.Services.BaseInterface.Interface;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -14,14 +15,14 @@ namespace FlameAndWax.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ICustomerService _customerService;
+        private readonly IAccountBaseService<CustomerModel> _accountService;
         private readonly IConfiguration _configuration;
 
         private string ConnectionString { get; }
 
-        public AccountController(ICustomerService customerService, IConfiguration configuration)
+        public AccountController(IAccountBaseService<CustomerModel> accountService, IConfiguration configuration)
         {
-            _customerService = customerService;
+            _accountService = accountService;
             _configuration = configuration;
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
@@ -37,7 +38,7 @@ namespace FlameAndWax.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ProcessLogin(LoginViewModel loginCredentials, string returnUrl)
         {         
-            var isAuthenticatedServiceResult = await _customerService.Login(new CustomerModel { Username = loginCredentials.Username, Password = loginCredentials.Password }, ConnectionString);
+            var isAuthenticatedServiceResult = await _accountService.Login(new CustomerModel { Username = loginCredentials.Username, Password = loginCredentials.Password }, ConnectionString);
             if (isAuthenticatedServiceResult.HasError) return BadRequest(new { errorContent = isAuthenticatedServiceResult.ErrorContent });
 
             if (isAuthenticatedServiceResult.Result != -1)
