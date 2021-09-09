@@ -22,11 +22,12 @@
     </div>
 </div>
 
-@foreach (var order in Model)
-{
-    dropDownId++;
+<div class="row mb-2" id="orderCards" style="display: none;">
+    @foreach (var order in Model)
+    {
+        dropDownId++;
 
-    <div class="row mb-2">
+
         <div class="col-12">
             <div class="card card0 p-3">
 
@@ -185,10 +186,10 @@
                 </div>
             </div>
         </div>
-    </div>
 
-}
 
+    }
+</div>
 
 <div class="row mt-2">
     <div class="col-12">

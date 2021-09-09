@@ -10,15 +10,26 @@
         <div class="col-12 mb-2">
             <h3>Filter&nbsp;</h3>
             <div class="dropdown">
-                <button class="btn dropdown-toggle btn-gold" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn dropdown-toggle btn-gold" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Category <i class="fas fa-caret-square-down"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" onclick="update('Finished');" asp-action="Sort" asp-controller="Orders" asp-route-status="@nameof(Constants.OrderStatus.Finished)" data-ajax="true" data-ajax-update="#ordersPanel" data-ajax-loading="#loader">Finished</a>
-                    <a class="dropdown-item" onclick="update('Pending');" asp-action="Sort" asp-controller="Orders" asp-route-status="@nameof(Constants.OrderStatus.Pending)" data-ajax="true" data-ajax-update="#ordersPanel" data-ajax-loading="#loader">Pending</a>
-                    <a class="dropdown-item" onclick="update('Shipping');" asp-action="Sort" asp-controller="Orders" asp-route-status="@nameof(Constants.OrderStatus.Shipping)" data-ajax="true" data-ajax-update="#ordersPanel" data-ajax-loading="#loader">Shipping</a>
-                    <a class="dropdown-item" onclick="update('Processing');" asp-action="Sort" asp-controller="Orders" asp-route-status="@nameof(Constants.OrderStatus.Processing)" data-ajax="true" data-ajax-update="#ordersPanel" data-ajax-loading="#loader">Processing</a>
-                    <a class="dropdown-item" onclick="update('Cancelled');" asp-action="Sort" asp-controller="Orders" asp-route-status="@nameof(Constants.OrderStatus.Cancelled)" data-ajax="true" data-ajax-update="#ordersPanel" data-ajax-loading="#loader">Cancelled</a>
+                    <a class="dropdown-item" onclick="update('Finished');" asp-action="Sort" asp-controller="Orders"
+                        data-ajax-success="scrollUp" asp-route-status="@nameof(Constants.OrderStatus.Finished)"
+                        data-ajax="true" data-ajax-update="#ordersPanel" data-ajax-loading="#loader">Finished</a>
+                    <a class="dropdown-item" onclick="update('Pending');" asp-action="Sort" asp-controller="Orders"
+                        data-ajax-success="scrollUp" asp-route-status="@nameof(Constants.OrderStatus.Pending)"
+                        data-ajax="true" data-ajax-update="#ordersPanel" data-ajax-loading="#loader">Pending</a>
+                    <a class="dropdown-item" onclick="update('Shipping');" asp-action="Sort" asp-controller="Orders"
+                        data-ajax-success="scrollUp" asp-route-status="@nameof(Constants.OrderStatus.Shipping)"
+                        data-ajax="true" data-ajax-update="#ordersPanel" data-ajax-loading="#loader">Shipping</a>
+                    <a class="dropdown-item" onclick="update('Processing');" asp-action="Sort" asp-controller="Orders"
+                        data-ajax-success="scrollUp" asp-route-status="@nameof(Constants.OrderStatus.Processing)"
+                        data-ajax="true" data-ajax-update="#ordersPanel" data-ajax-loading="#loader">Processing</a>
+                    <a class="dropdown-item" onclick="update('Cancelled');" asp-action="Sort" asp-controller="Orders"
+                        data-ajax-success="scrollUp" asp-route-status="@nameof(Constants.OrderStatus.Cancelled)"
+                        data-ajax="true" data-ajax-update="#ordersPanel" data-ajax-loading="#loader">Cancelled</a>
                 </div>
             </div>
             <div class="spinner-border ml-2" role="status" id="loader" style="display:none;">

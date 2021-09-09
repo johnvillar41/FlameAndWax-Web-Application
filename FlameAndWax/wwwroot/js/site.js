@@ -163,6 +163,7 @@ animateCustomerReview = function () {
 $(document).ready(function () {
     $('#productCards').fadeIn();
     $('#customerReviewCards').fadeIn();    
+    $('#orderCards').fadeIn();
 });
 
 
@@ -262,6 +263,7 @@ scrollUp = function () {
         scrollTop: 0
     }, 600);
     $('#productCards').fadeIn();
+    $('#orderCards').fadeIn();
 }
 
 //Registraing new User Functions-----------------------------------------------------
