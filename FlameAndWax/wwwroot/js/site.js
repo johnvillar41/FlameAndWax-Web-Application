@@ -153,12 +153,15 @@ checkIfPasswordIsEqual = function () {
     }
 }
 
-//Animate CustomerReviews 
+//Animation 
 animateCustomerReview = function (xhr) {
     $('#customerReviewCards').fadeIn();
 }
 
-
+$(document).ready(function () {
+    $('#productCards').fadeIn();
+    $('#customerReviewCards').fadeIn();    
+});
 
 
 //Updates the text for dropdown on Products
@@ -251,11 +254,12 @@ window.addEventListener("pageshow", function (event) {
     }
 });
 
-//Scrolls up after pagination
+//Scrolls up after pagination and animates
 scrollUp = function () {
     $('body,html').animate({
         scrollTop: 0
     }, 600);
+    $('#productCards').fadeIn();
 }
 
 //Registraing new User Functions-----------------------------------------------------
