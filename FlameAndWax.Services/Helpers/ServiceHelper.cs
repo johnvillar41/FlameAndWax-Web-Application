@@ -57,7 +57,7 @@ namespace FlameAndWax.Services.Helpers
             };
         }
 
-        public static PagedServiceResult<T> BuildPagedResult<T>(ServiceResult<T> serviceResult, int pageNumber, int perPage)
+        public static PagedServiceResult<T> BuildPagedResult<T>(ServiceResult<T> serviceResult, int pageNumber, int totalProductCount)
         {
             return new PagedServiceResult<T>
             {
@@ -65,7 +65,7 @@ namespace FlameAndWax.Services.Helpers
                 HasError = serviceResult.HasError,
                 ErrorContent = serviceResult.ErrorContent,
                 PageNumber = pageNumber,
-                TotalProductCount = perPage
+                TotalProductCount = totalProductCount
             };
         }
 

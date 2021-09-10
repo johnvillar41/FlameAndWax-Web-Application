@@ -118,7 +118,7 @@ namespace FlameAndWax.Controllers
             var customerServiceReviewResult = await _productService.FetchCustomerReviewsInAProduct(pageNumber, pageSize, productId, ConnectionString);
             if (customerServiceReviewResult.HasError) return BadRequest(new { errorContent = customerServiceReviewResult.ErrorContent });
 
-            var totalNumberOfPages = Math.Ceiling((decimal)customerServiceReviewResult.TotalProductCount / 5);
+            var totalNumberOfPages = Math.Ceiling((decimal)customerServiceReviewResult.TotalProductCount / pageSize);
             ViewData["CustomerReviewCount"] = (int)totalNumberOfPages;
             ViewData["ProductId"] = productId;
 
