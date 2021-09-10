@@ -12,13 +12,11 @@ namespace FlameAndWax.Services.Services.Interfaces
     {
         
         Task<ServiceResult<Boolean>> CheckIfCustomerHasOrderedAProduct(string customerUsername, int productId, string connectionString);
-        Task<ServiceResult<Boolean>> AddCustomerReview(CustomerReviewModel customerReview, string connectionString);            
-        Task<ServiceResult<int>> FetchTotalNumberOfReviews(int productId, string connectionString);       
+        Task<ServiceResult<Boolean>> AddCustomerReview(CustomerReviewModel customerReview, string connectionString);           
         Task<ServiceResult<ProductModel>> FetchProductDetail(int productId, string connectionString);
         Task<PagedServiceResult<IEnumerable<ProductModel>>> FetchAllProducts(int pageNumber, int pageSize, string connectionString);
-        Task<ServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int pageNumber, int pageSize, int productId, string connectionString);        
+        Task<PagedServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int pageNumber, int pageSize, int productId, string connectionString);        
         Task<PagedServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(int pageNumber, int pageSize, Category category, string connectionString);
-        
     }
 }
 

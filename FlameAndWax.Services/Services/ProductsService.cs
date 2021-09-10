@@ -93,14 +93,35 @@ namespace FlameAndWax.Services.Services
             }
         }
 
-        public async Task<ServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int pageNumber, int pageSize, int productId, string connectionString)
+        public async Task<PagedServiceResult<IEnumerable<CustomerReviewModel>>> FetchCustomerReviewsInAProduct(int pageNumber, int pageSize, int productId, string connectionString)
         {
             try
             {
                 var customerReviews = await _customerReviewRepository.FetchPaginatedReviewsOfAProduct(pageNumber, pageSize, productId, connectionString);
-                return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(customerReviews, false, null);
+                return ServiceHelper.BuildPagedResult<IEnumerable<CustomerReviewModel>>(
+                    new ServiceResult<IEnumerable<CustomerReviewModel>>
+                    {
+                        Result = customerReviews,
+                        HasError = false,
+                        ErrorContent = null
+                    },
+                    pageNumber,
+                    await _customerReviewRepository.FetchTotalNumberOfReviewsOnAProduct(productId, connectionString)
+                );
             }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<CustomerReviewModel>>(null, true, e.Message); }
+            catch (Exception e)
+            {
+                return ServiceHelper.BuildPagedResult<IEnumerable<CustomerReviewModel>>(
+                    new ServiceResult<IEnumerable<CustomerReviewModel>>
+                    {
+                        Result = null,
+                        HasError = true,
+                        ErrorContent = e.Message
+                    },
+                    pageNumber,
+                    -1
+                );
+            }
         }
 
         public async Task<PagedServiceResult<IEnumerable<ProductModel>>> FetchProductByCategory(int pageNumber, int pageSize, Category category, string connectionString)
@@ -144,9 +165,14 @@ namespace FlameAndWax.Services.Services
             catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }
         }
 
-        public Task<ServiceResult<ProductModel>> FetchProductDetail(int productId, string connectionString)
+        public async Task<ServiceResult<ProductModel>> FetchProductDetail(int productId, string connectionString)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var productDetails = await _productRepository.Fetch(productId, connectionString);
+                return ServiceHelper.BuildServiceResult<ProductModel>(productDetails, false, null);
+            }
+            catch (Exception e) { return ServiceHelper.BuildServiceResult<ProductModel>(null, true, e.Message); }
         }
     }
 }
