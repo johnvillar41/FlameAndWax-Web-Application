@@ -154,17 +154,7 @@ namespace FlameAndWax.Services.Services
                 );
             }
         }
-
-        public async Task<ServiceResult<int>> FetchTotalNumberOfReviews(int productId, string connectionString)
-        {
-            try
-            {
-                var totalNumberOfReviews = await _customerReviewRepository.FetchTotalNumberOfReviewsOnAProduct(productId, connectionString);
-                return ServiceHelper.BuildServiceResult<int>(totalNumberOfReviews, false, null);
-            }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }
-        }
-
+        
         public async Task<ServiceResult<ProductModel>> FetchProductDetail(int productId, string connectionString)
         {
             try
