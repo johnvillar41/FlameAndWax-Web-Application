@@ -41,16 +41,15 @@
                                 </div>
                                 <div class="row">
                                     <label><b>Username</b></label>
-                                    <input class="form-control" asp-for="@Model.Username" required />
+                                    <input class="form-control pl-1" asp-for="@Model.Username" required placeholder="Enter Username here"/>
 
                                 </div>
                                 <div class="row">
                                     <label><b>Password</b></label><br />
-                                    <input class="form-control" type="password" asp-for="@Model.Password" required />
+                                    <input class="form-control pl-1" type="password" asp-for="@Model.Password" required placeholder="Enter Password here"/>
 
                                 </div>
-
-                                <hr />
+                                
 
                                 <div class="row mt-2">
                                     <button type="submit" id="loginBtn" class="btn btn-block btn-gold"><i class="fas fa-sign-in-alt"></i> Login</button>
