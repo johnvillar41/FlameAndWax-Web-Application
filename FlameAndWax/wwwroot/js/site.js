@@ -1,4 +1,7 @@
-﻿//for clearing User profile
+﻿//If html is a form use jquery $('id').click
+//If not simply put data-ajax-success and call the success function
+
+//for clearing User profile
 function resetText() {
     document.getElementById("fullname").value = "";
     document.getElementById("contactNumber").value = "";
@@ -172,31 +175,27 @@ update = function (text) {
     document.getElementById("dropdownMenuButton").innerHTML = text + ' <i class="fas fa-caret-square-down"></i>';
 }
 
-//Add to Cart trigger
-$('#addtoCartBtn').click(function () {
-    addToCart = function (xhr) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-        if (xhr.status === "200") {
-            Toast.fire({
-                icon: 'success',
-                title: '<span style="color: #006400"><b>Success</b></span> Added to cart!',
-                background: '#CCFFCC',
-                iconColor: '#006400',
-            });
+addToCart = function (xhr) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
+    });
+    if (xhr.status == "200") {
+        Toast.fire({
+            icon: 'success',
+            title: '<span style="color: #006400"><b>Success</b></span> Added to cart!',
+            background: '#CCFFCC',
+            iconColor: '#006400',
+        });
     }
-});
-
+}
 //Add to cart mixin display
 
 
@@ -234,6 +233,8 @@ negateTotalNumberOfCart = function (xhr) {
 updateAddToCartTotalCount = function (response) {
     var dataObject = JSON.parse(response);
     document.querySelector('#totalCartCount').innerHTML = dataObject;
+
+    
 }
 
 failureAddToCart = function (response) {
