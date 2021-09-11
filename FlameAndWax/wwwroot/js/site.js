@@ -174,29 +174,31 @@ update = function (text) {
 
 //Add to Cart trigger
 $('#addtoCartBtn').click(function () {
-    addToCart();
+    addToCart = function (xhr) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+        if (xhr.status === "200") {
+            Toast.fire({
+                icon: 'success',
+                title: '<span style="color: #006400"><b>Success</b></span> Added to cart!',
+                background: '#CCFFCC',
+                iconColor: '#006400',
+            });
+        }
+    }
 });
 
 //Add to cart mixin display
-addToCart = function () {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    });
-    Toast.fire({
-        icon: 'success',
-        title: '<span style="color: #006400"><b>Success</b></span> Added to cart!',
-        background: '#CCFFCC',
-        iconColor: '#006400',
-    });
-}
+
 
 
 //Deletion of cart Items
@@ -235,6 +237,24 @@ updateAddToCartTotalCount = function (response) {
 }
 
 failureAddToCart = function (response) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    Toast.fire({
+        icon: 'error',
+        title: '<span style="color: #8b0000"><b>Error!</b></span> Login First!',
+        background: '#FF7F7F',
+        iconColor: '#8b0000',
+    });
 
     window.location.href = "/Account/Login/?returnUrl=" + response;
 
@@ -284,7 +304,7 @@ $('#registerUser').click(function () {
             arePasswordFieldsEqual = true;
             document.getElementById("txtPassword").classList.remove('is-invalid');
             document.getElementById("txtVerifyPassword").classList.remove('is-invalid');
-        }          
+        }
 
         else {
             document.getElementById("txtPassword").classList.add('is-invalid');
@@ -297,7 +317,7 @@ $('#registerUser').click(function () {
             });
         }
 
-        if (xhr.status == "200" && arePasswordFieldsEqual) {            
+        if (xhr.status == "200" && arePasswordFieldsEqual) {
             Toast.fire({
                 icon: 'success',
                 title: '<span style="color: #006400"><b>Success</b></span> Registered new user!',
