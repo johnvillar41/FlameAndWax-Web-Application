@@ -176,7 +176,7 @@ namespace FlameAndWax.Controllers
                     ProductId = product.ProductId,
                     ProductName = product.ProductName,
                     ProductDescription = product.ProductDescription,
-                    ProductPrice = product.ProductPrice,
+                    ProductSubTotalPrice = product.ProductPrice,
                     PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink,
                     StockQuantity = product.UnitsInStock * product.QuantityPerUnit,
                     QuantityPerUnit = product.QuantityPerUnit,

@@ -15,145 +15,132 @@
       asp-controller="Cart" asp-action="Checkout"
       data-ajax="true" data-ajax-update="#tableCart"
       data-ajax-loading="#overlayLoadingDiv"
-      data-ajax-complete="cartComplete">
-    <div class="row">
-        <div class="col-lg-8 col-md-12 pt-2">
-            <div class="card">
-                <table class="table table-hover table-responsive text-center">
-                    <thead>
-                        <tr>
-                            <th style="width:45%;">Picture</th>
-                            <th style="width:15%;">Product Id</th>
-                            <th style="width:15%;">Price</th>
-                            <th style="width:15%;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            for (int i = 0; i < Model.CartProducts.Count(); i++)
-                            {
-                                <tr>
-                                    <td style="vertical-align:middle;">
-                                        <div class="row">
-                                            <div class="col-lg-6 col-sm-12">
-                                                <img src="@Url.Content(Model.CartProducts[i].PhotoLink)" class="img-thumbnail" />
-                                            </div>
-                                            <div class="col-lg-6 col-sm-12 my-auto text-left">
-
-                                                <p><strong>@Model.CartProducts[i].ProductName</strong></p>
-                                                <hr />
-                                                <p>
-                                                    <strong>Quantity per Unit: </strong>
-                                                    <input type="number" asp-for="@Model.CartProducts[i].QuantityOrdered" id="numQty_@i" min="1" max="50" class="form-control" onkeypress="return isNumber(event);" />
-                                                    <input type="hidden" asp-for="@Model.CartProducts[i].ProductId" />
-                                                    <input type="hidden" asp-for="@Model.CartProducts[i].ProductName" />
-                                                </p>
-                                                <p><strong>Units in Stock: </strong>@Model.CartProducts[i].StockQuantity</p>
-                                            </div>
+      data-ajax-complete="cartComplete"
+      id="CartForm">
+</form>
+<div class="row">
+    <div class="col-lg-8 col-md-12 pt-2">
+        <div class="card">
+            <table class="table table-hover table-responsive text-center">
+                <thead>
+                    <tr>
+                        <th style="width:45%;">Picture</th>
+                        <th style="width:15%;">Product Id</th>
+                        <th style="width:15%;">Price</th>
+                        <th style="width:15%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        for (int i = 0; i < Model.CartProducts.Count(); i++)
+                        {
+                            <tr>
+                                <td style="vertical-align:middle;">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-12">
+                                            <img src="@Url.Content(Model.CartProducts[i].PhotoLink)" class="img-thumbnail" />
                                         </div>
+                                        <div class="col-lg-6 col-sm-12 my-auto text-left">
 
-                                    </td>
-                                    <td style="vertical-align:middle;">@Model.CartProducts[i].ProductId</td>
-                                    <td style="vertical-align:middle;">@Model.CartProducts[i].ProductPrice</td>
-                                    <td style="vertical-align:middle;">
-                                        <a class="btn btn-gold btn-block"
-                                           asp-action="DeleteCartItem"
-                                           asp-controller="Cart"
-                                           asp-route-productId="@Model.CartProducts[i].ProductId"
-                                           data-ajax="true" data-ajax-update="#tableCart" 
-                                           data-ajax-loading="#overlayLoadingDiv" 
-                                           data-ajax-complete="negateTotalNumberOfCart"
-                                           id="deleteCartItem">
-                                            Delete <i class="fas fa-trash-alt"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            }
+                                            <p><strong>@Model.CartProducts[i].ProductName</strong></p>
+                                            <hr />
+                                            <p>
+                                                <strong>Quantity per Unit: </strong>
+                                                <input type="number" form="CartForm" readonly asp-for="@Model.CartProducts[i].QuantityOrdered" min="1" max="50" class="form-control" />
+                                                <input type="hidden" form="CartForm" asp-for="@Model.CartProducts[i].ProductId" />
+                                                <input type="hidden" form="CartForm" asp-for="@Model.CartProducts[i].ProductName" />
+                                            </p>
+                                            <a class="btn btn-gold" asp-controller="Cart" asp-action="DecrementProductCount" asp-route-productId="@Model.CartProducts[i].ProductId" data-ajax="true" data-ajax-update="#tableCart"
+                                               data-ajax-loading="#overlayLoadingDiv">-</a>
+                                            <a class="btn btn-gold" asp-controller="Cart" asp-action="IncrementProductCount" asp-route-productId="@Model.CartProducts[i].ProductId" data-ajax="true" data-ajax-update="#tableCart"
+                                               data-ajax-loading="#overlayLoadingDiv">+</a>
+                                            <p><strong>Units in Stock: </strong>@Model.CartProducts[i].StockQuantity</p>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                <td style="vertical-align:middle;">@Model.CartProducts[i].ProductId</td>
+                                <td style="vertical-align:middle;">@Model.CartProducts[i].ProductSubTotalPrice</td>
+                                <td style="vertical-align:middle;">
+                                    <a class="btn btn-gold btn-block"
+                                       asp-action="DeleteCartItem"
+                                       asp-controller="Cart"
+                                       asp-route-productId="@Model.CartProducts[i].ProductId"
+                                       data-ajax="true" data-ajax-update="#tableCart"
+                                       data-ajax-loading="#overlayLoadingDiv"
+                                       data-ajax-complete="negateTotalNumberOfCart"
+                                       id="deleteCartItem">
+                                        Delete <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
                         }
-                    </tbody>
-                </table>
-                @if (Model.CartProducts.Count() == 0)
-                {
-                    <div class="mx-auto">
-                        <div class="row">
-                            <lottie-player src="https://assets3.lottiefiles.com/temp/lf20_Celp8h.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
-                        </div>
+                    }
+                </tbody>
+            </table>
+            @if (Model.CartProducts.Count() == 0)
+            {
+                <div class="mx-auto">
+                    <div class="row">
+                        <lottie-player src="https://assets3.lottiefiles.com/temp/lf20_Celp8h.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
                     </div>
-                }
+                </div>
+            }
+
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-12 pt-2">
+        <div class="card p-2">
+            <div class="card-header">
+                <h3>Order Summary</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    @foreach (var product in Model.CartProducts)
+                    {
+                        <div class="col-6">
+                            <p><strong>@product.ProductName</strong></p>
+                        </div>
+                        <div class="col-6">
+                            <p><strong>@product.ProductSubTotalPrice</strong></p>
+                        </div>
+
+                        totalCartValue += product.ProductSubTotalPrice;
+                    }
+
+                </div>
 
             </div>
-        </div>
-        <div class="col-lg-4 col-md-12 pt-2">
-            <div class="card p-2">
-                <div class="card-header">
-                    <h3>Order Summary</h3>
+            <div class="card-footer">
+                <div class="row">
+                    <p><strong>SHIPPING</strong></p>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        @foreach (var product in Model.CartProducts)
-                        {
-                            <div class="col-6">
-                                <p><strong>@product.ProductName</strong></p>
-                            </div>
-                            <div class="col-6">
-                                <p><strong>@product.ProductPrice</strong></p>
-                            </div>
-
-                            totalCartValue += product.ProductPrice;
-                        }
-
+                <div class="row">
+                    <div class="input-group mb-3">
+                        <select class="custom-select" id="inputGroupSelect02" form="CartForm" asp-for="@Model.Courier">
+                            <option selected>Choose...</option>
+                            <option value="@Constants.Courier.FoodPanda">@nameof(Constants.Courier.FoodPanda)</option>
+                            <option value="@Constants.Courier.JNT">@nameof(Constants.Courier.JNT)</option>
+                            <option value="@Constants.Courier.NinjaVan">@nameof(Constants.Courier.NinjaVan)</option>
+                            <option value="@Constants.Courier.GogoExpress">@nameof(Constants.Courier.GogoExpress)</option>
+                        </select>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="inputGroupSelect02">Options</label>
+                        </div>
                     </div>
-
                 </div>
-                <div class="card-footer">
-                    <div class="row">
-                        <p><strong>SHIPPING</strong></p>
+                <div class="row">
+                    <div class="col-6">
+                        <p><strong>TOTAL COST</strong></p>
                     </div>
-                    <div class="row">
-                        <div class="input-group mb-3">
-                            <select class="custom-select" id="inputGroupSelect02" asp-for="@Model.Courier">
-                                <option selected>Choose...</option>
-                                <option value="@Constants.Courier.FoodPanda">@nameof(Constants.Courier.FoodPanda)</option>
-                                <option value="@Constants.Courier.JNT">@nameof(Constants.Courier.JNT)</option>
-                                <option value="@Constants.Courier.NinjaVan">@nameof(Constants.Courier.NinjaVan)</option>
-                                <option value="@Constants.Courier.GogoExpress">@nameof(Constants.Courier.GogoExpress)</option>
-                            </select>
-                            <div class="input-group-append">
-                                <label class="input-group-text" for="inputGroupSelect02">Options</label>
-                            </div>
-                        </div>
+                    <div class="col-6">
+                        <p><strong>PHP @totalCartValue</strong></p>
                     </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <p><strong>TOTAL COST</strong></p>
-                        </div>
-                        <div class="col-6">
-                            <p><strong>PHP @totalCartValue</strong></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <input type="submit" id="cartComplete" onclick="return checkIfCartHasItems(@cartItemsCount);" class="btn btn-gold btn-block" />
-                    </div>
+                </div>
+                <div class="row">
+                    <button type="submit" form="CartForm" id="cartComplete" onclick="return checkIfCartHasItems(@cartItemsCount);" class="btn btn-gold btn-block">Submit <i class="fas fa-paper-plane"></i></button>
                 </div>
             </div>
         </div>
     </div>
-</form>
-
-<script>
-
-
-    for (let i = 0; i < @cartItemsCount; i++) {
-        var quantityInitialValue = document.getElementById("numQty_" + i);
-        quantityInitialValue.defaultValue = 1;
-    }
-
-    function isNumber(evt) {
-        evt = (evt) ? evt : window.event;
-        var charCode = (evt.which) ? evt.which : evt.keyCode;
-        if ((charCode > 31 && charCode < 48) || charCode > 57) {
-            return false;
-        }
-        return true;
-    }
-</script>
+</div>

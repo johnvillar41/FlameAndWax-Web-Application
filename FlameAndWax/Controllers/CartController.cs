@@ -35,6 +35,20 @@ namespace FlameAndWax.Controllers
             return View(Cart.GetCartItems(userLoggedIn));
         }
 
+        public IActionResult IncrementProductCount(int productId)
+        {
+            var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+            Cart.IncrementProductCount(productId, userLoggedIn);            
+            return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedIn)});
+        }
+
+        public IActionResult DecrementProductCount(int productId)
+        {
+            var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+            Cart.DecrementProductCount(productId, userLoggedIn);
+            return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedIn) });
+        }
+
         public IActionResult DeleteCartItem(int productId)
         {
             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
@@ -73,7 +87,7 @@ namespace FlameAndWax.Controllers
                         Product = new ProductModel
                         {
                             ProductId = cartItem.ProductId,
-                            ProductPrice = productPriceServiceResult.Result //Fetch ProductPrice from service layer not from ui for safety                     
+                            ProductPrice = productPriceServiceResult.Result                    
                         },
                         TotalPrice = subTotalCost,
                         Quantity = cartItem.QuantityOrdered,
@@ -114,9 +128,11 @@ namespace FlameAndWax.Controllers
                 ProductName = productServiceResult.Result.ProductName,
                 ProductDescription = productServiceResult.Result.ProductDescription,
                 ProductPrice = productServiceResult.Result.ProductPrice,
+                ProductSubTotalPrice = productServiceResult.Result.ProductPrice,
                 PhotoLink = productServiceResult.Result.ProductGallery.FirstOrDefault().PhotoLink,
                 StockQuantity = productServiceResult.Result.QuantityPerUnit * productServiceResult.Result.UnitsInStock,
-                QuantityPerUnit = productServiceResult.Result.QuantityPerUnit
+                QuantityPerUnit = productServiceResult.Result.QuantityPerUnit,
+                QuantityOrdered = 1
             };
 
             Cart.AddCartItem(productViewModel, user);

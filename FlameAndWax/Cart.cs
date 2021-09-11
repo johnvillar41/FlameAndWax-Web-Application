@@ -28,7 +28,8 @@ namespace FlameAndWax
                 {
                     foreach (var product in keyValuePair.Value)
                     {
-                        totalCost += product.ProductPrice * quantityOrdered;
+                        product.ProductSubTotalPrice = product.ProductPrice * quantityOrdered;
+                        totalCost += product.ProductSubTotalPrice;
                     }
                 }
             }
@@ -88,7 +89,7 @@ namespace FlameAndWax
             }
         }
 
-        public void IncrementProductCount(int productID, string user)
+        public static void IncrementProductCount(int productID, string user)
         {
             foreach (KeyValuePair<string, List<ProductViewModel>> keyValuePair in CartItems)
             {
@@ -99,6 +100,7 @@ namespace FlameAndWax
                         if (productID == product.ProductId)
                         {
                             product.QuantityOrdered++;
+                            product.ProductSubTotalPrice = product.ProductPrice * product.QuantityOrdered;
                             return;
                         }
                     }
@@ -106,7 +108,7 @@ namespace FlameAndWax
             }
         }
 
-        public void DecrementProductCount(int productID, string user)
+        public static void DecrementProductCount(int productID, string user)
         {
             foreach (KeyValuePair<string, List<ProductViewModel>> keyValuePair in CartItems)
             {
@@ -116,7 +118,13 @@ namespace FlameAndWax
                     {
                         if (productID == product.ProductId)
                         {
-                            product.QuantityOrdered++;
+                            product.QuantityOrdered--;
+                            product.ProductSubTotalPrice = product.ProductPrice * product.QuantityOrdered;
+                            if (product.QuantityOrdered <= 0)
+                            {
+                                product.QuantityOrdered = 1;
+                                product.ProductSubTotalPrice = product.ProductPrice;
+                            }                                
                             return;
                         }
                     }
