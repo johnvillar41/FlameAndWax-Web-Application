@@ -51,29 +51,30 @@
                     </ul>
 
                 </div>
-
-                <div class="navbar-collapse collapse ">
+                <div class="navbar-collapse collapse ">                    
                     <ul class="navbar-nav ml-auto">
                         @if (User.Identity.IsAuthenticated)
                         {
                             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
                             var totalNumberOfCart = Cart.GetCartItems(userLoggedIn).Count();
-
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Cart" asp-action="Index"><i
+                                    class="fas fa-shopping-cart"></i>&nbsp;Cart<span
+                                    class="badge badge-pill badge-warning"
+                                    id="totalCartCount">@totalNumberOfCart</span></a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-user-circle"></i><strong> Welcome!</strong>,
-                                    @User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value                                    
+                                    @User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value
                                     <i class="fas fa-chevron-down"></i>
                                 </a>
                                 <div class="dropdown-menu">
 
                                     <a class="dropdown-item" asp-controller="UserProfile" asp-action="Index"><i
                                         class="fas fa-user-circle"></i> View Profile</a>
-                                    <a class="dropdown-item" asp-controller="Cart" asp-action="Index"><i
-                                        class="fas fa-shopping-cart"></i>&nbsp;Cart &nbsp;<span
-                                        class="badge badge-pill badge-warning"
-                                        id="totalCartCount">@totalNumberOfCart</span></a>
+
                                     <a class="dropdown-item" asp-controller="Orders" asp-action="Index">&nbsp;<i
                                         class="fas fa-clipboard-list"></i>&nbsp;Orders</a>
 

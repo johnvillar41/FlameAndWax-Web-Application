@@ -90,7 +90,7 @@ $('#sendMessage').click(function () {
             } else {
                 x.style.display = "none";
             }
-            
+
         }
     }
 });
@@ -162,7 +162,7 @@ animateCustomerReview = function () {
 
 $(document).ready(function () {
     $('#productCards').fadeIn();
-    $('#customerReviewCards').fadeIn();    
+    $('#customerReviewCards').fadeIn();
     $('#orderCards').fadeIn();
 });
 
@@ -207,34 +207,37 @@ addToCart = function (xhr) {
     }
 }
 
-$('#deleteCartItem').click(function () {
-    negateTotalNumberOfCart = function (xhr) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        })
-        if (xhr.status == "200") {
-            Toast.fire({
-                icon: 'success',
-                title: '<span style="color: #006400"><b>Success</b></span> Removed item from cart!',
-                background: '#CCFFCC',
-                iconColor: '#006400',
-            });
 
-            let totalCartNumValue = Number(document.getElementById('totalCartCount').innerHTML);
-            totalCartNumValue--;
-            document.getElementById('totalCartCount').innerHTML = totalCartNumValue;
-        }
-    }
+//Deletion of cart Items
+$('#deleteCartItem').click(function () {
+    negateTotalNumberOfCart(xhr);
 });
 
+negateTotalNumberOfCart = function (xhr) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+    if (xhr.status == "200") {
+        Toast.fire({
+            icon: 'success',
+            title: '<span style="color: #006400"><b>Success</b></span> Removed item from cart!',
+            background: '#CCFFCC',
+            iconColor: '#006400',
+        });
+
+        let totalCartNumValue = Number(document.getElementById('totalCartCount').innerHTML);
+        totalCartNumValue--;
+        document.getElementById('totalCartCount').innerHTML = totalCartNumValue;
+    }
+}
 updateAddToCartTotalCount = function (response) {
     var dataObject = JSON.parse(response);
     document.querySelector('#totalCartCount').innerHTML = dataObject;
