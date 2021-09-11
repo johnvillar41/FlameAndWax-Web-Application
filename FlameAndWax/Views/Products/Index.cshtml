@@ -5,30 +5,43 @@
 }
 <div class="container">
     <div class="row">
-        <h2>@ViewData["Title"]</h2>
-    </div>    
-</div>
-<hr />
-<div class="container">
+        <div class="col-12">
+            <h2>@ViewData["Title"]</h2>
+        </div>
+    </div>
+    <hr />
     <div class="row">
-        <h3>Filter&nbsp;</h3>
-        <div class="dropdown">
-            <button class="btn dropdown-toggle btn-gold" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Category <i class="fas fa-caret-square-down"></i>
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" onclick="update('All Products')" asp-action="Sort" asp-controller="Products" asp-route-category="@Constants.ALL_PRODUCTS" data-ajax="true" data-ajax-success="scrollUp" data-ajax-update="#content" data-ajax-loading="#loader">All Products</a>
-                <a class="dropdown-item" onclick="update('Candle')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Candle)" data-ajax="true" data-ajax-success="scrollUp" data-ajax-update="#content" data-ajax-loading="#loader">Candle</a>
-                <a class="dropdown-item" onclick="update('Soap')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Soap)" data-ajax="true" data-ajax-success="scrollUp" data-ajax-update="#content" data-ajax-loading="#loader">Soap</a>
-                <a class="dropdown-item" onclick="update('Diffuser')" asp-action="Sort" asp-controller="Products" asp-route-category="@nameof(Constants.Category.Diffuser)" data-ajax="true" data-ajax-success="scrollUp" data-ajax-update="#content" data-ajax-loading="#loader">Diffuser</a>
+        <div class="col-12">
+            <h3>Filter&nbsp;</h3>
+            <div class="dropdown">
+                <button class="btn dropdown-toggle btn-gold" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Category <i class="fas fa-caret-square-down"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" onclick="update('All Products')" asp-action="Sort"
+                        asp-controller="Products" asp-route-category="@Constants.ALL_PRODUCTS" data-ajax="true"
+                        data-ajax-success="scrollUp" data-ajax-update="#content" data-ajax-loading="#loader">All
+                        Products</a>
+                    <a class="dropdown-item" onclick="update('Candle')" asp-action="Sort" asp-controller="Products"
+                        asp-route-category="@nameof(Constants.Category.Candle)" data-ajax="true"
+                        data-ajax-success="scrollUp" data-ajax-update="#content" data-ajax-loading="#loader">Candle</a>
+                    <a class="dropdown-item" onclick="update('Soap')" asp-action="Sort" asp-controller="Products"
+                        asp-route-category="@nameof(Constants.Category.Soap)" data-ajax="true"
+                        data-ajax-success="scrollUp" data-ajax-update="#content" data-ajax-loading="#loader">Soap</a>
+                    <a class="dropdown-item" onclick="update('Diffuser')" asp-action="Sort" asp-controller="Products"
+                        asp-route-category="@nameof(Constants.Category.Diffuser)" data-ajax="true"
+                        data-ajax-success="scrollUp" data-ajax-update="#content"
+                        data-ajax-loading="#loader">Diffuser</a>
+                </div>
             </div>
         </div>
         <div class="spinner-border ml-2" role="status" id="loader" style="display:none;">
             <span class="sr-only">Loading...</span>
         </div>
     </div>
-</div>
-<hr />
-<div class="container" id="content">
-    @await Html.PartialAsync("../Products/ProductsPartial", Model)
+    <hr />
+    <div id="content">
+        @await Html.PartialAsync("../Products/ProductsPartial", Model)
+    </div>
 </div>
