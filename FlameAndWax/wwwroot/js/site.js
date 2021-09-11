@@ -276,7 +276,28 @@ $('#registerUser').click(function () {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         });
-        if (xhr.status == "200") {
+        var passwordField = document.getElementById("txtPassword").value;
+        var verifyPasswordField = document.getElementById("txtVerifyPassword").value;
+        var arePasswordFieldsEqual = false;
+
+        if (passwordField === verifyPasswordField) {
+            arePasswordFieldsEqual = true;
+            document.getElementById("txtPassword").classList.remove('is-invalid');
+            document.getElementById("txtVerifyPassword").classList.remove('is-invalid');
+        }          
+
+        else {
+            document.getElementById("txtPassword").classList.add('is-invalid');
+            document.getElementById("txtVerifyPassword").classList.add('is-invalid');
+            Toast.fire({
+                icon: 'error',
+                title: '<span style="color: #8b0000"><b>Error!</b></span> Password fields are not equal!',
+                background: '#FF7F7F',
+                iconColor: '#8b0000',
+            });
+        }
+
+        if (xhr.status == "200" && arePasswordFieldsEqual) {            
             Toast.fire({
                 icon: 'success',
                 title: '<span style="color: #006400"><b>Success</b></span> Registered new user!',
@@ -336,10 +357,15 @@ errorContent = function (response) {
             toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
     });
+    var errorContent = response.responseJSON.errorContent;
+    if (errorContent === "Duplicate Username! Please try a different username")
+        document.getElementById("txtUsername").classList.add('is-invalid');
+    else
+        document.getElementById("txtUsername").classList.remove('is-invalid');
 
     Toast.fire({
         icon: 'error',
-        title: '<span style="color: #8b0000"><b>Error!</b></span> ' + response.responseJSON.errorContent,
+        title: '<span style="color: #8b0000"><b>Error!</b></span> ' + errorContent,
         background: '#FF7F7F',
         iconColor: '#8b0000',
     });

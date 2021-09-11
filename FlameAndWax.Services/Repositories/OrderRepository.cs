@@ -145,7 +145,7 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM OrdersTable  WHERE CustomerId = @customerId AND Status = @status ORDER by OrderId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
+            var queryString = "SELECT * FROM OrdersTable  WHERE CustomerId = @customerId AND Status = @status ORDER by OrderId DESC OFFSET (@PageNumber - 1) * @PageSize ROWS " +
                 "FETCH NEXT @PageSize ROWS ONLY";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@customerId", customerId);
