@@ -5,8 +5,8 @@ using System.Linq;
 namespace FlameAndWax
 {
     public class Cart
-    {        
-        private static readonly Dictionary<string, List<ProductViewModel>> CartItems = new Dictionary<string, List<ProductViewModel>>();        
+    {
+        private static readonly Dictionary<string, List<ProductViewModel>> CartItems = new Dictionary<string, List<ProductViewModel>>();
         public static void ClearCartItems(string user)
         {
             foreach (KeyValuePair<string, List<ProductViewModel>> keyValuePair in CartItems)
@@ -28,7 +28,7 @@ namespace FlameAndWax
                 {
                     foreach (var product in keyValuePair.Value)
                     {
-                        totalCost += product.ProductPrice * quantityOrdered;                        
+                        totalCost += product.ProductPrice * quantityOrdered;
                     }
                 }
             }
@@ -47,13 +47,13 @@ namespace FlameAndWax
             {
                 if (keyValuePair.Key.Equals(loggedInUser))
                 {
-                    foreach(var product in keyValuePair.Value)
+                    foreach (var product in keyValuePair.Value)
                     {
-                        if(product.ProductId == cartProduct.ProductId)
+                        if (product.ProductId == cartProduct.ProductId)
                         {
                             return;
                         }
-                    }                   
+                    }
                     keyValuePair.Value.Add(cartProduct);
                 }
             }
@@ -87,43 +87,41 @@ namespace FlameAndWax
                 }
             }
         }
-        //    public static int CalculateTotalSales()
-        //    {
-        //        int totalSale = 0;
-        //        foreach (KeyValuePair<string, List<ProductModel>> keyValuePair in CartItems)
-        //        {
-        //            if (keyValuePair.Key.Equals(UserSession.SingleInstance.GetLoggedInUser()))
-        //            {
-        //                for (int i = 0; i < keyValuePair.Value.Count; i++)
-        //                {
-        //                    totalSale += (keyValuePair.Value[i].ProductPrice * keyValuePair.Value[i].TotalNumberOfProduct);
-        //                }
-        //            }
-        //        }
-        //        return totalSale;
-        //    }
 
-        //    public static List<OnsiteProductsTransactionModel> ListOfOnsiteProducts(int transactionID)
-        //    {
-        //        List<OnsiteProductsTransactionModel> OnSiteProducts = new List<OnsiteProductsTransactionModel>();
-        //        foreach (KeyValuePair<string, List<ProductModel>> keyValuePair in CartItems)
-        //        {
-        //            for (int i = 0; i < keyValuePair.Value.Count; i++)
-        //            {
-        //                OnSiteProducts.Add(
-        //                   new OnsiteProductsTransactionModel
-        //                   {
-        //                       TransactionID = transactionID,
-        //                       Product = keyValuePair.Value[i],
-        //                       TotalProductsCount = keyValuePair.Value[i].TotalNumberOfProduct,
-        //                       Administrator = UserSession.SingleInstance.GetLoggedInUser(),
-        //                       SubTotalPrice = keyValuePair.Value[i].TotalNumberOfProduct * keyValuePair.Value[i].ProductPrice
-        //                   }
-        //               );
-        //            }
-        //        }
-        //        return OnSiteProducts;
-        //    }
-        //}
+        public void IncrementProductCount(int productID, string user)
+        {
+            foreach (KeyValuePair<string, List<ProductViewModel>> keyValuePair in CartItems)
+            {
+                if (keyValuePair.Key.Equals(user))
+                {
+                    foreach (var product in keyValuePair.Value)
+                    {
+                        if (productID == product.ProductId)
+                        {
+                            product.QuantityOrdered++;
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void DecrementProductCount(int productID, string user)
+        {
+            foreach (KeyValuePair<string, List<ProductViewModel>> keyValuePair in CartItems)
+            {
+                if (keyValuePair.Key.Equals(user))
+                {
+                    foreach (var product in keyValuePair.Value)
+                    {
+                        if (productID == product.ProductId)
+                        {
+                            product.QuantityOrdered++;
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
