@@ -19,7 +19,7 @@ namespace FlameAndWax.Models
             Fullname = customerModel.CustomerName;
             ContactNumber = customerModel.ContactNumber;
             Email = customerModel.Email;
-            Address = customerModel.Address;
+            Address = customerModel.Address.Address;
             Password = customerModel.Password;
             Username = customerModel.Username;
             ProfilePictureLink = customerModel.ProfilePictureLink;

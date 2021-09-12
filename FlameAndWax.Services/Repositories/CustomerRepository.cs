@@ -10,6 +10,11 @@ namespace FlameAndWax.Data.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
+        private readonly IShippingAddressRepository _shippingAddressRepository;
+        public CustomerRepository(IShippingAddressRepository shippingAddressRepository)
+        {
+            _shippingAddressRepository = shippingAddressRepository;
+        }
         public async Task<int> Add(CustomerModel Data, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
@@ -77,7 +82,7 @@ namespace FlameAndWax.Data.Repositories
                     Password = reader["Password"].ToString(),
                     ProfilePictureLink = reader["ProfilePictureLink"].ToString(),
                     Status = ServiceHelper.ConvertStringToCustomerAccountStatus(reader["Status"].ToString()),
-                    Address = reader["Address"].ToString()
+                    Address = await _shippingAddressRepository.Fetch(int.Parse(reader["ShippingAddressId"].ToString()), connectionString)
                 };
             }
             return null;
@@ -108,7 +113,7 @@ namespace FlameAndWax.Data.Repositories
                         Password = reader["Password"].ToString(),
                         ProfilePictureLink = reader["ProfilePictureLink"].ToString(),
                         Status = ServiceHelper.ConvertStringToCustomerAccountStatus(reader["Status"].ToString()),
-                        Address = reader["Address"].ToString()
+                        Address = await _shippingAddressRepository.Fetch(int.Parse(reader["ShippingAddressId"].ToString()), connectionString)
                     }
                 );
             }

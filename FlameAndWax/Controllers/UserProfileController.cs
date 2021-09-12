@@ -65,7 +65,7 @@ namespace FlameAndWax.Controllers
             customerModel.Email = userProfile.Email;
             customerModel.Username = userProfile.Username;
             customerModel.Password = userProfile.Password;
-            customerModel.Address = userProfile.Address;
+            customerModel.Address = null; //TODO FIX THIS
 
             var customerServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userId), ConnectionString);
             if (customerServiceResult.HasError) return BadRequest(new { errorContent = customerServiceResult.ErrorContent });
