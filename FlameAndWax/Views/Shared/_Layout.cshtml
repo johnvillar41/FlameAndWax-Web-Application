@@ -51,7 +51,7 @@
                     </ul>
 
                 </div>
-                <div class="navbar-collapse collapse ">                    
+                <div class="navbar-collapse collapse ">
                     <ul class="navbar-nav ml-auto">
                         @if (User.Identity.IsAuthenticated)
                         {
@@ -133,12 +133,12 @@
                             <li>
                                 <img src="~/images/icons/Facebook-removebg-preview.png"
                                     class="imageFooter" /><strong>Facebook</strong>: <a
-                                    href="https://www.facebook.com/FlameandWaxPH13/">FlameandWaxPH13</a>
+                                    href="#" onclick="openFacebook();">FlameandWaxPH13</a>
                             </li>
                             <li>
                                 <img src="~/images/icons/Instagram-removebg-preview.png"
                                     class="imageFooter" /><strong>Instagram</strong>: <a
-                                    href="https://www.instagram.com/flameandwax13/">flameandwax13</a>
+                                    href="#" onclick="openInstagram();">flameandwax13</a>
                             </li>
                             <li>
                                 <img src="~/images/icons/Message-removebg-preview.png"
@@ -169,5 +169,4 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @RenderSection("Scripts", required: false)
 </body>
-
 </html>
