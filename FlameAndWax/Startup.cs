@@ -44,6 +44,7 @@ namespace FlameAndWax
             services.AddSingleton<IMessageRepository, MessageRepository>();
             services.AddSingleton<IProductGalleryRepository, ProductGalleryRepository>();
             services.AddSingleton<IPreviouslyOrderedProductsRepository, PreviouslyOrderedProductsRepository>();
+            services.AddSingleton<IShippingAddressRepository, ShippingAddressRepository>();
 
             //Dependency Injection Services
             services.AddSingleton<IProductsService, ProductService>();             
