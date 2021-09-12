@@ -7,12 +7,7 @@ using FlameAndWax.Services.Repositories.Interfaces;
 namespace FlameAndWax.Services.Repositories
 {
     public class ShippingAddressRepository : IShippingAddressRepository
-    {
-        private readonly ICustomerRepository _customerRepository;
-        public ShippingAddressRepository(ICustomerRepository customerRepository)
-        {
-            _customerRepository = customerRepository;
-        }
+    {                
         public async Task<int> Add(ShippingAddressModel Data, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
@@ -49,11 +44,11 @@ namespace FlameAndWax.Services.Repositories
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
-                var customerModel = await _customerRepository.Fetch(int.Parse(reader["CustomerId"].ToString()), connectionString);
+              
                 return new ShippingAddressModel
                 {
                     ShippingAddressId = int.Parse(reader["ShippingAddressId"].ToString()),
-                    Customer = customerModel,
+                    CustomerId = int.Parse(reader["CustomerId"].ToString()),
                     Address = reader["Address"].ToString(),
                     PostalCode = int.Parse(reader["PostalCode"].ToString()),
                     City = reader["City"].ToString(),
