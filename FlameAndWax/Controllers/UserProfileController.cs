@@ -39,16 +39,7 @@ namespace FlameAndWax.Controllers
             var accountDetailServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userId), ConnectionString);
             if (accountDetailServiceResult.HasError) return BadRequest(new { errorContent = accountDetailServiceResult.ErrorContent });
 
-            var userProfile = new UserProfileViewModel
-            {
-                Fullname = accountDetailServiceResult.Result.CustomerName,
-                ContactNumber = accountDetailServiceResult.Result.ContactNumber,
-                Email = accountDetailServiceResult.Result.Email,
-                Address = accountDetailServiceResult.Result.Address,
-                Password = accountDetailServiceResult.Result.Password,
-                Username = accountDetailServiceResult.Result.Username,
-                ProfilePictureLink = accountDetailServiceResult.Result.ProfilePictureLink
-            };
+            var userProfile = new UserProfileViewModel(accountDetailServiceResult.Result);           
 
             return View(userProfile);
         }
@@ -88,16 +79,7 @@ namespace FlameAndWax.Controllers
             var accountDetailServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userId), ConnectionString);
             if (accountDetailServiceResult.HasError) return BadRequest(new { errorContent = accountDetailServiceResult.ErrorContent });
 
-            var userProfileViewModel = new UserProfileViewModel
-            {
-                Fullname = accountDetailServiceResult.Result.CustomerName,
-                ContactNumber = accountDetailServiceResult.Result.ContactNumber,
-                Email = accountDetailServiceResult.Result.Email,
-                Address = accountDetailServiceResult.Result.Address,
-                Password = accountDetailServiceResult.Result.Password,
-                Username = accountDetailServiceResult.Result.Username,
-                ProfilePictureLink = accountDetailServiceResult.Result.ProfilePictureLink
-            };
+            var userProfileViewModel = new UserProfileViewModel(accountDetailServiceResult.Result);           
             return PartialView("ProfilePartial", userProfileViewModel);
         }
 

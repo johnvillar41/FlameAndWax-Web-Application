@@ -1,4 +1,7 @@
-﻿namespace FlameAndWax.Models
+﻿using FlameAndWax.Data.Models;
+using System.Linq;
+
+namespace FlameAndWax.Models
 {
     public class ProductViewModel
     {
@@ -12,5 +15,21 @@
         public int QuantityPerUnit { get; set; }
         public int UnitsInStock { get; set; }
         public int QuantityOrdered { get; set; }
+        public ProductViewModel(ProductModel productModel)
+        {
+            ProductId = productModel.ProductId;
+            ProductName = productModel.ProductName;
+            ProductDescription = productModel.ProductDescription;
+            ProductPrice = productModel.ProductPrice;
+            ProductSubTotalPrice = productModel.ProductPrice;
+            PhotoLink = productModel.ProductGallery.FirstOrDefault().PhotoLink;
+            StockQuantity = productModel.QuantityPerUnit * productModel.UnitsInStock;
+            QuantityPerUnit = productModel.QuantityPerUnit;
+            QuantityOrdered = 1;
+        }
+        public ProductViewModel()
+        {
+
+        }
     }
 }

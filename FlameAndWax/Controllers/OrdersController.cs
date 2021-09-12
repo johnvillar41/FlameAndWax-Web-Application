@@ -41,8 +41,8 @@ namespace FlameAndWax.Controllers
             ViewData["OrderStatus"] = nameof(Constants.OrderStatus.Pending);
 
             var orderViewModels = new List<OrderViewModel>();
-            foreach (var order in ordersServiceResult.Result) BuildOrderViewModels(order.OrderDetails, orderViewModels, order);         
-                
+            foreach (var order in ordersServiceResult.Result) BuildOrderViewModels(order.OrderDetails, orderViewModels, order);
+
             return View(orderViewModels);
         }
 
@@ -78,30 +78,10 @@ namespace FlameAndWax.Controllers
             var orderDetails = new List<OrderDetailViewModel>();
             foreach (var orderDetail in orderDetailServiceResult)
             {
-                orderDetails.Add(
-                        new OrderDetailViewModel
-                        {
-                            ProductId = orderDetail.Product.ProductId,
-                            ProductPictureLink = orderDetail.Product.ProductGallery.FirstOrDefault().PhotoLink,
-                            ProductQuantityOrdered = orderDetail.Quantity,
-                            SubTotalPrice = orderDetail.TotalPrice,
-                            Status = orderDetail.Status
-                        }
-                    );
-            }
+                orderDetails.Add(new OrderDetailViewModel(orderDetail));
 
-            orderViewModels.Add(
-                    new OrderViewModel
-                    {
-                        OrderId = order.OrderId,
-                        Date = order.DateOrdered,
-                        ModeOfPayment = order.ModeOfPayment,
-                        Courier = order.Courier,
-                        TotalCost = order.TotalCost,
-                        Status = order.Status,
-                        OrderDetails = orderDetails
-                    }
-                );
+            }
+            orderViewModels.Add(new OrderViewModel(order, orderDetails));
         }
     }
 }

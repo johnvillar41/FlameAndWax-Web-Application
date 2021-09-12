@@ -122,18 +122,7 @@ namespace FlameAndWax.Controllers
             var productServiceResult = await _cartService.FetchProductDetail(productId, ConnectionString);
             if (productServiceResult.HasError) return RedirectToAction("Index", "Error", new { productServiceResult.ErrorContent });
 
-            var productViewModel = new ProductViewModel
-            {
-                ProductId = productId,
-                ProductName = productServiceResult.Result.ProductName,
-                ProductDescription = productServiceResult.Result.ProductDescription,
-                ProductPrice = productServiceResult.Result.ProductPrice,
-                ProductSubTotalPrice = productServiceResult.Result.ProductPrice,
-                PhotoLink = productServiceResult.Result.ProductGallery.FirstOrDefault().PhotoLink,
-                StockQuantity = productServiceResult.Result.QuantityPerUnit * productServiceResult.Result.UnitsInStock,
-                QuantityPerUnit = productServiceResult.Result.QuantityPerUnit,
-                QuantityOrdered = 1
-            };
+            var productViewModel = new ProductViewModel(productServiceResult.Result);           
 
             Cart.AddCartItem(productViewModel, user);
             var cartItems = Cart.GetCartItems(user);

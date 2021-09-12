@@ -1,4 +1,6 @@
-﻿using static FlameAndWax.Data.Constants.Constants;
+﻿using FlameAndWax.Data.Models;
+using System.Linq;
+using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Models
 {
@@ -9,5 +11,16 @@ namespace FlameAndWax.Models
         public int ProductQuantityOrdered { get; set; }
         public double SubTotalPrice { get; set; }
         public OrderStatus Status { get; set; }
+        public OrderDetailViewModel(OrderDetailModel orderDetailModel)
+        {
+            ProductId = orderDetailModel.Product.ProductId;
+            ProductPictureLink = orderDetailModel.Product.ProductGallery.FirstOrDefault().PhotoLink;
+            SubTotalPrice = orderDetailModel.TotalPrice;
+            Status = orderDetailModel.Status;
+        }
+        public OrderDetailViewModel()
+        {
+
+        }
     }
 }

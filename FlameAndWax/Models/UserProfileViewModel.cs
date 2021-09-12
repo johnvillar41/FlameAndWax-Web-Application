@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FlameAndWax.Data.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace FlameAndWax.Models
 {
@@ -13,5 +14,19 @@ namespace FlameAndWax.Models
         public string Username { get; set; }
         public string ProfilePictureLink { get; set; }
         public IFormFile ProfilePictureFile { get; set; }
+        public UserProfileViewModel(CustomerModel customerModel)
+        {
+            Fullname = customerModel.CustomerName;
+            ContactNumber = customerModel.ContactNumber;
+            Email = customerModel.Email;
+            Address = customerModel.Address;
+            Password = customerModel.Password;
+            Username = customerModel.Username;
+            ProfilePictureLink = customerModel.ProfilePictureLink;
+        }
+        public UserProfileViewModel()
+        {
+
+        }
     }
 }

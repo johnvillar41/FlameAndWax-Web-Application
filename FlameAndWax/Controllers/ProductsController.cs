@@ -143,18 +143,7 @@ namespace FlameAndWax.Controllers
             var customerReviewViewModels = new List<CustomerReviewViewModel>();
             foreach (var customerReview in customerReviewServiceResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReview);
 
-            var productDetailViewModel = new ProductDetailViewModel
-            {
-                ProductId = productId,
-                ProductName = productServiceResult.Result.ProductName,
-                ProductDescription = productServiceResult.Result.ProductDescription,
-                ProductPrice = productServiceResult.Result.ProductPrice,
-                UnitPrice = productServiceResult.Result.UnitPrice,
-                UnitsInStock = productServiceResult.Result.UnitsInStock,
-                CustomerReviews = customerReviewViewModels,
-                ProductGallery = productServiceResult.Result.ProductGallery,
-
-            };
+            var productDetailViewModel = new ProductDetailViewModel(productServiceResult.Result, customerReviewViewModels);           
 
             if (User.Identity.IsAuthenticated)
             {
@@ -171,38 +160,13 @@ namespace FlameAndWax.Controllers
         {
             foreach (var product in productServiceResult)
             {
-                productsViewModel.Add(new ProductViewModel
-                {
-                    ProductId = product.ProductId,
-                    ProductName = product.ProductName,
-                    ProductDescription = product.ProductDescription,
-                    ProductSubTotalPrice = product.ProductPrice,
-                    PhotoLink = product.ProductGallery.FirstOrDefault().PhotoLink,
-                    StockQuantity = product.UnitsInStock * product.QuantityPerUnit,
-                    QuantityPerUnit = product.QuantityPerUnit,
-                    UnitsInStock = product.UnitsInStock
-                });
+                productsViewModel.Add(new ProductViewModel(product));                
             }
         }
 
         private void BuildReviewViewModels(List<CustomerReviewViewModel> customerReviewViewModels, CustomerReviewModel customerReviewResult)
         {
-            customerReviewViewModels.Add(
-                new CustomerReviewViewModel
-                {
-                    ReviewId = customerReviewResult.ReviewId,
-                    ProductId = customerReviewResult.Product.ProductId,
-                    ReviewDetail = customerReviewResult.ReviewDetail,
-                    ReviewScore = customerReviewResult.ReviewScore,
-                    Customer = new CustomerViewModel
-                    {
-                        CustomerId = customerReviewResult.Customer.CustomerId,
-                        CustomerName = customerReviewResult.Customer.CustomerName,
-                        ContactNumber = customerReviewResult.Customer.ContactNumber,
-                        ProfilePictureLink = customerReviewResult.Customer.ProfilePictureLink
-                    }
-                }
-            );
+            customerReviewViewModels.Add(new CustomerReviewViewModel(customerReviewResult));              
         }
     }
 }
