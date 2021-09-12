@@ -8,6 +8,11 @@ namespace FlameAndWax.Services.Repositories
 {
     public class ShippingAddressRepository : IShippingAddressRepository
     {
+        private readonly ICustomerRepository _customerRepository;
+        public ShippingAddressRepository(ICustomerRepository customerRepository)
+        {
+            _customerRepository = customerRepository;
+        }
         public async Task<int> Add(ShippingAddressModel Data, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
@@ -24,14 +29,39 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public Task Delete(int id, string connectionString)
+        public async Task Delete(int id, string connectionString)
         {
-            throw new System.NotImplementedException();
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            var queryString = "DELETE FROM ShippingAddressTable WHERE ShippingAddressId = @id";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@id", id);
+            await command.ExecuteNonQueryAsync();
         }
 
-        public Task<ShippingAddressModel> Fetch(int id, string connectionString)
+        public async Task<ShippingAddressModel> Fetch(int id, string connectionString)
         {
-            throw new System.NotImplementedException();
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            var queryString = "SELECT * FROM ShippingAddressTable WHERE ShippingAddressId = @id";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@id", id);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                var customerModel = await _customerRepository.Fetch(int.Parse(reader["CustomerId"].ToString()), connectionString);
+                return new ShippingAddressModel
+                {
+                    ShippingAddressId = int.Parse(reader["ShippingAddressId"].ToString()),
+                    Customer = customerModel,
+                    Address = reader["Address"].ToString(),
+                    PostalCode = int.Parse(reader["PostalCode"].ToString()),
+                    City = reader["City"].ToString(),
+                    Region = reader["Region"].ToString(),
+                    Country = reader["Country"].ToString()
+                };
+            }
+            return null;
         }
 
         public Task<IEnumerable<ShippingAddressModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
