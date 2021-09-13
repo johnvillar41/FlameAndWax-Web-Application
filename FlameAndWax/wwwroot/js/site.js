@@ -49,89 +49,86 @@ function resetText() {
 }
 
 //For saving User profile
-$('#submit').click(function () {
-    completed = function (xhr) {
+
+completedUserProfile = function (xhr) {
+    var x = document.getElementById("completed");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+        if (xhr.status == "200") {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your profile has been saved',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+    } else {
+        x.style.display = "none";
+    }
+}
+
+//For adding productReview
+completedReviewComment = function (xhr) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+    if (xhr.status == "200") {
+        Toast.fire({
+            icon: 'success',
+            title: '<span style="color: #006400"><b>Success</b></span> Comment Submitted!',
+            background: '#CCFFCC',
+            iconColor: '#006400',
+        });
+        animateCustomerReview();
+    }
+}
+
+
+//For saving User profile
+completedSendMessage = function (xhr) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+    if (xhr.status == "200") {
+        Toast.fire({
+            icon: 'success',
+            title: '<span style="color: #006400"><b>Success</b></span> Message Submitted!',
+            background: '#CCFFCC',
+            iconColor: '#006400',
+        });
+
+        document.getElementById('name').value = "";
+        document.getElementById('email').value = "";
+        document.getElementById('phone').value = "";
+        document.getElementById('message').value = "";
+
         var x = document.getElementById("completed");
         if (x.style.display === "none") {
             x.style.display = "block";
-            if (xhr.status == "200") {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Your profile has been saved',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-            }
         } else {
             x.style.display = "none";
         }
+
     }
-});
+}
 
-//For adding productReview
-$('#btnAddReview').click(function () {
-    completedReviewComment = function (xhr) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-        if (xhr.status == "200") {
-            Toast.fire({
-                icon: 'success',
-                title: '<span style="color: #006400"><b>Success</b></span> Comment Submitted!',
-                background: '#CCFFCC',
-                iconColor: '#006400',
-            });
-            animateCustomerReview();
-        }
-    }
-});
-
-//For saving User profile
-$('#sendMessage').click(function () {
-    completed = function (xhr) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-        if (xhr.status == "200") {
-            Toast.fire({
-                icon: 'success',
-                title: '<span style="color: #006400"><b>Success</b></span> Message Submitted!',
-                background: '#CCFFCC',
-                iconColor: '#006400',
-            });
-
-            document.getElementById('name').value = "";
-            document.getElementById('email').value = "";
-            document.getElementById('phone').value = "";
-            document.getElementById('message').value = "";
-
-            var x = document.getElementById("completed");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-
-        }
-    }
-});
 
 //For cart submission trigger
 
@@ -344,50 +341,50 @@ scrollUp = function () {
 //Registraing new User Functions-----------------------------------------------------
 
 //For Registering new User
-$('#registerUser').click(function () {
-    registrationComplete = function (xhr) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-        var passwordField = document.getElementById("txtPassword").value;
-        var verifyPasswordField = document.getElementById("txtVerifyPassword").value;
-        var arePasswordFieldsEqual = false;
 
-        if (passwordField === verifyPasswordField) {
-            arePasswordFieldsEqual = true;
-            document.getElementById("txtPassword").classList.remove('is-invalid');
-            document.getElementById("txtVerifyPassword").classList.remove('is-invalid');
+registrationComplete = function (xhr) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
+    });
+    var passwordField = document.getElementById("txtPassword").value;
+    var verifyPasswordField = document.getElementById("txtVerifyPassword").value;
+    var arePasswordFieldsEqual = false;
 
-        else {
-            document.getElementById("txtPassword").classList.add('is-invalid');
-            document.getElementById("txtVerifyPassword").classList.add('is-invalid');
-            Toast.fire({
-                icon: 'error',
-                title: '<span style="color: #8b0000"><b>Error!</b></span> Password fields are not equal!',
-                background: '#FF7F7F',
-                iconColor: '#8b0000',
-            });
-        }
-
-        if (xhr.status == "200" && arePasswordFieldsEqual) {
-            Toast.fire({
-                icon: 'success',
-                title: '<span style="color: #006400"><b>Success</b></span> Registered new user!',
-                background: '#CCFFCC',
-                iconColor: '#006400',
-            });
-        }
+    if (passwordField === verifyPasswordField) {
+        arePasswordFieldsEqual = true;
+        document.getElementById("txtPassword").classList.remove('is-invalid');
+        document.getElementById("txtVerifyPassword").classList.remove('is-invalid');
     }
-});
+
+    else {
+        document.getElementById("txtPassword").classList.add('is-invalid');
+        document.getElementById("txtVerifyPassword").classList.add('is-invalid');
+        Toast.fire({
+            icon: 'error',
+            title: '<span style="color: #8b0000"><b>Error!</b></span> Password fields are not equal!',
+            background: '#FF7F7F',
+            iconColor: '#8b0000',
+        });
+    }
+
+    if (xhr.status == "200" && arePasswordFieldsEqual) {
+        Toast.fire({
+            icon: 'success',
+            title: '<span style="color: #006400"><b>Success</b></span> Registered new user!',
+            background: '#CCFFCC',
+            iconColor: '#006400',
+        });
+    }
+}
+
 
 //Registraing new User Functions-----------------------------------------------------
 
