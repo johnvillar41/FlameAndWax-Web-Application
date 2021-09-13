@@ -26,11 +26,11 @@ namespace FlameAndWax.Services.Services
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(null, true, e.Message); }
         }
-        public async Task<ServiceResult<int>> FetchTotalNumberOfOrdersByOrderStatus(OrderStatus? orderStatus, string connection)
+        public async Task<ServiceResult<int>> FetchTotalNumberOfOrdersByOrderStatus(OrderStatus? orderStatus, string connection, int customerId)
         {
             try
             {
-                var totalNumberOfProducts = await _orderRepository.FetchTotalNumberOfOrders(orderStatus, connection);
+                var totalNumberOfProducts = await _orderRepository.FetchTotalNumberOfOrders(orderStatus, connection, customerId);
                 return ServiceHelper.BuildServiceResult<int>(totalNumberOfProducts, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }

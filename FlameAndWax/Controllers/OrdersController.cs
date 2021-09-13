@@ -34,7 +34,7 @@ namespace FlameAndWax.Controllers
             var ordersServiceResult = await _ordersService.FetchOrdersByStatus(pageNumber, pageSize, int.Parse(customerIdLoggedIn), Constants.OrderStatus.Pending, ConnectionString);
             if (ordersServiceResult.HasError) return BadRequest(new { errorContent = ordersServiceResult.ErrorContent });
 
-            var totalNumberOfOrdersServiceResult = await _ordersService.FetchTotalNumberOfOrdersByOrderStatus(Constants.OrderStatus.Pending, ConnectionString);
+            var totalNumberOfOrdersServiceResult = await _ordersService.FetchTotalNumberOfOrdersByOrderStatus(Constants.OrderStatus.Pending, ConnectionString, int.Parse(customerIdLoggedIn));
 
             var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfOrdersServiceResult.Result / pageSize);
             ViewData["OrderCount"] = (int)totalNumberOfPages;
@@ -52,7 +52,7 @@ namespace FlameAndWax.Controllers
             var categorizedOrdersServiceResult = await _ordersService.FetchOrdersByStatus(pageNumber, pageSize, int.Parse(customerIdLoggedIn), ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString);
             if (categorizedOrdersServiceResult.HasError) return BadRequest(new { errorContent = categorizedOrdersServiceResult.ErrorContent });
 
-            var totalNumberOfOrdersServiceResult = await _ordersService.FetchTotalNumberOfOrdersByOrderStatus(ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString);
+            var totalNumberOfOrdersServiceResult = await _ordersService.FetchTotalNumberOfOrdersByOrderStatus(ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString, int.Parse(customerIdLoggedIn));
 
             var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfOrdersServiceResult.Result / pageSize);
             ViewData["OrderCount"] = (int)totalNumberOfPages;

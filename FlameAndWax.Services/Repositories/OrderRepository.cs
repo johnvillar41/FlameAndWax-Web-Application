@@ -139,7 +139,7 @@ namespace FlameAndWax.Services.Repositories
             return orders;
         }
 
-        public async Task<IEnumerable<OrderModel>> FetchPaginatedCategorizedOrders(int pageNumber,int pageSize, int customerId, Constants.OrderStatus orderStatus, string connectionString)
+        public async Task<IEnumerable<OrderModel>> FetchPaginatedCategorizedOrders(int pageNumber, int pageSize, int customerId, Constants.OrderStatus orderStatus, string connectionString)
         {
             List<OrderModel> orders = new List<OrderModel>();
 
@@ -197,23 +197,24 @@ namespace FlameAndWax.Services.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<int> FetchTotalNumberOfOrders(Constants.OrderStatus? orderStatus, string connectionString)
+        public async Task<int> FetchTotalNumberOfOrders(Constants.OrderStatus? orderStatus, string connectionString, int customerId)
         {
             var totalNumberOfProducts = 0;
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
             var queryString = "";
             if (orderStatus == null)
-                queryString = "SELECT COUNT(OrderId) as total FROM OrdersTable";
+                queryString = "SELECT COUNT(OrderId) as total FROM OrdersTable WHERE CustomerId = @customerId";
             else
-                queryString = "SELECT COUNT(OrderId) as total FROM OrdersTable WHERE Status = @orderStatus";
+                queryString = "SELECT COUNT(OrderId) as total FROM OrdersTable WHERE Status = @orderStatus AND CustomerId = @customerId";
 
             using SqlCommand command = new SqlCommand(queryString, connection);
             if (orderStatus != null)
                 command.Parameters.AddWithValue("@orderStatus", orderStatus.ToString());
 
+            command.Parameters.AddWithValue("@customerId", customerId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-           
+
             if (await reader.ReadAsync())
             {
                 totalNumberOfProducts = int.Parse(reader["total"].ToString());
