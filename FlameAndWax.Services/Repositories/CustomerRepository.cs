@@ -1,6 +1,7 @@
 ﻿using FlameAndWax.Data.Models;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Repositories.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -19,8 +20,8 @@ namespace FlameAndWax.Data.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO CustomerTable(CustomerName,ContactNumber,Email,Username,Password,Status,Address)" +
-                "VALUES(@name,@number,@email,@username,@password,@status,@address);" +
+            var queryString = "INSERT INTO CustomerTable(CustomerName,ContactNumber,Email,Username,Password,Status)" +
+                "VALUES(@name,@number,@email,@username,@password,@status);" +
                 "SELECT SCOPE_IDENTITY() as pk;";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@name", Data.CustomerName);
@@ -28,9 +29,7 @@ namespace FlameAndWax.Data.Repositories
             command.Parameters.AddWithValue("@email", Data.Email);
             command.Parameters.AddWithValue("@username", Data.Username);
             command.Parameters.AddWithValue("@password", Data.Password);
-            //command.Parameters.AddWithValue("@link", Data.ProfilePictureLink);
             command.Parameters.AddWithValue("@status", Constants.Constants.CustomerAccountStatus.Pending.ToString());
-            command.Parameters.AddWithValue("@address", Data.Address);
 
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -50,6 +49,21 @@ namespace FlameAndWax.Data.Repositories
             command.Parameters.AddWithValue("@status", customerStatus.ToString());
             command.Parameters.AddWithValue("@id", customerId);
             await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task<bool> CheckIfCustomerHasShippingAddress(int customerId, string connectionString)
+        {
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            var queryString = "SELECT ShippingAddressId FROM CustomerTable WHERE CustomerId = @customerId AND ShippingAddressId is NOT NULL";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@customerId", customerId);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task Delete(int id, string connectionString)
@@ -72,6 +86,12 @@ namespace FlameAndWax.Data.Repositories
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
+                ShippingAddressModel shippingAddressModel = new ShippingAddressModel();
+                if (!DBNull.Value.Equals(reader["ShippingAddressId"]))
+                {
+                    shippingAddressModel = await _shippingAddressRepository.Fetch(int.Parse(reader["ShippingAddressId"].ToString()), connectionString);
+                }
+
                 return new CustomerModel
                 {
                     CustomerId = int.Parse(reader["CustomerId"].ToString()),
@@ -82,7 +102,7 @@ namespace FlameAndWax.Data.Repositories
                     Password = reader["Password"].ToString(),
                     ProfilePictureLink = reader["ProfilePictureLink"].ToString(),
                     Status = ServiceHelper.ConvertStringToCustomerAccountStatus(reader["Status"].ToString()),
-                    Address = await _shippingAddressRepository.Fetch(int.Parse(reader["ShippingAddressId"].ToString()), connectionString)
+                    Address = shippingAddressModel
                 };
             }
             return null;
@@ -161,7 +181,18 @@ namespace FlameAndWax.Data.Repositories
             command.Parameters.AddWithValue("@number", data.ContactNumber);
             command.Parameters.AddWithValue("@email", data.Email);
             command.Parameters.AddWithValue("@username", data.Username);
-            command.Parameters.AddWithValue("@password", data.Password);            
+            command.Parameters.AddWithValue("@password", data.Password);
+            await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdateShippingAddressId(int customerId, int shippingAddressId, string connectionString)
+        {
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            var queryString = "UPDATE CustomerTable SET ShippingAddressId = @shippingId WHERE CustomerId = @customerId";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@shippingId", shippingAddressId);
+            command.Parameters.AddWithValue("@customerId", customerId);
             await command.ExecuteNonQueryAsync();
         }
     }

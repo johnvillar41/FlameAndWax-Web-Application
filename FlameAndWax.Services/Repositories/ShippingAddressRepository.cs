@@ -16,6 +16,12 @@ namespace FlameAndWax.Services.Repositories
                 "VALUES(@CustomerId,@Address,@PostalCode,@City,@Region,@Country);" +
                 "SELECT SCOPE_IDENTITY() as fk;";
             using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@CustomerId", Data.CustomerId);
+            command.Parameters.AddWithValue("@Address", Data.Address);
+            command.Parameters.AddWithValue("@PostalCode", Data.PostalCode);
+            command.Parameters.AddWithValue("@City", Data.City);
+            command.Parameters.AddWithValue("@Region", Data.Region);
+            command.Parameters.AddWithValue("@Country", Data.Country);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {

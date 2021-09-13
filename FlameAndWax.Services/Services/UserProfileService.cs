@@ -43,7 +43,15 @@ namespace FlameAndWax.Services.Services
         {
             try
             {
-                await _shippingAddressRepository.Update(shippingAddressModel, shippingAddressModel.ShippingAddressId, connectionString);
+                var isShippingAddressAvailable = await _customerRepository.CheckIfCustomerHasShippingAddress(shippingAddressModel.CustomerId, connectionString);
+                if (isShippingAddressAvailable)
+                    await _shippingAddressRepository.Update(shippingAddressModel, shippingAddressModel.ShippingAddressId, connectionString);
+                else
+                {
+                    var primaryKey = await _shippingAddressRepository.Add(shippingAddressModel, connectionString);
+                    await _customerRepository.UpdateShippingAddressId(shippingAddressModel.CustomerId, primaryKey, connectionString);
+                }
+
                 return ServiceHelper.BuildServiceResult<bool>(true, false, null);
             }
             catch (Exception e)
