@@ -165,7 +165,7 @@ namespace FlameAndWax.Data.Repositories
 
             if (data.ProfilePictureLink != null)
                 queryString = "UPDATE CustomerTable SET CustomerName = @name, ContactNumber = @number, Email = @email, Username = @username, " +
-                    "Password = @password, ProfilePictureLink = @dp, WHERE CustomerId = @id";
+                    "Password = @password, ProfilePictureLink = @dp WHERE CustomerId = @id";
 
             else
                 queryString = "UPDATE CustomerTable SET CustomerName = @name, ContactNumber = @number, Email = @email, Username = @username, " +
