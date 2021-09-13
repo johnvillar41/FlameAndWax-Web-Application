@@ -1,6 +1,7 @@
 ﻿using FlameAndWax.Data.Constants;
 using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
+using FlameAndWax.Services.Repositories.Interfaces;
 using FlameAndWax.Services.Services.BaseInterface.Interface;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
@@ -15,14 +16,14 @@ namespace FlameAndWax.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IAccountBaseService<CustomerModel> _accountService;
+        private readonly IAccountBaseService<CustomerModel> _accountService;        
         private readonly IConfiguration _configuration;
 
         private string ConnectionString { get; }
 
         public AccountController(IAccountBaseService<CustomerModel> accountService, IConfiguration configuration)
         {
-            _accountService = accountService;
+            _accountService = accountService;          
             _configuration = configuration;
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
@@ -37,7 +38,7 @@ namespace FlameAndWax.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ProcessLogin(LoginViewModel loginCredentials, string returnUrl)
-        {         
+        {
             var isAuthenticatedServiceResult = await _accountService.Login(new CustomerModel { Username = loginCredentials.Username, Password = loginCredentials.Password }, ConnectionString);
             if (isAuthenticatedServiceResult.HasError) return BadRequest(new { errorContent = isAuthenticatedServiceResult.ErrorContent });
 
@@ -52,12 +53,12 @@ namespace FlameAndWax.Controllers
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity));
+                    new ClaimsPrincipal(claimsIdentity));               
 
                 if (Url.IsLocalUrl(returnUrl))
                 {
                     return Json(returnUrl);
-                }                
+                }
             }
             returnUrl = "/Home/Index";
             return Json(returnUrl);

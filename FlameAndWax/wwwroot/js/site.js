@@ -146,14 +146,14 @@ $('#cartComplete').click(function () {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
-        });      
+        });
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
-              confirmButton: 'btn btn-success',
-              cancelButton: 'btn btn-danger'
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
             },
             buttonsStyling: false
-          });
+        });
         if (xhr.status == "200") {
             Toast.fire({
                 icon: 'success',
@@ -162,7 +162,7 @@ $('#cartComplete').click(function () {
                 iconColor: '#006400',
             });
             document.getElementById('totalCartCount').innerHTML = "0";
-        } else {      
+        } else {
             swalWithBootstrapButtons.fire({
                 title: 'Unable to checkout orders',
                 text: "You need to setup your shipping address first!!",
@@ -171,20 +171,19 @@ $('#cartComplete').click(function () {
                 confirmButtonText: 'Yes, setup my shipping address!',
                 cancelButtonText: 'No, cancel!',
                 reverseButtons: true
-              }).then((result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = "/UserProfile/Index/";                  
-                } else if (result.dismiss === Swal.DismissReason.cancel)                
-                {
+                    window.location.href = "/UserProfile/Index/";
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire({
                         icon: 'warning',
                         title: xhr.responseJSON.errorContent,
                         text: 'Please setup your shipping address first!',
                         footer: '<a href="/UserProfile/Index" class="btn btn-success">Setup Shipping Address</a>'
-                      })        
+                    })
                 }
-              })      
-           
+            })
+
         }
     }
 });

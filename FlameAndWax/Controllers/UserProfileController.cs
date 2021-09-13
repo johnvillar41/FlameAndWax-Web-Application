@@ -1,6 +1,7 @@
 ﻿using FlameAndWax.Data.Constants;
 using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
+using FlameAndWax.Services.Repositories.Interfaces;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +20,7 @@ namespace FlameAndWax.Controllers
     public class UserProfileController : Controller
     {
         private readonly IUserProfileService _userProfileService;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -26,10 +28,12 @@ namespace FlameAndWax.Controllers
         public UserProfileController(
             IUserProfileService userProfileService,
             IConfiguration configuration,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment,
+            ICustomerRepository customerRepository)
         {
             _userProfileService = userProfileService;
             _configuration = configuration;
+            _customerRepository = customerRepository;
             _webHostEnvironment = webHostEnvironment;
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
@@ -39,6 +43,15 @@ namespace FlameAndWax.Controllers
             var accountDetailServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userId), ConnectionString);
             if (accountDetailServiceResult.HasError) return BadRequest(new { errorContent = accountDetailServiceResult.ErrorContent });
 
+            if (!await _customerRepository.CheckIfCustomerHasShippingAddress(int.Parse(userId), ConnectionString))
+            {
+                ViewData["IsShippingAddressPresent"] = false;
+            }
+            else
+            {
+                ViewData["IsShippingAddressPresent"] = true;
+            }
+            
             var userProfile = new UserProfileViewModel(accountDetailServiceResult.Result);
 
             return View(userProfile);
@@ -98,7 +111,7 @@ namespace FlameAndWax.Controllers
                 Country = shippingAddressViewModel.Country
             };
             var shippingAddressServiceResult = await _userProfileService.ModifyShippingAddress(shippingAddressModel, ConnectionString);
-            if(shippingAddressServiceResult.HasError) return BadRequest();
+            if (shippingAddressServiceResult.HasError) return BadRequest();
 
             return PartialView("ShippingAddressPartial", shippingAddressViewModel);
         }

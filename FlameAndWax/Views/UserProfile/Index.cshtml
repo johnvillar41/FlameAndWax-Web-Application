@@ -5,11 +5,21 @@
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
-                       aria-controls="home" aria-selected="true">Home</a>
+                        aria-controls="home" aria-selected="true">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#address" role="tab"
-                       aria-controls="address" aria-selected="false">Address</a>
+                    @if ((bool)ViewData["IsShippingAddressPresent"] == false)
+                    {
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#address" role="tab"
+                        aria-controls="address" aria-selected="false">Address <span
+                            class="badge badge-pill badge-danger"><i class="fas fa-exclamation"></i></span></a>
+                    }
+                    else
+                    {
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#address" role="tab"
+                        aria-controls="address" aria-selected="false">Address</a>
+                    }
+
                 </li>
             </ul>
         </div>
@@ -25,14 +35,14 @@
 </div>
 
 @section scripts{
-    <script>
-        completed = function () {
-            var x = document.getElementById("completed");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
+<script>
+    completed = function () {
+        var x = document.getElementById("completed");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
         }
-    </script>
+    }
+</script>
 }
