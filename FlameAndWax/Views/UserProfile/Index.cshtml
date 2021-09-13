@@ -5,38 +5,34 @@
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
-                        aria-controls="home" aria-selected="true">Home</a>
+                       aria-controls="home" aria-selected="true">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#address" role="tab"
-                        aria-controls="address" aria-selected="false">Address</a>
-                </li>             
+                       aria-controls="address" aria-selected="false">Address</a>
+                </li>
             </ul>
         </div>
     </div>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <div class="row card p-2" id="content">
-                @await Html.PartialAsync("ProfilePartial", Model)
-            </div>
+            @await Html.PartialAsync("ProfilePartial", Model)
         </div>
         <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="profile-tab">
-            <div class="row card p-2">
-                @await Html.PartialAsync("ShippingAddressPartial", @Model.Address)
-            </div>
-        </div>        
+            @await Html.PartialAsync("ShippingAddressPartial", @Model.Address)
+        </div>
     </div>
 </div>
 
 @section scripts{
-<script>
-    completed = function () {
-        var x = document.getElementById("completed");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
+    <script>
+        completed = function () {
+            var x = document.getElementById("completed");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
         }
-    }
-</script>
+    </script>
 }

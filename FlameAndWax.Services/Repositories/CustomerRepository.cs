@@ -145,11 +145,11 @@ namespace FlameAndWax.Data.Repositories
 
             if (data.ProfilePictureLink != null)
                 queryString = "UPDATE CustomerTable SET CustomerName = @name, ContactNumber = @number, Email = @email, Username = @username, " +
-                    "Password = @password, ProfilePictureLink = @dp, Address = @address WHERE CustomerId = @id";
+                    "Password = @password, ProfilePictureLink = @dp, WHERE CustomerId = @id";
 
             else
                 queryString = "UPDATE CustomerTable SET CustomerName = @name, ContactNumber = @number, Email = @email, Username = @username, " +
-                    "Password = @password, Address = @address WHERE CustomerId = @id";
+                    "Password = @password WHERE CustomerId = @id";
 
             using SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -161,8 +161,7 @@ namespace FlameAndWax.Data.Repositories
             command.Parameters.AddWithValue("@number", data.ContactNumber);
             command.Parameters.AddWithValue("@email", data.Email);
             command.Parameters.AddWithValue("@username", data.Username);
-            command.Parameters.AddWithValue("@password", data.Password);
-            command.Parameters.AddWithValue("@address", data.Address);
+            command.Parameters.AddWithValue("@password", data.Password);            
             await command.ExecuteNonQueryAsync();
         }
     }

@@ -4,6 +4,7 @@ namespace FlameAndWax.Models
 {
     public class ShippingAddressViewModel
     {
+        public int ShippingAddressId { get; set; }
         public string Address { get; set; }
         public int PostalCode { get; set; }
         public string City { get; set; }
@@ -16,6 +17,7 @@ namespace FlameAndWax.Models
             City = shippingAddressModel.City;
             Region = shippingAddressModel.Region;
             Country = shippingAddressModel.Country;
+            ShippingAddressId = shippingAddressModel.ShippingAddressId;
         }
         public ShippingAddressViewModel()
         {

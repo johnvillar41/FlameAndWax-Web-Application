@@ -7,7 +7,7 @@ using FlameAndWax.Services.Repositories.Interfaces;
 namespace FlameAndWax.Services.Repositories
 {
     public class ShippingAddressRepository : IShippingAddressRepository
-    {                
+    {
         public async Task<int> Add(ShippingAddressModel Data, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
@@ -44,7 +44,7 @@ namespace FlameAndWax.Services.Repositories
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
-              
+
                 return new ShippingAddressModel
                 {
                     ShippingAddressId = int.Parse(reader["ShippingAddressId"].ToString()),
@@ -64,9 +64,20 @@ namespace FlameAndWax.Services.Repositories
             throw new System.NotImplementedException();
         }
 
-        public Task Update(ShippingAddressModel data, int id, string connectionString)
+        public async Task Update(ShippingAddressModel data, int id, string connectionString)
         {
-            throw new System.NotImplementedException();
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            var queryString = "UPDATE ShippingAddressTable SET Address = @address, PostalCode = @postalCode, " +
+                "City = @city, Region = @region, Country = @country WHERE ShippingAddressId = @shippingId";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@address", data.Address);
+            command.Parameters.AddWithValue("@postalCode", data.PostalCode);
+            command.Parameters.AddWithValue("@city", data.City);
+            command.Parameters.AddWithValue("@region", data.Region);
+            command.Parameters.AddWithValue("@country", data.Country);
+            command.Parameters.AddWithValue("@shippingId", id);
+            await command.ExecuteNonQueryAsync();
         }
     }
 }

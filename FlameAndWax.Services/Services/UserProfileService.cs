@@ -3,16 +3,19 @@ using System.Threading.Tasks;
 using FlameAndWax.Data.Models;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Repositories.Interfaces;
+using FlameAndWax.Services.Services.Interfaces;
 using FlameAndWax.Services.Services.Models;
 
-namespace FlameAndWax.Services.Services.Interfaces
+namespace FlameAndWax.Services.Services
 {
     public class UserProfileService : IUserProfileService
     {
-        private ICustomerRepository _customerRepository;
-        public UserProfileService(ICustomerRepository customerRepository)
+        private readonly ICustomerRepository _customerRepository;
+        private readonly IShippingAddressRepository _shippingAddressRepository;
+        public UserProfileService(ICustomerRepository customerRepository, IShippingAddressRepository shippingAddressRepository)
         {
             _customerRepository = customerRepository;
+            _shippingAddressRepository = shippingAddressRepository;
         }
         public async Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId, string connectionString)
         {
@@ -34,6 +37,19 @@ namespace FlameAndWax.Services.Services.Interfaces
                 return ServiceHelper.BuildServiceResult<bool>(true, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
-        }    
+        }
+
+        public async Task<ServiceResult<bool>> ModifyShippingAddress(ShippingAddressModel shippingAddressModel, string connectionString)
+        {
+            try
+            {
+                await _shippingAddressRepository.Update(shippingAddressModel, shippingAddressModel.ShippingAddressId, connectionString);
+                return ServiceHelper.BuildServiceResult<bool>(true, false, null);
+            }
+            catch (Exception e)
+            {
+                return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message);
+            }
+        }
     }
 }

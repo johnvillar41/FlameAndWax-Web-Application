@@ -9,6 +9,33 @@ openInstagram = function () {
     window.open('https://www.instagram.com/flameandwax13/');
 }
 
+//for saving ShippingAddress
+
+saveAddress = function (xhr) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+    if (xhr.status == "200") {
+        Toast.fire({
+            icon: 'success',
+            title: '<span style="color: #006400"><b>Success</b></span> Updated Shipping Address!',
+            background: '#CCFFCC',
+            iconColor: '#006400',
+        });
+        animateCustomerReview();
+    }
+
+}
+
+
 //for clearing User profile
 function resetText() {
     document.getElementById("fullname").value = "";
@@ -242,7 +269,7 @@ updateAddToCartTotalCount = function (response) {
     var dataObject = JSON.parse(response);
     document.querySelector('#totalCartCount').innerHTML = dataObject;
 
-    
+
 }
 
 failureAddToCart = function (response) {

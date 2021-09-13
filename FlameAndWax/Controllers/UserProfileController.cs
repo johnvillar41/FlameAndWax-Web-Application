@@ -84,9 +84,23 @@ namespace FlameAndWax.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SaveShippingAddress(ShippingAddressViewModel shippingAddressViewModel)
+        public async Task<IActionResult> SaveShippingAddress(ShippingAddressViewModel shippingAddressViewModel)
         {
-            throw new NotImplementedException();
+            var userId = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
+            var shippingAddressModel = new ShippingAddressModel
+            {
+                ShippingAddressId = shippingAddressViewModel.ShippingAddressId,
+                CustomerId = int.Parse(userId),
+                Address = shippingAddressViewModel.Address,
+                PostalCode = shippingAddressViewModel.PostalCode,
+                City = shippingAddressViewModel.City,
+                Region = shippingAddressViewModel.Region,
+                Country = shippingAddressViewModel.Country
+            };
+            var shippingAddressServiceResult = await _userProfileService.ModifyShippingAddress(shippingAddressModel, ConnectionString);
+            if(shippingAddressServiceResult.HasError) return BadRequest();
+
+            return PartialView("ShippingAddressPartial", shippingAddressViewModel);
         }
 
         private async Task<string> BuildProfilePictureLink(IFormFile profilePictureFile)

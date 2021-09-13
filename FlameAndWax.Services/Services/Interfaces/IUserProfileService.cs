@@ -11,5 +11,6 @@ namespace FlameAndWax.Services.Services.Interfaces
                                                           int customerId,
                                                           string connectionString);
         Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId, string connectionString);
+        Task<ServiceResult<Boolean>> ModifyShippingAddress(ShippingAddressModel shippingAddressModel, string connectionString);
     }
 }
