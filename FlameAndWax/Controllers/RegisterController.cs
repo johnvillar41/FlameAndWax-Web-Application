@@ -44,7 +44,7 @@ namespace FlameAndWax.Controllers
                 CustomerName = newUser.Fullname,
                 ContactNumber = newUser.ContactNumber,
                 Email = newUser.Email,
-                Address = newUser.Address,//TODO FIX THIS
+                Address = null, //Registering new user will have null as initial address, the address will be updated on the user profile by the customer
                 Username = newUser.Username,
                 Password = newUser.Password,
                 Status = CustomerAccountStatus.Pending,
@@ -52,7 +52,7 @@ namespace FlameAndWax.Controllers
             };
 
             var registerServiceResult = await _accountService.Register(customerModel, ConnectionString);
-            if (registerServiceResult.HasError) return BadRequest(new { errorContent = registerServiceResult.ErrorContent});
+            if (registerServiceResult.HasError) return BadRequest(new { errorContent = registerServiceResult.ErrorContent });
 
             return Ok();
         }
