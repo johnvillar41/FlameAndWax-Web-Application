@@ -134,59 +134,58 @@ $('#sendMessage').click(function () {
 });
 
 //For cart submission trigger
-$('#cartComplete').click(function () {
-    cartComplete = function (xhr) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: false
-        });
-        if (xhr.status == "200") {
-            Toast.fire({
-                icon: 'success',
-                title: '<span style="color: #006400"><b>Success</b></span> Cart Submitted!',
-                background: '#CCFFCC',
-                iconColor: '#006400',
-            });
-            document.getElementById('totalCartCount').innerHTML = "0";
-        } else {
-            swalWithBootstrapButtons.fire({
-                title: 'Unable to checkout orders',
-                text: "You need to setup your shipping address first!!",
-                icon: 'error',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, setup my shipping address!',
-                cancelButtonText: 'No, cancel!',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "/UserProfile/Index/";
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: xhr.responseJSON.errorContent,
-                        text: 'Please setup your shipping address first!',
-                        footer: '<a href="/UserProfile/Index" class="btn btn-success">Setup Shipping Address</a>'
-                    })
-                }
-            })
 
+cartComplete = function (xhr) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
+    });
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    });
+    if (xhr.status == "200") {
+        Toast.fire({
+            icon: 'success',
+            title: '<span style="color: #006400"><b>Success</b></span> Cart Submitted!',
+            background: '#CCFFCC',
+            iconColor: '#006400',
+        });
+        document.getElementById('totalCartCount').innerHTML = "0";
+    } else {
+        swalWithBootstrapButtons.fire({
+            title: 'Unable to checkout orders',
+            text: "You need to setup your shipping address first!!",
+            icon: 'error',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, setup my shipping address!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/UserProfile/Index/";
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: xhr.responseJSON.errorContent,
+                    text: 'Please setup your shipping address first!',
+                    footer: '<a href="/UserProfile/Index" class="btn btn-success">Setup Shipping Address</a>'
+                })
+            }
+        })
+
     }
-});
+}
 
 //Cart validation
 checkIfCartHasItems = function (cartItems) {
