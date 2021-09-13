@@ -39,7 +39,7 @@ namespace FlameAndWax.Controllers
             var accountDetailServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userId), ConnectionString);
             if (accountDetailServiceResult.HasError) return BadRequest(new { errorContent = accountDetailServiceResult.ErrorContent });
 
-            var userProfile = new UserProfileViewModel(accountDetailServiceResult.Result);           
+            var userProfile = new UserProfileViewModel(accountDetailServiceResult.Result);
 
             return View(userProfile);
         }
@@ -65,7 +65,6 @@ namespace FlameAndWax.Controllers
             customerModel.Email = userProfile.Email;
             customerModel.Username = userProfile.Username;
             customerModel.Password = userProfile.Password;
-            customerModel.Address = userProfile.Address;
 
             var customerServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userId), ConnectionString);
             if (customerServiceResult.HasError) return BadRequest(new { errorContent = customerServiceResult.ErrorContent });
@@ -79,8 +78,15 @@ namespace FlameAndWax.Controllers
             var accountDetailServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userId), ConnectionString);
             if (accountDetailServiceResult.HasError) return BadRequest(new { errorContent = accountDetailServiceResult.ErrorContent });
 
-            var userProfileViewModel = new UserProfileViewModel(accountDetailServiceResult.Result);           
+            var userProfileViewModel = new UserProfileViewModel(accountDetailServiceResult.Result);
             return PartialView("ProfilePartial", userProfileViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveShippingAddress(ShippingAddressViewModel shippingAddressViewModel)
+        {
+            throw new NotImplementedException();
         }
 
         private async Task<string> BuildProfilePictureLink(IFormFile profilePictureFile)
