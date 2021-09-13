@@ -38,8 +38,8 @@ namespace FlameAndWax.Controllers
         public IActionResult IncrementProductCount(int productId)
         {
             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-            Cart.IncrementProductCount(productId, userLoggedIn);            
-            return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedIn)});
+            Cart.IncrementProductCount(productId, userLoggedIn);
+            return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedIn) });
         }
 
         public IActionResult DecrementProductCount(int productId)
@@ -87,7 +87,7 @@ namespace FlameAndWax.Controllers
                         Product = new ProductModel
                         {
                             ProductId = cartItem.ProductId,
-                            ProductPrice = productPriceServiceResult.Result                    
+                            ProductPrice = productPriceServiceResult.Result
                         },
                         TotalPrice = subTotalCost,
                         Quantity = cartItem.QuantityOrdered,
@@ -109,7 +109,7 @@ namespace FlameAndWax.Controllers
             };
             var primaryKeyServiceResult = await _cartService.CheckoutOrder(order, userLoggedInUsername, ConnectionString);
 
-            if (primaryKeyServiceResult.HasError) return RedirectToAction("Index", "Error", new { primaryKeyServiceResult.ErrorContent });
+            if (primaryKeyServiceResult.HasError) return BadRequest(new { errorContent = primaryKeyServiceResult.ErrorContent });
 
             Cart.ClearCartItems(userLoggedInUsername);
             return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedInID) });
@@ -122,7 +122,7 @@ namespace FlameAndWax.Controllers
             var productServiceResult = await _cartService.FetchProductDetail(productId, ConnectionString);
             if (productServiceResult.HasError) return RedirectToAction("Index", "Error", new { productServiceResult.ErrorContent });
 
-            var productViewModel = new ProductViewModel(productServiceResult.Result);           
+            var productViewModel = new ProductViewModel(productServiceResult.Result);
 
             Cart.AddCartItem(productViewModel, user);
             var cartItems = Cart.GetCartItems(user);

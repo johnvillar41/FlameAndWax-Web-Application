@@ -136,27 +136,32 @@ $('#sendMessage').click(function () {
 //For cart submission trigger
 $('#cartComplete').click(function () {
     cartComplete = function (xhr) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });      
         if (xhr.status == "200") {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            });
             Toast.fire({
                 icon: 'success',
                 title: '<span style="color: #006400"><b>Success</b></span> Cart Submitted!',
                 background: '#CCFFCC',
                 iconColor: '#006400',
             });
-
             document.getElementById('totalCartCount').innerHTML = "0";
-        } else {
+        } else {            
+            Swal.fire({
+                icon: 'error',
+                title: xhr.responseJSON.errorContent,
+                text: 'Please setup your shipping address first!',
+                footer: '<a href="/UserProfile/Index">Setup Shipping Address</a>'
+              })
 
         }
     }

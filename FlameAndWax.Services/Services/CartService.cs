@@ -14,21 +14,27 @@ namespace FlameAndWax.Services.Services
         private readonly IOrderDetailRepository _orderDetailRepository;
         private readonly IPreviouslyOrderedProductsRepository _previouslyOrderedProductsRepository;
         private readonly IProductRepository _productRepository;
+        private readonly ICustomerRepository _customerRepository;
         public CartService(
             IOrderRepository orderRepository,
             IOrderDetailRepository orderDetailRepository,
             IPreviouslyOrderedProductsRepository previouslyOrderedProductsRepository,
-            IProductRepository productRepository)
+            IProductRepository productRepository,
+            ICustomerRepository customerRepository)
         {
             _orderRepository = orderRepository;
             _orderDetailRepository = orderDetailRepository;
             _previouslyOrderedProductsRepository = previouslyOrderedProductsRepository;
             _productRepository = productRepository;
+            _customerRepository = customerRepository;
         }
         public async Task<ServiceResult<bool>> CheckoutOrder(OrderModel order, string usernameLoggedIn, string connectionString)
         {
             try
             {
+                var hasCustomerHaveShippingAddress = await _customerRepository.CheckIfCustomerHasShippingAddress(order.Customer.CustomerId, connectionString);
+                if (!hasCustomerHaveShippingAddress) return ServiceHelper.BuildServiceResult<bool>(false, true, "Customer has not created shipping address!");
+
                 var primaryKey = await _orderRepository.Add(order, connectionString);
                 if (primaryKey == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Inserting Order");
 
