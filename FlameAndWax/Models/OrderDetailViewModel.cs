@@ -17,6 +17,7 @@ namespace FlameAndWax.Models
             ProductPictureLink = orderDetailModel.Product.ProductGallery.FirstOrDefault().PhotoLink;
             SubTotalPrice = orderDetailModel.TotalPrice;
             Status = orderDetailModel.Status;
+            ProductQuantityOrdered = orderDetailModel.Quantity;
         }
         public OrderDetailViewModel()
         {
