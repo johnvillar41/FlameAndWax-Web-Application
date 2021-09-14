@@ -30,7 +30,9 @@
         public enum ModeOfPayment
         {
             Cash,
-            Cheque
+            GCash,
+            DebitCreditCard,
+            PayPal
         }                        
         public enum OrderStatus
         {

@@ -28,8 +28,12 @@ namespace FlameAndWax.Services.Helpers
             {
                 case nameof(Constants.ModeOfPayment.Cash):
                     return Constants.ModeOfPayment.Cash;
-                case nameof(Constants.ModeOfPayment.Cheque):
-                    return Constants.ModeOfPayment.Cheque;
+                case nameof(Constants.ModeOfPayment.GCash):
+                    return Constants.ModeOfPayment.GCash;
+                case nameof(Constants.ModeOfPayment.DebitCreditCard):
+                    return Constants.ModeOfPayment.DebitCreditCard;
+                case nameof(Constants.ModeOfPayment.PayPal):
+                    return Constants.ModeOfPayment.PayPal;
                 default:
                     return Constants.ModeOfPayment.Cash;
             }
