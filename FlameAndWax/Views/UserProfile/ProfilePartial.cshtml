@@ -1,87 +1,97 @@
 ﻿@model FlameAndWax.Models.UserProfileViewModel;
-    <div class="row p-2">
-        <div class="col-12">
-            <div class="alert alert-warning alert-dismissible fade show" role="alert" style="display:none;" id="completed">
-                <strong>Conrgrats!</strong> You have updated your profile.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="card p-4">
-                <form class="form" asp-controller="UserProfile" asp-action="Save" method="post"
-                      data-ajax="true" data-ajax-update="#content" data-ajax-loading="#overlayLoadingDiv"
-                      data-ajax-complete="completedUserProfile"
-                      data-ajax-method="post"
-                      enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="col-lg-3">
-
-                            <div class="text-center p-2">
-                                @{
-                                    var imageSource = Model.ProfilePictureLink == null ? "" : Url.Content(Model.ProfilePictureLink);
-                                }
-                                <img src="@imageSource" class="avatar img-circle img-thumbnail" alt="avatar">
-                                <h6>Upload a different photo...</h6>
-                                <input type="file" class="text-center center-block file-upload" asp-for="@Model.ProfilePictureFile">
-                            </div>
-                            <hr />
-                        </div>
-
-                        <div class="col-lg-9">
-
-                            <div class="form-group">
-                                <div class="col-xs-6">
-                                    <h5>Full name</h5>
-                                    <input id="fullname" type="text" class="form-control" asp-for="@Model.Fullname" placeholder="Enter Full Name" title="enter your first name if any." required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <div class="col-xs-6">
-                                        <h5>Contact Number</h5>
-                                        <input id="contactNumber" type="text" class="form-control" asp-for="@Model.ContactNumber" placeholder="Enter Contact Number" title="enter your phone number if any." required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-
-                                <div class="col-xs-6">
-                                    <h5>Email</h5>
-                                    <input id="email" type="email" class="form-control" asp-for="@Model.Email" placeholder="email@example.com" title="enter your email." required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-xs-6">
-                                    <h5>Username</h5>
-                                    <input id="username" type="text" class="form-control" asp-for="@Model.Username" placeholder="Enter Username" title="enter your username." required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-xs-6">
-                                    <h5>Password</h5>
-                                    <input id="password" type="text" class="form-control" asp-for="@Model.Password" placeholder="Enter Password" title="enter your password." required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-xs-6">
-                                    <h5>Verify</h5>
-                                    <input id="verifyPassword" type="password" class="form-control" asp-for="@Model.VerifyPassword" placeholder="Enter Password" title="enter your password2." required>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-xs-12">
-                                    <br>
-                                    <button class="btn btn-lg btn-gold" id="submit" type="submit" onclick="return checkIfPasswordIsEqual();">Save <i class="fas fa-save"></i></button>
-                                    <button class="btn btn-lg btn-gold" type="button" onclick="resetText()">Reset <i class="fas fa-redo-alt"></i></button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </form>
-            </div>
+<div class="row p-2">
+    <div class="col-12">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" style="display:none;" id="completed">
+            <strong>Conrgrats!</strong> You have updated your profile.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     </div>
+    <div class="col-12">
+        <div class="card p-4">
+            <form class="form" asp-controller="UserProfile" asp-action="Save" method="post" data-ajax="true"
+                data-ajax-update="#content" data-ajax-loading="#overlayLoadingDiv"
+                data-ajax-complete="completedUserProfile" data-ajax-method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-lg-3">
+
+                        <div class="text-center p-2">
+                            @{
+                                var imageSource = Model.ProfilePictureLink == null ? "" :
+            Url.Content(Model.ProfilePictureLink);
+                            }
+                            <img src="@imageSource" id="profilePicture" class="avatar img-circle img-thumbnail" alt="avatar">
+                            <h6>Upload a different photo...</h6>
+                            <input type="file" onchange="changePicture();" id="file-upload" class="text-center center-block file-upload"
+                                asp-for="@Model.ProfilePictureFile">
+                        </div>
+                        <hr />
+                    </div>
+
+                    <div class="col-lg-9">
+
+                        <div class="form-group">
+                            <div class="col-xs-6">
+                                <h5>Full name</h5>
+                                <input id="fullname" type="text" class="form-control" asp-for="@Model.Fullname"
+                                    placeholder="Enter Full Name" title="enter your first name if any." required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <h5>Contact Number</h5>
+                                    <input id="contactNumber" type="text" class="form-control"
+                                        asp-for="@Model.ContactNumber" placeholder="Enter Contact Number"
+                                        title="enter your phone number if any." required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-xs-6">
+                                <h5>Email</h5>
+                                <input id="email" type="email" class="form-control" asp-for="@Model.Email"
+                                    placeholder="email@example.com" title="enter your email." required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-6">
+                                <h5>Username</h5>
+                                <input id="username" type="text" class="form-control" asp-for="@Model.Username"
+                                    placeholder="Enter Username" title="enter your username." required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-6">
+                                <h5>Password</h5>
+                                <input id="password" type="text" class="form-control" asp-for="@Model.Password"
+                                    placeholder="Enter Password" title="enter your password." required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-6">
+                                <h5>Verify</h5>
+                                <input id="verifyPassword" type="password" class="form-control"
+                                    asp-for="@Model.VerifyPassword" placeholder="Enter Password"
+                                    title="enter your password2." required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <br>
+                                <button class="btn btn-lg btn-gold" id="submit" type="submit"
+                                    onclick="return checkIfPasswordIsEqual();">Save <i class="fas fa-save"></i></button>
+                                <button class="btn btn-lg btn-gold" type="button" onclick="resetText()">Reset <i
+                                        class="fas fa-redo-alt"></i></button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

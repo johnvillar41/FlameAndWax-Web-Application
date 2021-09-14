@@ -48,6 +48,19 @@ function resetText() {
     return false;
 }
 
+// For updating picture
+changePicture = function () {
+    var selectedFile = document.getElementById('file-upload').files[0];
+    var img = document.getElementById('profilePicture')
+
+    var reader = new FileReader();
+    reader.onload = function () {
+        img.src = this.result
+    }
+    reader.readAsDataURL(selectedFile);
+
+}
+
 //For saving User profile
 
 completedUserProfile = function (xhr) {
@@ -61,7 +74,7 @@ completedUserProfile = function (xhr) {
                 title: 'Your profile has been saved',
                 showConfirmButton: false,
                 timer: 1500
-            })
+            });
         }
     } else {
         x.style.display = "none";
