@@ -12,8 +12,7 @@ namespace FlameAndWax.Models
         public double ProductPrice { get; set; }
         public string PhotoLink { get; set; }
         public int StockQuantity { get; set; }
-        public int QuantityPerUnit { get; set; }
-        public int UnitsInStock { get; set; }
+        public int QuantityPerUnit { get; set; }       
         public int QuantityOrdered { get; set; }
         public ProductViewModel(ProductModel productModel)
         {
@@ -23,7 +22,7 @@ namespace FlameAndWax.Models
             ProductPrice = productModel.ProductPrice;
             ProductSubTotalPrice = productModel.ProductPrice;
             PhotoLink = productModel.ProductGallery.FirstOrDefault().PhotoLink;
-            StockQuantity = productModel.QuantityPerUnit * productModel.UnitsInStock;
+            StockQuantity = (productModel.QuantityPerUnit * productModel.UnitsInStock) - productModel.UnitsInOrder;
             QuantityPerUnit = productModel.QuantityPerUnit;
             QuantityOrdered = 1;
         }

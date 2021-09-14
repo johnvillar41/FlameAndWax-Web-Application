@@ -64,14 +64,10 @@
                             <tr>
                                 <td><strong>Quantity per Unit:</strong></td>
                                 <td class="float-right">@product.QuantityPerUnit</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Units in Stock:</strong></td>
-                                <td class="float-right">@product.UnitsInStock</td>
-                            </tr>
+                            </tr>                           
                         </tbody>
                     </table>
-                    <hr />
+                    <hr />                    
                     <h5 class="card-title"><strong>Stocks </strong>@product.StockQuantity</h5>
                     <a class="btn btn-gold btn-sm" asp-route-productId="@product.ProductId" asp-action="Details"
                     asp-controller="Products">
