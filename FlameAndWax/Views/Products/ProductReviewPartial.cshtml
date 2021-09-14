@@ -10,10 +10,11 @@
         <ul class="pagination">
             @for (int i = 1; i <= totalCount; i++)
             {
-                <li class="page-item"><a class="page-link" asp-controller="Products" asp-action="PageCustomerReviews"
-                    asp-route-pageNumber="@i" asp-route-productId="@Model.FirstOrDefault().ProductId" data-ajax="true"
-                    data-ajax-loading="#loader" data-ajax-update="#content" data-ajax-success="animateCustomerReview"
-                    id="pageCustomerReview">@i</a>
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Products" asp-action="PageCustomerReviews"
+                       asp-route-pageNumber="@i" asp-route-productId="@Model.FirstOrDefault().ProductId" data-ajax="true"
+                       data-ajax-loading="#loader" data-ajax-update="#content" data-ajax-success="animateCustomerReview"
+                       id="pageCustomerReview">@i</a>
                 </li>
             }
         </ul>
@@ -28,7 +29,7 @@
         <div class="row">
             <div class="col-lg-4 col-sm-12 my-auto mx-auto">
                 <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_buhby0ug.json" background="transparent"
-                speed="1" style="width: 300px; height: 300px;" autoplay></lottie-player>
+                               speed="1" style="width: 300px; height: 300px;" autoplay></lottie-player>
             </div>
             <div class="col-lg-4 col-sm-12 my-auto mx-auto">
                 <h3 class="text-center">No results found!</h3>
@@ -44,21 +45,13 @@
     {
         <div class="card card0 card2 mb-2">
             <div class="card-header" style="background-color: #D3D3D3;">
-
-                <!--
-                                                            Possible additions:
-                                                            - Sort function (by date, by rating)
-                                                            - Limit char. num that can be viewed (100 chars.), requires "See More" to look at entire review
-                                                        -->
-
-            <div class="row">
+                <div class="row">
                     <div class="col-12">
                         <!-- Customer Picture (Rounded) -->
-                    <img src="\@Url.Content(customerReview.Customer.ProfilePictureLink)"
-                        class="rounded-circle float-left" style="height:50px;" alt="customer pic">
-
+                        <img src="@Url.Content(customerReview.Customer.ProfilePictureLink)"
+                             class="rounded-circle float-left" style="height:50px;" alt="customer pic">
                         <!-- Customer Name + Score Badge-->
-                    <div class="my-auto float-left">
+                        <div class="my-auto float-left">
                             <b class="text-uppercase">&nbsp;&nbsp;@customerReview.Customer.CustomerName</b>
                             <br />
 
@@ -68,30 +61,35 @@
                                 {
                                     case Constants.ReviewScore.Excellent:
                                         <div class="badge badge-primary badge-pill badge-success text-wrap">
-                                            @customerReview.ReviewScore</div>
+                                            @customerReview.ReviewScore
+                                        </div>
                                         break;
                                     case Constants.ReviewScore.VeryGood:
-                                        <div class="badge badge-primary badge-pill badge-info text-wrap">@customerReview.ReviewScore
+                                        <div class="badge badge-primary badge-pill badge-info text-wrap">
+                                            @customerReview.ReviewScore
                                         </div>
                                         break;
                                     case Constants.ReviewScore.Good:
                                         <div class="badge badge-primary badge-pill badge-light text-wrap">
-                                            @customerReview.ReviewScore</div>
+                                            @customerReview.ReviewScore
+                                        </div>
                                         break;
                                     case Constants.ReviewScore.Poor:
-                                        <div class="badge badge-primary badge-pill badge-dark text-wrap">@customerReview.ReviewScore
+                                        <div class="badge badge-primary badge-pill badge-dark text-wrap">
+                                            @customerReview.ReviewScore
                                         </div>
                                         break;
                                     case Constants.ReviewScore.VeryPoor:
                                         <div class="badge badge-primary badge-pill badge-danger text-wrap">
-                                            @customerReview.ReviewScore</div>
+                                            @customerReview.ReviewScore
+                                        </div>
                                         break;
                                 }
                             }
                         </div>
 
                         <!-- Date of Review Posted -->
-                    <div class="text-right my-auto">
+                        <div class="text-right my-auto">
                             <b>Posted:</b>&nbsp;Date Here
                         </div>
 
@@ -101,7 +99,7 @@
             </div>
 
             <!-- Customer Review -->
-        <div class="card-body" style="background-color: #F0F0F0;">
+            <div class="card-body" style="background-color: #F0F0F0;">
                 <blockquote class="blockquote mb-0">
                     <p>@customerReview.ReviewDetail</p>
                 </blockquote>

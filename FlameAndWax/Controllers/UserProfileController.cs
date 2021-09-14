@@ -127,7 +127,7 @@ namespace FlameAndWax.Controllers
                 var saveImage = Path.Combine(_webHostEnvironment.WebRootPath, @"images\customers", $"{guid}{profilePictureFile.FileName}");
                 var stream = new FileStream(saveImage, FileMode.Create);
                 await profilePictureFile.CopyToAsync(stream);
-                return @$"images\customers\{guid}{profilePictureFile.FileName}";
+                return @$"\images\customers\{guid}{profilePictureFile.FileName}";
             }
             return string.Empty;
         }
