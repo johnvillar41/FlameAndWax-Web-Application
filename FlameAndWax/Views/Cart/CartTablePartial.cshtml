@@ -116,20 +116,21 @@
                 <div class="row">
                     <p><strong>SHIPPING <span class="badge badge-pill badge-dark"><i class="fas fa-shipping-fast"></i></span></strong></p>
                 </div>
-                <div class="row">
+                <div class="col-12">
                     <div class="input-group mb-3">
                         <select class="custom-select" id="inputGroupSelect02" form="CartForm" asp-for="@Model.Courier">
                             <option selected>Choose...</option>
                             <option value="@Constants.Courier.FoodPanda">@nameof(Constants.Courier.FoodPanda)</option>
                             <option value="@Constants.Courier.JNT">@nameof(Constants.Courier.JNT)</option>
                             <option value="@Constants.Courier.NinjaVan">@nameof(Constants.Courier.NinjaVan)</option>
-                            <option value="@Constants.Courier.GogoExpress">@nameof(Constants.Courier.GogoExpress)
-                            </option>
-                        </select>
-                        <div class="input-group-append">
-                            <label class="input-group-text" for="inputGroupSelect02">Options</label>
-                        </div>
+                            <option value="@Constants.Courier.GogoExpress">
+                                @nameof(Constants.Courier.GogoExpress)
+                        </option>
+                    </select>
+                    <div class="input-group-append">
+                        <label class="input-group-text" for="inputGroupSelect02">Options</label>
                     </div>
+                </div>
                 </div>
 
                 @await Html.PartialAsync("PaymentOptionsPartial")            
