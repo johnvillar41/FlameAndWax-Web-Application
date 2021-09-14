@@ -11,18 +11,7 @@ openInstagram = function () {
 
 //for saving ShippingAddress
 
-saveAddress = function (xhr) {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    });
+saveAddress = function (xhr) {    
     if (xhr.status == "200") {
         Toast.fire({
             icon: 'success',
@@ -64,16 +53,26 @@ changePicture = function () {
 //For saving User profile
 
 completedUserProfile = function (xhr) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
     var x = document.getElementById("completed");
     if (x.style.display === "none") {
         x.style.display = "block";
         if (xhr.status == "200") {
-            Swal.fire({
-                position: 'top-end',
+            Toast.fire({
                 icon: 'success',
-                title: 'Your profile has been saved',
-                showConfirmButton: false,
-                timer: 1500
+                title: '<span style="color: #006400"><b>Success</b></span> Updated User Profile!',
+                background: '#CCFFCC',
+                iconColor: '#006400',
             });
         }
     } else {
