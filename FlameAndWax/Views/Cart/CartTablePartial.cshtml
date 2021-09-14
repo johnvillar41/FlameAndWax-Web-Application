@@ -7,16 +7,12 @@
     var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
     var cartItemsCount = Cart.GetCartItems(userLoggedIn).Count();
 }
-<a class="btn btn-gold" asp-action="RefreshCart" asp-controller="Cart"
-   data-ajax="true" data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv">
+<a class="btn btn-gold" asp-action="RefreshCart" asp-controller="Cart" data-ajax="true" data-ajax-update="#tableCart"
+    data-ajax-loading="#overlayLoadingDiv">
     Refresh Cart <i class="fas fa-sync"></i>
 </a>
-<form method="post"
-      asp-controller="Cart" asp-action="Checkout"
-      data-ajax="true" data-ajax-update="#tableCart"
-      data-ajax-loading="#overlayLoadingDiv"
-      data-ajax-complete="cartComplete"     
-      id="CartForm">
+<form method="post" asp-controller="Cart" asp-action="Checkout" data-ajax="true" data-ajax-update="#tableCart"
+    data-ajax-loading="#overlayLoadingDiv" data-ajax-complete="cartComplete" id="CartForm">
 </form>
 <div class="row">
     <div class="col-lg-8 col-md-12 pt-2">
@@ -46,14 +42,22 @@
                                             <hr />
                                             <p>
                                                 <strong>Quantity per Unit: </strong>
-                                                <input type="number" form="CartForm" readonly asp-for="@Model.CartProducts[i].QuantityOrdered" min="1" max="50" class="form-control" />
-                                                <input type="hidden" form="CartForm" asp-for="@Model.CartProducts[i].ProductId" />
-                                                <input type="hidden" form="CartForm" asp-for="@Model.CartProducts[i].ProductName" />
+                                                <input type="number" form="CartForm" readonly
+                                            asp-for="@Model.CartProducts[i].QuantityOrdered" min="1" max="50"
+                                            class="form-control" />
+                                                <input type="hidden" form="CartForm"
+                                            asp-for="@Model.CartProducts[i].ProductId" />
+                                                <input type="hidden" form="CartForm"
+                                            asp-for="@Model.CartProducts[i].ProductName" />
                                             </p>
-                                            <a class="btn btn-danger" asp-controller="Cart" asp-action="DecrementProductCount" asp-route-productId="@Model.CartProducts[i].ProductId" data-ajax="true" data-ajax-update="#tableCart"
-                                               data-ajax-loading="#overlayLoadingDiv"><i class="fas fa-minus-circle"></i></a>
-                                            <a class="btn btn-success" asp-controller="Cart" asp-action="IncrementProductCount" asp-route-productId="@Model.CartProducts[i].ProductId" data-ajax="true" data-ajax-update="#tableCart"
-                                               data-ajax-loading="#overlayLoadingDiv"><i class="fas fa-plus-circle"></i></a>
+                                            <a class="btn btn-danger" asp-controller="Cart" asp-action="DecrementProductCount"
+                                        asp-route-productId="@Model.CartProducts[i].ProductId" data-ajax="true"
+                                        data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv"><i
+                                                class="fas fa-minus-circle"></i></a>
+                                            <a class="btn btn-success" asp-controller="Cart" asp-action="IncrementProductCount"
+                                        asp-route-productId="@Model.CartProducts[i].ProductId" data-ajax="true"
+                                        data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv"><i
+                                                class="fas fa-plus-circle"></i></a>
                                             <p><strong>Units in Stock: </strong>@Model.CartProducts[i].StockQuantity</p>
                                         </div>
                                     </div>
@@ -62,14 +66,10 @@
                                 <td style="vertical-align:middle;">@Model.CartProducts[i].ProductId</td>
                                 <td style="vertical-align:middle;">@Model.CartProducts[i].ProductSubTotalPrice</td>
                                 <td style="vertical-align:middle;">
-                                    <a class="btn btn-gold btn-block"
-                                       asp-action="DeleteCartItem"
-                                       asp-controller="Cart"
-                                       asp-route-productId="@Model.CartProducts[i].ProductId"
-                                       data-ajax="true" data-ajax-update="#tableCart"
-                                       data-ajax-loading="#overlayLoadingDiv"
-                                       data-ajax-complete="negateTotalNumberOfCart"
-                                       id="deleteCartItem">
+                                    <a class="btn btn-gold btn-block" asp-action="DeleteCartItem" asp-controller="Cart"
+                                asp-route-productId="@Model.CartProducts[i].ProductId" data-ajax="true"
+                                data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv"
+                                data-ajax-complete="negateTotalNumberOfCart" id="deleteCartItem">
                                         Delete <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </td>
@@ -82,7 +82,8 @@
             {
                 <div class="mx-auto">
                     <div class="row">
-                        <lottie-player src="https://assets3.lottiefiles.com/temp/lf20_Celp8h.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+                        <lottie-player src="https://assets3.lottiefiles.com/temp/lf20_Celp8h.json" background="transparent"
+                        speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
                     </div>
                 </div>
             }
@@ -113,7 +114,7 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <p><strong>SHIPPING</strong></p>
+                    <p><strong>SHIPPING <span class="badge badge-pill badge-dark"><i class="fas fa-shipping-fast"></i></span></strong></p>
                 </div>
                 <div class="row">
                     <div class="input-group mb-3">
@@ -122,23 +123,30 @@
                             <option value="@Constants.Courier.FoodPanda">@nameof(Constants.Courier.FoodPanda)</option>
                             <option value="@Constants.Courier.JNT">@nameof(Constants.Courier.JNT)</option>
                             <option value="@Constants.Courier.NinjaVan">@nameof(Constants.Courier.NinjaVan)</option>
-                            <option value="@Constants.Courier.GogoExpress">@nameof(Constants.Courier.GogoExpress)</option>
+                            <option value="@Constants.Courier.GogoExpress">@nameof(Constants.Courier.GogoExpress)
+                            </option>
                         </select>
                         <div class="input-group-append">
                             <label class="input-group-text" for="inputGroupSelect02">Options</label>
                         </div>
                     </div>
                 </div>
+
+                @await Html.PartialAsync("PaymentOptionsPartial")            
+
+                <hr/>    
                 <div class="row">
                     <div class="col-6">
-                        <p><strong>TOTAL COST</strong></p>
+                        <p><strong>TOTAL COST <i class="fas fa-receipt"></i></strong></p>
                     </div>
                     <div class="col-6">
                         <p><strong>PHP @totalCartValue</strong></p>
                     </div>
                 </div>
                 <div class="row">
-                    <button type="submit" form="CartForm" id="cartComplete" onclick="return checkIfCartHasItems(@cartItemsCount);" class="btn btn-gold btn-block">Submit <i class="fas fa-paper-plane"></i></button>
+                    <button type="submit" form="CartForm" id="cartComplete"
+                        onclick="return checkIfCartHasItems(@cartItemsCount);" class="btn btn-gold btn-block">Submit <i
+                            class="fas fa-paper-plane"></i></button>
                 </div>
             </div>
         </div>
