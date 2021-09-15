@@ -89,7 +89,7 @@ namespace FlameAndWax
             }
         }
 
-        public static void IncrementProductCount(int productID, string user)
+        public static bool IncrementProductCount(int productID, string user)
         {
             foreach (KeyValuePair<string, List<ProductViewModel>> keyValuePair in CartItems)
             {
@@ -99,13 +99,17 @@ namespace FlameAndWax
                     {
                         if (productID == product.ProductId)
                         {
+                            if (product.QuantityOrdered >= product.StockQuantity)
+                                return false;
                             product.QuantityOrdered++;
                             product.ProductSubTotalPrice = product.ProductPrice * product.QuantityOrdered;
-                            return;
+
+                            return true;
                         }
                     }
                 }
             }
+            return false;
         }
 
         public static void DecrementProductCount(int productID, string user)
@@ -124,7 +128,7 @@ namespace FlameAndWax
                             {
                                 product.QuantityOrdered = 1;
                                 product.ProductSubTotalPrice = product.ProductPrice;
-                            }                                
+                            }
                             return;
                         }
                     }

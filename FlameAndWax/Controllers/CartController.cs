@@ -38,7 +38,9 @@ namespace FlameAndWax.Controllers
         public IActionResult IncrementProductCount(int productId)
         {
             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-            Cart.IncrementProductCount(productId, userLoggedIn);
+            var result = Cart.IncrementProductCount(productId, userLoggedIn);
+
+            if(!result) return BadRequest("Not Enough Products!");
             return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedIn) });
         }
 

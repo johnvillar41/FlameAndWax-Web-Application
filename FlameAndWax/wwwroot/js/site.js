@@ -291,8 +291,26 @@ addToCart = function (xhr) {
         }); 
     }
 }
-//Add to cart mixin display
-
+//Error increment cart mixin display
+errorCartIncrement = function (response) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+    Toast.fire({
+        icon: 'error',
+        title: '<span style="color: #8b0000"><b>Error!</b></span> ' + response.responseText,
+        background: '#FF7F7F',
+        iconColor: '#8b0000',
+    });  
+}
 
 
 //Deletion of cart Items
