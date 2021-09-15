@@ -410,6 +410,7 @@ registrationComplete = function (xhr) {
             background: '#CCFFCC',
             iconColor: '#006400',
         });
+        window.location.href = "/Account/Login";
     }
 }
 
