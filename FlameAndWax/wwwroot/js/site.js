@@ -1,8 +1,4 @@
-﻿//If html is a form use jquery $('id').click
-//If not simply put data-ajax-success and call the success function
-
-
-openFacebook = function () {
+﻿openFacebook = function () {
     window.open('https://www.facebook.com/FlameandWaxPH13');
 }
 openInstagram = function () {
