@@ -1,12 +1,12 @@
-﻿using FlameAndWax.Data.Constants;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Models
 {
     public class CartViewModel
     {        
-        public Constants.ModeOfPayment ModeOfPayment { get; set; }
-        public Constants.Courier Courier { get; set; }
+        public ModeOfPayment ModeOfPayment { get; set; }
+        public Courier Courier { get; set; }
         public IList<ProductViewModel> CartProducts { get; set; }
         
     }

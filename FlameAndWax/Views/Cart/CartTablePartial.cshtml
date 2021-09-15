@@ -1,4 +1,4 @@
-﻿@using FlameAndWax.Data.Constants
+﻿@using static FlameAndWax.Data.Constants.Constants;
 @using FlameAndWax.Models
 @model CartViewModel;
 @{
@@ -114,28 +114,29 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <p><strong>SHIPPING <span class="badge badge-pill badge-dark"><i class="fas fa-shipping-fast"></i></span></strong></p>
+                    <p><strong>SHIPPING <span class="badge badge-pill badge-dark"><i
+                                    class="fas fa-shipping-fast"></i></span></strong></p>
                 </div>
                 <div class="col-12">
                     <div class="input-group mb-3">
                         <select class="custom-select" id="inputGroupSelect02" form="CartForm" asp-for="@Model.Courier">
                             <option selected>Choose...</option>
-                            <option value="@Constants.Courier.FoodPanda">@nameof(Constants.Courier.FoodPanda)</option>
-                            <option value="@Constants.Courier.JNT">@nameof(Constants.Courier.JNT)</option>
-                            <option value="@Constants.Courier.NinjaVan">@nameof(Constants.Courier.NinjaVan)</option>
-                            <option value="@Constants.Courier.GogoExpress">
-                                @nameof(Constants.Courier.GogoExpress)
-                        </option>
-                    </select>
-                    <div class="input-group-append">
-                        <label class="input-group-text" for="inputGroupSelect02">Options</label>
+                            <option value="@Courier.FoodPanda">@nameof(Courier.FoodPanda)</option>
+                            <option value="@Courier.JNT">@nameof(Courier.JNT)</option>
+                            <option value="@Courier.NinjaVan">@nameof(Courier.NinjaVan)</option>
+                            <option value="@Courier.GogoExpress">
+                                @nameof(Courier.GogoExpress)
+                            </option>
+                        </select>
+                        <div class="input-group-append">
+                            <label class="input-group-text" for="inputGroupSelect02">Options</label>
+                        </div>
                     </div>
                 </div>
-                </div>
 
-                @await Html.PartialAsync("PaymentOptionsPartial")            
+                @await Html.PartialAsync("PaymentOptionsPartial", Model)
 
-                <hr/>    
+                <hr />
                 <div class="row">
                     <div class="col-6">
                         <p><strong>TOTAL COST <i class="fas fa-receipt"></i></strong></p>

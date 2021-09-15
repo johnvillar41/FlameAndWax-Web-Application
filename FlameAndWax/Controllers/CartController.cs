@@ -95,7 +95,7 @@ namespace FlameAndWax.Controllers
                 );
             }
 
-            var modeOfPayment = ServiceHelper.BuildModeOfPayment(cart.ModeOfPayment.ToString());
+            var modeOfPayment = ServiceHelper.BuildModeOfPayment(cart.ModeOfPayment.ToString());            
             var courierType = ServiceHelper.BuildCourier(cart.Courier.ToString());
             var order = new OrderModel
             {
