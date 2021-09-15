@@ -95,7 +95,7 @@ namespace FlameAndWax.Controllers
                 );
             }
 
-            var modeOfPayment = ServiceHelper.BuildModeOfPayment(cart.ModeOfPayment.ToString());            
+            var modeOfPayment = ServiceHelper.BuildModeOfPayment(cart.ModeOfPayment.ToString());
             var courierType = ServiceHelper.BuildCourier(cart.Courier.ToString());
             var order = new OrderModel
             {
@@ -121,6 +121,13 @@ namespace FlameAndWax.Controllers
 
             var productServiceResult = await _cartService.FetchProductDetail(productId, ConnectionString);
             if (productServiceResult.HasError) return RedirectToAction("Index", "Error", new { productServiceResult.ErrorContent });
+
+            var canStillOrderProduct = true;
+            if (productServiceResult.Result.UnitsInStock == 0) canStillOrderProduct = false;
+            var productsLeft = productServiceResult.Result.UnitsInStock - productServiceResult.Result.UnitsInOrder;
+            if (productsLeft == 0) canStillOrderProduct = false;
+
+            if (!canStillOrderProduct) return BadRequest("Cannot Order! No more products left!");
 
             var productViewModel = new ProductViewModel(productServiceResult.Result);
 

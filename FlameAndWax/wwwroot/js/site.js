@@ -11,7 +11,7 @@ openInstagram = function () {
 
 //for saving ShippingAddress
 
-saveAddress = function (xhr) {    
+saveAddress = function (xhr) {
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -274,6 +274,21 @@ addToCart = function (xhr) {
             background: '#CCFFCC',
             iconColor: '#006400',
         });
+    } else if (xhr.status == "401") {
+        Toast.fire({
+            icon: 'error',
+            title: '<span style="color: #8b0000"><b>Error!</b></span> Login First!',
+            background: '#FF7F7F',
+            iconColor: '#8b0000',
+        });       
+        window.location.href = xhr.responseText;
+    } else if (xhr.status == "400") {
+        Toast.fire({
+            icon: 'error',
+            title: '<span style="color: #8b0000"><b>Error!</b></span> ' + xhr.responseText,
+            background: '#FF7F7F',
+            iconColor: '#8b0000',
+        }); 
     }
 }
 //Add to cart mixin display
@@ -314,30 +329,6 @@ updateAddToCartTotalCount = function (response) {
     var dataObject = JSON.parse(response);
     document.querySelector('#totalCartCount').innerHTML = dataObject;
 
-
-}
-
-failureAddToCart = function (response) {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    });
-
-    Toast.fire({
-        icon: 'error',
-        title: '<span style="color: #8b0000"><b>Error!</b></span> Login First!',
-        background: '#FF7F7F',
-        iconColor: '#8b0000',
-    });
-
-    window.location.href = "/Account/Login/?returnUrl=" + response;
 
 }
 

@@ -75,8 +75,7 @@
                     </a>
                     <a class="btn btn-gold btn-sm" asp-route-_productId="@product.ProductId" asp-action="AddToCart"
                     asp-controller="Products" data-ajax="true" id="addtoCartBtn" data-ajax-loading="#cartLoading"
-                    data-ajax-success="updateAddToCartTotalCount"
-                    data-ajax-failure="failureAddToCart('/Products/Details?productId=@product.ProductId')"
+                    data-ajax-success="updateAddToCartTotalCount"                    
                     data-ajax-complete="addToCart">
                         Add <i class="fas fa-cart-plus"></i>
                     </a>

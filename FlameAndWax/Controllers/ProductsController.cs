@@ -78,9 +78,11 @@ namespace FlameAndWax.Controllers
             return PartialView("ProductsPartial", productsViewModel);
         }
 
-        [Authorize(Roles = nameof(Constants.Roles.Customer))]
+       
         public IActionResult AddToCart(int _productId)
         {
+            if (!User.Identity.IsAuthenticated) return Unauthorized($"/Account/Login/?returnUrl=/Products/Details?productId={_productId}");
+
             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
             return RedirectToAction("AddToCart", "Cart", new { productId = _productId, user = userLoggedIn });
         }
