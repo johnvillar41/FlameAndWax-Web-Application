@@ -56,7 +56,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-                            var totalNumberOfCart = Cart.GetCartItems(userLoggedIn).Count();
+                            var totalNumberOfCart = Cart.GetCartItemsCount(userLoggedIn);
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Cart" asp-action="Index"><i
                                     class="fas fa-shopping-cart"></i>&nbsp;Cart<span
