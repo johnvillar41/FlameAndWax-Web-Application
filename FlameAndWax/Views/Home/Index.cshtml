@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FlameAndWax.Models.ProductViewModel>;
+﻿@model FlameAndWax.Models.HomeViewModel;
 
 @{
     ViewData["Title"] = "Home Page";
@@ -15,8 +15,8 @@
     @await Html.PartialAsync("CategoryCarouselPartial")
 
     <h3 class="mt-3"><span class="fab fa-hotjar">New Arrivals</span></h3>
-    @await Html.PartialAsync("TopProductsPartial", Model)
+    @await Html.PartialAsync("NewProductsPartial", Model.NewProducts)
 
     <h3 class="mt-3"><span class="fab fa-hotjar">Customer Reviews</span></h3>
-    @await Html.PartialAsync("TopCommentsPartial")
+    @await Html.PartialAsync("TopCommentsPartial", Model.TopCustomerReviews)
 </div>

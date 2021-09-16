@@ -8,5 +8,6 @@ namespace FlameAndWax.Services.Repositories.Interfaces
     {
         Task<IEnumerable<CustomerReviewModel>> FetchPaginatedReviewsOfAProduct(int pageSize, int pageNumber, int productId, string connectionString);
         Task<int> FetchTotalNumberOfReviewsOnAProduct(int productId, string connectionString);
+        Task<IEnumerable<CustomerReviewModel>> FetchTopComments(string connectionString);
     }
 }

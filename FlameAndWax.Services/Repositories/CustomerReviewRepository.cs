@@ -1,5 +1,7 @@
 ﻿using FlameAndWax.Data.Models;
+using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Repositories.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -130,6 +132,31 @@ namespace FlameAndWax.Services.Repositories
                     );
             }
             return customerReviews;
+        }
+
+        public async Task<IEnumerable<CustomerReviewModel>> FetchTopComments(string connectionString)
+        {
+            List<CustomerReviewModel> topCustomerReviews = new List<CustomerReviewModel>();
+
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            var queryString = "SELECT TOP 5 * FROM CustomerReviewTable  WHERE ReviewScore > 4 ";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                topCustomerReviews.Add(
+                    new CustomerReviewModel
+                    {
+                        ReviewId = int.Parse(reader["ReviewId"].ToString()),
+                        Product = await _productRepository.Fetch(int.Parse(reader["ProductId"].ToString()),connectionString),
+                        Customer = await _customerRepository.Fetch(int.Parse(reader["CustomerId"].ToString()),connectionString),
+                        ReviewScore = ServiceHelper.BuildReviewScore(int.Parse(reader["ReviewScore"].ToString())),
+                        ReviewDetail = reader["ReviewDetail"].ToString()
+                    }
+                );
+            }
+            return new List<CustomerReviewModel>();
         }
 
         public async Task<int> FetchTotalNumberOfReviewsOnAProduct(int productId, string connectionString)

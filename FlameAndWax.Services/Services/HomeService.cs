@@ -12,18 +12,26 @@ namespace FlameAndWax.Services.Services
     public class HomeService : IHomeService
     {
         private readonly IProductRepository _productRepository;
-        public HomeService(IProductRepository productRepository)
+        private readonly ICustomerReviewRepository _customerReviewRepository;
+        public HomeService(IProductRepository productRepository, ICustomerReviewRepository customerReviewRepository)
         {
             _productRepository = productRepository;
-        }
-        public async Task<ServiceResult<IEnumerable<ProductModel>>> FetchNewArrivedProducts(string connectionString)
+            _customerReviewRepository = customerReviewRepository;
+        }        
+        public async Task<ServiceResult<Tuple<IEnumerable<ProductModel>, IEnumerable<CustomerReviewModel>>>> FetchNewArrivedProductsAndTopCustomerReviews(string connectionString)
         {
             try
             {
                 var newArrivals = await _productRepository.FetchNewArrivedProducts(connectionString);
-                return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(newArrivals, false, null);
+                var topCustomerComments = await _customerReviewRepository.FetchTopComments(connectionString);
+                var tuple = Tuple.Create<IEnumerable<ProductModel>, IEnumerable<CustomerReviewModel>>(newArrivals, topCustomerComments);
+
+                return ServiceHelper.BuildServiceResult<Tuple<IEnumerable<ProductModel>, IEnumerable<CustomerReviewModel>>>(tuple, false, null);
             }
-            catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<ProductModel>>(null, true, e.Message); }
+            catch (Exception e)
+            {
+                return ServiceHelper.BuildServiceResult<Tuple<IEnumerable<ProductModel>, IEnumerable<CustomerReviewModel>>>(null, true, e.Message);
+            }
         }
     }
 }
