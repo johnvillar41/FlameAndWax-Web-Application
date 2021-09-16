@@ -71,6 +71,18 @@ namespace FlameAndWax
             return new List<ProductViewModel>();
         }
 
+        public static int GetCartItemsCount(string user)
+        {
+            foreach (KeyValuePair<string, List<ProductViewModel>> keyValuePair in CartItems)
+            {
+                if (keyValuePair.Key.Equals(user))
+                {
+                    return keyValuePair.Value.Count;
+                }
+            }
+            return 0;
+        }
+
         public static void RemoveCartItem(int productID, string user)
         {
             foreach (KeyValuePair<string, List<ProductViewModel>> keyValuePair in CartItems)
