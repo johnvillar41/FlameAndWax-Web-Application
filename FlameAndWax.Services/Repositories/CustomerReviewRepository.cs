@@ -156,7 +156,7 @@ namespace FlameAndWax.Services.Repositories
                     }
                 );
             }
-            return new List<CustomerReviewModel>();
+            return topCustomerReviews;
         }
 
         public async Task<int> FetchTotalNumberOfReviewsOnAProduct(int productId, string connectionString)

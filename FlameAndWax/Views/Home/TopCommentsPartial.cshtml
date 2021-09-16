@@ -1,0 +1,29 @@
+@model IEnumerable<FlameAndWax.Models.CustomerReviewViewModel>;
+<div class="row">
+    @if (Model == null)
+    {
+        return;
+    }
+    @foreach (var comment in Model)
+    {
+        <div class="col-md-6 col-lg-4 p-1">
+            <div class="card shadow-lg">
+
+                <div class="card-img">
+                    <div class="productImage">
+                        <div class="img-wrapper">
+                            <a class="thumb">
+                                <img src="@Url.Content(comment.Customer.ProfilePictureLink)">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <a class="badge badge-danger text-white">New Arrivals <i class="fab fa-hotjar"></i></a>
+                    <h5 class="card-title">Review Score: @comment.ReviewScore</h5>
+                    <p class="card-text p-semi">@comment.ReviewDetail</p>                    
+                </div>
+            </div>
+        </div>
+    }
+</div>
