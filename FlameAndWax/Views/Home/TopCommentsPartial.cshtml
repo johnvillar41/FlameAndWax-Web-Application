@@ -6,22 +6,30 @@
     }
     @foreach (var comment in Model)
     {
+        var reviewScoreNumber = (int)comment.ReviewScore;
         <div class="col-md-6 col-lg-4 p-1">
             <div class="card shadow-lg">
-
                 <div class="card-img">
                     <div class="productImage">
                         <div class="img-wrapper">
                             <a class="thumb">
-                                <img src="@Url.Content(comment.Customer.ProfilePictureLink)">
+                                <img src="@Url.Content(comment.ProductPictureLink)">
                             </a>
                         </div>
                     </div>
                 </div>
+
                 <div class="card-body">
-                    <a class="badge badge-danger text-white">New Arrivals <i class="fab fa-hotjar"></i></a>
-                    <h5 class="card-title">Review Score: @comment.ReviewScore</h5>
-                    <p class="card-text p-semi">@comment.ReviewDetail</p>                    
+                    <span class="badge badge-warning text-white">Top Comment <i class="fab fa-hotjar"></i></span>
+                    <h6 class="float-right"><b>Date:</b> Add Date here</h6>
+                    <hr />
+                    <img src="@Url.Content(comment.Customer.ProfilePictureLink)" class="rounded-circle"
+                    style="height:50px;">
+                    <h6><b>From:</b> @comment.Customer.CustomerName</h6>
+                    <h6><b>Review Score:</b> @comment.ReviewScore</h6>
+                    <h6><b>@reviewScoreNumber/5</b></h6>
+                    <hr />
+                    <p class="card-text p-semi">@comment.ReviewDetail</p>
                 </div>
             </div>
         </div>

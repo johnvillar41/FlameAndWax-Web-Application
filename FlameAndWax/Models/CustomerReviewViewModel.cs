@@ -1,4 +1,5 @@
-﻿using FlameAndWax.Data.Models;
+﻿using System.Linq;
+using FlameAndWax.Data.Models;
 using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Models
@@ -6,7 +7,8 @@ namespace FlameAndWax.Models
     public class CustomerReviewViewModel
     {
         public int ReviewId { get; set; }
-        public int ProductId { get; set; }        
+        public int ProductId { get; set; }
+        public string ProductPictureLink { get; set; }
         public string ReviewDetail { get; set; }
         public ReviewScore ReviewScore { get; set; }
         public CustomerViewModel Customer { get; set; }
@@ -17,7 +19,8 @@ namespace FlameAndWax.Models
             ReviewDetail = customerReviewModel.ReviewDetail;
             ReviewScore = customerReviewModel.ReviewScore;
             Customer = new CustomerViewModel(customerReviewModel.Customer);
-        }        
+            ProductPictureLink = customerReviewModel.Product.ProductGallery.FirstOrDefault().PhotoLink;
+        }
         public CustomerReviewViewModel()
         {
 
