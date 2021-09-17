@@ -123,7 +123,7 @@ namespace FlameAndWax.Controllers
         {
             var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
             var totalCost = Cart.GetTotalCartCost(userLoggedInUsername);
-            CartSummaryViewModel cartSummary = new CartSummaryViewModel(totalCost, cart.ModeOfPayment, cart.Courier, cart.CartProducts);
+            CartSummaryViewModel cartSummary = new CartSummaryViewModel(totalCost, cart);
 
             return View(cartSummary);
         }

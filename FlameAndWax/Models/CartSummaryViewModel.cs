@@ -8,9 +8,7 @@ namespace FlameAndWax.Models
         public double TotalCost { get; set; }
         public CartSummaryViewModel(
             double totalCost,
-            ModeOfPayment modeOfPayment,
-            Courier courier,
-            List<ProductViewModel> cartProducts) : base(modeOfPayment, courier, cartProducts)
+            CartViewModel cartViewModel) : base(cartViewModel.ModeOfPayment, cartViewModel.Courier, cartViewModel.CartProducts)
         {
             TotalCost = totalCost;
         }
