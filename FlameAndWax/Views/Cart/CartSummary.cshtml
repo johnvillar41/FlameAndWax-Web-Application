@@ -1,0 +1,43 @@
+@model FlameAndWax.Models.CartSummaryViewModel;
+@{
+    ViewData["Title"] = "Order Summary";
+}
+
+<div class="container">
+    <h3>Order Summary</h3>
+    <hr />
+    <h4>Products</h4>
+    <div class="card mb-4">
+        <ul class="list-group list-group-flush">
+            @{
+                var count = 0;
+            }
+            @foreach (var item in Model.CartProducts)
+            {
+                count++;
+                <li class="list-group-item">@count) @item.ProductName [@item.QuantityOrdered x]</li>
+            }
+
+        </ul>
+    </div>
+    <div class="card">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Mode Of Payment:</b> @Model.ModeOfPayment.ToString()</li>
+            <li class="list-group-item"><b>Courier:</b> @Model.Courier.ToString()</li>
+            <li class="list-group-item"><b>Total Cost:</b> @Model.TotalCost</li>
+        </ul>
+    </div>
+    <hr />
+    <h4>Finalize Cart</h4>
+    <div class="card">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <a class="btn btn-gold" id="CartForm" asp-action="FinalizeCheckout" asp-controller="Cart"
+                    asp-route-modeOfPayment="@Model.ModeOfPayment.ToString()"
+                    asp-route-courier="@Model.Courier.ToString()" data-ajax="true" data-ajax-update="#tableCart"
+                    data-ajax-loading="#overlayLoadingDiv" data-ajax-complete="cartComplete">Checkout</a>
+                <button class="btn btn-gold">Cancel</button>
+            </li>
+        </ul>
+    </div>
+</div>

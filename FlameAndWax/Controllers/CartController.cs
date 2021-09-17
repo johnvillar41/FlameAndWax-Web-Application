@@ -40,7 +40,7 @@ namespace FlameAndWax.Controllers
             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
             var result = Cart.IncrementProductCount(productId, userLoggedIn);
 
-            if(!result) return BadRequest("Not Enough Products!");
+            if (!result) return BadRequest("Not Enough Products!");
             return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedIn) });
         }
 
@@ -64,8 +64,7 @@ namespace FlameAndWax.Controllers
             return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedIn) });
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Checkout(CartViewModel cart)
         {
             if (cart.CartProducts == null) return RedirectToAction("Index", "Error", new { ErrorContent = "Cart Products is null" });
@@ -114,7 +113,29 @@ namespace FlameAndWax.Controllers
             if (primaryKeyServiceResult.HasError) return BadRequest(new { errorContent = primaryKeyServiceResult.ErrorContent });
 
             Cart.ClearCartItems(userLoggedInUsername);
-            return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedInID) });
+            return Ok("Successfully Inserted Order!");
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CartSummary(CartViewModel cart)
+        {
+            var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+            var totalCost = Cart.GetTotalCartCost(userLoggedInUsername);
+            CartSummaryViewModel cartSummary = new CartSummaryViewModel(totalCost, cart.ModeOfPayment, cart.Courier, cart.CartProducts);
+
+            return View(cartSummary);
+        }
+
+        public IActionResult FinalizeCheckout(string modeOfPayment, string courier)
+        {
+            var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+            var cartViewModel = new CartViewModel(
+                ServiceHelper.BuildModeOfPayment(modeOfPayment),
+                ServiceHelper.BuildCourier(courier),
+                Cart.GetCartItems(userLoggedInUsername));
+
+            return RedirectToAction(nameof(Checkout), cartViewModel);
         }
 
         public async Task<IActionResult> AddToCart(int productId = 0, string user = "")
