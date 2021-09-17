@@ -70,8 +70,7 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> Checkout()
         {
-            var cart = JsonConvert.DeserializeObject<CartViewModel>(TempData["CartViewModel"].ToString());
-            var shippingAddress = JsonConvert.DeserializeObject<CustomerModel>(TempData["ShippingAddress"].ToString());
+            var cart = JsonConvert.DeserializeObject<CartViewModel>(TempData["CartViewModel"].ToString());            
 
             if (cart.CartProducts == null) return RedirectToAction("Index", "Error", new { ErrorContent = "Cart Products is null" });
 
