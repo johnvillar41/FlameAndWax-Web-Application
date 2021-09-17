@@ -24,15 +24,24 @@
 
         </ul>
     </div>
+    @{
+        var paymentInstructions = "";
+        switch (Model.ModeOfPayment)
+        {
+            case Constants.ModeOfPayment.GCash:
+                paymentInstructions = Constants.GCASH_PAYMENT_DETAILS;
+                break;
+        }
+    }
     <h4>Payment Instructions</h4>
     <div class="card mb-4">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">Pay now hehehe</li>
+            <li class="list-group-item">@paymentInstructions</li>
         </ul>
     </div>
     <h4>Shipping Address</h4>
     <div class="card mb-4">
-        <ul class="list-group list-group-flush">            
+        <ul class="list-group list-group-flush">
             <li class="list-group-item"><b>Full Address: </b>@Model.ShippingAddress.Address.</li>
             <li class="list-group-item"><b>Postal Code: </b>@Model.ShippingAddress.PostalCode</li>
             <li class="list-group-item"><b>City: </b>@Model.ShippingAddress.City</li>
@@ -51,7 +60,7 @@
     </div>
     <hr />
     <h4>Finalize Cart</h4>
-    <button class="btn btn-gold" form="CartSubmit" type="submit">Checkout</button>
-    <button class="btn btn-gold">Cancel</button>
-    
+    <button class="btn btn-gold" form="CartSubmit" type="submit">Checkout <i class="fas fa-paper-plane"></i></button>
+    <button class="btn btn-gold">Cancel <i class="fas fa-ban"></i></button>
+
 </div>
