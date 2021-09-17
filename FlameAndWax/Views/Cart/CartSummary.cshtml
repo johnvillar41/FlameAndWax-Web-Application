@@ -10,9 +10,9 @@
 <div class="container">
     <h3>Order Summary</h3>
     <hr />
-    <h4>Products</h4>    
+    <h4>Products Count: @Model.CartProducts.Count()</h4>
     @foreach (var item in Model.CartProducts)
-    {       
+    {
         <div class="card mb-3">
             <div class="row no-gutters">
                 <div class="col-md-3">
@@ -21,7 +21,7 @@
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title">@item.ProductName</h5>
-                        <p class="card-text">@item.ProductDescription</p>                        
+                        <p class="card-text">@item.ProductDescription</p>
                         <p class="card-text"><b>SubTotal Price: @item.ProductSubTotalPrice</b></p>
                         <p class="card-text"><b>Product Count: @item.QuantityOrdered</b></p>
                     </div>
@@ -51,6 +51,7 @@
     <h4>Payment Instructions</h4>
     <div class="card mb-4">
         <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>@Model.ModeOfPayment</b> Instructions</li>
             <li class="list-group-item">@paymentInstructions</li>
         </ul>
     </div>
@@ -75,7 +76,6 @@
     </div>
     <hr />
     <h4>Finalize Cart</h4>
-    <button class="btn btn-gold" form="CartSubmit" type="submit">Checkout <i class="fas fa-paper-plane"></i></button>
     <button class="btn btn-gold">Cancel <i class="fas fa-ban"></i></button>
-
+    <button class="btn btn-gold" form="CartSubmit" type="submit">Checkout <i class="fas fa-paper-plane"></i></button>
 </div>
