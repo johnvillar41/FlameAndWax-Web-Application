@@ -73,29 +73,12 @@ namespace FlameAndWax.Controllers
             var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
             var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
 
-            var cartItems = cart.CartProducts;
-            var totalOrderCost = 0.0;
+            var cartItems = cart.CartProducts;            
             var orderDetails = new List<OrderDetailModel>();
+            var result = await BuildOrderDetails(orderDetails, cartItems, userLoggedInUsername);
+            var totalOrderCost = orderDetails.Select(x => x.TotalPrice).Sum();
 
-            foreach (var cartItem in cartItems)
-            {
-                var subTotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);
-                totalOrderCost += subTotalCost;
-                var productPriceServiceResult = await _cartService.FetchProductPrice(cartItem.ProductId, ConnectionString);
-                if (productPriceServiceResult.HasError) return RedirectToAction("Index", "Error", new { productPriceServiceResult.ErrorContent });
-                orderDetails.Add(
-                    new OrderDetailModel
-                    {
-                        Product = new ProductModel
-                        {
-                            ProductId = cartItem.ProductId,
-                            ProductPrice = productPriceServiceResult.Result
-                        },
-                        TotalPrice = subTotalCost,
-                        Quantity = cartItem.QuantityOrdered,
-                    }
-                );
-            }
+            if (result != null) return result;
 
             var modeOfPayment = ServiceHelper.BuildModeOfPayment(cart.ModeOfPayment.ToString());
             var courierType = ServiceHelper.BuildCourier(cart.Courier.ToString());
@@ -161,6 +144,31 @@ namespace FlameAndWax.Controllers
             var cartItems = Cart.GetCartItems(user);
             var cartItemCount = cartItems.Count();
             return Ok(cartItemCount);
+        }
+        private async Task<ObjectResult> BuildOrderDetails(
+            List<OrderDetailModel> orderDetails,
+            List<ProductViewModel> cartItems,            
+            string userLoggedInUsername)
+        {
+            foreach (var cartItem in cartItems)
+            {
+                var subTotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);                
+                var productPriceServiceResult = await _cartService.FetchProductPrice(cartItem.ProductId, ConnectionString);
+                if (productPriceServiceResult.HasError) return BadRequest(productPriceServiceResult.ErrorContent);
+                orderDetails.Add(
+                    new OrderDetailModel
+                    {
+                        Product = new ProductModel
+                        {
+                            ProductId = cartItem.ProductId,
+                            ProductPrice = productPriceServiceResult.Result
+                        },
+                        TotalPrice = subTotalCost,
+                        Quantity = cartItem.QuantityOrdered,
+                    }
+                );
+            }
+            return null;
         }
     }
 }
