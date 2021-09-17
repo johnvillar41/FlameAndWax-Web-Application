@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-6 mt-4 my-auto">
             <p>
                 We'd love to hear from you!<br /><br />
 
@@ -25,28 +25,15 @@
                 In case we don't respond immediately (or you are reaching out to use during non-working hours), please be sure to check our FAQ page or send us an email.<br /><br />
 
                 We'll respond as soon as we can! xoxo<br /><br />
-            </p>
-            <div class="row ">
-                <div class="col-md-3 mx-auto">
-                    <img src="~/images/icons/outline_home_black_36dp.png" />
-                    <p>Address here plus icon</p>
-                </div>
-                <div class="col-md-3 mx-auto">
-                    <img src="~/images/icons/outline_phone_black_36dp.png" />
-                    <p>Phone number here plus icon</p>
-                </div>
-                <div class="col-md-3 mx-auto">
-                    <img src="~/images/icons/outline_email_black_36dp.png" />
-                    <p>Email here plus icon</p>
-                </div>
-            </div>
+            </p>            
         </div>
         <div class="col-md-6 mt-4">
             <form method="post" asp-action="Index" asp-controller="ContactUs" id="myform"               
                   data-ajax="true" data-ajax-loading="#loader" data-ajax-complete="completedSendMessage"
                   data-ajax-method="post" data-ajax-failure="errorContent">                
-                <div class="card p-3 box-shadow" style="background-color: #e4e2da">
-                    <h4 class="text-left">Send us a message!</h4><br />
+                <div class="card p-3">
+                    <h4 class="text-left">Send us a message! <i class="fas fa-envelope-open-text"></i></h4>
+                    <hr/>
                     <input class="form-control" placeholder="Enter Name" asp-for="@Model.Name" id="name" required/><br />
                     <input class="form-control" placeholder="Enter Email" asp-for="@Model.Email" id="email" required/><br />
                     <input class="form-control" placeholder="Enter PhoneNumber" asp-for="@Model.PhoneNumber" id="phone" required/><br />
