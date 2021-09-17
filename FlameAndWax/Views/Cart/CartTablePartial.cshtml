@@ -48,6 +48,14 @@
                                             asp-for="@Model.CartProducts[i].ProductId" />
                                                 <input type="hidden" form="CartForm"
                                             asp-for="@Model.CartProducts[i].ProductName" />
+                                                <input type="hidden" form="CartForm"
+                                            asp-for="@Model.CartProducts[i].PhotoLink" />
+                                                <input type="hidden" form="CartForm"
+                                            asp-for="@Model.CartProducts[i].ProductSubTotalPrice" />
+                                                <input type="hidden" form="CartForm"
+                                            asp-for="@Model.CartProducts[i].ProductDescription" />
+                                                <input type="hidden" form="CartForm"
+                                            asp-for="@Model.CartProducts[i].QuantityOrdered" />
                                             </p>
                                             <a class="btn btn-danger" asp-controller="Cart" asp-action="DecrementProductCount"
                                         asp-route-productId="@Model.CartProducts[i].ProductId" data-ajax="true"
@@ -55,8 +63,8 @@
                                                 class="fas fa-minus-circle"></i></a>
                                             <a class="btn btn-success" asp-controller="Cart" asp-action="IncrementProductCount"
                                         asp-route-productId="@Model.CartProducts[i].ProductId" data-ajax="true"
-                                        data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv" data-ajax-failure="errorCartIncrement"><i
-                                                class="fas fa-plus-circle"></i></a>
+                                        data-ajax-update="#tableCart" data-ajax-loading="#overlayLoadingDiv"
+                                        data-ajax-failure="errorCartIncrement"><i class="fas fa-plus-circle"></i></a>
                                             <p><strong>Units in Stock: </strong>@Model.CartProducts[i].StockQuantity</p>
                                         </div>
                                     </div>
