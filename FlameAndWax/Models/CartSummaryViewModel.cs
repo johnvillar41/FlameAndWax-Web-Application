@@ -10,7 +10,7 @@ namespace FlameAndWax.Models
             double totalCost,
             ModeOfPayment modeOfPayment,
             Courier courier,
-            IList<ProductViewModel> cartProducts) : base(modeOfPayment, courier, cartProducts)
+            List<ProductViewModel> cartProducts) : base(modeOfPayment, courier, cartProducts)
         {
             TotalCost = totalCost;
         }

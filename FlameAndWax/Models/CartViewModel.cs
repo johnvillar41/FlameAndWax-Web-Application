@@ -7,8 +7,8 @@ namespace FlameAndWax.Models
     {
         public ModeOfPayment ModeOfPayment { get; set; }
         public Courier Courier { get; set; }
-        public IList<ProductViewModel> CartProducts { get; set; }
-        public CartViewModel(ModeOfPayment modeOfPayment, Courier courier, IList<ProductViewModel> cartProducts)
+        public List<ProductViewModel> CartProducts { get; set; }
+        public CartViewModel(ModeOfPayment modeOfPayment, Courier courier, List<ProductViewModel> cartProducts)
         {
             ModeOfPayment = modeOfPayment;
             Courier = courier;

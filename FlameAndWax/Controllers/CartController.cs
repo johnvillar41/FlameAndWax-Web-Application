@@ -6,6 +6,7 @@ using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,9 +65,9 @@ namespace FlameAndWax.Controllers
             return PartialView("CartTablePartial", new CartViewModel { CartProducts = Cart.GetCartItems(userLoggedIn) });
         }
 
-        
-        public async Task<IActionResult> Checkout(CartViewModel cart)
+        public async Task<IActionResult> Checkout()
         {
+            var cart = JsonConvert.DeserializeObject<CartViewModel>(TempData["CartViewModel"].ToString());
             if (cart.CartProducts == null) return RedirectToAction("Index", "Error", new { ErrorContent = "Cart Products is null" });
 
             var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
@@ -115,7 +116,7 @@ namespace FlameAndWax.Controllers
             Cart.ClearCartItems(userLoggedInUsername);
             return Ok("Successfully Inserted Order!");
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CartSummary(CartViewModel cart)
@@ -127,15 +128,17 @@ namespace FlameAndWax.Controllers
             return View(cartSummary);
         }
 
-        public IActionResult FinalizeCheckout(string modeOfPayment, string courier)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult FinalizeCheckout(CartViewModel cart)
         {
             var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
             var cartViewModel = new CartViewModel(
-                ServiceHelper.BuildModeOfPayment(modeOfPayment),
-                ServiceHelper.BuildCourier(courier),
+                cart.ModeOfPayment,
+                cart.Courier,
                 Cart.GetCartItems(userLoggedInUsername));
-
-            return RedirectToAction(nameof(Checkout), cartViewModel);
+            TempData["CartViewModel"] = JsonConvert.SerializeObject(cartViewModel);
+            return RedirectToAction(nameof(Checkout), nameof(Cart));
         }
 
         public async Task<IActionResult> AddToCart(int productId = 0, string user = "")

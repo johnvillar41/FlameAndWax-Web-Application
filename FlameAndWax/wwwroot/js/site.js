@@ -178,6 +178,7 @@ cartComplete = function (xhr) {
             iconColor: '#006400',
         });
         document.getElementById('totalCartCount').innerHTML = "0";
+        window.location.href = "/Cart";
     } else {
         swalWithBootstrapButtons.fire({
             title: 'Unable to checkout orders',

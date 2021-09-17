@@ -27,6 +27,11 @@ namespace FlameAndWax
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddMvc().AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.PropertyNamingPolicy = null;
+                o.JsonSerializerOptions.DictionaryKeyPolicy = null;
+            });
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
               .AddCookie();
@@ -47,8 +52,8 @@ namespace FlameAndWax
             services.AddSingleton<IShippingAddressRepository, ShippingAddressRepository>();
 
             //Dependency Injection Services
-            services.AddSingleton<IProductsService, ProductService>();             
-            services.AddSingleton(typeof(IAccountBaseService<CustomerModel>),typeof(CustomerAccountService));            
+            services.AddSingleton<IProductsService, ProductService>();
+            services.AddSingleton(typeof(IAccountBaseService<CustomerModel>), typeof(CustomerAccountService));
             services.AddSingleton<IHomeService, HomeService>();
             services.AddSingleton<ICartService, CartService>();
             services.AddSingleton<IContactUsService, ContactUsService>();
