@@ -2,9 +2,8 @@
 @{
     ViewData["Title"] = "Order Summary";
 }
-<form asp-controller="Cart" asp-action="FinalizeCheckout" id="CartSubmit"
-      data-ajax="true" data-ajax-update="#tableCart"
-      data-ajax-loading="#overlayLoadingDiv" data-ajax-complete="cartComplete">
+<form asp-controller="Cart" asp-action="FinalizeCheckout" id="CartSubmit" data-ajax="true" data-ajax-update="#tableCart"
+    data-ajax-loading="#overlayLoadingDiv" data-ajax-complete="cartComplete">
     <input type="hidden" asp-for="@Model.ModeOfPayment">
     <input type="hidden" asp-for="@Model.Courier">
 </form>
@@ -25,21 +24,34 @@
 
         </ul>
     </div>
-    <div class="card">
+    <h4>Payment Instructions</h4>
+    <div class="card mb-4">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>Mode Of Payment:</b> @Model.ModeOfPayment.ToString()</li>
-            <li class="list-group-item"><b>Courier:</b> @Model.Courier.ToString()</li>
+            <li class="list-group-item">Pay now hehehe</li>
+        </ul>
+    </div>
+    <h4>Shipping Address</h4>
+    <div class="card mb-4">
+        <ul class="list-group list-group-flush">            
+            <li class="list-group-item"><b>Full Address: </b>@Model.ShippingAddress.Address.</li>
+            <li class="list-group-item"><b>Postal Code: </b>@Model.ShippingAddress.PostalCode</li>
+            <li class="list-group-item"><b>City: </b>@Model.ShippingAddress.City</li>
+            <li class="list-group-item"><b>Region: </b>@Model.ShippingAddress.Region</li>
+            <li class="list-group-item"><b>Country: </b>@Model.ShippingAddress.Country</li>
+        </ul>
+    </div>
+    <h4>Summary</h4>
+    <div class="card mb-4">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Mode Of Payment:</b> @Model.ModeOfPayment</li>
+            <li class="list-group-item"><b>Courier Type:</b> @Model.Courier</li>
+            <li class="list-group-item"><b>Payment Type:</b> @Model.ModeOfPayment</li>
             <li class="list-group-item"><b>Total Cost:</b> @Model.TotalCost</li>
         </ul>
     </div>
     <hr />
     <h4>Finalize Cart</h4>
-    <div class="card">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                <button class="btn btn-gold" form="CartSubmit" type="submit">Checkout</button>
-                <button class="btn btn-gold">Cancel</button>
-            </li>
-        </ul>
-    </div>
+    <button class="btn btn-gold" form="CartSubmit" type="submit">Checkout</button>
+    <button class="btn btn-gold">Cancel</button>
+    
 </div>

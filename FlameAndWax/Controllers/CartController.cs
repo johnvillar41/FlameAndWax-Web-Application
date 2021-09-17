@@ -2,6 +2,7 @@
 using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
 using FlameAndWax.Services.Helpers;
+using FlameAndWax.Services.Repositories.Interfaces;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,14 +20,16 @@ namespace FlameAndWax.Controllers
     public class CartController : Controller
     {
         private readonly ICartService _cartService;
+        private readonly IUserProfileService _userProfileService;
         private readonly IConfiguration _configuration;
 
         private string ConnectionString { get; }
 
-        public CartController(ICartService cartService, IConfiguration configuration)
+        public CartController(ICartService cartService, IConfiguration configuration, IUserProfileService userProfileService)
         {
             _cartService = cartService;
             _configuration = configuration;
+            _userProfileService = userProfileService;
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
 
@@ -68,12 +71,14 @@ namespace FlameAndWax.Controllers
         public async Task<IActionResult> Checkout()
         {
             var cart = JsonConvert.DeserializeObject<CartViewModel>(TempData["CartViewModel"].ToString());
+            var shippingAddress = JsonConvert.DeserializeObject<CustomerModel>(TempData["ShippingAddress"].ToString());
+
             if (cart.CartProducts == null) return RedirectToAction("Index", "Error", new { ErrorContent = "Cart Products is null" });
 
             var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
             var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
 
-            var cartItems = cart.CartProducts;            
+            var cartItems = cart.CartProducts;
             var orderDetails = new List<OrderDetailModel>();
             var result = await BuildOrderDetails(orderDetails, cartItems, userLoggedInUsername);
             var totalOrderCost = orderDetails.Select(x => x.TotalPrice).Sum();
@@ -102,12 +107,16 @@ namespace FlameAndWax.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CartSummary(CartViewModel cart)
+        public async Task<IActionResult> CartSummary(CartViewModel cart)
         {
             var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
+            var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
             var totalCost = Cart.GetTotalCartCost(userLoggedInUsername);
-            CartSummaryViewModel cartSummary = new CartSummaryViewModel(totalCost, cart);
 
+            var userProfileServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userLoggedInID), ConnectionString);
+            if (userProfileServiceResult.HasError) return BadRequest(userProfileServiceResult.ErrorContent);
+            
+            CartSummaryViewModel cartSummary = new CartSummaryViewModel(totalCost, cart, userProfileServiceResult.Result.Address);
             return View(cartSummary);
         }
 
@@ -120,8 +129,9 @@ namespace FlameAndWax.Controllers
                 cart.ModeOfPayment,
                 cart.Courier,
                 Cart.GetCartItems(userLoggedInUsername));
+
             TempData["CartViewModel"] = JsonConvert.SerializeObject(cartViewModel);
-            return RedirectToAction(nameof(Checkout), nameof(Cart));
+            return RedirectToAction(nameof(Checkout));
         }
 
         public async Task<IActionResult> AddToCart(int productId = 0, string user = "")
@@ -147,12 +157,12 @@ namespace FlameAndWax.Controllers
         }
         private async Task<ObjectResult> BuildOrderDetails(
             List<OrderDetailModel> orderDetails,
-            List<ProductViewModel> cartItems,            
+            List<ProductViewModel> cartItems,
             string userLoggedInUsername)
         {
             foreach (var cartItem in cartItems)
             {
-                var subTotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);                
+                var subTotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);
                 var productPriceServiceResult = await _cartService.FetchProductPrice(cartItem.ProductId, ConnectionString);
                 if (productPriceServiceResult.HasError) return BadRequest(productPriceServiceResult.ErrorContent);
                 orderDetails.Add(
