@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FlameAndWax.Data.Models;
 using static FlameAndWax.Data.Constants.Constants;
 
@@ -12,6 +13,7 @@ namespace FlameAndWax.Models
         public string ReviewDetail { get; set; }
         public ReviewScore ReviewScore { get; set; }
         public CustomerViewModel Customer { get; set; }
+        public DateTime Date { get; set; }
         public CustomerReviewViewModel(CustomerReviewModel customerReviewModel)
         {
             ReviewId = customerReviewModel.ReviewId;
@@ -20,6 +22,7 @@ namespace FlameAndWax.Models
             ReviewScore = customerReviewModel.ReviewScore;
             Customer = new CustomerViewModel(customerReviewModel.Customer);
             ProductPictureLink = customerReviewModel.Product.ProductGallery.FirstOrDefault().PhotoLink;
+            Date = customerReviewModel.Date;
         }
         public CustomerReviewViewModel()
         {

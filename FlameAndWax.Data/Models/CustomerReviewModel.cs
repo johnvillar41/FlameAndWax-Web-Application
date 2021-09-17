@@ -1,4 +1,5 @@
-﻿using static FlameAndWax.Data.Constants.Constants;
+﻿using System;
+using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Data.Models
 {
@@ -9,5 +10,6 @@ namespace FlameAndWax.Data.Models
         public CustomerModel Customer { get; set; }
         public ReviewScore ReviewScore { get; set; }
         public string ReviewDetail { get; set; }
+        public DateTime Date { get; set; }
     }    
 }

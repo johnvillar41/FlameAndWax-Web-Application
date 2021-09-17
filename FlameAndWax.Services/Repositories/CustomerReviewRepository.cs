@@ -23,13 +23,14 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO CustomerReviewTable(ProductId,CustomerId,ReviewScore,ReviewDetail)" +
-                "VALUES(@ProductId,@CustomerId,@ReviewScore,@ReviewDetail)";
+            var queryString = "INSERT INTO CustomerReviewTable(ProductId,CustomerId,ReviewScore,ReviewDetail,Date)" +
+                "VALUES(@ProductId,@CustomerId,@ReviewScore,@ReviewDetail,@Date)";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@ProductId", Data.Product.ProductId);
             command.Parameters.AddWithValue("@CustomerId", Data.Customer.CustomerId);
             command.Parameters.AddWithValue("@ReviewScore", Data.ReviewScore);
             command.Parameters.AddWithValue("@ReviewDetail", Data.ReviewDetail);
+            command.Parameters.AddWithValue("@Date", DateTime.UtcNow);
             await command.ExecuteNonQueryAsync();
             return Data.ReviewId;
         }
@@ -64,7 +65,8 @@ namespace FlameAndWax.Services.Repositories
                     Customer = await _customerRepository.Fetch(customerId, connectionString),
                     ReviewId = id,
                     ReviewScore = Helpers.ServiceHelper.BuildReviewScore(reviewScore),
-                    ReviewDetail = reader["ReviewDetail"].ToString()
+                    ReviewDetail = reader["ReviewDetail"].ToString(),
+                    Date = DateTime.Parse(reader["Date"].ToString())
                 };
             }
             return null;
@@ -95,7 +97,8 @@ namespace FlameAndWax.Services.Repositories
                             Product = await _productRepository.Fetch(productId, connectionString),
                             Customer = await _customerRepository.Fetch(customerId, connectionString),
                             ReviewScore = Helpers.ServiceHelper.BuildReviewScore(reviewScore),
-                            ReviewDetail = reader["ReviewDetail"].ToString()
+                            ReviewDetail = reader["ReviewDetail"].ToString(),
+                            Date = DateTime.Parse(reader["Date"].ToString())
                         }
                     );
             }
@@ -127,7 +130,8 @@ namespace FlameAndWax.Services.Repositories
                             Product = await _productRepository.Fetch(productId, connectionString),
                             Customer = await _customerRepository.Fetch(customerId, connectionString),
                             ReviewScore = Helpers.ServiceHelper.BuildReviewScore(reviewScore),
-                            ReviewDetail = reader["ReviewDetail"].ToString()
+                            ReviewDetail = reader["ReviewDetail"].ToString(),
+                            Date = DateTime.Parse(reader["Date"].ToString())
                         }
                     );
             }
@@ -152,7 +156,8 @@ namespace FlameAndWax.Services.Repositories
                         Product = await _productRepository.Fetch(int.Parse(reader["ProductId"].ToString()),connectionString),
                         Customer = await _customerRepository.Fetch(int.Parse(reader["CustomerId"].ToString()),connectionString),
                         ReviewScore = ServiceHelper.BuildReviewScore(int.Parse(reader["ReviewScore"].ToString())),
-                        ReviewDetail = reader["ReviewDetail"].ToString()
+                        ReviewDetail = reader["ReviewDetail"].ToString(),
+                        Date = DateTime.Parse(reader["Date"].ToString())
                     }
                 );
             }
