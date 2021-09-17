@@ -22,7 +22,7 @@ namespace FlameAndWax.Models
             ProductDescription = productModel.ProductDescription;
             ProductPrice = productModel.ProductPrice;
             UnitPrice = productModel.UnitPrice;
-            UnitsInStock = productModel.UnitsInStock;
+            UnitsInStock = productModel.UnitsInStock - productModel.UnitsInOrder;
             CustomerReviews = customerReviewViewModels;
             ProductGallery = productModel.ProductGallery;
         }
