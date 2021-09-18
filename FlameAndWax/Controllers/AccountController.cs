@@ -1,13 +1,12 @@
 ﻿using FlameAndWax.Data.Constants;
 using FlameAndWax.Data.Models;
 using FlameAndWax.Models;
-using FlameAndWax.Services.Repositories.Interfaces;
 using FlameAndWax.Services.Services.BaseInterface.Interface;
-using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -16,14 +15,14 @@ namespace FlameAndWax.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IAccountBaseService<CustomerModel> _accountService;        
+        private readonly IAccountBaseService<CustomerModel> _accountService;
         private readonly IConfiguration _configuration;
 
         private string ConnectionString { get; }
 
         public AccountController(IAccountBaseService<CustomerModel> accountService, IConfiguration configuration)
         {
-            _accountService = accountService;          
+            _accountService = accountService;
             _configuration = configuration;
             ConnectionString = _configuration.GetConnectionString("FlameAndWaxDBConnection");
         }
@@ -51,9 +50,18 @@ namespace FlameAndWax.Controllers
                     new Claim(ClaimTypes.NameIdentifier, isAuthenticatedServiceResult.Result.ToString())
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    AllowRefresh = true,
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                    IsPersistent = false,
+                };
+
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity));               
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
 
                 if (Url.IsLocalUrl(returnUrl))
                 {

@@ -1,3 +1,4 @@
+using System;
 using FlameAndWax.Data.Models;
 using FlameAndWax.Data.Repositories;
 using FlameAndWax.Services.Repositories;
@@ -34,7 +35,12 @@ namespace FlameAndWax
             });
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-              .AddCookie();
+              .AddCookie(options =>
+              {
+                  options.Cookie.IsEssential = true;
+                  options.SlidingExpiration = true;
+                  options.ExpireTimeSpan = TimeSpan.FromSeconds(10);
+              });
 
             //Connection String
             services.AddSingleton<IConfiguration>(Configuration);
