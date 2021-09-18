@@ -30,7 +30,7 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@CustomerId", Data.Customer.CustomerId);
             command.Parameters.AddWithValue("@ReviewScore", Data.ReviewScore);
             command.Parameters.AddWithValue("@ReviewDetail", Data.ReviewDetail);
-            command.Parameters.AddWithValue("@Date", DateTime.UtcNow);
+            command.Parameters.AddWithValue("@Date", DateTime.Now);
             await command.ExecuteNonQueryAsync();
             return Data.ReviewId;
         }
