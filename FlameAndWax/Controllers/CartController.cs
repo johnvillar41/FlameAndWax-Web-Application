@@ -70,7 +70,7 @@ namespace FlameAndWax.Controllers
 
         public async Task<IActionResult> Checkout()
         {
-            var cart = JsonConvert.DeserializeObject<CartViewModel>(TempData["CartViewModel"].ToString());            
+            var cart = JsonConvert.DeserializeObject<CartViewModel>(TempData["CartViewModel"].ToString());
 
             if (cart.CartProducts == null) return RedirectToAction("Index", "Error", new { ErrorContent = "Cart Products is null" });
 
@@ -80,9 +80,8 @@ namespace FlameAndWax.Controllers
             var cartItems = cart.CartProducts;
             var orderDetails = new List<OrderDetailModel>();
             var result = await BuildOrderDetails(orderDetails, cartItems, userLoggedInUsername);
-            var totalOrderCost = orderDetails.Select(x => x.TotalPrice).Sum();
-
             if (result != null) return result;
+            var totalOrderCost = orderDetails.Select(x => x.TotalPrice).Sum();
 
             var modeOfPayment = ServiceHelper.BuildModeOfPayment(cart.ModeOfPayment.ToString());
             var courierType = ServiceHelper.BuildCourier(cart.Courier.ToString());
@@ -114,7 +113,7 @@ namespace FlameAndWax.Controllers
 
             var userProfileServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userLoggedInID), ConnectionString);
             if (userProfileServiceResult.HasError) return BadRequest(userProfileServiceResult.ErrorContent);
-            
+
             CartSummaryViewModel cartSummary = new CartSummaryViewModel(totalCost, cart, userProfileServiceResult.Result.Address);
             return View(cartSummary);
         }
@@ -133,10 +132,8 @@ namespace FlameAndWax.Controllers
             return RedirectToAction(nameof(Checkout));
         }
 
-        public async Task<IActionResult> AddToCart(int productId = 0, string user = "")
+        public async Task<IActionResult> AddToCart(int productId, string user)
         {
-            if (productId == 0) return View(Cart.GetCartItems(user));
-
             var productServiceResult = await _cartService.FetchProductDetail(productId, ConnectionString);
             if (productServiceResult.HasError) return RedirectToAction("Index", "Error", new { productServiceResult.ErrorContent });
 
