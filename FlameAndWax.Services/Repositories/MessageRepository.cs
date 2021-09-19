@@ -12,9 +12,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO MessageTable(Name,Email,PhoneNumber,Message)" +
-                "VALUES(@name,@email,@number,@msg)";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("AddNewMessage", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@name", Data.Name);
             command.Parameters.AddWithValue("@email", Data.Email);
             command.Parameters.AddWithValue("@number", Data.PhoneNumber);
