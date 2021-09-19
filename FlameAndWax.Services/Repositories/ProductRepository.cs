@@ -19,9 +19,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO ProductsTable(ProductName,ProductDescription,ProductPrice,QuantityPerUnit,UnitPrice,UnitsInStock,UnitsOnOrder,Category)" +
-                "VALUES(@name,@desc,@price,@quantity,@unitprice,@stock,@order,@category)";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("AddNewProduct", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@name", Data.ProductName);
             command.Parameters.AddWithValue("@desc", Data.ProductDescription);
             command.Parameters.AddWithValue("@price", Data.ProductPrice);
@@ -30,16 +29,21 @@ namespace FlameAndWax.Services.Repositories
             command.Parameters.AddWithValue("@stock", Data.UnitsInStock);
             command.Parameters.AddWithValue("@order", Data.UnitsInOrder);
             command.Parameters.AddWithValue("@category", nameof(Data.Category));
-            await command.ExecuteNonQueryAsync();
-            return Data.ProductId;
+
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return int.Parse(reader["pk"].ToString());
+            }
+            return -1;
         }
 
         public async Task Delete(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "DELETE FROM ProductsTable WHERE ProductId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("DeleteProduct", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
         }
@@ -48,8 +52,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM ProductsTable WHERE ProductId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchProduct", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@id", id);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -78,9 +82,8 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM ProductsTable ORDER by ProductId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
-                "FETCH NEXT @PageSize ROWS ONLY";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchPaginatedProducts", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@PageNumber", pageNumber);
             command.Parameters.AddWithValue("@PageSize", pageSize);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
@@ -112,9 +115,8 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM ProductsTable WHERE Category = @category ORDER by ProductId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
-                "FETCH NEXT @PageSize ROWS ONLY";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchPaginatedCategorizedProducts", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@category", category.ToString());
             command.Parameters.AddWithValue("@PageNumber", pageNumber);
             command.Parameters.AddWithValue("@PageSize", pageSize);
@@ -148,8 +150,8 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT TOP 6 * FROM ProductsTable Order By ProductId DESC;";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchNewArrivedProducts", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -173,21 +175,21 @@ namespace FlameAndWax.Services.Repositories
             return newArrivals;
         }
 
-        public async Task ModifyNumberOfStocks(int productId, int numberOfStocksToBeSubtracted, string connectionString)
+        public async Task UpdateNumberOfStocks(int productId, int numberOfStocksToBeSubtracted, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "UPDATE ProductsTable SET UnitsInStock = @unitsToBeSubracted WHERE ProductId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("UpdateNumberOfProductStocks", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             await command.ExecuteNonQueryAsync();
         }
         //TODO: Fix the updating should be adding
-        public async Task ModifyNumberOfUnitsInOrder(int productId, int numberOfUnitsToBeAdded, string connectionString)
+        public async Task UpdateNumberOfUnitsInOrder(int productId, int numberOfUnitsToBeAdded, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "UPDATE ProductsTable SET UnitsOnOrder = @unitOrder WHERE ProductId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("UpdateNumberOfUnitsInOrder", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@unitOrder", numberOfUnitsToBeAdded);
             command.Parameters.AddWithValue("@id", productId);
             command.Parameters.AddWithValue("@uniditOrder", productId);
@@ -198,10 +200,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "UPDATE ProductsTable SET ProductName = @name, ProductDescription = @desc, ProductPrice = @price" +
-                "QuantityPerUnit = @qty, UnitPrice = @unitPrice, UnitsInStock = @unitStock, UnitsOnOrder = @unitOrder , Category = @category WHERE " +
-                "ProductId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("UpdateProduct", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@name", data.ProductName);
             command.Parameters.AddWithValue("@desc", data.ProductDescription);
             command.Parameters.AddWithValue("@price", data.ProductPrice);
@@ -218,8 +218,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "UPDATE ProductsTable SET UnitsOnOrder = UnitsOnOrder + @quantity WHERE ProductId = @productId";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("UpdateAddUnitsOnOrder", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@quantity", quantity);
             command.Parameters.AddWithValue("@productId", productId);
             await command.ExecuteNonQueryAsync();
@@ -230,18 +230,18 @@ namespace FlameAndWax.Services.Repositories
             var totalNumberOfProducts = 0;
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "";
+            var storedProcedure = "";
             if (category == null)
-                queryString = "SELECT COUNT(ProductId) as total FROM ProductsTable";
+                storedProcedure = "FetchTotalNumberOfProductsWithoutCategory";
             else
-                queryString = "SELECT COUNT(ProductId) as total FROM ProductsTable WHERE Category = @category";
+                storedProcedure = "FetchTotalNumberOfProductsWithCategory";
 
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand(storedProcedure, connection);
             if (category != null)
                 command.Parameters.AddWithValue("@category", category.ToString());
 
             using SqlDataReader reader = await command.ExecuteReaderAsync();
-           
+
             if (await reader.ReadAsync())
             {
                 totalNumberOfProducts = int.Parse(reader["total"].ToString());
