@@ -19,12 +19,9 @@ namespace FlameAndWax.Data.Repositories
         public async Task<int> Add(CustomerModel Data, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
-            var queryString = "DECLARE @salt UNIQUEIDENTIFIER=NEWID();" +
-                "INSERT INTO CustomerTable(CustomerName,ContactNumber,Email,Username,Password,Status,Salt)" +
-                "VALUES(@name,@number,@email,@username,HASHBYTES('SHA2_512',@password+CAST(@salt AS NVARCHAR(36))),@status,@salt);" +
-                "SELECT SCOPE_IDENTITY() as pk;";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            await connection.OpenAsync();           
+            using SqlCommand command = new SqlCommand("AddNewCustomer", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@name", Data.CustomerName);
             command.Parameters.AddWithValue("@number", Data.ContactNumber);
             command.Parameters.AddWithValue("@email", Data.Email);
@@ -44,9 +41,9 @@ namespace FlameAndWax.Data.Repositories
         public async Task ChangeCustomerStatus(int customerId, CustomerAccountStatus customerStatus, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
-            var queryString = "UPDATE CustomerTable SET Status = @status WHERE CustomerId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            await connection.OpenAsync();            
+            using SqlCommand command = new SqlCommand("ChangeCustomerStatus", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@status", customerStatus.ToString());
             command.Parameters.AddWithValue("@id", customerId);
             await command.ExecuteNonQueryAsync();
@@ -55,9 +52,9 @@ namespace FlameAndWax.Data.Repositories
         public async Task<bool> CheckIfCustomerHasShippingAddress(int customerId, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
-            var queryString = "SELECT ShippingAddressId FROM CustomerTable WHERE CustomerId = @customerId AND ShippingAddressId is NOT NULL";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            await connection.OpenAsync();            
+            using SqlCommand command = new SqlCommand("CheckIfCustomerHasShippingAddress", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@customerId", customerId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -80,9 +77,9 @@ namespace FlameAndWax.Data.Repositories
         public async Task<CustomerModel> Fetch(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
-            var queryString = "SELECT * FROM CustomerTable WHERE CustomerId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            await connection.OpenAsync();            
+            using SqlCommand command = new SqlCommand("FetchCustomer", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@id", id);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -113,10 +110,9 @@ namespace FlameAndWax.Data.Repositories
             List<CustomerModel> customers = new List<CustomerModel>();
 
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
-            var queryString = "SELECT * FROM CustomerTable ORDER BY CustomerId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
-                "FETCH NEXT @PageSize ROWS ONLY";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            await connection.OpenAsync();            
+            using SqlCommand command = new SqlCommand("FetchPaginatedResultCustomer", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@PageNumber", pageNumber);
             command.Parameters.AddWithValue("@PageSize", pageSize);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
@@ -143,9 +139,9 @@ namespace FlameAndWax.Data.Repositories
         public async Task<int> LoginCustomerAccount(CustomerModel loginCustomer, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
-            var queryString = "SELECT CustomerId FROM CustomerTable WHERE Username = @username COLLATE SQL_Latin1_General_CP1_CS_AS AND Password COLLATE SQL_Latin1_General_CP1_CS_AS = HASHBYTES('SHA2_512',@password+CAST(Salt AS NVARCHAR(36)));";            
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            await connection.OpenAsync();                 
+            using SqlCommand command = new SqlCommand("LoginCustomerAccount", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@username", loginCustomer.Username);
             command.Parameters.AddWithValue("@password", loginCustomer.Password);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
@@ -161,19 +157,16 @@ namespace FlameAndWax.Data.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "";
+            var storedProcedure = "";
 
             if (data.ProfilePictureLink != null)
-                queryString = "DECLARE @salt UNIQUEIDENTIFIER=NEWID();"+
-                    "UPDATE CustomerTable SET CustomerName = @name, ContactNumber = @number, Email = @email, Username = @username, " +
-                    "ProfilePictureLink = @dp WHERE CustomerId = @id";
+                storedProcedure = "UpdateCustomerWithPicture";
 
             else
-                queryString = "DECLARE @salt UNIQUEIDENTIFIER=NEWID();"+
-                    "UPDATE CustomerTable SET CustomerName = @name, ContactNumber = @number, Email = @email, Username = @username, " +
-                    "WHERE CustomerId = @id;";
+                storedProcedure = "UpdateCustomerWithoutPicture";
 
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand(storedProcedure, connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
 
             if (data.ProfilePictureLink != null)
                 command.Parameters.AddWithValue("@dp", data.ProfilePictureLink);
@@ -189,9 +182,9 @@ namespace FlameAndWax.Data.Repositories
         public async Task UpdateShippingAddressId(int customerId, int shippingAddressId, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
-            var queryString = "UPDATE CustomerTable SET ShippingAddressId = @shippingId WHERE CustomerId = @customerId";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            await connection.OpenAsync();            
+            using SqlCommand command = new SqlCommand("UpdateShippingAddressId", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@shippingId", shippingAddressId);
             command.Parameters.AddWithValue("@customerId", customerId);
             await command.ExecuteNonQueryAsync();
