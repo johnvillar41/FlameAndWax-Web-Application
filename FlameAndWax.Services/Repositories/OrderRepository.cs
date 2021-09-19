@@ -27,10 +27,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO OrdersTable(CustomerId,DateOrdered,TotalCost,ModeOfPayment,Courier,Status)" +
-                "VALUES(@customerId,@dateOrdered,@totalCost,@modeOfPayment,@courier,@status);" +
-                "SELECT SCOPE_IDENTITY() as fk;";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("AddNewOrder", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@customerId", Data.Customer.CustomerId);
             command.Parameters.AddWithValue("@dateOrdered", DateTime.UtcNow);
             command.Parameters.AddWithValue("@totalCost", Data.TotalCost);
@@ -50,8 +48,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "DELETE FROM OrdersTable WHERE OrderId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("DeleteOrder", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
         }
@@ -60,8 +58,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM OrdersTable WHERE OrderId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchOrder", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@id", id);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -100,9 +98,8 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM OrdersTable ORDER by OrderId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
-                "FETCH NEXT @PageSize ROWS ONLY";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchPaginatedResultOrder", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@PageNumber", pageNumber);
             command.Parameters.AddWithValue("@PageSize", pageSize);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
@@ -145,9 +142,8 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM OrdersTable  WHERE CustomerId = @customerId AND Status = @status ORDER by OrderId DESC OFFSET (@PageNumber - 1) * @PageSize ROWS " +
-                "FETCH NEXT @PageSize ROWS ONLY";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchPaginatedCategorizedOrders", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@customerId", customerId);
             command.Parameters.AddWithValue("@PageNumber", pageNumber);
             command.Parameters.AddWithValue("@PageSize", pageSize);
@@ -202,16 +198,17 @@ namespace FlameAndWax.Services.Repositories
             var totalNumberOfProducts = 0;
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "";
+            var storedProcedure = "";
             if (orderStatus == null)
-                queryString = "SELECT COUNT(OrderId) as total FROM OrdersTable WHERE CustomerId = @customerId";
+                storedProcedure = "FetchTotalNumberOfOrdersWithoutOrderStatus";
             else
-                queryString = "SELECT COUNT(OrderId) as total FROM OrdersTable WHERE Status = @orderStatus AND CustomerId = @customerId";
+                storedProcedure = "FetchTotalNumberOfOrdersWithOrderStatus";
 
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand(storedProcedure, connection);
             if (orderStatus != null)
                 command.Parameters.AddWithValue("@orderStatus", orderStatus.ToString());
 
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@customerId", customerId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
 
