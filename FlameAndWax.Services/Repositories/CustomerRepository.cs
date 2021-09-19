@@ -20,8 +20,9 @@ namespace FlameAndWax.Data.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO CustomerTable(CustomerName,ContactNumber,Email,Username,Password,Status)" +
-                "VALUES(@name,@number,@email,@username,@password,@status);" +
+            var queryString = "DECLARE @salt UNIQUEIDENTIFIER=NEWID();" +
+                "INSERT INTO CustomerTable(CustomerName,ContactNumber,Email,Username,Password,Status,Salt)" +
+                "VALUES(@name,@number,@email,@username,HASHBYTES('SHA2_512',@password+CAST(@salt AS NVARCHAR(36))),@status,@salt);" +
                 "SELECT SCOPE_IDENTITY() as pk;";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@name", Data.CustomerName);
@@ -144,7 +145,7 @@ namespace FlameAndWax.Data.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT CustomerId FROM CustomerTable WHERE Username = @username COLLATE SQL_Latin1_General_CP1_CS_AS AND Password = @password COLLATE SQL_Latin1_General_CP1_CS_AS";
+            var queryString = "SELECT CustomerId FROM CustomerTable WHERE Username = @username COLLATE SQL_Latin1_General_CP1_CS_AS AND Password COLLATE SQL_Latin1_General_CP1_CS_AS = HASHBYTES('SHA2_512',@password+CAST(Salt AS NVARCHAR(36)));";            
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@username", loginCustomer.Username);
             command.Parameters.AddWithValue("@password", loginCustomer.Password);
