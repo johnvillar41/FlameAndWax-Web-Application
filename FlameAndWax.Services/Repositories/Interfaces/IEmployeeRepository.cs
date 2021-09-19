@@ -8,6 +8,6 @@ namespace FlameAndWax.Services.Repositories.Interfaces
     {
         Task UpdateProfilePicture(string profileLink, string connectionString);
         Task<int> Login(EmployeeModel employee, string connectionString);
-        Task ModifyEmployeeStatus(int employeeId, EmployeeAccountStatus accountStatus, string connectionString);
+        Task UpdateEmployeeStatus(int employeeId, EmployeeAccountStatus accountStatus, string connectionString);
     }
 }

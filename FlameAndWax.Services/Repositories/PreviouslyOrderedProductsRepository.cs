@@ -11,10 +11,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO PreviouslyOrderedProductsTable(ProductId,CustomerUsername)" +
-                "VALUES(@productId,@customerUsername);" +
-                "SELECT SCOPE_IDENTITY() as fk;";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("AddPreviouslyOrderedProducts", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@productId", previouslyOrderedProduct.ProductId);
             command.Parameters.AddWithValue("@customerUsername", previouslyOrderedProduct.CustomerUsername);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
@@ -30,8 +28,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM PreviouslyOrderedProductsTable WHERE ProductId = @productId AND CustomerUsername = @customerUsername";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("HasCustomerOrderedAProduct", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@productId", productId);
             command.Parameters.AddWithValue("@customerUsername", customerUsername);
             using SqlDataReader reader = await command.ExecuteReaderAsync();

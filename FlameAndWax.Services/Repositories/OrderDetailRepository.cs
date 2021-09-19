@@ -18,10 +18,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO OrderDetailsTable(OrderId,ProductId,TotalPrice,Quantity,Status)" +
-                "VALUES(@OrderId,@ProductId,@TotalPrice,@Quantity,@Status);" +
-                "SELECT SCOPE_IDENTITY() as fk;";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("AddNewOrderDetail", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@OrderId", Data.OrderId);
             command.Parameters.AddWithValue("@ProductId", Data.Product.ProductId);
             command.Parameters.AddWithValue("@TotalPrice", Data.TotalPrice);
@@ -40,8 +38,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "DELETE FROM OrderDetailsTable WHERE OrderDetailsId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("DeleteOrderDetail", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             await command.ExecuteNonQueryAsync();
         }
 
@@ -49,8 +47,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM OrderDetailsTable WHERE OrderDetailsId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchAllOrderDetails", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@id", id);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -82,9 +80,8 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM OrderDetailsTable ORDER by OrderDetailsId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
-                "FETCH NEXT @PageSize ROWS ONLY";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchPaginatedResultOrderDetail", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@PageNumber", pageNumber);
             command.Parameters.AddWithValue("@PageSize", pageSize);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
@@ -119,8 +116,8 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM OrderDetailsTable WHERE OrderId = @orderId";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchOrderDetailsGivenOrderId", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@orderId", orderId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
@@ -151,9 +148,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "UPDATE OrderDetailsTable SET ProductId = @productId, TotalPrice = @totalPrice, Quantity = @quantity, Status = @status" +
-                "WHERE OrderDetailsId = @orderDetailsId";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("UpdateOrderDetail", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@productId", data.Product.ProductId);
             command.Parameters.AddWithValue("@totalPrice", data.TotalPrice);
             command.Parameters.AddWithValue("@quantity", data.Quantity);

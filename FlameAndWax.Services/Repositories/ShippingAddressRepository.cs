@@ -12,10 +12,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO ShippingAddressTable(CustomerId,Address,PostalCode,City,Region,Country)" +
-                "VALUES(@CustomerId,@Address,@PostalCode,@City,@Region,@Country);" +
-                "SELECT SCOPE_IDENTITY() as fk;";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("AddNewShippingAddress", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@CustomerId", Data.CustomerId);
             command.Parameters.AddWithValue("@Address", Data.Address);
             command.Parameters.AddWithValue("@PostalCode", Data.PostalCode);
@@ -34,8 +32,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "DELETE FROM ShippingAddressTable WHERE ShippingAddressId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("DeleteShippingAddress", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
         }
@@ -44,8 +42,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM ShippingAddressTable WHERE ShippingAddressId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchShippingAddress", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@id", id);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -74,9 +72,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "UPDATE ShippingAddressTable SET Address = @address, PostalCode = @postalCode, " +
-                "City = @city, Region = @region, Country = @country WHERE ShippingAddressId = @shippingId";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("UpdateShippingAddress", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@address", data.Address);
             command.Parameters.AddWithValue("@postalCode", data.PostalCode);
             command.Parameters.AddWithValue("@city", data.City);

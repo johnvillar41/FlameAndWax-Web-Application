@@ -23,24 +23,28 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO CustomerReviewTable(ProductId,CustomerId,ReviewScore,ReviewDetail,Date)" +
-                "VALUES(@ProductId,@CustomerId,@ReviewScore,@ReviewDetail,@Date)";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("AddCustomerReview", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@ProductId", Data.Product.ProductId);
             command.Parameters.AddWithValue("@CustomerId", Data.Customer.CustomerId);
             command.Parameters.AddWithValue("@ReviewScore", Data.ReviewScore);
             command.Parameters.AddWithValue("@ReviewDetail", Data.ReviewDetail);
             command.Parameters.AddWithValue("@Date", DateTime.Now);
-            await command.ExecuteNonQueryAsync();
-            return Data.ReviewId;
+
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return int.Parse(reader["pk"].ToString());
+            }
+            return -1;
         }
 
         public async Task Delete(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "DELETE FROM CustomerReviewTable WHERE ReviewId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("DeleteCustomerReview", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
         }
@@ -49,8 +53,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM CustomerReviewTable WHERE ReviewId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchCustomerReview", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@id", id);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -78,9 +82,8 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM CustomerReviewTable ORDER BY ReviewID OFFSET (@PageNumber - 1) * @PageSize ROWS " +
-                "FETCH NEXT @PageSize ROWS ONLY";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchPaginatedResultCustomerReview", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@PageNumber", pageNumber);
             command.Parameters.AddWithValue("@PageSize", pageSize);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
@@ -111,9 +114,8 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM CustomerReviewTable WHERE ProductId = @productId ORDER by ReviewId DESC OFFSET (@PageNumber - 1) * @PageSize ROWS " +
-            "FETCH NEXT @PageSize ROWS ONLY";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchPaginatedReviewsOfAProduct", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@productId", productId);
             command.Parameters.AddWithValue("@PageNumber", pageNumber);
             command.Parameters.AddWithValue("@PageSize", pageSize);
@@ -144,8 +146,8 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT TOP 5 * FROM CustomerReviewTable  WHERE ReviewScore > 4 ";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchTopComments", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -153,8 +155,8 @@ namespace FlameAndWax.Services.Repositories
                     new CustomerReviewModel
                     {
                         ReviewId = int.Parse(reader["ReviewId"].ToString()),
-                        Product = await _productRepository.Fetch(int.Parse(reader["ProductId"].ToString()),connectionString),
-                        Customer = await _customerRepository.Fetch(int.Parse(reader["CustomerId"].ToString()),connectionString),
+                        Product = await _productRepository.Fetch(int.Parse(reader["ProductId"].ToString()), connectionString),
+                        Customer = await _customerRepository.Fetch(int.Parse(reader["CustomerId"].ToString()), connectionString),
                         ReviewScore = ServiceHelper.BuildReviewScore(int.Parse(reader["ReviewScore"].ToString())),
                         ReviewDetail = reader["ReviewDetail"].ToString(),
                         Date = DateTime.Parse(reader["Date"].ToString())
@@ -168,8 +170,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT COUNT(ReviewId) as total FROM CustomerReviewTable WHERE ProductId = @productId";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchTotalNumberOfReviewsOnAProduct", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@productId", productId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -183,9 +185,7 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "UPDATE CustomerReviewTable SET ReviewScore = @reviewScore, ReviewDetail = @detail" +
-                "WHERE ReviewId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("UpdateCustomerReview", connection);
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
         }
