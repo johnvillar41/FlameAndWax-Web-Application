@@ -15,10 +15,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "INSERT INTO EmployeesTable(FirstName,LastName,Email,PhotoLink,BirthDate,HireDate,City,Username,Password,Status)" +
-                "VALUES(@FirstName,@LastName,@Email,@PhotoLink,@Bday,@HireDate,@City,@Username,@Password,@Status);" +
-                "SELECT SCOPE_IDENTITY() as pk;";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("AddNewEmployee", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@FirstName", Data.FirstName);
             command.Parameters.AddWithValue("@LastName", Data.LastName);
             command.Parameters.AddWithValue("@Email", Data.Email);
@@ -43,8 +41,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "DELETE FROM EmployeesTable WHERE EmployeeId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("DeleteEmployee", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
         }
@@ -53,8 +51,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM EmployeesTable WHERE EmployeeId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchEmployee", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@id", id);
             SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -83,9 +81,8 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM EmployeesTable ORDER by EmployeeId OFFSET (@PageNumber - 1) * @PageSize ROWS " +
-                "FETCH NEXT @PageSize ROWS ONLY";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchPaginatedResultEmployee", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@PageNumber", pageNumber);
             command.Parameters.AddWithValue("@PageSize", pageSize);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
@@ -115,8 +112,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM EmployeesTable WHERE Username = @username AND Password = @password";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("LoginEmployee", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@username", employee.Username);
             command.Parameters.AddWithValue("@username", employee.Password);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
@@ -127,12 +124,12 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task ModifyEmployeeStatus(int employeeId, Constants.EmployeeAccountStatus accountStatus, string connectionString)
+        public async Task UpdateEmployeeStatus(int employeeId, Constants.EmployeeAccountStatus accountStatus, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "UPDATE EmployeesTable SET Status = @status WHERE EmployeeId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("UpdateEmployeeStatus", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@status", accountStatus.ToString());
             command.Parameters.AddWithValue("@id", employeeId);
             await command.ExecuteNonQueryAsync();
@@ -145,10 +142,8 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "UPDATE EmployeesTable SET FirstName = @firstName, LastName = @lastName, Email = @email, " +
-                "Username = @username, Password = @password ," +
-                "BirthDate = @bday, HireDate = @hireDate, City = @city WHERE EmployeeId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("UpdateEmployee", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@firstName", data.FirstName);
             command.Parameters.AddWithValue("@lastName", data.LastName);
             command.Parameters.AddWithValue("@email", data.Email);
@@ -165,10 +160,10 @@ namespace FlameAndWax.Services.Repositories
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "UPDATE EmployeesTable SET PhotoLink = @link";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("UpdateEmployeeProfilePicture", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@firstName", profileLink);
             await command.ExecuteNonQueryAsync();
-        }
+        }        
     }
 }
