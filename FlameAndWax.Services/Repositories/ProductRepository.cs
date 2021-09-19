@@ -240,6 +240,7 @@ namespace FlameAndWax.Services.Repositories
             if (category != null)
                 command.Parameters.AddWithValue("@category", category.ToString());
 
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             using SqlDataReader reader = await command.ExecuteReaderAsync();
 
             if (await reader.ReadAsync())
