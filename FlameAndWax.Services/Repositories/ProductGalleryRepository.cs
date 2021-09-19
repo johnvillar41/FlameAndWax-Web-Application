@@ -34,8 +34,8 @@ namespace FlameAndWax.Services.Repositories
 
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM ProductGalleryTable WHERE ProductId = @id";
-            using SqlCommand command = new SqlCommand(queryString, connection);
+            using SqlCommand command = new SqlCommand("FetchAllPicturesForProduct", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@id", productId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while(await reader.ReadAsync())
