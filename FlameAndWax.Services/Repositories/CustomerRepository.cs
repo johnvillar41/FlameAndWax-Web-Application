@@ -99,8 +99,7 @@ namespace FlameAndWax.Data.Repositories
                     CustomerName = reader["CustomerName"].ToString(),
                     ContactNumber = reader["ContactNumber"].ToString(),
                     Email = reader["Email"].ToString(),
-                    Username = reader["Username"].ToString(),
-                    Password = reader["Password"].ToString(),
+                    Username = reader["Username"].ToString(),                    
                     ProfilePictureLink = reader["ProfilePictureLink"].ToString(),
                     Status = ServiceHelper.ConvertStringToCustomerAccountStatus(reader["Status"].ToString()),
                     Address = shippingAddressModel
@@ -165,12 +164,14 @@ namespace FlameAndWax.Data.Repositories
             var queryString = "";
 
             if (data.ProfilePictureLink != null)
-                queryString = "UPDATE CustomerTable SET CustomerName = @name, ContactNumber = @number, Email = @email, Username = @username, " +
-                    "Password = @password, ProfilePictureLink = @dp WHERE CustomerId = @id";
+                queryString = "DECLARE @salt UNIQUEIDENTIFIER=NEWID();"+
+                    "UPDATE CustomerTable SET CustomerName = @name, ContactNumber = @number, Email = @email, Username = @username, " +
+                    "ProfilePictureLink = @dp WHERE CustomerId = @id";
 
             else
-                queryString = "UPDATE CustomerTable SET CustomerName = @name, ContactNumber = @number, Email = @email, Username = @username, " +
-                    "Password = @password WHERE CustomerId = @id";
+                queryString = "DECLARE @salt UNIQUEIDENTIFIER=NEWID();"+
+                    "UPDATE CustomerTable SET CustomerName = @name, ContactNumber = @number, Email = @email, Username = @username, " +
+                    "WHERE CustomerId = @id;";
 
             using SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -181,8 +182,7 @@ namespace FlameAndWax.Data.Repositories
             command.Parameters.AddWithValue("@name", data.CustomerName);
             command.Parameters.AddWithValue("@number", data.ContactNumber);
             command.Parameters.AddWithValue("@email", data.Email);
-            command.Parameters.AddWithValue("@username", data.Username);
-            command.Parameters.AddWithValue("@password", data.Password);
+            command.Parameters.AddWithValue("@username", data.Username);            
             await command.ExecuteNonQueryAsync();
         }
 
