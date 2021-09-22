@@ -7,27 +7,7 @@ using System.Threading.Tasks;
 namespace FlameAndWax.Services.Repositories
 {
     public class ProductGalleryRepository : IProductGalleryRepository
-    {
-        public Task<int> Add(ProductGalleryModel Data, string connectionString)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task Delete(int id, string connectionString)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<ProductGalleryModel> Fetch(int id, string connectionString)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<IEnumerable<ProductGalleryModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
-        {
-            throw new System.NotImplementedException();
-        }
-
+    {       
         public async Task<IEnumerable<ProductGalleryModel>> FetchAllPicturesForProduct(int productId, string connectionString)
         {
             List<ProductGalleryModel> productGalleries = new List<ProductGalleryModel>();
@@ -50,11 +30,6 @@ namespace FlameAndWax.Services.Repositories
                     );
             }
             return productGalleries;
-        }
-
-        public Task Update(ProductGalleryModel data, int id, string connectionString)
-        {
-            throw new System.NotImplementedException();
-        }
+        }      
     }
 }
