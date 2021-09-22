@@ -21,25 +21,5 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
             return Data.MessageId;
         }
-
-        public Task Delete(int id,string connectionString)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<MessageModel> Fetch(int id, string connectionString)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<IEnumerable<MessageModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task Update(MessageModel data, int id, string connectionString)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
