@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace FlameAndWax.Services.Repositories.Interfaces
 {
-    public interface IProductGalleryRepository : IBaseRepository<ProductGalleryModel>
+    public interface IProductGalleryRepository
     {
         Task<IEnumerable<ProductGalleryModel>> FetchAllPicturesForProduct(int productId, string connectionString);
     }
