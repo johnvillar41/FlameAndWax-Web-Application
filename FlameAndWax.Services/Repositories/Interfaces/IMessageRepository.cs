@@ -3,8 +3,8 @@ using FlameAndWax.Data.Models;
 
 namespace FlameAndWax.Services.Repositories.Interfaces
 {
-    public interface IMessageRepository
+    public interface IMessageRepository : IAddBaseInterface<MessageModel>
     {
-        Task<int> Add(MessageModel Data, string connectionString);
+        
     }
 }
