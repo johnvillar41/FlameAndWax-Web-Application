@@ -1,5 +1,5 @@
 ﻿using FlameAndWax.Data.Models;
-using FlameAndWax.Models;
+using FlameAndWax.Customer.Models;
 using FlameAndWax.Services.Services.BaseInterface.Interface;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Hosting;
@@ -11,7 +11,7 @@ using System.IO;
 using System.Threading.Tasks;
 using static FlameAndWax.Data.Constants.Constants;
 
-namespace FlameAndWax.Controllers
+namespace FlameAndWax.Customer.Controllers
 {
     public class RegisterController : Controller
     {

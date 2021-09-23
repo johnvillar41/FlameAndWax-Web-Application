@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace FlameAndWax.Controllers
+namespace FlameAndWax.Customer.Controllers
 {
     public class AboutUsController : Controller
     {        

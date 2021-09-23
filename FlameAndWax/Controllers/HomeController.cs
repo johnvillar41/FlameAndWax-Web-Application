@@ -1,4 +1,4 @@
-﻿using FlameAndWax.Models;
+﻿using FlameAndWax.Customer.Models;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FlameAndWax.Controllers
+namespace FlameAndWax.Customer.Controllers
 {
     public class HomeController : Controller
     {

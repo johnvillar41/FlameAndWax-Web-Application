@@ -1,4 +1,4 @@
-﻿namespace FlameAndWax.Models
+﻿namespace FlameAndWax.Customer.Models
 {
     public class LoginViewModel
     {

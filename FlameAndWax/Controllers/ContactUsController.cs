@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
-namespace FlameAndWax.Controllers
+namespace FlameAndWax.Customer.Controllers
 {
     public class ContactUsController : Controller
     {

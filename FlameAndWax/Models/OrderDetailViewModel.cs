@@ -2,7 +2,7 @@
 using System.Linq;
 using static FlameAndWax.Data.Constants.Constants;
 
-namespace FlameAndWax.Models
+namespace FlameAndWax.Customer.Models
 {
     public class OrderDetailViewModel
     {

@@ -1,8 +1,8 @@
-﻿using FlameAndWax.Models;
+﻿using FlameAndWax.Customer.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FlameAndWax
+namespace FlameAndWax.Customer
 {
     public class Cart
     {

@@ -1,7 +1,7 @@
 ﻿using FlameAndWax.Data.Models;
 using System.Linq;
 
-namespace FlameAndWax.Models
+namespace FlameAndWax.Customer.Models
 {
     public class ProductViewModel
     {

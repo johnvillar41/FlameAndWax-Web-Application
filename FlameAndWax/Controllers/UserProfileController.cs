@@ -1,6 +1,6 @@
 ﻿using FlameAndWax.Data.Constants;
 using FlameAndWax.Data.Models;
-using FlameAndWax.Models;
+using FlameAndWax.Customer.Models;
 using FlameAndWax.Services.Repositories.Interfaces;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +14,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace FlameAndWax.Controllers
+namespace FlameAndWax.Customer.Controllers
 {
     [Authorize(Roles = nameof(Constants.Roles.Customer))]
     public class UserProfileController : Controller

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace FlameAndWax.Models
+namespace FlameAndWax.Customer.Models
 {
     public class HomeViewModel
     {

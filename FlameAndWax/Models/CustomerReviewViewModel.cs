@@ -3,7 +3,7 @@ using System.Linq;
 using FlameAndWax.Data.Models;
 using static FlameAndWax.Data.Constants.Constants;
 
-namespace FlameAndWax.Models
+namespace FlameAndWax.Customer.Models
 {
     public class CustomerReviewViewModel
     {

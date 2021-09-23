@@ -1,6 +1,6 @@
 using FlameAndWax.Data.Models;
 
-namespace FlameAndWax.Models
+namespace FlameAndWax.Customer.Models
 {
     public class ShippingAddressViewModel
     {

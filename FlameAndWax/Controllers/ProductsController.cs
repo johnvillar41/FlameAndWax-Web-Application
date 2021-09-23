@@ -1,6 +1,6 @@
 ﻿using FlameAndWax.Data.Constants;
 using FlameAndWax.Data.Models;
-using FlameAndWax.Models;
+using FlameAndWax.Customer.Models;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Services.Interfaces;
 using FlameAndWax.Services.Services.Models;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace FlameAndWax.Controllers
+namespace FlameAndWax.Customer.Controllers
 {
     public class ProductsController : Controller
     {

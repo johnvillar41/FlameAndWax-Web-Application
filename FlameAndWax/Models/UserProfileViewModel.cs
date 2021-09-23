@@ -1,7 +1,7 @@
 ﻿using FlameAndWax.Data.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace FlameAndWax.Models
+namespace FlameAndWax.Customer.Models
 {
     public class UserProfileViewModel
     {

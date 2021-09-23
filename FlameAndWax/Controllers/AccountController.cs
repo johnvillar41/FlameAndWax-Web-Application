@@ -1,6 +1,6 @@
-﻿using FlameAndWax.Data.Constants;
+﻿using FlameAndWax.Customer.Models;
+using FlameAndWax.Data.Constants;
 using FlameAndWax.Data.Models;
-using FlameAndWax.Models;
 using FlameAndWax.Services.Services.BaseInterface.Interface;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace FlameAndWax.Controllers
+namespace FlameAndWax.Customer.Controllers
 {
     public class AccountController : Controller
     {

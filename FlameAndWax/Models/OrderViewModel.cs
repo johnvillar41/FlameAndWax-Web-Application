@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using static FlameAndWax.Data.Constants.Constants;
 
-namespace FlameAndWax.Models
+namespace FlameAndWax.Customer.Models
 {
     public class OrderViewModel
     {
