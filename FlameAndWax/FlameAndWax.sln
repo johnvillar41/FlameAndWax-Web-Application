@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlameAndWax", "FlameAndWax.csproj", "{01A41625-C2C7-435C-A34B-8E5204E5FFEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlameAndWax.Customer", "FlameAndWax.Customer.csproj", "{01A41625-C2C7-435C-A34B-8E5204E5FFEF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlameAndWax.Data", "..\FlameAndWax.Data\FlameAndWax.Data.csproj", "{167593D4-77B5-4639-8410-76948B7E46A0}"
 EndProject
