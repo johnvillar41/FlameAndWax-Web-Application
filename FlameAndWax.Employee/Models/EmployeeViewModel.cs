@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using FlameAndWax.Data.Models;
+using static FlameAndWax.Data.Constants.Constants;
 
 namespace FlameAndWax.Employee.Models
 {
-    public class EmployeeViewModel
+    public class EmployeeViewModel : LoginViewModel
     {
         public int EmployeeId { get; set; }
         public string FirstName { get; set; }
@@ -15,7 +14,23 @@ namespace FlameAndWax.Employee.Models
         public DateTime DateBirth { get; set; }
         public DateTime HireDate { get; set; }
         public string City { get; set; }
-        public string Status { get; set; }
-        public string Username { get; set; }        
+        public EmployeeAccountStatus Status { get; set; }
+        public EmployeeViewModel(EmployeeModel employeeModel)
+        {
+            EmployeeId = employeeModel.EmployeeId;
+            FirstName = employeeModel.FirstName;
+            LastName = employeeModel.LastName;
+            Email = employeeModel.Email;
+            PhotoLink = employeeModel.PhotoLink;
+            DateBirth = employeeModel.DateBirth;
+            HireDate = employeeModel.HireDate;
+            City = employeeModel.City;
+            Status = employeeModel.Status;
+            Username = employeeModel.Username;
+        }
+        public EmployeeViewModel()
+        {
+            
+        }
     }
 }

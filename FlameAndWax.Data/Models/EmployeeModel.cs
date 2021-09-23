@@ -10,7 +10,7 @@ namespace FlameAndWax.Data.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public string PhotoLink { get; set; }
-        public DateTime BirthDate { get; set; }
+        public DateTime DateBirth { get; set; }
         public DateTime HireDate { get; set; }
         public string City { get; set; }
         public string Username { get; set; }

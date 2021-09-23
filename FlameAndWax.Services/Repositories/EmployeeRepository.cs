@@ -28,7 +28,7 @@ namespace FlameAndWax.Services.Repositories
                     LastName = reader["LastName"].ToString(),
                     Email = reader["Email"].ToString(),
                     PhotoLink = reader["PhotoLink"].ToString(),
-                    BirthDate = DateTime.Parse(reader["BirthDaye"].ToString()),
+                    DateBirth = DateTime.Parse(reader["BirthDaye"].ToString()),
                     HireDate = DateTime.Parse(reader["HireDate"].ToString()),
                     City = reader["City"].ToString(),
                     Username = reader["Username"].ToString(),
