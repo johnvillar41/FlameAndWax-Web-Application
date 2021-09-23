@@ -12,9 +12,10 @@ namespace FlameAndWax.Employee.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public string PhotoLink { get; set; }
-        public Date DateBirth { get; set; }
-        public Date HireDate { get; set; }
+        public DateTime DateBirth { get; set; }
+        public DateTime HireDate { get; set; }
         public string City { get; set; }
         public string Status { get; set; }
+        public string Username { get; set; }        
     }
 }
