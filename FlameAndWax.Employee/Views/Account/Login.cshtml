@@ -2,6 +2,74 @@
 @{
     Layout = null;
 }
-<div class="container">
-    <p>Login Here</p>
+<style>
+    .center {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        margin: auto;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+
+    .background {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background-color: #f5f5f0;
+    }
+
+    .centerBlock {
+        display: table;
+        margin: auto;
+    }
+</style>
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+<link href="~/fontawesome/css/all.css" rel="stylesheet" />
+<div class="background">
+    <div class="center container">
+        <div class="card p-4 ">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="centerBlock">
+                            <dotlottie-player src="https://assets1.lottiefiles.com/dotlotties/dlf10_q0vtqaxf.lottie"
+                                background="transparent" speed="1" style="width: 300px; height: 300px;" autoplay>
+                            </dotlottie-player>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <div class="mb-4 mt-4">
+                            <div class="row">
+                                <h6>Username</h6>
+                            </div>
+                            <div class="row">
+                                <input class="form-control pl-2 pr-2" placeholder="Enter Username here" />
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="row">
+                                <h6>Password`</h6>
+                            </div>
+                            <div class="row">
+                                <input class="form-control pl-2 pr-2" type="password"
+                                    placeholder="Enter Password here" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-gold btn-block">Login <i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script src=@("https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.js")></script>
