@@ -178,11 +178,33 @@ a, a:hover, a:focus {
 
 #sidebar ul li a:hover {
   color: #000000;
-  background: #a68245;;
+  background: #a68245;
+  
 }
 
 ul ul a {
   font-size: 0.9em !important;
   padding-left: 30px !important;
   background: #a68245;
+}
+
+.marginBodyTop {
+  margin-top: 78px;
+}
+
+.btn-gold {
+  background-color: rgba(166, 130, 69, 1);
+}
+
+.btn-gold:hover {
+  color: #fff;
+  background-color: #856838;
+}
+
+.btn-light-gold {
+  background-color: #e4e2da;
+}
+
+.btn-light-gold:hover {
+  background-color: #cccac4;
 }

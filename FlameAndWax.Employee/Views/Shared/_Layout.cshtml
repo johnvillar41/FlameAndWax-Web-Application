@@ -7,27 +7,25 @@
     <title>@ViewData["Title"] - FlameAndWax.Employee</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/fontawesome/css/all.css" rel="stylesheet" />
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: #e4e2da; min-height:78px;">
         <div class="container-fluid">
-            <button type="button" id="sidebarCollapse" class="btn btn-info">
-                <i class="fas fa-align-left"></i>
-                <span>Toggle Sidebar</span>
+            <button type="button" id="sidebarCollapse" class="btn btn-gold">              
+                <span><i class="fas fa-bars"></i></span>
             </button>
         </div>
     </nav>
     <div class="wrapper">
         @await Html.PartialAsync("_NavbarPartial")
-
-        <div id="content">
-
+        <div id="content" class="container marginBodyTop">
             @RenderBody()
         </div>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted card" style="background-color: #e4e2da;">
         <div class="container">
             &copy; 2021 - FlameAndWax.Employee - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
@@ -38,11 +36,9 @@
     @RenderSection("Scripts", required: false)
     <script>
         $(document).ready(function () {
-
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
             });
-
         });
     </script>
 </body>
