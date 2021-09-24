@@ -71,5 +71,11 @@ namespace FlameAndWax.Employee.Controllers
             returnUrl = "/Home/Index";
             return Ok(returnUrl);
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Account");
+        }
     }
 }
