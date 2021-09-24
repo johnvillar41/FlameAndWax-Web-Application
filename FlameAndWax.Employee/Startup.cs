@@ -1,8 +1,10 @@
 using FlameAndWax.Data.Models;
+using FlameAndWax.Data.Repositories;
 using FlameAndWax.Services.Repositories;
 using FlameAndWax.Services.Repositories.Interfaces;
 using FlameAndWax.Services.Services;
 using FlameAndWax.Services.Services.BaseInterface.Interface;
+using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,11 +36,27 @@ namespace FlameAndWax.Employee
                 options.ExpireTimeSpan = TimeSpan.FromSeconds(10);
             });
 
-            //Repository DI
-            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+            //Connection String
+            services.AddSingleton<IConfiguration>(Configuration);
 
+            //Repository DI
+            services.AddSingleton<ICustomerRepository, CustomerRepository>();
+            services.AddSingleton<ICustomerReviewRepository, CustomerReviewRepository>();
+            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+            services.AddSingleton<IOrderDetailRepository, OrderDetailRepository>();
+            services.AddSingleton<IOrderRepository, OrderRepository>();
+            services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddSingleton<IMessageRepository, MessageRepository>();
+            services.AddSingleton<IProductGalleryRepository, ProductGalleryRepository>();
+            services.AddSingleton<IPreviouslyOrderedProductsRepository, PreviouslyOrderedProductsRepository>();
+            services.AddSingleton<IShippingAddressRepository, ShippingAddressRepository>();
             //Services DI
             services.AddSingleton(typeof(IAccountBaseService<EmployeeModel>), typeof(EmployeeAccountService));
+            services.AddSingleton<IProductsService, ProductService>();
+            services.AddSingleton<IHomeService, HomeService>();
+            services.AddSingleton<ICartService, CartService>();
+            services.AddSingleton<IContactUsService, ContactUsService>();
+            services.AddSingleton<IOrdersService, OrdersService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
