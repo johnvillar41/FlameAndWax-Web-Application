@@ -1,0 +1,68 @@
+﻿@model UserProfileViewModel;
+
+@{
+    ViewData["Title"] = "Register Account";
+}
+<form method="post"
+      data-ajax="true"
+      data-ajax-loading="#registerSpinner"
+      data-ajax-complete="registrationComplete"
+      asp-action="RegisterUser"
+      asp-controller="Register"
+      data-ajax-failure="errorContent"
+      enctype="multipart/form-data">
+    <div class="container mx-auto my-auto">
+        <div class="row">
+            <div class="col-lg-6 text-center" id="lottieGif">
+                <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_u8o7BL.json" background="transparent" speed="1" style="width: 400px; height: 500px;" autoplay></lottie-player>
+            </div>
+            <div class="col-lg-6">
+                <div class="card card0 border-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row m-2">
+                                    <h5>Fullname</h5>
+                                    <input id="txtFullname" type="text" class="form-control" asp-for="@Model.Fullname" placeholder="Enter Fullname" required>
+
+                                </div>
+                                <div class="row m-2">
+                                    <h5>Contact Number</h5>
+                                    <input id="txtContactNumber" type="number" class="form-control" asp-for="@Model.ContactNumber" placeholder="Enter Contact Number" required>
+                                </div>
+                                <div class="row m-2">
+                                    <h5>Email</h5>
+                                    <input id="txtEmail" type="email" class="form-control" asp-for="@Model.Email" placeholder="Enter Email" required>
+                                </div>                               
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row m-2">
+                                    <h5>Password</h5>
+                                    <input id="txtPassword" type="password" class="form-control" asp-for="@Model.Password" placeholder="Enter Password" required>
+                                </div>
+                                <div class="row m-2">
+                                    <h5>Verify Password</h5>
+                                    <input id="txtVerifyPassword" type="password" class="form-control" asp-for="@Model.VerifyPassword" placeholder="Verify Password" required>
+                                </div>
+                                <div class="row m-2">
+                                    <h5>Username</h5>
+                                    <input id="txtUsername" type="text" class="form-control" asp-for="@Model.Username" placeholder="Enter Username" required>
+                                </div>                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="py-4" style="background-color: #e4e2da;">
+                        <div class="row px-3">
+                            <a asp-action="Login" asp-controller="Account" class="btn btn-gold ml-4 ml-sm-5 mb-2">Return to Login <i class="fas fa-step-backward"></i></a>
+                            <button type="submit" id="registerUser" class="btn btn-gold ml-1 mb-2">Submit form <i class="fas fa-paper-plane"></i></button>
+                        </div>
+                        <div class="row px-3">
+                            <small class="ml-4 ml-sm-5 mb-2" style="color: #a68245;">Copyright &copy; @DateTime.Today.Year. All rights reserved.</small>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

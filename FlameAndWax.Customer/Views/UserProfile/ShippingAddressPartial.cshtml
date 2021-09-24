@@ -1,0 +1,72 @@
+@model ShippingAddressViewModel;
+
+<form asp-controller="UserProfile" asp-action="SaveShippingAddress" id="ShippingAddressForm"
+      data-ajax="true" data-ajax-complete="saveAddress" data-ajax-update="#address">
+</form>
+<input form="ShippingAddressForm" type="hidden" value="@Model.ShippingAddressId" asp-for="@Model.ShippingAddressId" />
+
+<div class="row p-2">
+    <div class="col-12">
+        <div class="card p-4">
+            <div class="row">
+                <div class="col-12 mt-4 mb-2">
+                    <h2>Shipping Address</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <h5>Address</h5>
+                            <input form="ShippingAddressForm" id="fullname" type="text" class="form-control"
+                                   asp-for="@Model.Address" placeholder="Enter Address" title="enter your first name if any."
+                                   required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <div class="col-xs-6">
+                                <h5>Postal Code</h5>
+                                <input form="ShippingAddressForm" id="contactNumber" type="text" class="form-control"
+                                       asp-for="@Model.PostalCode" placeholder="Enter Postal Number"
+                                       title="enter your phone number if any." required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <h5>City</h5>
+                            <input form="ShippingAddressForm" id="email" type="text" class="form-control" asp-for="@Model.City"
+                                   title="enter your email." required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <h5>Region</h5>
+                            <input form="ShippingAddressForm" id="username" type="text" class="form-control"
+                                   asp-for="@Model.Region" placeholder="Enter Region" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <h5>Country</h5>
+                            <input form="ShippingAddressForm" id="password" type="text" class="form-control"
+                                   asp-for="@Model.Country" placeholder="Enter Country" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <br>
+                            <button class="btn btn-lg btn-gold" id="btnSaveAddress" type="submit" form="ShippingAddressForm">
+                                Save
+                                <i class="fas fa-save"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

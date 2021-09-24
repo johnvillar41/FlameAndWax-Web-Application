@@ -1,0 +1,81 @@
+@model CartSummaryViewModel;
+@{
+    ViewData["Title"] = "Order Summary";
+}
+<form asp-controller="Cart" asp-action="FinalizeCheckout" id="CartSubmit" data-ajax="true" data-ajax-update="#tableCart"
+    data-ajax-loading="#overlayLoadingDiv" data-ajax-complete="cartComplete">
+    <input type="hidden" asp-for="@Model.ModeOfPayment">
+    <input type="hidden" asp-for="@Model.Courier">
+</form>
+<div class="container">
+    <h3>Order Summary</h3>
+    <hr />
+    <h4>Products Count: @Model.CartProducts.Count()</h4>
+    @foreach (var item in Model.CartProducts)
+    {
+        <div class="card mb-3">
+            <div class="row no-gutters">
+                <div class="col-md-3">
+                    <img src="@Url.Content(item.PhotoLink)" class="card-img" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.ProductName</h5>
+                        <p class="card-text">@item.ProductDescription</p>
+                        <p class="card-text"><b>SubTotal Price: @item.ProductSubTotalPrice</b></p>
+                        <p class="card-text"><b>Product Count: @item.QuantityOrdered</b></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+
+    @{
+        var paymentInstructions = "";
+        switch (Model.ModeOfPayment)
+        {
+            case Constants.ModeOfPayment.GCash:
+                paymentInstructions = Constants.GCASH_PAYMENT_DETAILS;
+                break;
+            case Constants.ModeOfPayment.DebitCreditCard:
+                paymentInstructions = Constants.DEBIT_CREDIT_PAYMENT_DETAILS;
+                break;
+            case Constants.ModeOfPayment.PayPal:
+                paymentInstructions = Constants.PAYPAL_PAYMENT_DETAILS;
+                break;
+        }
+    }
+    <h4>Payment Instructions</h4>
+    <div class="card mb-4">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>@Model.ModeOfPayment</b> Instructions</li>
+            <li class="list-group-item">@paymentInstructions</li>
+        </ul>
+    </div>
+    <h4>Shipping Address</h4>
+    <div class="card mb-4">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Full Address: </b>@Model.ShippingAddress.Address.</li>
+            <li class="list-group-item"><b>Postal Code: </b>@Model.ShippingAddress.PostalCode</li>
+            <li class="list-group-item"><b>City: </b>@Model.ShippingAddress.City</li>
+            <li class="list-group-item"><b>Region: </b>@Model.ShippingAddress.Region</li>
+            <li class="list-group-item"><b>Country: </b>@Model.ShippingAddress.Country</li>
+        </ul>
+    </div>
+    <h4>Summary</h4>
+    <div class="card mb-4">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Mode Of Payment:</b> @Model.ModeOfPayment</li>
+            <li class="list-group-item"><b>Courier Type:</b> @Model.Courier</li>
+            <li class="list-group-item"><b>Payment Type:</b> @Model.ModeOfPayment</li>
+            <li class="list-group-item"><b>Total Cost:</b> @Model.TotalCost</li>
+        </ul>
+    </div>
+    <hr />
+    <h4>Finalize Cart</h4>
+    <button class="btn btn-gold">Cancel <i class="fas fa-ban"></i></button>
+    <button class="btn btn-gold" form="CartSubmit" type="submit">Checkout <i class="fas fa-paper-plane"></i></button>
+</div>

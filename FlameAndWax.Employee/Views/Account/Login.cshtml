@@ -1,0 +1,67 @@
+@model FlameAndWax.Employee.Models.LoginViewModel;
+@{
+    Layout = null;
+}
+<link rel="stylesheet" href="~/css/login.css" />
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+<link href="~/fontawesome/css/all.css" rel="stylesheet" />
+<link href="~/sweetalert/sweetalert.css" rel="stylesheet" />
+
+<form asp-controller="Account" asp-action="ProcessLogin" id="formLogin" method="POST" data-ajax="true"
+    data-ajax-complete="loginComplete">
+</form>
+
+<div class="background">
+    <div class="center container">
+        <div class="card p-4 ">
+            <div class="col-12">
+                <h2>Flame and Wax Admin Panel</h2>
+                <hr />
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="centerBlock hideColumnPhoneSize">
+                            <dotlottie-player src="https://assets1.lottiefiles.com/dotlotties/dlf10_q0vtqaxf.lottie"
+                                background="transparent" speed="1" style="width: 400px; height: 400px;" autoplay>
+                            </dotlottie-player>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 card">
+                        <div class="row pl-4 pr-4 pt-4">
+                            <h3>Login Form</h3>
+                        </div>
+                        <hr class="p-4" />
+                        <div class="mb-4 mt-4  p-4">
+                            <div class="row">
+                                <h6>Username</h6>
+                            </div>
+                            <div class="row">
+                                <input class="form-control pl-2 pr-2" form="formLogin" asp-for="@Model.Username"
+                                    placeholder="Enter Username here" />
+                            </div>
+                        </div>
+                        <div class="mb-4  p-4">
+                            <div class="row">
+                                <h6>Password</h6>
+                            </div>
+                            <div class="row">
+                                <input class="form-control pl-2 pr-2" form="formLogin" asp-for="@Model.Password"
+                                    type="password" placeholder="Enter Password here" />
+                            </div>
+                        </div>
+                        <div class="row  p-4">
+                            <button class="btn btn-gold btn-block" type="submit" form="formLogin">
+                                Login <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/sweetalert/sweetalert.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src=@("https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.js")></script>
+<script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>

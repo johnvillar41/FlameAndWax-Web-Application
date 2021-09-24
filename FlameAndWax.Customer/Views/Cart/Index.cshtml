@@ -1,0 +1,8 @@
+﻿@model IEnumerable<ProductViewModel>;
+
+<div class="container">
+    
+    <div class="jumbotron" id="tableCart">        
+        @await Html.PartialAsync("../Cart/CartTablePartial", new CartViewModel { CartProducts = Model.ToList()})
+    </div>
+</div>

@@ -1,0 +1,31 @@
+.center {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-color: #f5f5f0;
+}
+
+.centerBlock {
+    display: table;
+    margin: auto;
+}
+
+@media only screen and (max-width: 768px) {
+    .hideColumnPhoneSize {
+        display: none;
+    }
+}

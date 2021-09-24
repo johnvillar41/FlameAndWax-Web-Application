@@ -1,0 +1,81 @@
+@model CartViewModel;
+@using static FlameAndWax.Data.Constants.Constants;
+<div class="row">
+    <p><strong>Payment Options <span class="badge badge-pill badge-success"><i class="fas fa-dollar-sign"></i></span>
+        </strong></p>
+    <div class="col-12">
+        <div class="accordion" id="accordionExample">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h6 class="mb-0">
+                        <input class="btn btn-link" type="radio" name="ModeOfPayment" data-toggle="collapse"
+                            data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
+                            value="@ModeOfPayment.DebitCreditCard" asp-for="@Model.ModeOfPayment" form="CartForm" required/>
+                        <strong class="text-dark">Pay via Credit/Debit Card & PayMaya Wallet <i
+                                class="far fa-credit-card"></i> <i class="fab fa-cc-paypal"></i> <i
+                                class="fas fa-credit-card"></i></strong>
+                    </h6>
+                </div>
+
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                        @Constants.GCASH_PAYMENT_DETAILS;
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h6 class="mb-0">
+                        <input class="btn btn-link collapsed" name="ModeOfPayment" type="radio" data-toggle="collapse"
+                            data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
+                            value="@ModeOfPayment.GCash" asp-for="@Model.ModeOfPayment" form="CartForm" />
+                        <strong class="text-dark">GCash Payment <i class="fas fa-wallet"></i></strong>
+
+                    </h6>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
+                        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                        sunt
+                        aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch
+                        et.
+                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
+                        sapiente
+                        ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
+                        farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of
+                        them
+                        accusamus labore sustainable VHS.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingThree">
+                    <h6 class="mb-0">
+                        <input class="btn btn-link collapsed" name="ModeOfPayment" type="radio" data-toggle="collapse"
+                            data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"
+                            value="@ModeOfPayment.PayPal" asp-for="@Model.ModeOfPayment" form="CartForm">
+                        <strong class="text-dark">PayPal <i class="fas fa-money-check"></i></strong>
+                    </h6>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                    <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
+                        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                        sunt
+                        aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch
+                        et.
+                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
+                        sapiente
+                        ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
+                        farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of
+                        them
+                        accusamus labore sustainable VHS.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

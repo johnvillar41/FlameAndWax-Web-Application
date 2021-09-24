@@ -1,0 +1,22 @@
+﻿@model HomeViewModel;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .carousel-fade .carousel-item,
+    .carousel-item img {
+        max-height: 100vh;
+    }
+</style>
+
+<div class="container">
+    @await Html.PartialAsync("CategoryCarouselPartial")
+
+    <h3 class="mt-3"><span class="fab fa-hotjar">New Arrivals</span></h3>
+    @await Html.PartialAsync("NewProductsPartial", Model.NewProducts)
+
+    <h3 class="mt-3"><span class="fab fa-hotjar">Customer Reviews</span></h3>
+    @await Html.PartialAsync("TopCommentsPartial", Model.TopCustomerReviews)
+</div>

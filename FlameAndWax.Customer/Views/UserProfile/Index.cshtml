@@ -1,0 +1,68 @@
+﻿@model UserProfileViewModel;
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                @if ((bool)ViewData["IsShippingAddressPresent"] == false)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link " id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                        aria-selected="true">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#address" role="tab"
+                        aria-controls="address" aria-selected="false">Address <span
+                            class="badge badge-pill badge-danger"><i class="fas fa-exclamation"></i></span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item active">
+                        <a class="nav-link " id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                        aria-selected="true">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#address" role="tab"
+                        aria-controls="address" aria-selected="false">Address <span
+                            class="badge badge-pill badge-danger"></span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content" id="myTabContent">
+        @if ((bool)ViewData["IsShippingAddressPresent"] == false)
+        {
+            <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+                @await Html.PartialAsync("ProfilePartial", Model)
+            </div>
+            <div class="tab-pane fade show active" id="address" role="tabpanel" aria-labelledby="profile-tab">
+                @await Html.PartialAsync("ShippingAddressPartial", @Model.Address)
+            </div>
+        }
+        else
+        {
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                @await Html.PartialAsync("ProfilePartial", Model)
+            </div>
+            <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="profile-tab">
+                @await Html.PartialAsync("ShippingAddressPartial", @Model.Address)
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+<script>
+    completed = function () {
+        var x = document.getElementById("completed");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
+}
