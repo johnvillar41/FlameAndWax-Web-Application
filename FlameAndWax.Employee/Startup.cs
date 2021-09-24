@@ -1,14 +1,15 @@
+using FlameAndWax.Data.Models;
+using FlameAndWax.Services.Repositories;
+using FlameAndWax.Services.Repositories.Interfaces;
+using FlameAndWax.Services.Services;
+using FlameAndWax.Services.Services.BaseInterface.Interface;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FlameAndWax.Employee
 {
@@ -24,7 +25,7 @@ namespace FlameAndWax.Employee
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();           
+            services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
@@ -32,6 +33,12 @@ namespace FlameAndWax.Employee
                 options.SlidingExpiration = true;
                 options.ExpireTimeSpan = TimeSpan.FromSeconds(10);
             });
+
+            //Repository DI
+            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+
+            //Services DI
+            services.AddSingleton(typeof(IAccountBaseService<EmployeeModel>), typeof(EmployeeAccountService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

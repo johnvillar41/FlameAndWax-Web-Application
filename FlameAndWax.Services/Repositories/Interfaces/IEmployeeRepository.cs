@@ -5,6 +5,6 @@ namespace FlameAndWax.Services.Repositories.Interfaces
 {
     public interface IEmployeeRepository : IFetchBaseInterface<EmployeeModel>
     {
-        Task<bool> LoginEmployeeAccount(EmployeeModel employeeModel, string connectionString);
+        Task<int> LoginEmployeeAccount(EmployeeModel employeeModel, string connectionString);
     }
 }
