@@ -1,4 +1,7 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+﻿loginComplete = function (xhr) {
+    if (xhr.status == "200") {
+        console.log("Success! nigga");
+    } else if (xhr.status == "400") {
+        console.log("Error login!");
+    }
+}
