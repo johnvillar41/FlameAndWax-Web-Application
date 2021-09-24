@@ -38,5 +38,21 @@ namespace FlameAndWax.Services.Repositories
             }
             return null;
         }
+
+        public async Task<bool> LoginEmployeeAccount(EmployeeModel employeeModel, string connectionString)
+        {
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            var queryString = "SELECT * FROM EmployeesTable WHERE Username = @user AND Password = @pass";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@user", employeeModel.Username);
+            command.Parameters.AddWithValue("@pass", employeeModel.Password);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
