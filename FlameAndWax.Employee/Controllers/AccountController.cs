@@ -41,36 +41,35 @@ namespace FlameAndWax.Employee.Controllers
             };
 
             var loginServiceResult = await _accountService.Login(employeeModel, ConnectionString);
-            if (loginServiceResult.HasError)
+            if (loginServiceResult.Result != -1)
             {
-                return BadRequest(loginServiceResult.ErrorContent);
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, employeeModel.Username),
+                    new Claim(ClaimTypes.Role, nameof(Constants.Roles.Employee)),
+                    new Claim(ClaimTypes.NameIdentifier, loginServiceResult.Result.ToString())
+                };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    AllowRefresh = true,
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                    IsPersistent = false,
+                };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+
+                if (Url.IsLocalUrl(returnUrl))
+                {
+                    return BadRequest(returnUrl);
+                }
             }
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, loginServiceResult.Result.ToString()),
-                new Claim(ClaimTypes.Role, nameof(Constants.Roles.Employee))
-            };
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var authProperties = new AuthenticationProperties
-            {
-                AllowRefresh = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                IsPersistent = false,
-            };
-
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return BadRequest(returnUrl);
-            }
-            
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties);
-
-            return Ok("/Home/Index");
+            returnUrl = "/Home/Index";
+            return Ok(returnUrl);
         }
     }
 }
