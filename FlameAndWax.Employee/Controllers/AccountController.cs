@@ -68,7 +68,7 @@ namespace FlameAndWax.Employee.Controllers
             {
                 return Ok(returnUrl);
             }
-            returnUrl = "/Home/Index";
+            returnUrl = "/CustomerReview/Index";
             return Ok(returnUrl);
         }
 
