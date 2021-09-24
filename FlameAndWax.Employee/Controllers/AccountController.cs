@@ -42,15 +42,14 @@ namespace FlameAndWax.Employee.Controllers
 
             var loginServiceResult = await _accountService.Login(employeeModel, ConnectionString);
             if (loginServiceResult.HasError)
-            {
                 return BadRequest(loginServiceResult.ErrorContent);
-            }
 
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, loginServiceResult.Result.ToString()),
-                new Claim(ClaimTypes.Role, nameof(Constants.Roles.Employee))
-            };
+                {
+                    new Claim(ClaimTypes.Name, employeeModel.Username),
+                    new Claim(ClaimTypes.Role, nameof(Constants.Roles.Employee)),
+                    new Claim(ClaimTypes.NameIdentifier, loginServiceResult.Result.ToString())
+                };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             var authProperties = new AuthenticationProperties
@@ -60,17 +59,17 @@ namespace FlameAndWax.Employee.Controllers
                 IsPersistent = false,
             };
 
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return BadRequest(returnUrl);
-            }
-            
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
 
-            return Ok("/Home/Index");
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Ok(returnUrl);
+            }
+            returnUrl = "/Home/Index";
+            return Ok(returnUrl);
         }
     }
 }
