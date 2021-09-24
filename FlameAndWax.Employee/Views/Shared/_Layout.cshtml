@@ -8,12 +8,13 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/fontawesome/css/all.css" rel="stylesheet" />
+    <link href="~/sweetalert/sweetalert.css" rel="stylesheet" />
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: #e4e2da; min-height:78px;">
         <div class="container-fluid">
-            <button type="button" id="sidebarCollapse" class="btn btn-gold">              
+            <button type="button" id="sidebarCollapse" class="btn btn-gold">
                 <span><i class="fas fa-bars"></i></span>
             </button>
         </div>
@@ -35,6 +36,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src=@("https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.js")></script>
     <script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/sweetalert/sweetalert.js"></script>
     @RenderSection("Scripts", required: false)
     <script>
         $(document).ready(function () {
