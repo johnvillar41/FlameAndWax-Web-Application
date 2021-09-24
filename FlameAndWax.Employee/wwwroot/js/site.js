@@ -17,6 +17,7 @@
             background: '#CCFFCC',
             iconColor: '#006400',
         });
+        window.location.href = xhr.responseText;
     } else if (xhr.status == "400") {
         Toast.fire({
             icon: 'error',
