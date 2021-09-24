@@ -41,32 +41,32 @@ namespace FlameAndWax.Employee.Controllers
             };
 
             var loginServiceResult = await _accountService.Login(employeeModel, ConnectionString);
-            if (loginServiceResult.Result != -1)
-            {
-                var claims = new List<Claim>
+            if (loginServiceResult.HasError)
+                return BadRequest(loginServiceResult.ErrorContent);
+
+            var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, employeeModel.Username),
                     new Claim(ClaimTypes.Role, nameof(Constants.Roles.Employee)),
                     new Claim(ClaimTypes.NameIdentifier, loginServiceResult.Result.ToString())
                 };
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                var authProperties = new AuthenticationProperties
-                {
-                    AllowRefresh = true,
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                    IsPersistent = false,
-                };
+            var authProperties = new AuthenticationProperties
+            {
+                AllowRefresh = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                IsPersistent = false,
+            };
 
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
 
-                if (Url.IsLocalUrl(returnUrl))
-                {
-                    return BadRequest(returnUrl);
-                }
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Ok(returnUrl);
             }
             returnUrl = "/Home/Index";
             return Ok(returnUrl);
