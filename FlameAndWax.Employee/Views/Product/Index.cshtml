@@ -1,0 +1,19 @@
+@model IEnumerable<ProductViewModel>;
+@using FlameAndWax.Data.Constants;
+<div class="container">
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            var pictureUrl = Constants.BASE_URL_API_IMAGES + item.PictureLink;
+            <div class="col-lg-4 col-md-6">
+                <div class="card" style="width: 18rem;">
+                    <img src="@Url.Content(pictureUrl)" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <p class="card-text">@item.ProductDescription</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
