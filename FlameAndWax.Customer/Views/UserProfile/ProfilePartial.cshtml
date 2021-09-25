@@ -19,9 +19,10 @@
                         <div class="text-center p-2">
                             @{
                                 var imageSource = Model.ProfilePictureLink == null ? "" :
-            Url.Content(Model.ProfilePictureLink);
+                                Url.Content(Model.ProfilePictureLink);
+                                var urlPicture = Constants.BASE_URL_API_IMAGES + imageSource;
                             }
-                            <img src="@imageSource" id="profilePicture" class="avatar img-circle img-thumbnail" alt="avatar">
+                            <img src="@urlPicture" id="profilePicture" class="avatar img-circle img-thumbnail" alt="avatar">
                             <h6>Upload a different photo...</h6>
                             <input type="file" onchange="changePicture();" id="file-upload" class="text-center center-block file-upload"
                                 asp-for="@Model.ProfilePictureFile">

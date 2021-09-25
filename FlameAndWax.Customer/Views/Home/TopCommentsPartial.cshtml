@@ -7,12 +7,13 @@
     <div class="card-columns">
         @foreach (var comment in Model)
         {
+            var urlPicture = Constants.BASE_URL_API_IMAGES + comment.ProductPictureLink;
             var reviewScoreNumber = (int)comment.ReviewScore;
             <div class="card mb-3">
                 <div class="row no-gutters">                    
                     <div class="col-md-8">
                         <div class="card-body">
-                            <img class="circle" src="@Url.Content(comment.Customer.ProfilePictureLink)">
+                            <img class="circle" src="@Url.Content(urlPicture)">
                             <span class="badge badge-danger text-white">Top Comment <i class="fab fa-hotjar"></i></span>
                             <h5 class="card-title">@comment.Customer.CustomerName</h5>
                             <hr />

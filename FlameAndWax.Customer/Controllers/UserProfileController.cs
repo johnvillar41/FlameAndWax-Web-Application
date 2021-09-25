@@ -51,7 +51,7 @@ namespace FlameAndWax.Customer.Controllers
             {
                 ViewData["IsShippingAddressPresent"] = true;
             }
-            
+
             var userProfile = new UserProfileViewModel(accountDetailServiceResult.Result);
 
             return View(userProfile);
@@ -132,9 +132,9 @@ namespace FlameAndWax.Customer.Controllers
             return string.Empty;
         }
 
-        private void DeleteOldProfilePicture(string fileToDelete)
+        private void DeleteOldProfilePicture(string imageToDelete)
         {
-            fileToDelete = Path.Combine(_webHostEnvironment.WebRootPath, fileToDelete);
+            var fileToDelete = _webHostEnvironment.WebRootPath + imageToDelete;
             FileInfo fileInfo = new FileInfo(fileToDelete);
             if (fileInfo != null && fileInfo.Exists)
             {
