@@ -2,6 +2,45 @@
 <div class="container">
     @foreach (var item in Model)
     {
-        <p>@item.EmployeeId</p>
+        <div class="col-md-6 pt-2">
+
+            <div class="card pl-4 pr-4 pt-2 pb-2">
+                <div class="row">
+                    <span class="badge badge-pill badge-success ml-auto">@item.Status</span>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <img src="https://previews.123rf.com/images/erstudiostok/erstudiostok1606/erstudiostok160600096/58830101-contouring-make-up-woman-face-contour-and-highlight-makeup-professional-contouring-face-make-up-samp.jpg" class="circle" />
+                        <h3>@item.FirstName @item.LastName</h3>
+                    </div>
+                </div>
+                <hr />
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <td class="tableCenterCell">Date of Birth</td>
+                            <td class="tableCenterCell">Hire Date</td>
+                            <td class="tableCenterCell">City</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="tableCenterCell"><span class="badge badge-secondary">@item.DateBirth</span></td>
+                            <td class="tableCenterCell">
+                                <span class="badge badge-secondary">@item.HireDate</span>
+                            </td>
+                            <td class="tableCenterCell">
+                                <span class="badge badge-secondary">@item.City</span>
+                            </td>
+                        </tr>
+                    </tbody>
+
+
+
+                </table>
+            </div>
+
+        </div>
+
     }
 </div>

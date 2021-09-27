@@ -161,7 +161,7 @@ a, a:hover, a:focus {
 }
 
 #sidebar ul.components {
-  padding: 20px 0; 
+  padding: 20px 0;
 }
 
 #sidebar ul p {
@@ -177,7 +177,7 @@ a, a:hover, a:focus {
 }
 
 #sidebar ul li a:hover {
-  color: #000000;    
+  color: #000000;
 }
 
 ul ul a {
@@ -205,4 +205,32 @@ ul ul a {
 
 .btn-light-gold:hover {
   background-color: #cccac4;
+}
+
+.bd-callout {
+  padding: 1.25rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid #eee;
+  border-left-width: .25rem;
+  border-radius: .25rem;
+}
+
+.bd-callout-warning {
+  border-left-color: #f0ad4e;
+}
+
+.bd-callout-success {
+  border-left-color: green;
+}
+
+.circle {
+  object-fit: cover;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.tableCenterCell {
+  text-align: center;
 }
