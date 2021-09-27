@@ -25,5 +25,16 @@ namespace FlameAndWax.Employee.Models
                 ProductReview = x.ReviewDetail
             }).ToList();
         }
+        public ProductViewModel(ProductModel productModel)
+        {
+            ProductId = productModel.ProductId;
+            ProductName = productModel.ProductName;
+            ProductDescription = productModel.ProductDescription;
+            PictureLink = productModel.ProductGallery.FirstOrDefault().PhotoLink;
+        }
+        public ProductViewModel()
+        {
+
+        }
     }
 }

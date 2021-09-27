@@ -44,41 +44,32 @@ namespace FlameAndWax.Customer.Controllers
             ViewData["ProductCount"] = (int)totalNumberOfPages;
             ViewData["ProductCategory"] = productCategory;
 
-            var productsViewModel = new List<ProductViewModel>();
-            BuildProductViewModels(productsViewModel, productServiceResult.Result);
-            return View(productsViewModel);
+            var productViewModels = productServiceResult.Result.Select(ProductModel => new ProductViewModel(ProductModel)).ToList();
+            return View(productViewModels);
         }
 
         public async Task<IActionResult> PageProducts(int pageNumber = 1, int pageSize = 9, string category = Constants.ALL_PRODUCTS)
-        {
-            var productsViewModel = new List<ProductViewModel>();
-            decimal totalNumberOfPages;
+        {            
             PagedServiceResult<IEnumerable<ProductModel>> productModels;
             if (category.Equals(Constants.ALL_PRODUCTS))
             {
                 productModels = await _productService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
-                if (productModels.HasError) return BadRequest(new { errorContent = productModels.ErrorContent });
-
-                totalNumberOfPages = Math.Ceiling((decimal)productModels.TotalProductCount / pageSize);
-                ViewData["ProductCount"] = (int)totalNumberOfPages;
-                ViewData["ProductCategory"] = category;
-
-                BuildProductViewModels(productsViewModel, productModels.Result);
-                return PartialView("ProductsPartial", productsViewModel);
+                if (productModels.HasError) return BadRequest(new { errorContent = productModels.ErrorContent });               
             }
-
-            productModels = await _productService.FetchProductByCategory(pageNumber, pageSize, ServiceHelper.ConvertStringToConstant(category), ConnectionString);
-            if (productModels.HasError) return BadRequest(new { errorContent = productModels.ErrorContent });
-
-            totalNumberOfPages = Math.Ceiling((decimal)productModels.TotalProductCount / pageSize);
+            else
+            {
+                productModels = await _productService.FetchProductByCategory(pageNumber, pageSize, ServiceHelper.ConvertStringToConstant(category), ConnectionString);
+                if (productModels.HasError) return BadRequest(new { errorContent = productModels.ErrorContent });
+            }
+            var productViewModels = productModels.Result.Select(productModel => new ProductViewModel(productModel)).ToList();
+            var totalNumberOfPages = Math.Ceiling((decimal)productModels.TotalProductCount / pageSize);
             ViewData["ProductCount"] = (int)totalNumberOfPages;
             ViewData["ProductCategory"] = category;
-            
-            BuildProductViewModels(productsViewModel, productModels.Result);
-            return PartialView("ProductsPartial", productsViewModel);
+
+            return PartialView("ProductsPartial", productViewModels);
         }
 
-       
+
         public IActionResult AddToCart(int _productId)
         {
             if (!User.Identity.IsAuthenticated) return Unauthorized($"/Account/Login/?returnUrl=/Products/Details?productId={_productId}");
@@ -109,9 +100,7 @@ namespace FlameAndWax.Customer.Controllers
             ViewData["CustomerReviewCount"] = (int)totalNumberOfPages;
             ViewData["ProductId"] = productId;
 
-            var customerReviewViewModels = new List<CustomerReviewViewModel>();
-            foreach (var customerReviewResult in customerServiceReviewResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReviewResult);
-
+            var customerReviewViewModels = customerServiceReviewResult.Result.Select(customerReview => new CustomerReviewViewModel(customerReview)).ToList();           
             return PartialView("ProductReviewPartial", customerReviewViewModels);
         }
 
@@ -124,9 +113,7 @@ namespace FlameAndWax.Customer.Controllers
             ViewData["CustomerReviewCount"] = (int)totalNumberOfPages;
             ViewData["ProductId"] = productId;
 
-            var customerReviewViewModels = new List<CustomerReviewViewModel>();
-            foreach (var customerReviewResult in customerServiceReviewResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReviewResult);
-
+            var customerReviewViewModels = customerServiceReviewResult.Result.Select(customerReview => new CustomerReviewViewModel(customerReview)).ToList();
             return PartialView("ProductReviewPartial", customerReviewViewModels);
         }
 
@@ -142,10 +129,9 @@ namespace FlameAndWax.Customer.Controllers
             ViewData["CustomerReviewCount"] = (int)totalNumberOfPages;
             ViewData["ProductId"] = productId;
 
-            var customerReviewViewModels = new List<CustomerReviewViewModel>();
-            foreach (var customerReview in customerReviewServiceResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReview);
+            var customerReviewViewModels = customerReviewServiceResult.Result.Select(customerReview => new CustomerReviewViewModel(customerReview)).ToList();
 
-            var productDetailViewModel = new ProductDetailViewModel(productServiceResult.Result, customerReviewViewModels);           
+            var productDetailViewModel = new ProductDetailViewModel(productServiceResult.Result, customerReviewViewModels);
 
             if (User.Identity.IsAuthenticated)
             {
@@ -156,19 +142,6 @@ namespace FlameAndWax.Customer.Controllers
             }
 
             return View(productDetailViewModel);
-        }
-
-        private void BuildProductViewModels(List<ProductViewModel> productsViewModel, IEnumerable<ProductModel> productServiceResult)
-        {
-            foreach (var product in productServiceResult)
-            {
-                productsViewModel.Add(new ProductViewModel(product));                
-            }
-        }
-
-        private void BuildReviewViewModels(List<CustomerReviewViewModel> customerReviewViewModels, CustomerReviewModel customerReviewResult)
-        {
-            customerReviewViewModels.Add(new CustomerReviewViewModel(customerReviewResult));              
-        }
+        }        
     }
 }

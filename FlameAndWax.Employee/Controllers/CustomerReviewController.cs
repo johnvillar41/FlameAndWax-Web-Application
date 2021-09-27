@@ -33,17 +33,13 @@ namespace FlameAndWax.Employee.Controllers
             if (productServiceResult.HasError)
                 return BadRequest(productServiceResult.ErrorContent);
 
-            var productViewModels = new List<ProductViewModel>();
-            foreach (var item in productServiceResult.Result)
+            var productViewModels = productServiceResult.Result.Select(async product =>
             {
-                var commentServiceResult = await _productsService.FetchCustomerReviewsInAProduct(pageNumber, pageSize, item.ProductId, ConnectionString);
+                var reviews = await _productsService.FetchCustomerReviewsInAProduct(pageNumber, pageSize, product.ProductId, ConnectionString);
+                return new ProductViewModel(product, reviews.Result);
+            }).ToList();           
 
-                productViewModels.Add(
-                    new ProductViewModel(item, commentServiceResult.Result)
-                );
-            }
-            
-            return View(productViewModels);
+            return View(await Task.WhenAll(productViewModels));
         }
 
         public IActionResult Privacy()
