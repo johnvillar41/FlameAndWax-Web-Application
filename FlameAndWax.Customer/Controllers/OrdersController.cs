@@ -73,15 +73,9 @@ namespace FlameAndWax.Customer.Controllers
             IEnumerable<OrderDetailModel> orderDetailServiceResult,
             List<OrderViewModel> orderViewModels,
             OrderModel order)
-        {
-            
-            var orderDetails = new List<OrderDetailViewModel>();
-            foreach (var orderDetail in orderDetailServiceResult)
-            {
-                orderDetails.Add(new OrderDetailViewModel(orderDetail));
-
-            }
-            orderViewModels.Add(new OrderViewModel(order, orderDetails));
+        {            
+            var orderDetails = orderDetailServiceResult.Select(orderDetail => new OrderDetailViewModel(orderDetail)).ToList();
+            orderViewModels.Add(new OrderViewModel(order, orderDetails));          
         }
     }
 }

@@ -27,24 +27,10 @@ namespace FlameAndWax.Customer.Controllers
             var productServiceResult = await _homeService.FetchNewArrivedProductsAndTopCustomerReviews(ConnectionString);
             if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
 
-            var newProducts = new List<ProductViewModel>();
-            foreach (var newProduct in productServiceResult.Result.Item1)
-            {
-                newProducts.Add(new ProductViewModel(newProduct));
-            }
+            var newProducts = productServiceResult.Result.Item1.Select(newProduct => new ProductViewModel(newProduct)).ToList();
+            var topCustomerReviews = productServiceResult.Result.Item2.Select(topReview => new CustomerReviewViewModel(topReview)).ToList();
 
-            var topCustomerReviews = new List<CustomerReviewViewModel>();
-            foreach (var topReview in productServiceResult.Result.Item2)
-            {
-                topCustomerReviews.Add(new CustomerReviewViewModel(topReview));
-            }
-
-            var homeViewModel = new HomeViewModel
-            {
-                NewProducts = newProducts,
-                TopCustomerReviews = topCustomerReviews
-            };
-
+            var homeViewModel = new HomeViewModel(newProducts, topCustomerReviews);
             return View(homeViewModel);
         }
 
