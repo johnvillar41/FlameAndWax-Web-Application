@@ -25,12 +25,7 @@ namespace FlameAndWax.Employee.Controllers
             var productsServiceResult = await _productsService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
             if (productsServiceResult.HasError) return BadRequest(productsServiceResult.ErrorContent);
 
-            var productViewModels = new List<ProductViewModel>();
-            foreach (var productModel in productsServiceResult.Result)
-            {
-                productViewModels.Add(new ProductViewModel(productModel));
-            }
-
+            var productViewModels = productsServiceResult.Result.Select(productModel => new ProductViewModel(productModel)).ToList();
             return View(productViewModels);
         }
     }

@@ -1,6 +1,6 @@
 using FlameAndWax.Data.Models;
 
-namespace FlameAndWax.Employee.Controllers
+namespace FlameAndWax.Employee.Models
 {
     public class CustomerViewModel
     {

@@ -1,1 +1,7 @@
 @model IEnumerable<OrderViewModel>
+<div class="container">
+    @foreach (var item in Model)
+    {
+        <p>TOTAL COST: @item.TotalCost</p>
+    }
+</div>
