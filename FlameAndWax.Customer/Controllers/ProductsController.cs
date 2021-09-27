@@ -100,9 +100,7 @@ namespace FlameAndWax.Customer.Controllers
             ViewData["CustomerReviewCount"] = (int)totalNumberOfPages;
             ViewData["ProductId"] = productId;
 
-            var customerReviewViewModels = new List<CustomerReviewViewModel>();
-            foreach (var customerReviewResult in customerServiceReviewResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReviewResult);
-
+            var customerReviewViewModels = customerServiceReviewResult.Result.Select(customerReview => new CustomerReviewViewModel(customerReview)).ToList();           
             return PartialView("ProductReviewPartial", customerReviewViewModels);
         }
 
@@ -115,9 +113,7 @@ namespace FlameAndWax.Customer.Controllers
             ViewData["CustomerReviewCount"] = (int)totalNumberOfPages;
             ViewData["ProductId"] = productId;
 
-            var customerReviewViewModels = new List<CustomerReviewViewModel>();
-            foreach (var customerReviewResult in customerServiceReviewResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReviewResult);
-
+            var customerReviewViewModels = customerServiceReviewResult.Result.Select(customerReview => new CustomerReviewViewModel(customerReview)).ToList();
             return PartialView("ProductReviewPartial", customerReviewViewModels);
         }
 
@@ -133,8 +129,7 @@ namespace FlameAndWax.Customer.Controllers
             ViewData["CustomerReviewCount"] = (int)totalNumberOfPages;
             ViewData["ProductId"] = productId;
 
-            var customerReviewViewModels = new List<CustomerReviewViewModel>();
-            foreach (var customerReview in customerReviewServiceResult.Result) BuildReviewViewModels(customerReviewViewModels, customerReview);
+            var customerReviewViewModels = customerReviewServiceResult.Result.Select(customerReview => new CustomerReviewViewModel(customerReview)).ToList();
 
             var productDetailViewModel = new ProductDetailViewModel(productServiceResult.Result, customerReviewViewModels);
 
@@ -147,19 +142,6 @@ namespace FlameAndWax.Customer.Controllers
             }
 
             return View(productDetailViewModel);
-        }
-
-        private void BuildProductViewModels(List<ProductViewModel> productsViewModel, IEnumerable<ProductModel> productServiceResult)
-        {
-            foreach (var product in productServiceResult)
-            {
-                productsViewModel.Add(new ProductViewModel(product));
-            }
-        }
-
-        private void BuildReviewViewModels(List<CustomerReviewViewModel> customerReviewViewModels, CustomerReviewModel customerReviewResult)
-        {
-            customerReviewViewModels.Add(new CustomerReviewViewModel(customerReviewResult));
-        }
+        }        
     }
 }
