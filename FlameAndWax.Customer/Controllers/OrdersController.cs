@@ -74,7 +74,7 @@ namespace FlameAndWax.Customer.Controllers
             List<OrderViewModel> orderViewModels,
             OrderModel order)
         {
-
+            
             var orderDetails = new List<OrderDetailViewModel>();
             foreach (var orderDetail in orderDetailServiceResult)
             {
