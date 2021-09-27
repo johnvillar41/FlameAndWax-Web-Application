@@ -154,7 +154,7 @@ namespace FlameAndWax.Services.Repositories
                 var orderId = int.Parse(reader["OrderId"].ToString());
 
                 var employeeId = -1;
-                EmployeeModel employee = null;
+                EmployeeModel employee = new EmployeeModel();
                 if (!reader.IsDBNull(2))
                 {
                     employeeId = int.Parse(reader["EmployeeId"].ToString());
@@ -217,6 +217,53 @@ namespace FlameAndWax.Services.Repositories
                 totalNumberOfProducts = int.Parse(reader["total"].ToString());
             }
             return totalNumberOfProducts;
+        }
+
+        public async Task<IEnumerable<OrderModel>> FetchAllOrders(int pageNumber, int pageSize, string connectionString)
+        {
+            List<OrderModel> orders = new List<OrderModel>();
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            var queryString = "SELECT * FROM OrdersTable ORDER BY OrderId OFFSET (@PageNumber - 1) * @PageSize ROWS FETCH NEXT @PageSize ROWS ONLY";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@PageNumber", pageNumber);
+            command.Parameters.AddWithValue("@PageSize", pageSize);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                var orderId = int.Parse(reader["OrderId"].ToString());
+                var customerId = int.Parse(reader["CustomerId"].ToString());
+                var employeeId = -1;
+                EmployeeModel employee = new EmployeeModel();
+                if (!reader.IsDBNull(2))
+                {
+                    employeeId = int.Parse(reader["EmployeeId"].ToString());
+                    employee = await _employeeRepository.Fetch(employeeId, connectionString);
+                }
+
+                var totalCost = double.Parse(reader["TotalCost"].ToString());
+
+                var customer = await _customerRepository.Fetch(customerId, connectionString);
+                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId, connectionString);
+
+                var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
+                var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
+                var status = ServiceHelper.ConvertStringtoOrderStatus(reader["Status"].ToString());
+
+                orders.Add(new OrderModel
+                {
+                    OrderId = orderId,
+                    Customer = customer,
+                    Employee = employee,
+                    OrderDetails = orderDetails,
+                    DateOrdered = DateTime.Parse(reader["DateOrdered"].ToString()),
+                    TotalCost = totalCost,
+                    ModeOfPayment = modeOfPayment,
+                    Courier = courier,
+                    Status = status
+                });
+            }
+            return orders;
         }
     }
 }

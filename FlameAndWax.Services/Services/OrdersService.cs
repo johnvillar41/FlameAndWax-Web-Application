@@ -18,9 +18,19 @@ namespace FlameAndWax.Services.Services
             _orderRepository = orderRepository;
         }
 
-        public Task<PagedServiceResult<IEnumerable<OrderModel>>> FetchAllOrders(OrderStatus? orderStatus, int pageNumber, int pageSize, string connectionString)
+        public async Task<PagedServiceResult<IEnumerable<OrderModel>>> FetchAllOrders(OrderStatus? orderStatus, int pageNumber, int pageSize, string connectionString)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var orders = await _orderRepository.FetchAllOrders(pageNumber, pageSize, connectionString);
+                var serviceResult = ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(orders, false, null);
+                return ServiceHelper.BuildPagedResult<IEnumerable<OrderModel>>(serviceResult, -1, -1);
+            }
+            catch (Exception e)
+            {
+                var serviceResult = ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(null, true, e.Message);
+                return ServiceHelper.BuildPagedResult<IEnumerable<OrderModel>>(serviceResult, -1, -1);
+            }
         }
 
         public async Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrdersByStatus(int pageNumber, int pageSize, int customerId, OrderStatus status, string connectionString)
