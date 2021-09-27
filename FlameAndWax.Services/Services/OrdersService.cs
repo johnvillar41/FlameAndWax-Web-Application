@@ -17,6 +17,12 @@ namespace FlameAndWax.Services.Services
         {
             _orderRepository = orderRepository;
         }
+
+        public Task<PagedServiceResult<IEnumerable<OrderModel>>> FetchAllOrders(OrderStatus? orderStatus, int pageNumber, int pageSize, string connectionString)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrdersByStatus(int pageNumber, int pageSize, int customerId, OrderStatus status, string connectionString)
         {
             try
