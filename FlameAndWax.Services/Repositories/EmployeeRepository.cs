@@ -4,6 +4,7 @@ using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
@@ -11,6 +12,39 @@ namespace FlameAndWax.Services.Repositories
 {
     public class EmployeeRepository : IEmployeeRepository
     {
+        public async Task<int> Add(EmployeeModel Data, string connectionString)
+        {
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            using SqlCommand command = new SqlCommand("AddNewEmployee", connection);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@FirstName", Data.FirstName);
+            command.Parameters.AddWithValue("@LastName", Data.LastName);
+            command.Parameters.AddWithValue("@Email", Data.Email);
+            command.Parameters.AddWithValue("@PhotoLink", Data.PhotoLink);
+            command.Parameters.AddWithValue("@Bday", Data.DateBirth);
+            command.Parameters.AddWithValue("@HireDate", Data.HireDate);
+            command.Parameters.AddWithValue("@City", Data.City);
+            command.Parameters.AddWithValue("@Username", Data.Username);
+            command.Parameters.AddWithValue("@Password", Data.Password);
+            command.Parameters.AddWithValue("@Status", Data.Status);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return int.Parse(reader["pk"].ToString());
+            }
+            return -1;
+        }
+
+        public async Task Delete(int id, string connectionString)
+        {
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            using SqlCommand command = new SqlCommand("DeleteEmployee", connection);
+            command.Parameters.AddWithValue("@id", id);
+            await command.ExecuteNonQueryAsync();
+        }
+
         public async Task<EmployeeModel> Fetch(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
@@ -28,7 +62,7 @@ namespace FlameAndWax.Services.Repositories
                     LastName = reader["LastName"].ToString(),
                     Email = reader["Email"].ToString(),
                     PhotoLink = reader["PhotoLink"].ToString(),
-                    DateBirth = DateTime.Parse(reader["BirthDaye"].ToString()),
+                    DateBirth = DateTime.Parse(reader["BirthDate"].ToString()),
                     HireDate = DateTime.Parse(reader["HireDate"].ToString()),
                     City = reader["City"].ToString(),
                     Username = reader["Username"].ToString(),
@@ -37,6 +71,52 @@ namespace FlameAndWax.Services.Repositories
                 };
             }
             return null;
+        }
+
+        public async Task<IEnumerable<EmployeeModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
+        {
+            List<EmployeeModel> employeeModels = new List<EmployeeModel>();
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            using SqlCommand command = new SqlCommand("FetchPaginatedResultEmployee", connection);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@PageNumber", pageNumber);
+            command.Parameters.AddWithValue("@PageSize", pageSize);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                employeeModels.Add(
+                    new EmployeeModel
+                    {
+                        EmployeeId = int.Parse(reader["EmployeeId"].ToString()),
+                        FirstName = reader["FirstName"].ToString(),
+                        LastName = reader["LastName"].ToString(),
+                        Email = reader["Email"].ToString(),
+                        PhotoLink = reader["PhotoLink"].ToString(),
+                        DateBirth = DateTime.Parse(reader["BirthDate"].ToString()),
+                        HireDate = DateTime.Parse(reader["HireDate"].ToString()),
+                        City = reader["City"].ToString(),
+                        Username = reader["Username"].ToString(),
+                        Password = reader["Password"].ToString(),
+                        Status = ServiceHelper.ConvertStringToEmployeeAccountStatus(reader["Status"].ToString())
+                    }
+                );
+            }
+            return employeeModels;
+        }
+
+        public async Task<int> FetchTotalEmployeesCount(string connectionString)
+        {
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            using SqlCommand command = new SqlCommand("FetchTotalEmployeeCount", connection);
+            command.CommandType = CommandType.StoredProcedure;
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return int.Parse(reader["total"].ToString());
+            }
+            return 0;
         }
 
         public async Task<int> LoginEmployeeAccount(EmployeeModel employeeModel, string connectionString)
@@ -53,6 +133,11 @@ namespace FlameAndWax.Services.Repositories
                 return int.Parse(reader["EmployeeId"].ToString());
             }
             return -1;
+        }
+
+        public Task Update(EmployeeModel data, int id, string connectionString)
+        {
+            throw new NotImplementedException();
         }
     }
 }

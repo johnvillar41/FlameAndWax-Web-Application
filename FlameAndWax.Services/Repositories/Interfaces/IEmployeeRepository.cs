@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 
 namespace FlameAndWax.Services.Repositories.Interfaces
 {
-    public interface IEmployeeRepository : IFetchBaseInterface<EmployeeModel>
+    public interface IEmployeeRepository : IBaseRepository<EmployeeModel>
     {
         Task<int> LoginEmployeeAccount(EmployeeModel employeeModel, string connectionString);
+        Task<int> FetchTotalEmployeesCount(string connectionString);
     }
 }
