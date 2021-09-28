@@ -1,28 +1,27 @@
 @model IEnumerable<CustomerReviewViewModel>;
-<div class="row">
-    @if (Model == null)
+
+@if (Model == null)
+{
+    return;
+}
+<div class="card-columns">
+    @foreach (var comment in Model)
     {
-        return;
-    }
-    <div class="card-columns">
-        @foreach (var comment in Model)
-        {
-            var urlPicture = Constants.BASE_URL_API_IMAGES + comment.ProductPictureLink;
-            var reviewScoreNumber = (int)comment.ReviewScore;
-            <div class="card mb-3">
-                <div class="row no-gutters">                    
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <img class="circle" src="@Url.Content(urlPicture)">
-                            <span class="badge badge-danger text-white">Top Comment <i class="fab fa-hotjar"></i></span>
-                            <h5 class="card-title">@comment.Customer.CustomerName</h5>
-                            <hr />
-                            <p class="card-text">@comment.ReviewDetail</p>
-                            <p class="card-text"><small class="text-muted">Date Commented: @comment.Date</small></p>
-                        </div>
+        var urlPicture = Constants.BASE_URL_API_IMAGES + comment.ProductPictureLink;
+        var reviewScoreNumber = (int)comment.ReviewScore;
+        <div class="card mb-3">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+                    <div class="card-body">
+                        <img class="circle" src="@Url.Content(urlPicture)">
+                        <span class="badge badge-danger text-white">Top Comment <i class="fab fa-hotjar"></i></span>
+                        <h5 class="card-title">@comment.Customer.CustomerName</h5>
+                        <hr />
+                        <p class="card-text">@comment.ReviewDetail</p>
+                        <p class="card-text"><small class="text-muted">Date Commented: @comment.Date</small></p>
                     </div>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>
