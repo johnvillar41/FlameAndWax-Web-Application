@@ -1,11 +1,9 @@
 @using FlameAndWax.Data.Constants
 @model IEnumerable<ProductViewModel>
-<div class="container">
+<div class="container-fluid">    
     @foreach (var item in Model)
     {
-
         var urlPicture = Constants.BASE_URL_API_IMAGES + item.PictureLink;
-
         <div class="card mb-2 mt-1">
             <div class="row no-gutters">
                 <div class="col-md-4">
