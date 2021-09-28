@@ -7,9 +7,9 @@
 <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
 
     <!--Controls-->
-    <div class="controls-top">
-        <a class="btn-floating" href="#multi-item-example" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
-        <a class="btn-floating" href="#multi-item-example" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+    <div class="controls-top mb-1">
+        <a class="btn-floating btn" href="#multi-item-example" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+        <a class="btn-floating btn" href="#multi-item-example" data-slide="next"><i class="fa fa-chevron-right"></i></a>
     </div>
     <!--/.Controls-->
 
@@ -25,16 +25,21 @@
     <div class="carousel-inner" role="listbox">
         <!--First slide-->
         <div class="carousel-item active">
-            <h3>Excellent Reviews 5/5</h3>
             <div class="row">
-                @foreach (var item in Model)
+                @foreach (var item in Model.Take(3))
                 {
+                    var scoreValue = (int)item.ReviewScore;
                     <div class="col-md-4">
                         <div class="card mb-2">
                             <img class="card-img-top topCommentProduct" src="@Url.Content(item.ProductPictureLink)"
                             alt="Card image cap">
                             <div class="card-body">
                                 <h4 class="card-title">@item.ReviewScore</h4>
+                                <img class="circle" src="@Url.Content(item.Customer.ProfilePictureLink)" />
+                                <span class="badge badge-success">@scoreValue/5</span>
+                                <h5>@item.Customer.CustomerName</h5>
+                            </div>
+                            <div class="card-footer">
                                 <p class="card-text">@item.ReviewDetail</p>
                             </div>
                         </div>
@@ -47,60 +52,26 @@
         <!--Third slide-->
         <div class="carousel-item">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="card mb-2">
-                        <img class="card-img-top"
-                            src="https://mdbootstrap.com/img/Photos/Horizontal/Food/4-col/img%20(53).jpg"
+                @foreach (var item in Model.Skip(3))
+                {
+                    var scoreValue = (int)item.ReviewScore;
+                    <div class="col-md-4">
+                        <div class="card mb-2">
+                            <img class="card-img-top topCommentProduct" src="@Url.Content(item.ProductPictureLink)"
                             alt="Card image cap">
-                        <div class="card-body">
-                            <h4 class="card-title">Card title</h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the
-                                bulk
-                                of the
-                                card's content.</p>
-                            <a class="btn btn-primary">Button</a>
+                            <div class="card-body">                                
+                                <h4 class="card-title">@item.ReviewScore</h4>
+                                <img class="circle" src="@Url.Content(item.Customer.ProfilePictureLink)" />
+                                <span class="badge badge-success">@scoreValue/5</span>
+                                <h5>@item.Customer.CustomerName</h5>
+                            </div>
+                            <div class="card-footer">
+                                <p class="card-text">@item.ReviewDetail</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-md-4 clearfix d-none d-md-block">
-                    <div class="card mb-2">
-                        <img class="card-img-top"
-                            src="https://mdbootstrap.com/img/Photos/Horizontal/Food/4-col/img%20(45).jpg"
-                            alt="Card image cap">
-                        <div class="card-body">
-                            <h4 class="card-title">Card title</h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the
-                                bulk
-                                of the
-                                card's content.</p>
-                            <a class="btn btn-primary">Button</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 clearfix d-none d-md-block">
-                    <div class="card mb-2">
-                        <img class="card-img-top"
-                            src="https://mdbootstrap.com/img/Photos/Horizontal/Food/4-col/img%20(51).jpg"
-                            alt="Card image cap">
-                        <div class="card-body">
-                            <h4 class="card-title">Card title</h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the
-                                bulk
-                                of the
-                                card's content.</p>
-                            <a class="btn btn-primary">Button</a>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
-
         </div>
-        <!--/.Third slide-->
-
     </div>
-    <!--/.Slides-->
-
 </div>
-<!--/.Carousel Wrapper-->
