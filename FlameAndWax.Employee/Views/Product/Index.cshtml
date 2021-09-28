@@ -1,56 +1,40 @@
 @model IEnumerable<ProductViewModel>;
 @using FlameAndWax.Data.Constants;
-<div class="container">
-
-    <div class="row">
-        @*@foreach (var item in Model)
-        {
-            
-            <div class="col-lg-4 col-md-6">
-                <div class="card" style="width: 18rem;">
-                    <img src="@Url.Content(pictureUrl)" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p>Product Name</p>
-                        <p>Product Description</p>
-                        <p class="card-text">@item.ProductDescription</p>
-                        <p>Price:</p>
-                        <p>Stocks:</p>
-                    </div>
-                </div>
-            </div>
-        }*@
-        <table class="table table-borderless">
-            <thead>
-                <tr>
-                    <th scope="col">Product ID</th>
-                    <th scope="col">Product Image</th>
-                    <th scope="col">Product Name</th>
-                    <th scope="col">Product Description</th>
-                    <th scope="col">Product Price</th>
-                    <th scope="col">Quantity Per Unit</th>
-                    <th scope="col">Stocks</th>                   
-                </tr>                
-            </thead>
-            <tbody>
-                @foreach(var item in Model)
-                {
-                var pictureUrl = Constants.BASE_URL_API_IMAGES + item.PictureLink;
-                <tr>
-                    <td>@item.ProductId</td>
-                    <td>
-                        <img src="@pictureUrl" class="circle"/>                        
-                    </td>
-                    <td>@item.ProductName</td>
-                    <td>@item.ProductDescription</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><button type="button" class="btn btn-primary btn-sm">Edit</button></td>
-                </tr>
-                <!--Kulang ng Product Price, Quantity Per Unit, Stocks-->
-                }                
-                
-            </tbody>
-        </table>
+<div class="container-fluid">
+    <div class="card p-4">
+        <div class="row">
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">Product ID</th>
+                        <th scope="col">Product Image</th>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Product Description</th>
+                        <th scope="col">Product Price</th>
+                        <th scope="col">Quantity Per Unit</th>
+                        <th scope="col">Stocks</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var pictureUrl = Constants.BASE_URL_API_IMAGES + item.PictureLink;
+                        <tr>
+                            <td>@item.ProductId</td>
+                            <td>
+                                <img src="@pictureUrl" class="circle" />
+                            </td>
+                            <td>@item.ProductName</td>
+                            <td>@item.ProductDescription</td>
+                            <td>@item.ProductPrice</td>
+                            <td>@item.QuantityPerUnit</td>
+                            <td>@item.Stocks</td>
+                            <td><button type="button" class="btn btn-primary btn-sm">Edit</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

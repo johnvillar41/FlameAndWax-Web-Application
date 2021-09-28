@@ -10,6 +10,9 @@ namespace FlameAndWax.Employee.Models
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }
         public string PictureLink { get; set; }
+        public double ProductPrice { get; set; }
+        public int QuantityPerUnit { get; set; }
+        public int Stocks { get; set; }
         public IEnumerable<CustomerReviewViewModel> CustomerReviews { get; set; }
         public ProductViewModel(ProductModel product, IEnumerable<CustomerReviewModel> customerReviews)
         {
@@ -17,13 +20,10 @@ namespace FlameAndWax.Employee.Models
             ProductName = product.ProductName;
             ProductDescription = product.ProductDescription;
             PictureLink = product.ProductGallery.FirstOrDefault().PhotoLink;
-            CustomerReviews = customerReviews.Select(x => new CustomerReviewViewModel
-            {
-                CustomerId = x.Customer.CustomerId,
-                Fullname = x.Customer.CustomerName,
-                ProfilePictureLink = x.Product.ProductGallery.FirstOrDefault().PhotoLink,
-                ProductReview = x.ReviewDetail
-            }).ToList();
+            ProductPrice = product.ProductPrice;
+            QuantityPerUnit = product.QuantityPerUnit;
+            Stocks = product.UnitsInStock;
+            CustomerReviews = customerReviews.Select(customerReviewModel => new CustomerReviewViewModel(customerReviewModel)).ToList();
         }
         public ProductViewModel(ProductModel productModel)
         {
@@ -31,6 +31,9 @@ namespace FlameAndWax.Employee.Models
             ProductName = productModel.ProductName;
             ProductDescription = productModel.ProductDescription;
             PictureLink = productModel.ProductGallery.FirstOrDefault().PhotoLink;
+            ProductPrice = productModel.ProductPrice;
+            QuantityPerUnit = productModel.QuantityPerUnit;
+            Stocks = productModel.UnitsInStock;
         }
         public ProductViewModel()
         {
