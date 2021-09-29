@@ -5,9 +5,7 @@ openInstagram = function () {
     window.open('https://www.instagram.com/flameandwax13/');
 }
 
-//for saving ShippingAddress
-
-saveAddress = function (xhr) {
+displayToastMixin = function (message, isSuccess) {
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -19,16 +17,29 @@ saveAddress = function (xhr) {
             toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
     });
-    if (xhr.status == "200") {
+    if (isSuccess) {
         Toast.fire({
             icon: 'success',
-            title: '<span style="color: #006400"><b>Success</b></span> Updated Shipping Address!',
+            title: '<span style="color: #006400"><b>Success</b></span> ' + message,
             background: '#CCFFCC',
             iconColor: '#006400',
         });
+    } else {
+        Toast.fire({
+            icon: 'error',
+            title: '<span style="color: #8b0000"><b>Error!</b></span> ' + message,
+            background: '#FF7F7F',
+            iconColor: '#8b0000',
+        });
+    }
+}
+
+//for saving ShippingAddress
+saveAddress = function (xhr) {
+    if (xhr.status == "200") {
+        displayToastMixin('Updated Shipping Address!', true);
         animateCustomerReview();
     }
-
 }
 
 
@@ -60,27 +71,11 @@ changePicture = function () {
 //For saving User profile
 
 completedUserProfile = function (xhr) {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    });
     var x = document.getElementById("completed");
     if (x.style.display === "none") {
         x.style.display = "block";
         if (xhr.status == "200") {
-            Toast.fire({
-                icon: 'success',
-                title: '<span style="color: #006400"><b>Success</b></span> Updated User Profile!',
-                background: '#CCFFCC',
-                iconColor: '#006400',
-            });
+            displayToastMixin('Updated User Profile!', true);
         }
     } else {
         x.style.display = "none";
@@ -89,24 +84,8 @@ completedUserProfile = function (xhr) {
 
 //For adding productReview
 completedReviewComment = function (xhr) {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    });
     if (xhr.status == "200") {
-        Toast.fire({
-            icon: 'success',
-            title: '<span style="color: #006400"><b>Success</b></span> Comment Submitted!',
-            background: '#CCFFCC',
-            iconColor: '#006400',
-        });
+        displayToastMixin('Comment Submitted!', true);
         animateCustomerReview();
     }
 }
@@ -114,24 +93,8 @@ completedReviewComment = function (xhr) {
 
 //For saving User profile
 completedSendMessage = function (xhr) {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    });
     if (xhr.status == "200") {
-        Toast.fire({
-            icon: 'success',
-            title: '<span style="color: #006400"><b>Success</b></span> Message Submitted!',
-            background: '#CCFFCC',
-            iconColor: '#006400',
-        });
+        displayToastMixin('Message Submitted!', true);
 
         document.getElementById('name').value = "";
         document.getElementById('email').value = "";
@@ -152,17 +115,6 @@ completedSendMessage = function (xhr) {
 //For cart submission trigger
 
 cartComplete = function (xhr) {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    });
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
             confirmButton: 'btn btn-success',
@@ -171,12 +123,7 @@ cartComplete = function (xhr) {
         buttonsStyling: false
     });
     if (xhr.status == "200") {
-        Toast.fire({
-            icon: 'success',
-            title: '<span style="color: #006400"><b>Success</b></span> Cart Submitted!',
-            background: '#CCFFCC',
-            iconColor: '#006400',
-        });
+        displayToastMixin('Cart Submitted!', true);
         document.getElementById('totalCartCount').innerHTML = "0";
         window.location.href = "/Cart";
     } else {
@@ -265,48 +212,17 @@ addToCart = function (xhr) {
         }
     });
     if (xhr.status == "200") {
-        Toast.fire({
-            icon: 'success',
-            title: '<span style="color: #006400"><b>Success</b></span> Added to cart!',
-            background: '#CCFFCC',
-            iconColor: '#006400',
-        });
+        displayToastMixin('Added to cart!', true);
     } else if (xhr.status == "401") {
-        Toast.fire({
-            icon: 'error',
-            title: '<span style="color: #8b0000"><b>Error!</b></span> Login First!',
-            background: '#FF7F7F',
-            iconColor: '#8b0000',
-        });       
+        displayToastMixin('Login First!', false);
         window.location.href = xhr.responseText;
     } else if (xhr.status == "400") {
-        Toast.fire({
-            icon: 'error',
-            title: '<span style="color: #8b0000"><b>Error!</b></span> ' + xhr.responseText,
-            background: '#FF7F7F',
-            iconColor: '#8b0000',
-        }); 
+        displayToastMixin(xhr.responseText, false);
     }
 }
 //Error increment cart mixin display
 errorCartIncrement = function (response) {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    });
-    Toast.fire({
-        icon: 'error',
-        title: '<span style="color: #8b0000"><b>Error!</b></span> ' + response.responseText,
-        background: '#FF7F7F',
-        iconColor: '#8b0000',
-    });  
+    displayToastMixin(response.responseText, false);
 }
 
 
@@ -316,24 +232,8 @@ $('#deleteCartItem').click(function () {
 });
 
 negateTotalNumberOfCart = function (xhr) {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    })
     if (xhr.status == "200") {
-        Toast.fire({
-            icon: 'success',
-            title: '<span style="color: #006400"><b>Success</b></span> Removed item from cart!',
-            background: '#CCFFCC',
-            iconColor: '#006400',
-        });
+        displayToastMixin('Removed item from cart!', true);
 
         let totalCartNumValue = Number(document.getElementById('totalCartCount').innerHTML);
         totalCartNumValue--;
@@ -372,17 +272,6 @@ scrollUp = function () {
 //For Registering new User
 
 registrationComplete = function (xhr) {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    });
     var passwordField = document.getElementById("txtPassword").value;
     var verifyPasswordField = document.getElementById("txtVerifyPassword").value;
     var arePasswordFieldsEqual = false;
@@ -396,21 +285,12 @@ registrationComplete = function (xhr) {
     else {
         document.getElementById("txtPassword").classList.add('is-invalid');
         document.getElementById("txtVerifyPassword").classList.add('is-invalid');
-        Toast.fire({
-            icon: 'error',
-            title: '<span style="color: #8b0000"><b>Error!</b></span> Password fields are not equal!',
-            background: '#FF7F7F',
-            iconColor: '#8b0000',
-        });
+        displayToastMixin('Password fields are not equal!', false);
+
     }
 
     if (xhr.status == "200" && arePasswordFieldsEqual) {
-        Toast.fire({
-            icon: 'success',
-            title: '<span style="color: #006400"><b>Success</b></span> Registered new user!',
-            background: '#CCFFCC',
-            iconColor: '#006400',
-        });
+        displayToastMixin('Registered new user!', true);
         window.location.href = "/Account/Login";
     }
 }
@@ -423,24 +303,8 @@ registrationComplete = function (xhr) {
 //Login User
 $('#loginBtn').click(function () {
     loginComplete = function (xhr) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
         if (xhr.status == "200") {
-            Toast.fire({
-                icon: 'success',
-                title: '<span style="color: #006400"><b>Success</b></span> Logging Successfull!',
-                background: '#CCFFCC',
-                iconColor: '#006400',
-            });
+            displayToastMixin('Logging Successfull!', true);
         }
     }
 });
@@ -453,28 +317,12 @@ loginSuccess = function (response) {
 
 
 //Error Messages
-errorContent = function (response) {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    });
+errorContent = function (response) {    
     var errorContent = response.responseJSON.errorContent;
     if (errorContent === "Duplicate Username! Please try a different username")
         document.getElementById("txtUsername").classList.add('is-invalid');
     else
         document.getElementById("txtUsername").classList.remove('is-invalid');
 
-    Toast.fire({
-        icon: 'error',
-        title: '<span style="color: #8b0000"><b>Error!</b></span> ' + errorContent,
-        background: '#FF7F7F',
-        iconColor: '#8b0000',
-    });
+    displayToastMixin(errorContent, false);    
 }
