@@ -26,74 +26,39 @@
     @foreach (var order in Model)
     {
         dropDownId++;
-
-
         <div class="col-12 mb-2">
             <div class="card card0 p-3">
 
                 <div class="row">
                     <div class="col-lg-12">
-
                         <div class="d-flex justify-content-end">
                             <div class="mr-auto p-2">
                                 <h4>Order ID: @order.OrderId</h4>
                             </div>
                             <div class="p-2"><b>Date Ordered:&nbsp;</b>@order.Date</div>
                         </div>
-
                         <hr />
                         <div class="row p-2">
                             <div class="col-lg-6">
                                 <table>
                                     <tbody>
-                                        <!-- Mode of Payment -->
-                                    <tr>
+
+                                        <tr>
                                             <td><b>Mode of payment: </b></td>
                                             <td>@order.ModeOfPayment</td>
                                         </tr>
-                                        <!-- Courier -->
-                                    <tr>
+
+                                        <tr>
                                             <td>
                                                 <b>Courier:</b>
                                             </td>
                                             <td>@order.Courier</td>
                                         </tr>
-                                        <!-- Order Status -->
-                                    <tr>
+                                        <tr>
                                             <td>
                                                 <b>Status:</b>
                                             </td>
-                                            @{
-                                                switch (order.Status)
-                                                {
-                                                    case Constants.OrderStatus.Pending:
-                                                        <td> <span class="badge badge-pill badge-info">@order.Status.ToString()&nbsp;<i
-                                                        class="fas fa-spinner"></i></span></td>
-                                                        break;
-                                                    case Constants.OrderStatus.Finished:
-                                                        <td> <span
-                                                    class="badge badge-pill badge-success">@order.Status.ToString()&nbsp;<i
-                                                        class="fas fa-check-circle"></i></span></td>
-                                                        break;
-                                                    case Constants.OrderStatus.Processing:
-                                                        <td> <span
-                                                    class="badge badge-pill badge-warning">@order.Status.ToString()&nbsp;<i
-                                                        class="fas fa-angle-double-right"></i></span></td>
-                                                        break;
-                                                    case Constants.OrderStatus.Shipping:
-                                                        <td> <span
-                                                    class="badge badge-pill badge-primary">@order.Status.ToString()&nbsp;<i
-                                                        class="fas fa-shipping-fast"></i></span></td>
-                                                        break;
-                                                    case Constants.OrderStatus.Cancelled:
-                                                        <td> <span
-                                                    class="badge badge-pill badge-secondary">@order.Status.ToString()&nbsp;<i
-                                                        class="fas fa-times-circle"></i></span></td>
-                                                        break;
-                                                    default:
-                                                        throw new NotImplementedException();
-                                                }
-                                            }
+                                            @await Html.PartialAsync("PillPartial", @order.Status)
                                         </tr>
                                         <tr>
                                             <td><b>Mode Of Payment: </b></td>
@@ -101,8 +66,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-
-
                             </div>
                         </div>
                         <div class="row m-2 justify-content-end">
@@ -126,6 +89,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+
                                     @foreach (var orderDetail in order.OrderDetails)
                                     {
                                         <tr>
@@ -135,50 +99,17 @@
                                             </td>
                                             <td>@orderDetail.ProductId</td>
                                             <td class="text-center"> @orderDetail.ProductQuantityOrdered</td>
-                                            @switch (orderDetail.Status)
-                                            {
-                                                case Constants.OrderStatus.Pending:
-                                                    <td> <span
-                                            class="badge badge-pill badge-info">@orderDetail.Status.ToString()&nbsp;<i
-                                                class="fas fa-stopwatch"></i></span></td>
-                                                    break;
-                                                case Constants.OrderStatus.Processing:
-                                                    <td> <span
-                                            class="badge badge-pill badge-warning">@orderDetail.Status.ToString()&nbsp;<i
-                                                class="fas fa-cogs"></i></span></td>
-                                                    break;
-                                                case Constants.OrderStatus.Shipping:
-                                                    <td> <span
-                                            class="badge badge-pill badge-primary">@orderDetail.Status.ToString()&nbsp;<i
-                                                class="fas fa-shipping-fast"></i></span></td>
-                                                    break;
-                                                case Constants.OrderStatus.Finished:
-                                                    <td> <span
-                                            class="badge badge-pill badge-success">@orderDetail.Status.ToString()&nbsp;<i
-                                                class="fas fa-check-circle"></i></span></td>
-                                                    break;
-                                                case Constants.OrderStatus.Cancelled:
-                                                    <td> <span
-                                            class="badge badge-pill badge-danger">@orderDetail.Status.ToString()&nbsp;<i
-                                                class="fas fa-times-circle"></i></span></td>
-                                                    break;
-                                                default:
-                                                    throw new NotImplementedException();
-                                            }
+
+                                            @await Html.PartialAsync("PillPartial", @orderDetail.Status)
+                                            
                                             <td class="text-right">@orderDetail.SubTotalPrice</td>
                                         </tr>
                                     }
 
                                 </tbody>
                             </table>
-
-
                         </div>
-
                     </div>
-
-
-
                 </div>
                 <div class="row">
                     <div class="col-12">
@@ -190,8 +121,6 @@
                 </div>
             </div>
         </div>
-
-
     }
 </div>
 
