@@ -10,6 +10,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using static FlameAndWax.Data.Constants.Constants;
+using FlameAndWax.Services.Helpers;
 
 namespace FlameAndWax.Customer.Controllers
 {
@@ -53,6 +54,9 @@ namespace FlameAndWax.Customer.Controllers
 
             var registerServiceResult = await _accountService.Register(customerModel, ConnectionString);
             if (registerServiceResult.HasError) return BadRequest(new { errorContent = registerServiceResult.ErrorContent });
+
+            EmailSender emailSender = new EmailSender(customerModel.Email);
+            emailSender.SendCode();
 
             return Ok();
         }

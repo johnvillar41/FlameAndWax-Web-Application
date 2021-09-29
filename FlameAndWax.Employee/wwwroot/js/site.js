@@ -13,7 +13,7 @@
     if (xhr.status == "200") {
         Toast.fire({
             icon: 'success',
-            title: '<span style="color: #006400"><b>Success</b></span> Login Successfull!',
+            title: '<span style="color: #006400">Success</span> Login Successfull!',
             background: '#CCFFCC',
             iconColor: '#006400',
         });
@@ -21,7 +21,7 @@
     } else if (xhr.status == "400") {
         Toast.fire({
             icon: 'error',
-            title: '<span style="color: #8b0000"><b>Error!</b></span> User not found!',
+            title: '<span style="color: #8b0000">Error!</span> User not found!',
             background: '#FF7F7F',
             iconColor: '#8b0000',
         });
