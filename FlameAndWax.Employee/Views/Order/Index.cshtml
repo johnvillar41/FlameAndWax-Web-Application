@@ -1,7 +1,7 @@
 @model IEnumerable<OrderViewModel>
-<div class="container">
+<div class="card">
     <div class="table-responsive">
-        <table class="table">
+        <table class="table table-borderless">
             <thead>
                 <tr>
                     <th scope="col">OrderId</th>
@@ -11,8 +11,7 @@
                     <th scope="col">ModeOfPayment</th>
                     <th scope="col">Courier</th>
                     <th scope="col">Status</th>
-                    <th scope="col">OrderDetails</th>
-                    <th scope="col">Action</th>                    
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,10 +22,17 @@
                             @item.OrderId
                         </td>
                         <td>
-                            @item.Customer
+                            @item.Customer.CustomerName
                         </td>
                         <td>
-                            @item.Employee
+                            @if (item.Employee.FirstName == null)
+                            {
+                                <p>None</p>
+                            }
+                            else
+                            {
+                                <p>@item.Employee.FirstName</p>
+                            }
                         </td>
                         <td>
                             @item.TotalCost
@@ -40,23 +46,9 @@
                         <td>
                             @item.Status
                         </td>
-                        <td>
-                            @foreach (var orderDetail in item.OrderDetails)
-                            {
-                                <p>@orderDetail.OrderDetailsId</p>
-                                <p>@orderDetail.OrderId</p>
-                                <p>@orderDetail.Product.ProductName</p>
-                                <p>@orderDetail.Quantity</p>
-                                <p>@orderDetail.Status</p>
-                                <p>@orderDetail.TotalPrice</p>
-                            }
-                        </td>
-                        <td>
-                            <a class="btn btn-success" href="#">Change Status</a>
-                        </td>
+                        <td><button class="btn btn-gold">View Order Details</button></td>
                     </tr>
                 }
-
             </tbody>
         </table>
     </div>

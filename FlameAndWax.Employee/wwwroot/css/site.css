@@ -83,10 +83,6 @@ body {
   align-items: stretch;
 }
 
-.wrapper {
-  display: flex;
-  align-items: stretch;
-}
 
 #sidebar {
   min-width: 250px;
