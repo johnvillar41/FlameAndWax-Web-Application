@@ -1,19 +1,86 @@
 @model IEnumerable<ProductViewModel>;
 @using FlameAndWax.Data.Constants;
-<div class="container">
+<a href="#" class="float">
+    <i class="fa fa-plus my-float"></i>
+</a>
 
+
+<div class="card p-4">
     <div class="row">
-        @foreach (var item in Model)
-        {
-            var pictureUrl = Constants.BASE_URL_API_IMAGES + item.PictureLink;
-            <div class="col-lg-4 col-md-6">
-                <div class="card" style="width: 18rem;">
-                    <img src="@Url.Content(pictureUrl)" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">@item.ProductDescription</p>
-                    </div>
+        <div class="col-lg-6 col-md-12">
+            <h4>Sort By: </h4>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown button
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
                 </div>
             </div>
-        }
+        </div>
+        <div class="col-lg-6 col-md-12">
+            <h4>Search: </h4>
+            <div class="card">
+                <input class="form-control p-4" placeholder="Search..." />
+            </div>
+        </div>
     </div>
+    <hr />
+    <div class="row">
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">Product ID</th>
+                    <th scope="col">Product Image</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Product Description</th>
+                    <th scope="col">Product Price</th>
+                    <th scope="col">Quantity Per Unit</th>
+                    <th scope="col">Units On Order</th>
+                    <th scope="col">Stocks</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var pictureUrl = Constants.BASE_URL_API_IMAGES + item.PictureLink;
+                    <tr>
+                        <td>@item.ProductId</td>
+                        <td>
+                            <img src="@pictureUrl" class="circle" />
+                        </td>
+                        <td>@item.ProductName</td>
+                        <td>@item.ProductDescription</td>
+                        <td>@item.ProductPrice</td>
+                        <td>@item.QuantityPerUnit</td>
+                        <td>@item.UnitsInOrder</td>
+                        <td>@item.Stocks</td>
+                        <td><button type="button" class="btn btn-primary btn-sm">Edit</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
 </div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination mt-2">
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

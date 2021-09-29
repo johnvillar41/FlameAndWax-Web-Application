@@ -23,5 +23,15 @@ namespace FlameAndWax.Employee.Models
         {
 
         }
+        public override string ToString()
+        {
+            return 
+                "CustomerId: " + CustomerId + "\n" +
+                "CustomerName: " + CustomerName + "\n" +
+                "ContactNumber: " + ContactNumber + "\n" +
+                "Email: " + Email + "\n" +
+                "Username: " + Username + "\n" +
+                "ProfilePictureLink: " + ProfilePictureLink + "\n";
+        }
     }
 }

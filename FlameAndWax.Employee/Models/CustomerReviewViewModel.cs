@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FlameAndWax.Data.Models;
 
 namespace FlameAndWax.Employee.Models
 {
@@ -12,5 +13,17 @@ namespace FlameAndWax.Employee.Models
         public string Username { get; set; }
         public string ProfilePictureLink { get; set; }
         public string ProductReview { get; set; }
+        public CustomerReviewViewModel(CustomerReviewModel customerReviewModel)
+        {
+            CustomerId = customerReviewModel.Customer.CustomerId;
+            Fullname = customerReviewModel.Customer.CustomerName;
+            Username = customerReviewModel.Customer.Username;
+            ProfilePictureLink = customerReviewModel.Customer.ProfilePictureLink;
+            ProductReview = customerReviewModel.ReviewDetail;
+        }
+        public CustomerReviewViewModel()
+        {
+            
+        }
     }
 }

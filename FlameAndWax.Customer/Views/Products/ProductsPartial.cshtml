@@ -31,7 +31,7 @@
     </div>
 </div>
 
-<div class="row" id="productCards" style="display: none;">
+<div class="row" id="productCards" style="display: none;">    
     @foreach (var product in Model)
     {
         <div class="col-md-6 col-lg-4 p-1">
@@ -42,15 +42,8 @@
                 }
                 else
                 {
-                    <div class="card-img">
-                        <div class="productImage">
-                            <div class="img-wrapper">
-                                <a class="thumb">
-                                    <img src="@Url.Content(product.PhotoLink)">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+
+                    <img src="@Url.Content(product.PhotoLink)" class="topCommentProduct card-img-top">
                 }
                 <div class="card-body">
                     <h5 class="card-title">@product.ProductName</h5>
@@ -64,10 +57,10 @@
                             <tr>
                                 <td><strong>Quantity per Unit:</strong></td>
                                 <td class="float-right">@product.QuantityPerUnit</td>
-                            </tr>                           
+                            </tr>
                         </tbody>
                     </table>
-                    <hr />                    
+                    <hr />
                     <h5 class="card-title"><strong>Stocks </strong>@product.StockQuantity</h5>
                     <a class="btn btn-gold btn-sm" asp-route-productId="@product.ProductId" asp-action="Details"
                     asp-controller="Products">
@@ -75,8 +68,7 @@
                     </a>
                     <a class="btn btn-gold btn-sm" asp-route-_productId="@product.ProductId" asp-action="AddToCart"
                     asp-controller="Products" data-ajax="true" id="addtoCartBtn" data-ajax-loading="#cartLoading"
-                    data-ajax-success="updateAddToCartTotalCount"                    
-                    data-ajax-complete="addToCart">
+                    data-ajax-success="updateAddToCartTotalCount" data-ajax-complete="addToCart">
                         Add <i class="fas fa-cart-plus"></i>
                     </a>
                 </div>

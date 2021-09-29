@@ -1,28 +1,78 @@
 @model IEnumerable<CustomerReviewViewModel>;
-<div class="row">
-    @if (Model == null)
-    {
-        return;
-    }
-    <div class="card-columns">
-        @foreach (var comment in Model)
-        {
-            var urlPicture = Constants.BASE_URL_API_IMAGES + comment.ProductPictureLink;
-            var reviewScoreNumber = (int)comment.ReviewScore;
-            <div class="card mb-3">
-                <div class="row no-gutters">                    
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <img class="circle" src="@Url.Content(urlPicture)">
-                            <span class="badge badge-danger text-white">Top Comment <i class="fab fa-hotjar"></i></span>
-                            <h5 class="card-title">@comment.Customer.CustomerName</h5>
-                            <hr />
-                            <p class="card-text">@comment.ReviewDetail</p>
-                            <p class="card-text"><small class="text-muted">Date Commented: @comment.Date</small></p>
+
+@if (Model == null)
+{
+    return;
+}
+<div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
+
+   
+    <!--Indicators Does not work yet-->
+    <ol class="carousel-indicators">
+        <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
+        <li data-target="#multi-item-example" data-slide-to="1"></li>
+        <li data-target="#multi-item-example" data-slide-to="2"></li>
+    </ol>
+    <!--/.Indicators-->
+
+    <!--Slides-->
+    <div class="carousel-inner" role="listbox">
+        <!--First slide-->
+        <div class="carousel-item active">
+            <div class="row">
+                @foreach (var item in Model.Take(3))
+                {
+                    var scoreValue = (int)item.ReviewScore;
+                    <div class="col-md-4">
+                        <div class="card mb-2">
+                            <img class="card-img-top topCommentProduct" src="@Url.Content(item.ProductPictureLink)"
+                            alt="Card image cap">
+                            <div class="card-body">
+                                <h4 class="card-title">@item.ReviewScore</h4>
+                                <img class="circle" src="@Url.Content(item.Customer.ProfilePictureLink)" />
+                                <span class="badge badge-success">@scoreValue/5</span>
+                                <h5>@item.Customer.CustomerName</h5>
+                            </div>
+                            <div class="card-footer">
+                                <p class="card-text">@item.ReviewDetail</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
-        }
+        </div>
+        <!--/.Second slide-->
+
+        <!--Third slide-->
+        <div class="carousel-item">
+            <div class="row">
+                @foreach (var item in Model.Skip(3))
+                {
+                    var scoreValue = (int)item.ReviewScore;
+                    <div class="col-md-4">
+                        <div class="card mb-2">
+                            <img class="card-img-top topCommentProduct" src="@Url.Content(item.ProductPictureLink)"
+                            alt="Card image cap">
+                            <div class="card-body">                                
+                                <h4 class="card-title">@item.ReviewScore</h4>
+                                <img class="circle" src="@Url.Content(item.Customer.ProfilePictureLink)" />
+                                <span class="badge badge-success">@scoreValue/5</span>
+                                <h5>@item.Customer.CustomerName</h5>
+                            </div>
+                            <div class="card-footer">
+                                <p class="card-text">@item.ReviewDetail</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
+     <!--Controls-->
+    <div class="controls-top mb-1">
+        <a class="btn-floating btn" href="#multi-item-example" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+        <a class="btn-floating btn" href="#multi-item-example" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+    </div>
+    <!--/.Controls-->
+
 </div>

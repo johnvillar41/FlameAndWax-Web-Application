@@ -17,14 +17,17 @@
             <button type="button" id="sidebarCollapse" class="btn btn-gold">
                 <span><i class="fas fa-bars"></i></span>
             </button>
-            
-            <a type="button" asp-controller="Account" asp-action="Logout" class="btn btn-danger">LogOut <i class="fas fa-sign-out-alt"></i></a>
+
+            <a type="button" asp-controller="Account" asp-action="Logout" class="btn btn-danger">LogOut <i
+                    class="fas fa-sign-out-alt"></i></a>
         </div>
     </nav>
     <div class="wrapper">
         @await Html.PartialAsync("_NavbarPartial")
-        <div id="content" class="container marginBodyTop">
-            @RenderBody()
+        <div class="marginBodyTop container-fluid">
+            <div class="mt-4">
+                @RenderBody()
+            </div>
         </div>
     </div>
 

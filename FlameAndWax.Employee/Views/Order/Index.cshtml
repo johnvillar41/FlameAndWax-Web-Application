@@ -1,7 +1,55 @@
 @model IEnumerable<OrderViewModel>
-<div class="container">
-    @foreach (var item in Model)
-    {
-        <p>TOTAL COST: @item.TotalCost</p>
-    }
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">OrderId</th>
+                    <th scope="col">Customer Details</th>
+                    <th scope="col">Handled By</th>
+                    <th scope="col">TotalCost</th>
+                    <th scope="col">ModeOfPayment</th>
+                    <th scope="col">Courier</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.OrderId
+                        </td>
+                        <td>
+                            @item.Customer.CustomerName
+                        </td>
+                        <td>
+                            @if (item.Employee.FirstName == null)
+                            {
+                                <p>None</p>
+                            }
+                            else
+                            {
+                                <p>@item.Employee.FirstName</p>
+                            }
+                        </td>
+                        <td>
+                            @item.TotalCost
+                        </td>
+                        <td>
+                            @item.ModeOfPayment
+                        </td>
+                        <td>
+                            @item.Courier
+                        </td>
+                        <td>
+                            @item.Status
+                        </td>
+                        <td><button class="btn btn-gold">View Order Details</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

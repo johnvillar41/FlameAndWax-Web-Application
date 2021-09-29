@@ -34,20 +34,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Products"
                                 asp-action="Index">Products</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Information <i class="fas fa-chevron-down"></i>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" asp-area="" asp-controller="ContactUs" asp-action="Index"><i
-                                        class="fas fa-address-book"
-                                        style="margin-left: -9px; margin-right:5px;"></i>Contact Us</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="AboutUs" asp-action="Index"><i
-                                        class="fas fa-info-circle"
-                                        style="margin-left: -10px; margin-right:5px;"></i>About Us</a>
-                            </div>
-                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="ContactUs" asp-action="Index"
+                                >Contact Us</a>
+                        </li>                        
                     </ul>
 
                 </div>

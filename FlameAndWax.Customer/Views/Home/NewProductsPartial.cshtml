@@ -9,16 +9,7 @@
     {
         <div class="col-lg-4 mb-4">
             <div class="card">
-
-                <div class="card-img">
-                    <div class="productImage">
-                        <div class="img-wrapper">
-                            <a class="thumb">
-                                <img src="@Url.Content(product.PhotoLink)">
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                <img src="@Url.Content(product.PhotoLink)" class="topCommentProduct card-img-top">
                 <div class="card-body">
                     <a class="badge badge-danger text-white">New Arrivals <i class="fab fa-hotjar"></i></a>
                     <h5 class="card-title">@product.ProductName</h5>
