@@ -1,0 +1,62 @@
+@model OrderViewModel
+@using FlameAndWax.Data.Constants
+
+<div class="modal fade" id="exampleModalScrollable_@ViewBag.Id" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                @{
+                    var customerImageLink = Constants.BASE_URL_API_IMAGES + Model.Customer.ProfilePictureLink;
+                }
+                <div class="d-flex flex-row">
+                    <div class="my-auto">
+                        <img src="@Url.Content(customerImageLink)" class="circle" />
+                    </div>
+                    <div class="d-flex flex-column ml-1">
+                        <div class="my-auto">
+                            <h5 class="my-auto" id="exampleModalScrollableTitle"><strong>Name: </strong>
+                                @Model.Customer.CustomerName</h5>
+                        </div>
+                        <div class="my-auto">
+                            <h5 class="my-auto" id="exampleModalScrollableTitle"><strong>Total Orders:</strong>
+                                @Model.OrderDetails.Count()</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @foreach (var orderDetail in Model.OrderDetails)
+                    {
+                        var productImageLink = Constants.BASE_URL_API_IMAGES + orderDetail.Product.PictureLink;
+                        <div class="col-lg-6 col-md-12">
+                            <div class="card mb-3" style="max-width: 540px;">
+                                <div class="row no-gutters">
+                                    <div class="col-md-4">
+                                        <img src="@Url.Content(productImageLink)" class="card-img" alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><strong>ProductName:</strong>
+                                                @orderDetail.Product.ProductName</h5>
+                                            <h5 class="card-title"><strong>Price:</strong> @orderDetail.Product.ProductPrice
+                                            </h5>
+                                            <h5 class="card-title"><strong>Quantity:</strong> @orderDetail.Quantity</h5>
+                                            <h5 class="card-title"><strong>Total Price:</strong> @orderDetail.TotalPrice
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <h5 class="card-title  my-auto">Total Cost: @Model.TotalCost</h5>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

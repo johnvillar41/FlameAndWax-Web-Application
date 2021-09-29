@@ -1,5 +1,4 @@
 @model IList<OrderViewModel>
-@using FlameAndWax.Data.Constants
 <div class="card">
     <div class="table-responsive">
         <table class="table table-borderless">
@@ -18,6 +17,7 @@
             <tbody>
                 @for (int i = 0; i < Model.Count(); i++)
                 {
+                    ViewBag.Id = i;
                     <tr>
                         <td>
                             @Model[i].OrderId
@@ -48,67 +48,11 @@
                             @Model[i].Status
                         </td>
                         <td><button type="button" class="btn btn-gold" data-toggle="modal"
-                            data-target="#exampleModalScrollable_@i">
+                            data-target="#exampleModalScrollable_@ViewBag.Id">
                                 View Order Details
                             </button></td>
                     </tr>
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModalScrollable_@i" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    @{
-                                        var customerImageLink = Constants.BASE_URL_API_IMAGES + Model[i].Customer.ProfilePictureLink;
-                                    }
-                                    <div class="d-flex flex-row">
-                                        <div class="my-auto">
-                                            <img src="@Url.Content(customerImageLink)" class="circle"/>
-                                        </div>
-                                        <div class="d-flex flex-column ml-1">
-                                            <div class="my-auto">
-                                                <h5 class="my-auto" id="exampleModalScrollableTitle"><strong>Name: </strong>
-                                                                                        @Model[i].Customer.CustomerName</h5>    
-                                            </div>
-                                            <div class="my-auto">
-                                                <h5 class="my-auto" id="exampleModalScrollableTitle"><strong>Total Orders:</strong>
-                                                                                        @Model[i].OrderDetails.Count()</h5>    
-                                            </div>
-                                        </div>                                       
-                                    </div>                                               
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                    @foreach (var orderDetail in Model[i].OrderDetails)
-                                    {                                    
-                                        var productImageLink = Constants.BASE_URL_API_IMAGES + orderDetail.Product.PictureLink;                                      
-                                           <div class="col-lg-6 col-md-12">
-                                                <div class="card mb-3" style="max-width: 540px;">
-                                                    <div class="row no-gutters">
-                                                        <div class="col-md-4">
-                                                            <img src="@Url.Content(productImageLink)" class="card-img" alt="...">
-                                                        </div>
-                                                        <div class="col-md-8">
-                                                            <div class="card-body">
-                                                                <h5 class="card-title"><strong>ProductName:</strong> @orderDetail.Product.ProductName</h5>
-                                                                <h5 class="card-title"><strong>Price:</strong> @orderDetail.Product.ProductPrice</h5> 
-                                                                <h5 class="card-title"><strong>Quantity:</strong> @orderDetail.Quantity</h5>
-                                                                <h5 class="card-title"><strong>Total Price:</strong> @orderDetail.TotalPrice</h5>                                                      
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                       </div>
-                                    }
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <h5 class="card-title  my-auto">Total Cost: @Model[i].TotalCost</h5>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                                   
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @await Html.PartialAsync("OrderDetailsPartial", Model[i])                 
                 }
             </tbody>
         </table>
