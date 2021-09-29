@@ -1,5 +1,28 @@
 @model IList<OrderViewModel>
-<div class="card">
+<div class="card p-4">
+    <div class="row">
+        <div class="col-lg-6 col-md-12">
+            <h4>Sort By: </h4>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown button
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12">
+            <h4>Search: </h4>
+            <div class="card">
+                <input class="form-control p-4" placeholder="Search..." />
+            </div>
+        </div>
+    </div>
+    <hr />
     <div class="table-responsive">
         <table class="table table-borderless">
             <thead>
@@ -47,14 +70,31 @@
                         <td>
                             @Model[i].Status
                         </td>
-                        <td><button type="button" class="btn btn-gold" data-toggle="modal"
+                        <td><button type="button" class="btn btn-gold btn-sm" data-toggle="modal"
                             data-target="#exampleModalScrollable_@ViewBag.Id">
                                 View Order Details
                             </button></td>
                     </tr>
-                    @await Html.PartialAsync("OrderDetailsPartial", Model[i])                 
+                    @await Html.PartialAsync("OrderDetailsPartial", Model[i])
                 }
             </tbody>
         </table>
     </div>
 </div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination mt-2">
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
