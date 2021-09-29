@@ -27,8 +27,7 @@
     {
         dropDownId++;
         <div class="col-12 mb-2">
-            <div class="card card0 p-3">
-
+            <div class="card p-3">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="d-flex justify-content-end">
@@ -101,7 +100,7 @@
                                             <td class="text-center"> @orderDetail.ProductQuantityOrdered</td>
 
                                             @await Html.PartialAsync("PillPartial", @orderDetail.Status)
-                                            
+
                                             <td class="text-right">@orderDetail.SubTotalPrice</td>
                                         </tr>
                                     }
