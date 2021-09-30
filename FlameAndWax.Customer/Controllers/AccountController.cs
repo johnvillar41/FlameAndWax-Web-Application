@@ -47,10 +47,8 @@ namespace FlameAndWax.Customer.Controllers
                 }, ConnectionString);
             if (isAuthenticatedServiceResult.Result == -1)
                 return Unauthorized(isAuthenticatedServiceResult.ErrorContent);
-            if (isAuthenticatedServiceResult.Result == -2)
-                return BadRequest(isAuthenticatedServiceResult.ErrorContent);
             if (isAuthenticatedServiceResult.HasError)
-                return BadRequest("An Error Ocurred");
+                return BadRequest(isAuthenticatedServiceResult.ErrorContent);
 
             var claims = new List<Claim>
             {
