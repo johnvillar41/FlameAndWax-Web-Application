@@ -38,7 +38,13 @@ namespace FlameAndWax.Customer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ProcessLogin(LoginViewModel loginCredentials, string returnUrl)
         {
-            var isAuthenticatedServiceResult = await _accountService.Login(new CustomerModel { Username = loginCredentials.Username, Password = loginCredentials.Password }, ConnectionString);
+            var isAuthenticatedServiceResult = await _accountService.Login(
+                new CustomerModel
+                {
+                    Username = loginCredentials.Username,
+                    Password = loginCredentials.Password,
+                    Code = loginCredentials.Code
+                }, ConnectionString);
             if (isAuthenticatedServiceResult.Result == -1)
                 return Unauthorized(isAuthenticatedServiceResult.ErrorContent);
             if (isAuthenticatedServiceResult.Result == -2)
@@ -73,7 +79,7 @@ namespace FlameAndWax.Customer.Controllers
 
             returnUrl = "/Home/Index";
             return Ok(returnUrl);
-        }     
+        }
 
         public async Task<IActionResult> ProcessLogout()
         {

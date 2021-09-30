@@ -10,5 +10,6 @@ namespace FlameAndWax.Services.Repositories.Interfaces
         Task ChangeCustomerStatus(int customerId, CustomerAccountStatus customerStatus, string connectionString);
         Task<bool> CheckIfCustomerHasShippingAddress(int customerId, string connectionString);
         Task UpdateShippingAddressId(int customerId, int shippingAddressId, string connectionStrin);
+        Task<bool> UpdateStatusCustomerAccount(string username, string connectionString, string code);
     }
 }

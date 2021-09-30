@@ -19,7 +19,7 @@ namespace FlameAndWax.Data.Repositories
         public async Task<int> Add(CustomerModel Data, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();           
+            await connection.OpenAsync();
             using SqlCommand command = new SqlCommand("AddNewCustomer", connection);
             command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@name", Data.CustomerName);
@@ -41,7 +41,7 @@ namespace FlameAndWax.Data.Repositories
         public async Task ChangeCustomerStatus(int customerId, CustomerAccountStatus customerStatus, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();            
+            await connection.OpenAsync();
             using SqlCommand command = new SqlCommand("ChangeCustomerStatus", connection);
             command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@status", customerStatus.ToString());
@@ -52,7 +52,7 @@ namespace FlameAndWax.Data.Repositories
         public async Task<bool> CheckIfCustomerHasShippingAddress(int customerId, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();            
+            await connection.OpenAsync();
             using SqlCommand command = new SqlCommand("CheckIfCustomerHasShippingAddress", connection);
             command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@customerId", customerId);
@@ -77,7 +77,7 @@ namespace FlameAndWax.Data.Repositories
         public async Task<CustomerModel> Fetch(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();            
+            await connection.OpenAsync();
             using SqlCommand command = new SqlCommand("FetchCustomer", connection);
             command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@id", id);
@@ -96,7 +96,7 @@ namespace FlameAndWax.Data.Repositories
                     CustomerName = reader["CustomerName"].ToString(),
                     ContactNumber = reader["ContactNumber"].ToString(),
                     Email = reader["Email"].ToString(),
-                    Username = reader["Username"].ToString(),                    
+                    Username = reader["Username"].ToString(),
                     ProfilePictureLink = reader["ProfilePictureLink"].ToString(),
                     Status = ServiceHelper.ConvertStringToCustomerAccountStatus(reader["Status"].ToString()),
                     Address = shippingAddressModel
@@ -110,7 +110,7 @@ namespace FlameAndWax.Data.Repositories
             List<CustomerModel> customers = new List<CustomerModel>();
 
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();            
+            await connection.OpenAsync();
             using SqlCommand command = new SqlCommand("FetchPaginatedResultCustomer", connection);
             command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@PageNumber", pageNumber);
@@ -146,7 +146,7 @@ namespace FlameAndWax.Data.Repositories
         public async Task<int> LoginCustomerAccount(CustomerModel loginCustomer, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();                 
+            await connection.OpenAsync();
             using SqlCommand command = new SqlCommand("LoginCustomerAccount", connection);
             command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@username", loginCustomer.Username);
@@ -186,19 +186,48 @@ namespace FlameAndWax.Data.Repositories
             command.Parameters.AddWithValue("@name", data.CustomerName);
             command.Parameters.AddWithValue("@number", data.ContactNumber);
             command.Parameters.AddWithValue("@email", data.Email);
-            command.Parameters.AddWithValue("@username", data.Username);            
+            command.Parameters.AddWithValue("@username", data.Username);
             await command.ExecuteNonQueryAsync();
         }
 
         public async Task UpdateShippingAddressId(int customerId, int shippingAddressId, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();            
+            await connection.OpenAsync();
             using SqlCommand command = new SqlCommand("UpdateShippingAddressId", connection);
             command.CommandType = System.Data.CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@shippingId", shippingAddressId);
             command.Parameters.AddWithValue("@customerId", customerId);
             await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task<bool> UpdateStatusCustomerAccount(string username, string connectionString, string code)
+        {            
+            var userCode = await GetUserCode(username, connectionString);
+            if (!userCode.Equals(code))
+                return false;
+           
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            var queryString = "UPDATE CustomerTable SET Status = 'Active' WHERE Username = @username";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@username", username);
+            await command.ExecuteNonQueryAsync();
+            return true;
+        }
+        private async Task<string> GetUserCode(string username, string connectionString)
+        {
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            var queryString = "SELECT Code FROM CustomerTable WHERE Username = @username";
+            using SqlCommand command = new SqlCommand(queryString, connection);
+            command.Parameters.AddWithValue("@username", username);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return reader["Code"].ToString();
+            }
+            return string.Empty;
         }
     }
 }

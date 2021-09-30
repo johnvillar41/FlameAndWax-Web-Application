@@ -12,5 +12,6 @@ namespace FlameAndWax.Data.Models
         public string ProfilePictureLink { get; set; }
         public CustomerAccountStatus Status { get; set; }
         public ShippingAddressModel Address { get; set; }
+        public string Code { get; set; }
     }
 }

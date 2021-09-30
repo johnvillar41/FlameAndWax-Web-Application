@@ -20,6 +20,11 @@ namespace FlameAndWax.Services.Services.Interfaces
                 return ServiceHelper.BuildServiceResult<int>(-1, true, "Login Credentials has no value");
             try
             {
+                if (loginCredentials.Code != null)
+                {
+                    var codeResult = await _customerRepository.UpdateStatusCustomerAccount(loginCredentials.Username, connectionString, loginCredentials.Code);
+                    if (!codeResult) return ServiceHelper.BuildServiceResult<int>(-3, true, "Code is not the same");
+                }
                 var isLoggedIn = await _customerRepository.LoginCustomerAccount(loginCredentials, connectionString);
                 switch (isLoggedIn)
                 {
