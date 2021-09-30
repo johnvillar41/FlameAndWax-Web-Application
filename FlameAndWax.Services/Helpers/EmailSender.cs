@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FlameAndWax.Services.Helpers
 {
@@ -16,7 +17,7 @@ namespace FlameAndWax.Services.Helpers
             Email = email;
         }
 
-        public void SendCode()
+        public void SendCode(string code)
         {
             var smtpClient = new SmtpClient("smtp.gmail.com")
             {
@@ -25,9 +26,9 @@ namespace FlameAndWax.Services.Helpers
                 EnableSsl = true,
             };
 
-            smtpClient.Send(FAW_Email, Email, "Code Confirmation for Flame and Wax", RandomString());
+            smtpClient.Send(FAW_Email, Email, "Code Confirmation for Flame and Wax", code);
         }
-        private string RandomString()
+        public string RandomString()
         {
             int size = 5;
             bool lowerCase = false;

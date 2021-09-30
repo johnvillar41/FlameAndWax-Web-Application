@@ -33,7 +33,7 @@
                                 <div class="row m-2">
                                     <h5>Email</h5>
                                     <input id="txtEmail" type="email" class="form-control" asp-for="@Model.Email" placeholder="Enter Email" required>
-                                </div>                               
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="row m-2">
@@ -47,7 +47,7 @@
                                 <div class="row m-2">
                                     <h5>Username</h5>
                                     <input id="txtUsername" type="text" class="form-control" asp-for="@Model.Username" placeholder="Enter Username" required>
-                                </div>                              
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -55,6 +55,9 @@
                         <div class="row px-3">
                             <a asp-action="Login" asp-controller="Account" class="btn btn-gold ml-4 ml-sm-5 mb-2">Return to Login <i class="fas fa-step-backward"></i></a>
                             <button type="submit" id="registerUser" class="btn btn-gold ml-1 mb-2">Submit form <i class="fas fa-paper-plane"></i></button>
+                            <div class="spinner-border ml-1 my-auto" id="registerSpinner" role="status" style="display:none;">
+                                <span class="sr-only">Loading...</span>
+                            </div>
                         </div>
                         <div class="row px-3">
                             <small class="ml-4 ml-sm-5 mb-2" style="color: #a68245;">Copyright &copy; @DateTime.Today.Year. All rights reserved.</small>

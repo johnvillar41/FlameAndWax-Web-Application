@@ -27,8 +27,8 @@ namespace FlameAndWax.Data.Repositories
             command.Parameters.AddWithValue("@email", Data.Email);
             command.Parameters.AddWithValue("@username", Data.Username);
             command.Parameters.AddWithValue("@password", Data.Password);
-            command.Parameters.AddWithValue("@status", Constants.Constants.CustomerAccountStatus.Pending.ToString());
-
+            command.Parameters.AddWithValue("@status", CustomerAccountStatus.Pending.ToString());
+            command.Parameters.AddWithValue("@code", Data.Code);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
