@@ -199,18 +199,7 @@ update = function (text) {
     document.getElementById("dropdownMenuButton").innerHTML = text + ' <i class="fas fa-caret-square-down"></i>';
 }
 
-addToCart = function (xhr) {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    });
+addToCart = function (xhr) {   
     if (xhr.status == "200") {
         displayToastMixin('Added to cart!', true);
     } else if (xhr.status == "401") {
@@ -304,11 +293,19 @@ registrationComplete = function (xhr) {
 
 loginComplete = function (xhr) {
     if (xhr.status == "200") {
-        displayToastMixin(xhr.responseText, true);
+        displayToastMixin('Login Successfull', true);
+        window.location.href = xhr.responseText;
     } else if (xhr.status == "400") {
         displayToastMixin(xhr.responseText, false);
     } else if (xhr.status == "401") {
         displayToastMixin(xhr.responseText, false);
+
+        var x = document.getElementById("CodeConfirmation");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
     }       
 }
 
