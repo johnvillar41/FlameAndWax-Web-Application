@@ -21,11 +21,12 @@ namespace FlameAndWax.Services.Services.Interfaces
             try
             {
                 var isLoggedIn = await _customerRepository.LoginCustomerAccount(loginCredentials, connectionString);
-                if (isLoggedIn > -1)
-                    return ServiceHelper.BuildServiceResult<int>(isLoggedIn, false, null);
-
-                else
-                    return ServiceHelper.BuildServiceResult<int>(-1, true, "Invalid User");
+                switch (isLoggedIn)
+                {
+                    case -1: return ServiceHelper.BuildServiceResult<int>(-1, true, "Account still pending");
+                    case -2: return ServiceHelper.BuildServiceResult<int>(-2, true, "User not found!");
+                    default: return ServiceHelper.BuildServiceResult<int>(isLoggedIn, false, "Login Successfull");
+                }
             }
 
             catch (System.Data.SqlClient.SqlException e)
