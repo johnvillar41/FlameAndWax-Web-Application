@@ -135,7 +135,14 @@ namespace FlameAndWax.Data.Repositories
             }
             return customers;
         }
-
+        /// <summary>
+        ///     return -1 means Account is still pending
+        ///     return -2 means Account not found
+        ///     return > 0 means Login Successfull
+        /// </summary>
+        /// <param name="loginCustomer"></param>
+        /// <param name="connectionString"></param>
+        /// <returns></returns>
         public async Task<int> LoginCustomerAccount(CustomerModel loginCustomer, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
@@ -148,9 +155,13 @@ namespace FlameAndWax.Data.Repositories
             if (await reader.ReadAsync())
             {
                 var customerId = int.Parse(reader["CustomerId"].ToString());
+                if (reader["Status"].ToString().Equals(nameof(CustomerAccountStatus.Pending)))
+                {
+                    return -1;
+                }
                 return customerId;
             }
-            return -1;
+            return -2;
         }
 
         public async Task Update(CustomerModel data, int id, string connectionString)
