@@ -23,13 +23,13 @@ namespace FlameAndWax.Services.Services.Interfaces
                 if (loginCredentials.Code != null)
                 {
                     var codeResult = await _customerRepository.UpdateStatusCustomerAccount(loginCredentials.Username, connectionString, loginCredentials.Code);
-                    if (!codeResult) return ServiceHelper.BuildServiceResult<int>(-3, true, "Code is not the same");
+                    if (!codeResult) return ServiceHelper.BuildServiceResult<int>(-1, true, "Code is not the same");
                 }
                 var isLoggedIn = await _customerRepository.LoginCustomerAccount(loginCredentials, connectionString);
                 switch (isLoggedIn)
                 {
                     case -1: return ServiceHelper.BuildServiceResult<int>(-1, true, "Account still pending");
-                    case -2: return ServiceHelper.BuildServiceResult<int>(-2, true, "User not found!");
+                    case -2: return ServiceHelper.BuildServiceResult<int>(-1, true, "User not found!");
                     default: return ServiceHelper.BuildServiceResult<int>(isLoggedIn, false, "Login Successfull");
                 }
             }
