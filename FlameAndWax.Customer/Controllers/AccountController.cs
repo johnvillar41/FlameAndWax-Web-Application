@@ -73,7 +73,7 @@ namespace FlameAndWax.Customer.Controllers
 
             returnUrl = "/Home/Index";
             return Ok(returnUrl);
-        }
+        }     
 
         public async Task<IActionResult> ProcessLogout()
         {
