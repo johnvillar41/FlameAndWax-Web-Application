@@ -301,28 +301,25 @@ registrationComplete = function (xhr) {
 //Login Functions----------------------------------------------------
 
 //Login User
-$('#loginBtn').click(function () {
-    loginComplete = function (xhr) {
-        if (xhr.status == "200") {
-            displayToastMixin('Logging Successfull!', true);
-        }
-    }
-});
 
-//Login success routing
-loginSuccess = function (response) {
-    window.location.href = response;
+loginComplete = function (xhr) {
+    if (xhr.status == "200") {
+        displayToastMixin(xhr.responseText, true);
+    } else if (xhr.status == "400") {
+        displayToastMixin(xhr.responseText, false);
+    } else if (xhr.status == "401") {
+        displayToastMixin(xhr.responseText, false);
+    }       
 }
-//Login Functions----------------------------------------------------
 
 
 //Error Messages
-errorContent = function (response) {    
+errorContent = function (response) {
     var errorContent = response.responseJSON.errorContent;
     if (errorContent === "Duplicate Username! Please try a different username")
         document.getElementById("txtUsername").classList.add('is-invalid');
     else
         document.getElementById("txtUsername").classList.remove('is-invalid');
 
-    displayToastMixin(errorContent, false);    
+    displayToastMixin(errorContent, false);
 }
