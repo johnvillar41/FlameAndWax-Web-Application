@@ -40,7 +40,7 @@ namespace FlameAndWax.Employee.Controllers
                 Password = login.Password
             };
 
-            var loginServiceResult = await _accountService.Login(employeeModel, ConnectionString);
+            var loginServiceResult = await _accountService.LoginAsync(employeeModel, ConnectionString);
             if (loginServiceResult.HasError)
                 return BadRequest(loginServiceResult.ErrorContent);
 

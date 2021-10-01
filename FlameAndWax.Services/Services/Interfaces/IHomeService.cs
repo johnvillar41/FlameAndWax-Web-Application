@@ -8,6 +8,6 @@ namespace FlameAndWax.Services.Services.Interfaces
 {
     public interface IHomeService
     {
-        Task<ServiceResult<Tuple<IEnumerable<ProductModel>, IEnumerable<CustomerReviewModel>>>> FetchNewArrivedProductsAndTopCustomerReviews(string connectionString);
+        Task<ServiceResult<Tuple<IEnumerable<ProductModel>, IEnumerable<CustomerReviewModel>>>> FetchNewArrivedProductsAndTopCustomerReviewsAsync(string connectionString);
     }
 }

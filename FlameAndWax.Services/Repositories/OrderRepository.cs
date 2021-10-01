@@ -23,7 +23,7 @@ namespace FlameAndWax.Services.Repositories
             _employeeRepository = employeeRepository;
             _orderDetailRepository = orderDetailRepository;
         }
-        public async Task<int> Add(OrderModel Data, string connectionString)
+        public async Task<int> AddAsync(OrderModel Data, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -44,7 +44,7 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task Delete(int id, string connectionString)
+        public async Task DeleteAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -54,7 +54,7 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<OrderModel> Fetch(int id, string connectionString)
+        public async Task<OrderModel> FetchAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -69,9 +69,9 @@ namespace FlameAndWax.Services.Repositories
                 var employeeId = int.Parse(reader["EmployeeId"].ToString());
                 var totalCost = double.Parse(reader["TotalCost"].ToString());
 
-                var customer = await _customerRepository.Fetch(customerId, connectionString);
-                var employee = await _employeeRepository.Fetch(employeeId, connectionString);
-                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId, connectionString);
+                var customer = await _customerRepository.FetchAsync(customerId, connectionString);
+                var employee = await _employeeRepository.FetchAsync(employeeId, connectionString);
+                var orderDetails = await _orderDetailRepository.FetchOrderDetailsAsync(orderId, connectionString);
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
@@ -92,7 +92,7 @@ namespace FlameAndWax.Services.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<OrderModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
+        public async Task<IEnumerable<OrderModel>> FetchPaginatedResultAsync(int pageNumber, int pageSize, string connectionString)
         {
             List<OrderModel> orders = new List<OrderModel>();
 
@@ -110,9 +110,9 @@ namespace FlameAndWax.Services.Repositories
                 var employeeId = int.Parse(reader["EmployeeId"].ToString());
                 var totalCost = double.Parse(reader["TotalCost"].ToString());
 
-                var customer = await _customerRepository.Fetch(customerId, connectionString);
-                var employee = await _employeeRepository.Fetch(employeeId, connectionString);
-                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId, connectionString);
+                var customer = await _customerRepository.FetchAsync(customerId, connectionString);
+                var employee = await _employeeRepository.FetchAsync(employeeId, connectionString);
+                var orderDetails = await _orderDetailRepository.FetchOrderDetailsAsync(orderId, connectionString);
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
@@ -136,7 +136,7 @@ namespace FlameAndWax.Services.Repositories
             return orders;
         }
 
-        public async Task<IEnumerable<OrderModel>> FetchPaginatedCategorizedOrders(int pageNumber, int pageSize, int customerId, Constants.OrderStatus orderStatus, string connectionString)
+        public async Task<IEnumerable<OrderModel>> FetchPaginatedCategorizedOrdersAsync(int pageNumber, int pageSize, int customerId, Constants.OrderStatus orderStatus, string connectionString)
         {
             List<OrderModel> orders = new List<OrderModel>();
 
@@ -158,13 +158,13 @@ namespace FlameAndWax.Services.Repositories
                 if (!reader.IsDBNull(2))
                 {
                     employeeId = int.Parse(reader["EmployeeId"].ToString());
-                    employee = await _employeeRepository.Fetch(employeeId, connectionString);
+                    employee = await _employeeRepository.FetchAsync(employeeId, connectionString);
                 }
 
                 var totalCost = double.Parse(reader["TotalCost"].ToString());
 
-                var customer = await _customerRepository.Fetch(customerId, connectionString);
-                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId, connectionString);
+                var customer = await _customerRepository.FetchAsync(customerId, connectionString);
+                var orderDetails = await _orderDetailRepository.FetchOrderDetailsAsync(orderId, connectionString);
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());
@@ -188,12 +188,12 @@ namespace FlameAndWax.Services.Repositories
             return orders;
         }
 
-        public Task Update(OrderModel data, int id, string connectionString)
+        public Task UpdateAsync(OrderModel data, int id, string connectionString)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<int> FetchTotalNumberOfOrders(Constants.OrderStatus? orderStatus, string connectionString, int customerId)
+        public async Task<int> FetchTotalNumberOfOrdersAsync(Constants.OrderStatus? orderStatus, string connectionString, int customerId)
         {
             var totalNumberOfProducts = 0;
             using SqlConnection connection = new SqlConnection(connectionString);
@@ -219,7 +219,7 @@ namespace FlameAndWax.Services.Repositories
             return totalNumberOfProducts;
         }
 
-        public async Task<IEnumerable<OrderModel>> FetchAllOrders(int pageNumber, int pageSize, string connectionString)
+        public async Task<IEnumerable<OrderModel>> FetchAllOrdersAsync(int pageNumber, int pageSize, string connectionString)
         {
             List<OrderModel> orders = new List<OrderModel>();
             using SqlConnection connection = new SqlConnection(connectionString);
@@ -238,13 +238,13 @@ namespace FlameAndWax.Services.Repositories
                 if (!reader.IsDBNull(2))
                 {
                     employeeId = int.Parse(reader["EmployeeId"].ToString());
-                    employee = await _employeeRepository.Fetch(employeeId, connectionString);
+                    employee = await _employeeRepository.FetchAsync(employeeId, connectionString);
                 }
 
                 var totalCost = double.Parse(reader["TotalCost"].ToString());
 
-                var customer = await _customerRepository.Fetch(customerId, connectionString);
-                var orderDetails = await _orderDetailRepository.FetchOrderDetails(orderId, connectionString);
+                var customer = await _customerRepository.FetchAsync(customerId, connectionString);
+                var orderDetails = await _orderDetailRepository.FetchOrderDetailsAsync(orderId, connectionString);
 
                 var modeOfPayment = ServiceHelper.BuildModeOfPayment(reader["ModeOfPayment"].ToString());
                 var courier = ServiceHelper.BuildCourier(reader["Courier"].ToString());

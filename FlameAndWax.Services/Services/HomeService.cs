@@ -18,12 +18,12 @@ namespace FlameAndWax.Services.Services
             _productRepository = productRepository;
             _customerReviewRepository = customerReviewRepository;
         }        
-        public async Task<ServiceResult<Tuple<IEnumerable<ProductModel>, IEnumerable<CustomerReviewModel>>>> FetchNewArrivedProductsAndTopCustomerReviews(string connectionString)
+        public async Task<ServiceResult<Tuple<IEnumerable<ProductModel>, IEnumerable<CustomerReviewModel>>>> FetchNewArrivedProductsAndTopCustomerReviewsAsync(string connectionString)
         {
             try
             {
-                var newArrivals = await _productRepository.FetchNewArrivedProducts(connectionString);
-                var topCustomerComments = await _customerReviewRepository.FetchTopComments(connectionString);
+                var newArrivals = await _productRepository.FetchNewArrivedProductsAsync(connectionString);
+                var topCustomerComments = await _customerReviewRepository.FetchTopCommentsAsync(connectionString);
                 var tuple = Tuple.Create<IEnumerable<ProductModel>, IEnumerable<CustomerReviewModel>>(newArrivals, topCustomerComments);
 
                 return ServiceHelper.BuildServiceResult<Tuple<IEnumerable<ProductModel>, IEnumerable<CustomerReviewModel>>>(tuple, false, null);

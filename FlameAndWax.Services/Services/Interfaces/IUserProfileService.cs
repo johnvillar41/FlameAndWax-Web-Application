@@ -7,10 +7,10 @@ namespace FlameAndWax.Services.Services.Interfaces
 {
     public interface IUserProfileService
     {
-        Task<ServiceResult<Boolean>> ModifyAccountDetails(CustomerModel modifiedAccount,
+        Task<ServiceResult<Boolean>> ModifyAccountDetailsAsync(CustomerModel modifiedAccount,
                                                           int customerId,
                                                           string connectionString);
-        Task<ServiceResult<CustomerModel>> FetchAccountDetail(int customerId, string connectionString);
-        Task<ServiceResult<Boolean>> ModifyShippingAddress(ShippingAddressModel shippingAddressModel, string connectionString);
+        Task<ServiceResult<CustomerModel>> FetchAccountDetailAsync(int customerId, string connectionString);
+        Task<ServiceResult<Boolean>> ModifyShippingAddressAsync(ShippingAddressModel shippingAddressModel, string connectionString);
     }
 }

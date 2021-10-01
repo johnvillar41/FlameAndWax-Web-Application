@@ -28,20 +28,20 @@ namespace FlameAndWax.Services.Services
             _productRepository = productRepository;
             _customerRepository = customerRepository;
         }
-        public async Task<ServiceResult<bool>> CheckoutOrder(OrderModel order, string usernameLoggedIn, string connectionString)
+        public async Task<ServiceResult<bool>> CheckoutOrderAsync(OrderModel order, string usernameLoggedIn, string connectionString)
         {
             try
             {
-                var hasCustomerHaveShippingAddress = await _customerRepository.CheckIfCustomerHasShippingAddress(order.Customer.CustomerId, connectionString);
+                var hasCustomerHaveShippingAddress = await _customerRepository.CheckIfCustomerHasShippingAddressAsync(order.Customer.CustomerId, connectionString);
                 if (!hasCustomerHaveShippingAddress) return ServiceHelper.BuildServiceResult<bool>(false, true, "Customer has not created shipping address!");
 
-                var primaryKey = await _orderRepository.Add(order, connectionString);
+                var primaryKey = await _orderRepository.AddAsync(order, connectionString);
                 if (primaryKey == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Inserting Order");
 
                 foreach (var orderDetail in order.OrderDetails)
                 {
                     orderDetail.OrderId = primaryKey;
-                    var primaryKeyOrderDetail = await _orderDetailRepository.Add(orderDetail, connectionString);
+                    var primaryKeyOrderDetail = await _orderDetailRepository.AddAsync(orderDetail, connectionString);
                     if (primaryKeyOrderDetail == -1)
                         return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Inserting OrderDetail");
 
@@ -51,11 +51,11 @@ namespace FlameAndWax.Services.Services
                         CustomerUsername = usernameLoggedIn
                     };
 
-                    var result = await _previouslyOrderedProductsRepository.AddPreviouslyOrderedProducts(previouslyOrderedModel, connectionString);
+                    var result = await _previouslyOrderedProductsRepository.AddPreviouslyOrderedProductsAsync(previouslyOrderedModel, connectionString);
                     if (result == -1)
                         return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Adding Previous Orders");
 
-                    await _productRepository.UpdateAddUnitsOnOrder(orderDetail.Product.ProductId, orderDetail.Quantity, connectionString);
+                    await _productRepository.UpdateAddUnitsOnOrderAsync(orderDetail.Product.ProductId, orderDetail.Quantity, connectionString);
                 }
 
 
@@ -63,20 +63,20 @@ namespace FlameAndWax.Services.Services
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<bool>(false, true, e.Message); }
         }
-        public async Task<ServiceResult<double>> FetchProductPrice(int productId, string connectionString)
+        public async Task<ServiceResult<double>> FetchProductPriceAsync(int productId, string connectionString)
         {
             try
             {
-                var productPrice = await _productRepository.Fetch(productId, connectionString);
+                var productPrice = await _productRepository.FetchAsync(productId, connectionString);
                 return ServiceHelper.BuildServiceResult<double>(productPrice.ProductPrice, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<double>(-0.1, true, e.Message); }
         }
-        public async Task<ServiceResult<ProductModel>> FetchProductDetail(int productId, string connectionString)
+        public async Task<ServiceResult<ProductModel>> FetchProductDetailAsync(int productId, string connectionString)
         {
             try
             {
-                var productDetail = await _productRepository.Fetch(productId, connectionString);
+                var productDetail = await _productRepository.FetchAsync(productId, connectionString);
                 return ServiceHelper.BuildServiceResult<ProductModel>(productDetail, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<ProductModel>(null, true, e.Message); }

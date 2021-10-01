@@ -22,7 +22,7 @@ namespace FlameAndWax.Employee.Controllers
         }
         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 9)
         {
-            var productsServiceResult = await _productsService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
+            var productsServiceResult = await _productsService.FetchAllProductsAsync(pageNumber, pageSize, ConnectionString);
             if (productsServiceResult.HasError) return BadRequest(productsServiceResult.ErrorContent);
 
             var productViewModels = productsServiceResult.Result.Select(productModel => new ProductViewModel(productModel)).ToList();

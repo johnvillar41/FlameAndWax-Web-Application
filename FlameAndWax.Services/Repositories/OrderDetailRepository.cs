@@ -14,7 +14,7 @@ namespace FlameAndWax.Services.Repositories
         {
             _productRepository = productRepository;          
         }
-        public async Task<int> Add(OrderDetailModel Data, string connectionString)
+        public async Task<int> AddAsync(OrderDetailModel Data, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -34,7 +34,7 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task Delete(int id, string connectionString)
+        public async Task DeleteAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -43,7 +43,7 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<OrderDetailModel> Fetch(int id, string connectionString)
+        public async Task<OrderDetailModel> FetchAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -60,7 +60,7 @@ namespace FlameAndWax.Services.Repositories
                 var quantity = int.Parse(reader["Quantity"].ToString());
                 var status = ServiceHelper.ConvertStringtoOrderStatus(reader["Status"].ToString());
 
-                var product = await _productRepository.Fetch(productId, connectionString);
+                var product = await _productRepository.FetchAsync(productId, connectionString);
                 return new OrderDetailModel
                 {
                     OrderDetailsId = orderDetailId,
@@ -74,7 +74,7 @@ namespace FlameAndWax.Services.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<OrderDetailModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
+        public async Task<IEnumerable<OrderDetailModel>> FetchPaginatedResultAsync(int pageNumber, int pageSize, string connectionString)
         {
             List<OrderDetailModel> orderDetails = new List<OrderDetailModel>();
 
@@ -94,7 +94,7 @@ namespace FlameAndWax.Services.Repositories
                 var quantity = int.Parse(reader["Quantity"].ToString());
                 var status = ServiceHelper.ConvertStringtoOrderStatus(reader["Status"].ToString());
 
-                var product = await _productRepository.Fetch(productId, connectionString);
+                var product = await _productRepository.FetchAsync(productId, connectionString);
                 orderDetails.Add(
                         new OrderDetailModel
                         {
@@ -110,7 +110,7 @@ namespace FlameAndWax.Services.Repositories
             return orderDetails;
         }
 
-        public async Task<IEnumerable<OrderDetailModel>> FetchOrderDetails(int orderId, string connectionString)
+        public async Task<IEnumerable<OrderDetailModel>> FetchOrderDetailsAsync(int orderId, string connectionString)
         {
             List<OrderDetailModel> orderDetails = new List<OrderDetailModel>();
 
@@ -128,7 +128,7 @@ namespace FlameAndWax.Services.Repositories
                 var quantity = int.Parse(reader["Quantity"].ToString());
                 var status = ServiceHelper.ConvertStringtoOrderStatus(reader["Status"].ToString());
 
-                var product = await _productRepository.Fetch(productId, connectionString);
+                var product = await _productRepository.FetchAsync(productId, connectionString);
                 orderDetails.Add(
                         new OrderDetailModel
                         {
@@ -144,7 +144,7 @@ namespace FlameAndWax.Services.Repositories
             return orderDetails;
         }
 
-        public async Task Update(OrderDetailModel data, int id, string connectionString)
+        public async Task UpdateAsync(OrderDetailModel data, int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();

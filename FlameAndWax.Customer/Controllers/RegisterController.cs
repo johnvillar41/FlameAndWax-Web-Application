@@ -56,7 +56,7 @@ namespace FlameAndWax.Customer.Controllers
                 Code = code
             };
 
-            var registerServiceResult = await _accountService.Register(customerModel, ConnectionString);
+            var registerServiceResult = await _accountService.RegisterAsync(customerModel, ConnectionString);
             if (registerServiceResult.HasError) return BadRequest(new { errorContent = registerServiceResult.ErrorContent });
 
             var task = Task.Run(() =>

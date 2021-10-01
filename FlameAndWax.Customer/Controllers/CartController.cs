@@ -94,7 +94,7 @@ namespace FlameAndWax.Customer.Controllers
                 OrderDetails = orderDetails,
                 Courier = courierType
             };
-            var primaryKeyServiceResult = await _cartService.CheckoutOrder(order, userLoggedInUsername, ConnectionString);
+            var primaryKeyServiceResult = await _cartService.CheckoutOrderAsync(order, userLoggedInUsername, ConnectionString);
 
             if (primaryKeyServiceResult.HasError) return BadRequest(new { errorContent = primaryKeyServiceResult.ErrorContent });
 
@@ -110,7 +110,7 @@ namespace FlameAndWax.Customer.Controllers
             var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
             var totalCost = Cart.GetTotalCartCost(userLoggedInUsername);
 
-            var userProfileServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userLoggedInID), ConnectionString);
+            var userProfileServiceResult = await _userProfileService.FetchAccountDetailAsync(int.Parse(userLoggedInID), ConnectionString);
             if (userProfileServiceResult.HasError) return BadRequest(userProfileServiceResult.ErrorContent);
 
             CartSummaryViewModel cartSummary = new CartSummaryViewModel(totalCost, cart, userProfileServiceResult.Result.Address);
@@ -133,7 +133,7 @@ namespace FlameAndWax.Customer.Controllers
 
         public async Task<IActionResult> AddToCart(int productId, string user)
         {
-            var productServiceResult = await _cartService.FetchProductDetail(productId, ConnectionString);
+            var productServiceResult = await _cartService.FetchProductDetailAsync(productId, ConnectionString);
             if (productServiceResult.HasError) return RedirectToAction("Index", "Error", new { productServiceResult.ErrorContent });
 
             var canStillOrderProduct = true;
@@ -158,7 +158,7 @@ namespace FlameAndWax.Customer.Controllers
             foreach (var cartItem in cartItems)
             {
                 var subTotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);
-                var productPriceServiceResult = await _cartService.FetchProductPrice(cartItem.ProductId, ConnectionString);
+                var productPriceServiceResult = await _cartService.FetchProductPriceAsync(cartItem.ProductId, ConnectionString);
                 if (productPriceServiceResult.HasError) return BadRequest(productPriceServiceResult.ErrorContent);
                 orderDetails.Add(
                     new OrderDetailModel

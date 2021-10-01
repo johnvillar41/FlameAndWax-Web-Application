@@ -18,11 +18,11 @@ namespace FlameAndWax.Services.Services
             _orderRepository = orderRepository;
         }
 
-        public async Task<PagedServiceResult<IEnumerable<OrderModel>>> FetchAllOrders(OrderStatus? orderStatus, int pageNumber, int pageSize, string connectionString)
+        public async Task<PagedServiceResult<IEnumerable<OrderModel>>> FetchAllOrdersAsync(OrderStatus? orderStatus, int pageNumber, int pageSize, string connectionString)
         {
             try
             {
-                var orders = await _orderRepository.FetchAllOrders(pageNumber, pageSize, connectionString);
+                var orders = await _orderRepository.FetchAllOrdersAsync(pageNumber, pageSize, connectionString);
                 var serviceResult = ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(orders, false, null);
                 return ServiceHelper.BuildPagedResult<IEnumerable<OrderModel>>(serviceResult, -1, -1);
             }
@@ -33,20 +33,20 @@ namespace FlameAndWax.Services.Services
             }
         }
 
-        public async Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrdersByStatus(int pageNumber, int pageSize, int customerId, OrderStatus status, string connectionString)
+        public async Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrdersByStatusAsync(int pageNumber, int pageSize, int customerId, OrderStatus status, string connectionString)
         {
             try
             {
-                var categorizedOrders = await _orderRepository.FetchPaginatedCategorizedOrders(pageNumber, pageSize, customerId, status, connectionString);
+                var categorizedOrders = await _orderRepository.FetchPaginatedCategorizedOrdersAsync(pageNumber, pageSize, customerId, status, connectionString);
                 return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(categorizedOrders, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(null, true, e.Message); }
         }
-        public async Task<ServiceResult<int>> FetchTotalNumberOfOrdersByOrderStatus(OrderStatus? orderStatus, string connection, int customerId)
+        public async Task<ServiceResult<int>> FetchTotalNumberOfOrdersByOrderStatusAsync(OrderStatus? orderStatus, string connection, int customerId)
         {
             try
             {
-                var totalNumberOfProducts = await _orderRepository.FetchTotalNumberOfOrders(orderStatus, connection, customerId);
+                var totalNumberOfProducts = await _orderRepository.FetchTotalNumberOfOrdersAsync(orderStatus, connection, customerId);
                 return ServiceHelper.BuildServiceResult<int>(totalNumberOfProducts, false, null);
             }
             catch (Exception e) { return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message); }

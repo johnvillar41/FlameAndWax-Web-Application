@@ -38,7 +38,7 @@ namespace FlameAndWax.Customer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ProcessLogin(LoginViewModel loginCredentials, string returnUrl)
         {
-            var isAuthenticatedServiceResult = await _accountService.Login(
+            var isAuthenticatedServiceResult = await _accountService.LoginAsync(
                 new CustomerModel
                 {
                     Username = loginCredentials.Username,

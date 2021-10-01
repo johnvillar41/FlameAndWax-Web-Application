@@ -8,8 +8,8 @@ namespace FlameAndWax.Services.Services.Interfaces
 {
     public interface IOrdersService
     {
-        Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrdersByStatus(int pageNumber, int pageSize, int customerId, OrderStatus status, string connectionString);
-        Task<ServiceResult<int>> FetchTotalNumberOfOrdersByOrderStatus(OrderStatus? orderStatus, string connection, int customerId);
-        Task<PagedServiceResult<IEnumerable<OrderModel>>> FetchAllOrders(OrderStatus? orderStatus, int pageNumber, int pageSize, string connectionString);
+        Task<ServiceResult<IEnumerable<OrderModel>>> FetchOrdersByStatusAsync(int pageNumber, int pageSize, int customerId, OrderStatus status, string connectionString);
+        Task<ServiceResult<int>> FetchTotalNumberOfOrdersByOrderStatusAsync(OrderStatus? orderStatus, string connection, int customerId);
+        Task<PagedServiceResult<IEnumerable<OrderModel>>> FetchAllOrdersAsync(OrderStatus? orderStatus, int pageNumber, int pageSize, string connectionString);
     }
 }

@@ -22,7 +22,7 @@ namespace FlameAndWax.Employee.Controllers
         }
         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 9)
         {
-            var employeeServiceResult = await _employeeService.FetchAllEmployees(pageNumber, pageSize, ConnectionString);
+            var employeeServiceResult = await _employeeService.FetchAllEmployeesAsync(pageNumber, pageSize, ConnectionString);
             if (employeeServiceResult.HasError) return BadRequest(employeeServiceResult.ErrorContent);
 
             var employeeViewModels = employeeServiceResult.Result.Select(employee => new EmployeeViewModel(employee)).ToList();

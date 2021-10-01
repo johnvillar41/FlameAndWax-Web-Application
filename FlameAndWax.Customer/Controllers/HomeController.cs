@@ -24,7 +24,7 @@ namespace FlameAndWax.Customer.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var productServiceResult = await _homeService.FetchNewArrivedProductsAndTopCustomerReviews(ConnectionString);
+            var productServiceResult = await _homeService.FetchNewArrivedProductsAndTopCustomerReviewsAsync(ConnectionString);
             if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
 
             var newProducts = productServiceResult.Result.Item1.Select(newProduct => new ProductViewModel(newProduct)).ToList();

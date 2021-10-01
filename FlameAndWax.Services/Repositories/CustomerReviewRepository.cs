@@ -19,7 +19,7 @@ namespace FlameAndWax.Services.Repositories
             _customerRepository = customerRepository;
             _productRepository = productRepository;
         }
-        public async Task<int> Add(CustomerReviewModel Data, string connectionString)
+        public async Task<int> AddAsync(CustomerReviewModel Data, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -39,7 +39,7 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task Delete(int id, string connectionString)
+        public async Task DeleteAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -49,7 +49,7 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<CustomerReviewModel> Fetch(int id, string connectionString)
+        public async Task<CustomerReviewModel> FetchAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -65,8 +65,8 @@ namespace FlameAndWax.Services.Repositories
 
                 return new CustomerReviewModel
                 {
-                    Product = await _productRepository.Fetch(productId, connectionString),
-                    Customer = await _customerRepository.Fetch(customerId, connectionString),
+                    Product = await _productRepository.FetchAsync(productId, connectionString),
+                    Customer = await _customerRepository.FetchAsync(customerId, connectionString),
                     ReviewId = id,
                     ReviewScore = Helpers.ServiceHelper.BuildReviewScore(reviewScore),
                     ReviewDetail = reader["ReviewDetail"].ToString(),
@@ -76,7 +76,7 @@ namespace FlameAndWax.Services.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<CustomerReviewModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
+        public async Task<IEnumerable<CustomerReviewModel>> FetchPaginatedResultAsync(int pageNumber, int pageSize, string connectionString)
         {
             List<CustomerReviewModel> customerReviews = new List<CustomerReviewModel>();
 
@@ -97,8 +97,8 @@ namespace FlameAndWax.Services.Repositories
                         new CustomerReviewModel
                         {
                             ReviewId = int.Parse(reader["ReviewId"].ToString()),
-                            Product = await _productRepository.Fetch(productId, connectionString),
-                            Customer = await _customerRepository.Fetch(customerId, connectionString),
+                            Product = await _productRepository.FetchAsync(productId, connectionString),
+                            Customer = await _customerRepository.FetchAsync(customerId, connectionString),
                             ReviewScore = Helpers.ServiceHelper.BuildReviewScore(reviewScore),
                             ReviewDetail = reader["ReviewDetail"].ToString(),
                             Date = DateTime.Parse(reader["Date"].ToString())
@@ -108,7 +108,7 @@ namespace FlameAndWax.Services.Repositories
             return customerReviews;
         }
 
-        public async Task<IEnumerable<CustomerReviewModel>> FetchPaginatedReviewsOfAProduct(int pageNumber, int pageSize, int productId, string connectionString)
+        public async Task<IEnumerable<CustomerReviewModel>> FetchPaginatedReviewsOfAProductAsync(int pageNumber, int pageSize, int productId, string connectionString)
         {
             List<CustomerReviewModel> customerReviews = new List<CustomerReviewModel>();
 
@@ -129,8 +129,8 @@ namespace FlameAndWax.Services.Repositories
                         new CustomerReviewModel
                         {
                             ReviewId = int.Parse(reader["ReviewId"].ToString()),
-                            Product = await _productRepository.Fetch(productId, connectionString),
-                            Customer = await _customerRepository.Fetch(customerId, connectionString),
+                            Product = await _productRepository.FetchAsync(productId, connectionString),
+                            Customer = await _customerRepository.FetchAsync(customerId, connectionString),
                             ReviewScore = Helpers.ServiceHelper.BuildReviewScore(reviewScore),
                             ReviewDetail = reader["ReviewDetail"].ToString(),
                             Date = DateTime.Parse(reader["Date"].ToString())
@@ -140,7 +140,7 @@ namespace FlameAndWax.Services.Repositories
             return customerReviews;
         }
 
-        public async Task<IEnumerable<CustomerReviewModel>> FetchTopComments(string connectionString)
+        public async Task<IEnumerable<CustomerReviewModel>> FetchTopCommentsAsync(string connectionString)
         {
             List<CustomerReviewModel> topCustomerReviews = new List<CustomerReviewModel>();
 
@@ -155,8 +155,8 @@ namespace FlameAndWax.Services.Repositories
                     new CustomerReviewModel
                     {
                         ReviewId = int.Parse(reader["ReviewId"].ToString()),
-                        Product = await _productRepository.Fetch(int.Parse(reader["ProductId"].ToString()), connectionString),
-                        Customer = await _customerRepository.Fetch(int.Parse(reader["CustomerId"].ToString()), connectionString),
+                        Product = await _productRepository.FetchAsync(int.Parse(reader["ProductId"].ToString()), connectionString),
+                        Customer = await _customerRepository.FetchAsync(int.Parse(reader["CustomerId"].ToString()), connectionString),
                         ReviewScore = ServiceHelper.BuildReviewScore(int.Parse(reader["ReviewScore"].ToString())),
                         ReviewDetail = reader["ReviewDetail"].ToString(),
                         Date = DateTime.Parse(reader["Date"].ToString())
@@ -166,7 +166,7 @@ namespace FlameAndWax.Services.Repositories
             return topCustomerReviews;
         }
 
-        public async Task<int> FetchTotalNumberOfReviewsOnAProduct(int productId, string connectionString)
+        public async Task<int> FetchTotalNumberOfReviewsOnAProductAsync(int productId, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -181,7 +181,7 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task Update(CustomerReviewModel data, int id, string connectionString)
+        public async Task UpdateAsync(CustomerReviewModel data, int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();

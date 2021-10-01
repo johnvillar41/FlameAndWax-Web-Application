@@ -40,10 +40,10 @@ namespace FlameAndWax.Customer.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
-            var accountDetailServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userId), ConnectionString);
+            var accountDetailServiceResult = await _userProfileService.FetchAccountDetailAsync(int.Parse(userId), ConnectionString);
             if (accountDetailServiceResult.HasError) return BadRequest(new { errorContent = accountDetailServiceResult.ErrorContent });
 
-            if (!await _customerRepository.CheckIfCustomerHasShippingAddress(int.Parse(userId), ConnectionString))
+            if (!await _customerRepository.CheckIfCustomerHasShippingAddressAsync(int.Parse(userId), ConnectionString))
             {
                 ViewData["IsShippingAddressPresent"] = false;
             }
@@ -79,16 +79,16 @@ namespace FlameAndWax.Customer.Controllers
             customerModel.Username = userProfile.Username;
             customerModel.Password = userProfile.Password;
 
-            var customerServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userId), ConnectionString);
+            var customerServiceResult = await _userProfileService.FetchAccountDetailAsync(int.Parse(userId), ConnectionString);
             if (customerServiceResult.HasError) return BadRequest(new { errorContent = customerServiceResult.ErrorContent });
 
             if (userProfile.ProfilePictureFile != null)
                 DeleteOldProfilePicture(customerServiceResult.Result.ProfilePictureLink);
 
-            var modifyServiceResult = await _userProfileService.ModifyAccountDetails(customerModel, int.Parse(userId), ConnectionString);
+            var modifyServiceResult = await _userProfileService.ModifyAccountDetailsAsync(customerModel, int.Parse(userId), ConnectionString);
             if (modifyServiceResult.HasError) return BadRequest(new { errorContent = modifyServiceResult.ErrorContent });
 
-            var accountDetailServiceResult = await _userProfileService.FetchAccountDetail(int.Parse(userId), ConnectionString);
+            var accountDetailServiceResult = await _userProfileService.FetchAccountDetailAsync(int.Parse(userId), ConnectionString);
             if (accountDetailServiceResult.HasError) return BadRequest(new { errorContent = accountDetailServiceResult.ErrorContent });
 
             var userProfileViewModel = new UserProfileViewModel(accountDetailServiceResult.Result);
@@ -110,7 +110,7 @@ namespace FlameAndWax.Customer.Controllers
                 Region = shippingAddressViewModel.Region,
                 Country = shippingAddressViewModel.Country
             };
-            var shippingAddressServiceResult = await _userProfileService.ModifyShippingAddress(shippingAddressModel, ConnectionString);
+            var shippingAddressServiceResult = await _userProfileService.ModifyShippingAddressAsync(shippingAddressModel, ConnectionString);
             if (shippingAddressServiceResult.HasError) return BadRequest();
 
             return PartialView("ShippingAddressPartial", shippingAddressViewModel);

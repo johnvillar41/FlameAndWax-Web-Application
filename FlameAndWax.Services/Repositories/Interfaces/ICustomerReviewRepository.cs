@@ -6,8 +6,8 @@ namespace FlameAndWax.Services.Repositories.Interfaces
 {
     public interface ICustomerReviewRepository : IBaseRepository<CustomerReviewModel>
     {
-        Task<IEnumerable<CustomerReviewModel>> FetchPaginatedReviewsOfAProduct(int pageSize, int pageNumber, int productId, string connectionString);
-        Task<int> FetchTotalNumberOfReviewsOnAProduct(int productId, string connectionString);
-        Task<IEnumerable<CustomerReviewModel>> FetchTopComments(string connectionString);
+        Task<IEnumerable<CustomerReviewModel>> FetchPaginatedReviewsOfAProductAsync(int pageSize, int pageNumber, int productId, string connectionString);
+        Task<int> FetchTotalNumberOfReviewsOnAProductAsync(int productId, string connectionString);
+        Task<IEnumerable<CustomerReviewModel>> FetchTopCommentsAsync(string connectionString);
     }
 }

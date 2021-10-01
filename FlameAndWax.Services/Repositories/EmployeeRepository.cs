@@ -12,7 +12,7 @@ namespace FlameAndWax.Services.Repositories
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        public async Task<int> Add(EmployeeModel Data, string connectionString)
+        public async Task<int> AddAsync(EmployeeModel Data, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -36,7 +36,7 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task Delete(int id, string connectionString)
+        public async Task DeleteAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -45,7 +45,7 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<EmployeeModel> Fetch(int id, string connectionString)
+        public async Task<EmployeeModel> FetchAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -73,7 +73,7 @@ namespace FlameAndWax.Services.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<EmployeeModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
+        public async Task<IEnumerable<EmployeeModel>> FetchPaginatedResultAsync(int pageNumber, int pageSize, string connectionString)
         {
             List<EmployeeModel> employeeModels = new List<EmployeeModel>();
             using SqlConnection connection = new SqlConnection(connectionString);
@@ -105,7 +105,7 @@ namespace FlameAndWax.Services.Repositories
             return employeeModels;
         }
 
-        public async Task<int> FetchTotalEmployeesCount(string connectionString)
+        public async Task<int> FetchTotalEmployeesCountAsync(string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -119,7 +119,7 @@ namespace FlameAndWax.Services.Repositories
             return 0;
         }
 
-        public async Task<int> LoginEmployeeAccount(EmployeeModel employeeModel, string connectionString)
+        public async Task<int> LoginEmployeeAccountAsync(EmployeeModel employeeModel, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -135,7 +135,7 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public Task Update(EmployeeModel data, int id, string connectionString)
+        public Task UpdateAsync(EmployeeModel data, int id, string connectionString)
         {
             throw new NotImplementedException();
         }

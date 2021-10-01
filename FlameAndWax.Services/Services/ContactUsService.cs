@@ -14,13 +14,13 @@ namespace FlameAndWax.Services.Services
         {
             _messageRepository = messageRepository;
         }
-        public async Task<ServiceResult<bool>> SendMessage(MessageModel newMessage, string connectionString)
+        public async Task<ServiceResult<bool>> SendMessageAsync(MessageModel newMessage, string connectionString)
         {
             if (newMessage == null)
                 return ServiceHelper.BuildServiceResult<bool>(false, true, "Empty Message!");
             try
             {
-                var messageRepositoryResult = await _messageRepository.Add(newMessage, connectionString);
+                var messageRepositoryResult = await _messageRepository.AddAsync(newMessage, connectionString);
                 if (messageRepositoryResult == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Adding Message");
 
                 return ServiceHelper.BuildServiceResult<bool>(true, false, null);

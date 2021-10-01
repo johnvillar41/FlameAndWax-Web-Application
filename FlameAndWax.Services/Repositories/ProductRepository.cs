@@ -15,7 +15,7 @@ namespace FlameAndWax.Services.Repositories
         {
             _productGalleryRepository = productGalleryRepository;
         }
-        public async Task<int> Add(ProductModel Data, string connectionString)
+        public async Task<int> AddAsync(ProductModel Data, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -38,7 +38,7 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task Delete(int id, string connectionString)
+        public async Task DeleteAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -48,7 +48,7 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<ProductModel> Fetch(int id, string connectionString)
+        public async Task<ProductModel> FetchAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -69,14 +69,14 @@ namespace FlameAndWax.Services.Repositories
                     UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                     UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
                     UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
-                    ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(id, connectionString),
+                    ProductGallery = await _productGalleryRepository.FetchAllPicturesForProductAsync(id, connectionString),
                     Category = ServiceHelper.ConvertStringToConstant(categoryString)
                 };
             }
             return null;
         }
 
-        public async Task<IEnumerable<ProductModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
+        public async Task<IEnumerable<ProductModel>> FetchPaginatedResultAsync(int pageNumber, int pageSize, string connectionString)
         {
             List<ProductModel> products = new List<ProductModel>();
 
@@ -101,7 +101,7 @@ namespace FlameAndWax.Services.Repositories
                             UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                             UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
                             UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
-                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString()), connectionString),
+                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProductAsync(int.Parse(reader["ProductId"].ToString()), connectionString),
                             Category = ServiceHelper.ConvertStringToConstant(categoryString)
                         }
                     );
@@ -109,7 +109,7 @@ namespace FlameAndWax.Services.Repositories
             return products;
         }
 
-        public async Task<IEnumerable<ProductModel>> FetchPaginatedCategorizedProducts(int pageNumber, int pageSize, Category category, string connectionString)
+        public async Task<IEnumerable<ProductModel>> FetchPaginatedCategorizedProductsAsync(int pageNumber, int pageSize, Category category, string connectionString)
         {
             List<ProductModel> categorizedProducts = new List<ProductModel>();
 
@@ -134,7 +134,7 @@ namespace FlameAndWax.Services.Repositories
                             ProductPrice = int.Parse(reader["ProductPrice"].ToString()),
                             QuantityPerUnit = int.Parse(reader["QuantityPerUnit"].ToString()),
                             UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
-                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString()), connectionString),
+                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProductAsync(int.Parse(reader["ProductId"].ToString()), connectionString),
                             UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
                             UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
                             Category = ServiceHelper.ConvertStringToConstant(categoryString),
@@ -144,7 +144,7 @@ namespace FlameAndWax.Services.Repositories
             return categorizedProducts;
         }
 
-        public async Task<IEnumerable<ProductModel>> FetchNewArrivedProducts(string connectionString)
+        public async Task<IEnumerable<ProductModel>> FetchNewArrivedProductsAsync(string connectionString)
         {
             List<ProductModel> newArrivals = new List<ProductModel>();
 
@@ -167,7 +167,7 @@ namespace FlameAndWax.Services.Repositories
                             UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
                             UnitsInStock = int.Parse(reader["UnitsInStock"].ToString()),
                             UnitsInOrder = int.Parse(reader["UnitsOnOrder"].ToString()),
-                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProduct(int.Parse(reader["ProductId"].ToString()), connectionString),
+                            ProductGallery = await _productGalleryRepository.FetchAllPicturesForProductAsync(int.Parse(reader["ProductId"].ToString()), connectionString),
                             Category = ServiceHelper.ConvertStringToConstant(categoryString)
                         }
                     );
@@ -175,7 +175,7 @@ namespace FlameAndWax.Services.Repositories
             return newArrivals;
         }
 
-        public async Task UpdateNumberOfStocks(int productId, int numberOfStocksToBeSubtracted, string connectionString)
+        public async Task UpdateNumberOfStocksAsync(int productId, int numberOfStocksToBeSubtracted, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -184,7 +184,7 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
         //TODO: Fix the updating should be adding
-        public async Task UpdateNumberOfUnitsInOrder(int productId, int numberOfUnitsToBeAdded, string connectionString)
+        public async Task UpdateNumberOfUnitsInOrderAsync(int productId, int numberOfUnitsToBeAdded, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -196,7 +196,7 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task Update(ProductModel data, int id, string connectionString)
+        public async Task UpdateAsync(ProductModel data, int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -214,7 +214,7 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task UpdateAddUnitsOnOrder(int productId, int quantity, string connectionString)
+        public async Task UpdateAddUnitsOnOrderAsync(int productId, int quantity, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -225,7 +225,7 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<int> FetchTotalNumberOfProducts(Category? category, string connectionString)
+        public async Task<int> FetchTotalNumberOfProductsAsync(Category? category, string connectionString)
         {
             var totalNumberOfProducts = 0;
             using SqlConnection connection = new SqlConnection(connectionString);
