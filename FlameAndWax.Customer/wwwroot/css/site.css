@@ -31,7 +31,7 @@ hr {
     border-color: #1861ac;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
     background-color: #1b6ec2;
     border-color: #1861ac;
@@ -105,18 +105,18 @@ body {
     background-color: rgba(166, 130, 69, 1);
 }
 
-.btn-gold:hover {
-    color: #fff;
-    background-color: #856838;
-}
+    .btn-gold:hover {
+        color: #fff;
+        background-color: #856838;
+    }
 
 .btn-light-gold {
     background-color: #e4e2da;
 }
 
-.btn-light-gold:hover {
-    background-color: #cccac4;
-}
+    .btn-light-gold:hover {
+        background-color: #cccac4;
+    }
 
 .carousel-control-next, .carousel-control-prev {
     background-color: #e4e2da;
@@ -161,36 +161,36 @@ body {
     height: 46px;
 }
 
-.rate:not(:checked)>input {
-    position: absolute;
-    display: none;
-}
+    .rate:not(:checked) > input {
+        position: absolute;
+        display: none;
+    }
 
-.rate:not(:checked)>label {
-    float: right;
-    width: 1em;
-    overflow: hidden;
-    white-space: nowrap;
-    cursor: pointer;
-    font-size: 30px;
-    color: #ccc;
-}
+    .rate:not(:checked) > label {
+        float: right;
+        width: 1em;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 30px;
+        color: #ccc;
+    }
 
-.rate:not(:checked)>label:before {
-    content: '★ ';
-}
+        .rate:not(:checked) > label:before {
+            content: '★ ';
+        }
 
-.rate>input:checked~label {
-    color: #ffc700;
-}
+    .rate > input:checked ~ label {
+        color: #ffc700;
+    }
 
-.rate:not(:checked)>label:hover, .rate:not(:checked)>label:hover~label {
-    color: #deb217;
-}
+    .rate:not(:checked) > label:hover, .rate:not(:checked) > label:hover ~ label {
+        color: #deb217;
+    }
 
-.rate>input:checked+label:hover, .rate>input:checked+label:hover~label, .rate>input:checked~label:hover, .rate>input:checked~label:hover~label, .rate>label:hover~input:checked~label {
-    color: #c59b08;
-}
+    .rate > input:checked + label:hover, .rate > input:checked + label:hover ~ label, .rate > input:checked ~ label:hover, .rate > input:checked ~ label:hover ~ label, .rate > label:hover ~ input:checked ~ label {
+        color: #c59b08;
+    }
 
 @media only screen and (max-width: 768px) {
     .hideColumnPhoneSize {
@@ -207,11 +207,11 @@ body {
     width: 100%;
 }
 
-.productImage:after {
-    padding-top: 100%;
-    display: block;
-    content: '';
-}
+    .productImage:after {
+        padding-top: 100%;
+        display: block;
+        content: '';
+    }
 
 .img-wrapper {
     padding: 10px;
@@ -222,26 +222,26 @@ body {
     left: 0;
 }
 
-.img-wrapper .thumb {
-    height: 100%;
-}
+    .img-wrapper .thumb {
+        height: 100%;
+    }
 
 .img-project, .thumb {
     display: block;
 }
 
-.img-project img, .thumb img {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    max-width: 100%;
-    max-height: 100%;
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-}
+    .img-project img, .thumb img {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        max-width: 100%;
+        max-height: 100%;
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
 
 @media screen and (min-width: 0px) and (max-width: 992px) {
     #lottieGif {
@@ -279,4 +279,17 @@ body {
     margin-right: 15%;
     margin-left: 15%;
     list-style: none;
+}
+
+.spinnerMiddle {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    left: 0;
+    right: 0;
+    top: 20%;
+    bottom: 0;
+    z-index: 99;
 }

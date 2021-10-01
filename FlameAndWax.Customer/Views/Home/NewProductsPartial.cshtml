@@ -4,28 +4,37 @@
     {
         return;
     }
-
+    @{
+        var spinnerId = 0;
+    }
     @foreach (var product in Model)
     {
-        <div class="col-lg-4 mb-4">
-            <div class="card">
-                <img src="@Url.Content(product.PhotoLink)" class="topCommentProduct card-img-top">
-                <div class="card-body">
-                    <a class="badge badge-danger text-white">New Arrivals <i class="fab fa-hotjar"></i></a>
-                    <h5 class="card-title">@product.ProductName</h5>
-                    <p class="card-text p-semi">@product.ProductDescription</p>
-                    <hr />
-                    <a asp-controller="Home" asp-action="SeeMore" asp-route-id="@product.ProductId"
-                    class="btn btn-gold btn-sm mr-2">See
-                        More <i class="fas fa-info-circle"></i></a>
-                    <a class="btn btn-gold btn-sm" asp-route-_productId="@product.ProductId" asp-action="AddToCart"
-                    asp-controller="Products" data-ajax="true" id="addtoCartBtn" data-ajax-loading="#cartLoading"
-                    data-ajax-success="updateAddToCartTotalCount" data-ajax-complete="addToCart">
-                        Add <i class="fas fa-cart-plus"></i>
-                    </a>
-                </div>
+        spinnerId++;
+    <div class="col-lg-4 mb-4">
+        <div class="spinner-border spinnerMiddle" role="status" id="addCart_@spinnerId" style="display:none;">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="card">
+            <img src="@Url.Content(product.PhotoLink)" class="topCommentProduct card-img-top">
+            <div class="card-body">
+                <a class="badge badge-danger text-white">New Arrivals <i class="fab fa-hotjar"></i></a>
+                <h5 class="card-title">@product.ProductName</h5>
+                <p class="card-text p-semi">@product.ProductDescription</p>
+                <hr />
+
+                <a asp-controller="Home" asp-action="SeeMore" asp-route-id="@product.ProductId"
+                   class="btn btn-gold btn-sm mr-2">
+                    See
+                    More <i class="fas fa-info-circle"></i>
+                </a>
+                <a class="btn btn-gold btn-sm" asp-route-_productId="@product.ProductId" asp-action="AddToCart"
+                   asp-controller="Products" data-ajax="true" id="addtoCartBtn" data-ajax-loading="#addCart_@spinnerId"
+                   data-ajax-success="updateAddToCartTotalCount" data-ajax-complete="addToCart">
+                    Add <i class="fas fa-cart-plus"></i>
+                </a>
             </div>
         </div>
+    </div>
     }
 
 </div>
