@@ -292,15 +292,18 @@ registrationComplete = function (xhr) {
 //Login User
 
 loginComplete = function (xhr) {
+    var x = document.getElementById("CodeConfirmation");
+
     if (xhr.status == "200") {
         displayToastMixin('Login Successfull', true);
         window.location.href = xhr.responseText;
     } else if (xhr.status == "400") {
+        if (x.style.display === "block") {
+            x.style.display = "none";
+        }
         displayToastMixin(xhr.responseText, false);
     } else if (xhr.status == "401") {
-        displayToastMixin(xhr.responseText, false);
-
-        var x = document.getElementById("CodeConfirmation");
+        displayToastMixin(xhr.responseText, false);        
         if (x.style.display === "none") {
             x.style.display = "block";
         }
