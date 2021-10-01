@@ -8,7 +8,7 @@ namespace FlameAndWax.Services.Repositories
 {
     public class ProductGalleryRepository : IProductGalleryRepository
     {       
-        public async Task<IEnumerable<ProductGalleryModel>> FetchAllPicturesForProduct(int productId, string connectionString)
+        public async Task<IEnumerable<ProductGalleryModel>> FetchAllPicturesForProductAsync(int productId, string connectionString)
         {
             List<ProductGalleryModel> productGalleries = new List<ProductGalleryModel>();
 

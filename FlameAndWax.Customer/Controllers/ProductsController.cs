@@ -36,7 +36,7 @@ namespace FlameAndWax.Customer.Controllers
 
         public async Task<IActionResult> Index(string productCategory = Constants.ALL_PRODUCTS, int pageNumber = 1, int pageSize = 9)
         {
-            var productServiceResult = await _productService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
+            var productServiceResult = await _productService.FetchAllProductsAsync(pageNumber, pageSize, ConnectionString);
             if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
 
             //Determine total count of Products for pagination
@@ -53,12 +53,12 @@ namespace FlameAndWax.Customer.Controllers
             PagedServiceResult<IEnumerable<ProductModel>> productModels;
             if (category.Equals(Constants.ALL_PRODUCTS))
             {
-                productModels = await _productService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
+                productModels = await _productService.FetchAllProductsAsync(pageNumber, pageSize, ConnectionString);
                 if (productModels.HasError) return BadRequest(new { errorContent = productModels.ErrorContent });               
             }
             else
             {
-                productModels = await _productService.FetchProductByCategory(pageNumber, pageSize, ServiceHelper.ConvertStringToConstant(category), ConnectionString);
+                productModels = await _productService.FetchProductByCategoryAsync(pageNumber, pageSize, ServiceHelper.ConvertStringToConstant(category), ConnectionString);
                 if (productModels.HasError) return BadRequest(new { errorContent = productModels.ErrorContent });
             }
             var productViewModels = productModels.Result.Select(productModel => new ProductViewModel(productModel)).ToList();
@@ -90,10 +90,10 @@ namespace FlameAndWax.Customer.Controllers
                 Customer = new CustomerModel { CustomerId = int.Parse(customerIdLoggedIn) },
                 Product = new ProductModel { ProductId = productId }
             };
-            var reviewServiceResult = await _productService.AddCustomerReview(customerReview, ConnectionString);
+            var reviewServiceResult = await _productService.AddCustomerReviewAsync(customerReview, ConnectionString);
             if (reviewServiceResult.HasError) return BadRequest(new { errorContent = reviewServiceResult.ErrorContent });
 
-            var customerServiceReviewResult = await _productService.FetchCustomerReviewsInAProduct(1, 5, productId, ConnectionString);
+            var customerServiceReviewResult = await _productService.FetchCustomerReviewsInAProductAsync(1, 5, productId, ConnectionString);
             if (customerServiceReviewResult.HasError) return BadRequest(new { errorContent = customerServiceReviewResult.ErrorContent });
 
             var totalNumberOfPages = Math.Ceiling((decimal)customerServiceReviewResult.TotalProductCount / 5);
@@ -106,7 +106,7 @@ namespace FlameAndWax.Customer.Controllers
 
         public async Task<IActionResult> PageCustomerReviews(int pageNumber = 1, int pageSize = 5, int productId = -1)
         {
-            var customerServiceReviewResult = await _productService.FetchCustomerReviewsInAProduct(pageNumber, pageSize, productId, ConnectionString);
+            var customerServiceReviewResult = await _productService.FetchCustomerReviewsInAProductAsync(pageNumber, pageSize, productId, ConnectionString);
             if (customerServiceReviewResult.HasError) return BadRequest(new { errorContent = customerServiceReviewResult.ErrorContent });
 
             var totalNumberOfPages = Math.Ceiling((decimal)customerServiceReviewResult.TotalProductCount / pageSize);
@@ -119,10 +119,10 @@ namespace FlameAndWax.Customer.Controllers
 
         public async Task<IActionResult> Details(int productId)
         {
-            var productServiceResult = await _productService.FetchProductDetail(productId, ConnectionString);
+            var productServiceResult = await _productService.FetchProductDetailAsync(productId, ConnectionString);
             if (productServiceResult.HasError) return BadRequest(new { errorContent = productServiceResult.ErrorContent });
 
-            var customerReviewServiceResult = await _productService.FetchCustomerReviewsInAProduct(1, 5, productId, ConnectionString);
+            var customerReviewServiceResult = await _productService.FetchCustomerReviewsInAProductAsync(1, 5, productId, ConnectionString);
             if (customerReviewServiceResult.HasError) return BadRequest(new { errorContent = customerReviewServiceResult.ErrorContent });
 
             var totalNumberOfPages = Math.Ceiling((decimal)customerReviewServiceResult.TotalProductCount / 5);
@@ -136,7 +136,7 @@ namespace FlameAndWax.Customer.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var loggedInUser = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
-                var hasCustomerOrderedServiceResult = _productService.CheckIfCustomerHasOrderedAProduct(loggedInUser, productId, ConnectionString).Result;
+                var hasCustomerOrderedServiceResult = _productService.CheckIfCustomerHasOrderedAProductAsync(loggedInUser, productId, ConnectionString).Result;
                 productDetailViewModel.IsProductBoughtByLoggedInCustomer = hasCustomerOrderedServiceResult.Result;
                 return View(productDetailViewModel);
             }

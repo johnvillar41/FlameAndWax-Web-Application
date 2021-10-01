@@ -7,7 +7,7 @@ namespace FlameAndWax.Services.Repositories
 {
     public class PreviouslyOrderedProductsRepository : IPreviouslyOrderedProductsRepository
     {
-        public async Task<int> AddPreviouslyOrderedProducts(PreviouslyOrderedProductModel previouslyOrderedProduct,string connectionString)
+        public async Task<int> AddPreviouslyOrderedProductsAsync(PreviouslyOrderedProductModel previouslyOrderedProduct,string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -24,7 +24,7 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task<bool> HasCustomerOrderedAProduct(int productId, string customerUsername,string connectionString)
+        public async Task<bool> HasCustomerOrderedAProductAsync(int productId, string customerUsername,string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();

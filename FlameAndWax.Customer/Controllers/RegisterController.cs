@@ -10,6 +10,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using static FlameAndWax.Data.Constants.Constants;
+using FlameAndWax.Services.Helpers;
 
 namespace FlameAndWax.Customer.Controllers
 {
@@ -39,20 +40,30 @@ namespace FlameAndWax.Customer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterUser(UserProfileViewModel newUser)
         {
+            EmailSender emailSender = new EmailSender(newUser.Email);
+            var code = emailSender.RandomString();
+
             var customerModel = new CustomerModel
             {
                 CustomerName = newUser.Fullname,
                 ContactNumber = newUser.ContactNumber,
                 Email = newUser.Email,
-                Address = null, //Registering new user will have null as initial address, the address will be updated on the user profile by the customer
+                Address = null,
                 Username = newUser.Username,
                 Password = newUser.Password,
                 Status = CustomerAccountStatus.Pending,
-                ProfilePictureLink = await BuildProfilePictureLink(newUser.ProfilePictureFile)
+                ProfilePictureLink = await BuildProfilePictureLink(newUser.ProfilePictureFile),
+                Code = code
             };
 
-            var registerServiceResult = await _accountService.Register(customerModel, ConnectionString);
+            var registerServiceResult = await _accountService.RegisterAsync(customerModel, ConnectionString);
             if (registerServiceResult.HasError) return BadRequest(new { errorContent = registerServiceResult.ErrorContent });
+
+            var task = Task.Run(() =>
+            {
+                emailSender.SendCode(code);
+            });
+            task.Wait();
 
             return Ok();
         }

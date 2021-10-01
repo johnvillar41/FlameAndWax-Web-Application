@@ -28,7 +28,7 @@ namespace FlameAndWax.Customer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(MessageModel messageModel)
         {
-            var customerServiceResult = await _contactUsService.SendMessage(messageModel, ConnectionString);
+            var customerServiceResult = await _contactUsService.SendMessageAsync(messageModel, ConnectionString);
             if (customerServiceResult.HasError) return BadRequest(new { errorContent = customerServiceResult.ErrorContent});
            
             return Ok();

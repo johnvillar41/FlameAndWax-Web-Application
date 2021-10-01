@@ -8,7 +8,7 @@ namespace FlameAndWax.Services.Repositories
 {
     public class MessageRepository : IMessageRepository
     {
-        public async Task<int> Add(MessageModel Data, string connectionString)
+        public async Task<int> AddAsync(MessageModel Data, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();

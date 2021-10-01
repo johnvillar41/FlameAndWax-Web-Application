@@ -10,6 +10,6 @@ namespace FlameAndWax.Services.Services.Interfaces
 {
     public interface IEmployeeService : IAccountBaseService<EmployeeModel>
     {
-        Task<PagedServiceResult<IEnumerable<EmployeeModel>>> FetchAllEmployees(int pageNumber, int pageSize, string connectionString);
+        Task<PagedServiceResult<IEnumerable<EmployeeModel>>> FetchAllEmployeesAsync(int pageNumber, int pageSize, string connectionString);
     }
 }

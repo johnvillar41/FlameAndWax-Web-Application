@@ -20,7 +20,7 @@ namespace FlameAndWax.Employee.Controllers
         }
         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 9)
         {
-            var ordersServiceResult = await _ordersService.FetchAllOrders(null, pageNumber, pageSize, ConnectionString);
+            var ordersServiceResult = await _ordersService.FetchAllOrdersAsync(null, pageNumber, pageSize, ConnectionString);
             if (ordersServiceResult.HasError) return BadRequest(ordersServiceResult.ErrorContent);
 
             var orderViewModels = ordersServiceResult.Result.Select(orderModel => new OrderViewModel(orderModel)).ToList();

@@ -1,5 +1,28 @@
-@model IEnumerable<OrderViewModel>
-<div class="card">
+@model IList<OrderViewModel>
+<div class="card p-4">
+    <div class="row">
+        <div class="col-lg-6 col-md-12">
+            <h4>Sort By: </h4>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown button
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12">
+            <h4>Search: </h4>
+            <div class="card">
+                <input class="form-control p-4" placeholder="Search..." />
+            </div>
+        </div>
+    </div>
+    <hr />
     <div class="table-responsive">
         <table class="table table-borderless">
             <thead>
@@ -15,41 +38,63 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @for (int i = 0; i < Model.Count(); i++)
                 {
+                    ViewBag.Id = i;
                     <tr>
                         <td>
-                            @item.OrderId
+                            @Model[i].OrderId
                         </td>
                         <td>
-                            @item.Customer.CustomerName
+                            @Model[i].Customer.CustomerName
                         </td>
                         <td>
-                            @if (item.Employee.FirstName == null)
+                            @if (Model[i].Employee.FirstName == null)
                             {
                                 <p>None</p>
                             }
                             else
                             {
-                                <p>@item.Employee.FirstName</p>
+                                <p>@Model[i].Employee.FirstName</p>
                             }
                         </td>
                         <td>
-                            @item.TotalCost
+                            @Model[i].TotalCost
                         </td>
                         <td>
-                            @item.ModeOfPayment
+                            @Model[i].ModeOfPayment
                         </td>
                         <td>
-                            @item.Courier
+                            @Model[i].Courier
                         </td>
                         <td>
-                            @item.Status
+                            @Model[i].Status
                         </td>
-                        <td><button class="btn btn-gold">View Order Details</button></td>
+                        <td><button type="button" class="btn btn-gold btn-sm" data-toggle="modal"
+                            data-target="#exampleModalScrollable_@ViewBag.Id">
+                                View Order Details <i class="fas fa-eye"></i>
+                            </button></td>
                     </tr>
+                    @await Html.PartialAsync("OrderDetailsPartial", Model[i])
                 }
             </tbody>
         </table>
     </div>
 </div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination mt-2">
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

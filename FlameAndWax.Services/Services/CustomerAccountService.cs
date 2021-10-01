@@ -14,18 +14,24 @@ namespace FlameAndWax.Services.Services.Interfaces
         {
             _customerRepository = customerRepository;
         }
-        public async Task<ServiceResult<int>> Login(CustomerModel loginCredentials, string connectionString)
+        public async Task<ServiceResult<int>> LoginAsync(CustomerModel loginCredentials, string connectionString)
         {
             if (loginCredentials == null)
                 return ServiceHelper.BuildServiceResult<int>(-1, true, "Login Credentials has no value");
             try
             {
-                var isLoggedIn = await _customerRepository.LoginCustomerAccount(loginCredentials, connectionString);
-                if (isLoggedIn > -1)
-                    return ServiceHelper.BuildServiceResult<int>(isLoggedIn, false, null);
-
-                else
-                    return ServiceHelper.BuildServiceResult<int>(-1, true, "Invalid User");
+                if (loginCredentials.Code != null)
+                {
+                    var codeResult = await _customerRepository.UpdateStatusCustomerAccountAsync(loginCredentials.Username, connectionString, loginCredentials.Code);
+                    if (!codeResult) return ServiceHelper.BuildServiceResult<int>(-1, true, "Code is not the same");
+                }
+                var isLoggedIn = await _customerRepository.LoginCustomerAccountAsync(loginCredentials, connectionString);
+                switch (isLoggedIn)
+                {
+                    case -1: return ServiceHelper.BuildServiceResult<int>(-1, true, "Account still pending");
+                    case -2: return ServiceHelper.BuildServiceResult<int>(-1, true, "User not found!");
+                    default: return ServiceHelper.BuildServiceResult<int>(isLoggedIn, false, "Login Successfull");
+                }
             }
 
             catch (System.Data.SqlClient.SqlException e)
@@ -39,13 +45,13 @@ namespace FlameAndWax.Services.Services.Interfaces
                 return ServiceHelper.BuildServiceResult<int>(-1, true, e.Message);
             }
         }
-        public async Task<ServiceResult<bool>> Register(CustomerModel registeredCredentials, string connectionString)
+        public async Task<ServiceResult<bool>> RegisterAsync(CustomerModel registeredCredentials, string connectionString)
         {
             if (registeredCredentials == null)
                 return ServiceHelper.BuildServiceResult<bool>(false, true, "Registered Data has no value");
             try
             {
-                var customerRespositoryResult = await _customerRepository.Add(registeredCredentials, connectionString);
+                var customerRespositoryResult = await _customerRepository.AddAsync(registeredCredentials, connectionString);
                 if (customerRespositoryResult == -1) return ServiceHelper.BuildServiceResult<bool>(false, true, "Error Adding Customer");
 
                 return ServiceHelper.BuildServiceResult<bool>(true, false, null);

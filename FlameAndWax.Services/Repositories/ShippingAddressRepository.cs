@@ -8,7 +8,7 @@ namespace FlameAndWax.Services.Repositories
 {
     public class ShippingAddressRepository : IShippingAddressRepository
     {
-        public async Task<int> Add(ShippingAddressModel Data, string connectionString)
+        public async Task<int> AddAsync(ShippingAddressModel Data, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -28,7 +28,7 @@ namespace FlameAndWax.Services.Repositories
             return -1;
         }
 
-        public async Task Delete(int id, string connectionString)
+        public async Task DeleteAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -38,7 +38,7 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<ShippingAddressModel> Fetch(int id, string connectionString)
+        public async Task<ShippingAddressModel> FetchAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
@@ -63,12 +63,12 @@ namespace FlameAndWax.Services.Repositories
             return null;
         }
 
-        public Task<IEnumerable<ShippingAddressModel>> FetchPaginatedResult(int pageNumber, int pageSize, string connectionString)
+        public Task<IEnumerable<ShippingAddressModel>> FetchPaginatedResultAsync(int pageNumber, int pageSize, string connectionString)
         {
             throw new System.NotImplementedException();
         }
 
-        public async Task Update(ShippingAddressModel data, int id, string connectionString)
+        public async Task UpdateAsync(ShippingAddressModel data, int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();

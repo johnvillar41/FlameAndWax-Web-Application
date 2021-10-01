@@ -83,7 +83,6 @@ body {
   align-items: stretch;
 }
 
-
 #sidebar {
   min-width: 250px;
   max-width: 250px;
@@ -227,6 +226,11 @@ ul ul a {
   height: 50px;
 }
 
+.cardImageHorizontal {
+  object-fit: cover;
+  height: 200px;
+}
+
 .tableCenterCell {
   text-align: center;
 }
@@ -237,6 +241,20 @@ ul ul a {
   height: 60px;
   bottom: 40px;
   right: 40px;
+  background-color: rgba(166, 130, 69, 1);
+  color: #FFF;
+  border-radius: 50px;
+  text-align: center;
+  box-shadow: 2px 2px 3px #999;
+  z-index: 99;
+}
+
+.float-card {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  bottom: 10px;
+  right: 10px;
   background-color: rgba(166, 130, 69, 1);
   color: #FFF;
   border-radius: 50px;

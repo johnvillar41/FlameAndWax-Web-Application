@@ -6,8 +6,8 @@ namespace FlameAndWax.Services.Services.Interfaces
 {
     public interface ICartService 
     {
-        Task<ServiceResult<bool>> CheckoutOrder(OrderModel order, string usernameLoggedIn, string connectionString);
-        Task<ServiceResult<double>> FetchProductPrice(int productId, string connectionString);
-        Task<ServiceResult<ProductModel>> FetchProductDetail(int productId, string connectionString);
+        Task<ServiceResult<bool>> CheckoutOrderAsync(OrderModel order, string usernameLoggedIn, string connectionString);
+        Task<ServiceResult<double>> FetchProductPriceAsync(int productId, string connectionString);
+        Task<ServiceResult<ProductModel>> FetchProductDetailAsync(int productId, string connectionString);
     }
 }

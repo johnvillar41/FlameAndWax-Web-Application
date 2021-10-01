@@ -29,13 +29,13 @@ namespace FlameAndWax.Employee.Controllers
 
         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 9)
         {
-            var productServiceResult = await _productsService.FetchAllProducts(pageNumber, pageSize, ConnectionString);
+            var productServiceResult = await _productsService.FetchAllProductsAsync(pageNumber, pageSize, ConnectionString);
             if (productServiceResult.HasError)
                 return BadRequest(productServiceResult.ErrorContent);
 
             var productViewModels = productServiceResult.Result.Select(async product =>
             {
-                var reviews = await _productsService.FetchCustomerReviewsInAProduct(pageNumber, pageSize, product.ProductId, ConnectionString);
+                var reviews = await _productsService.FetchCustomerReviewsInAProductAsync(pageNumber, pageSize, product.ProductId, ConnectionString);
                 return new ProductViewModel(product, reviews.Result);
             }).ToList();           
 

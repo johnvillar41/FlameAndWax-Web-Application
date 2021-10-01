@@ -31,10 +31,10 @@ namespace FlameAndWax.Customer.Controllers
         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 3)
         {
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
-            var ordersServiceResult = await _ordersService.FetchOrdersByStatus(pageNumber, pageSize, int.Parse(customerIdLoggedIn), Constants.OrderStatus.Pending, ConnectionString);
+            var ordersServiceResult = await _ordersService.FetchOrdersByStatusAsync(pageNumber, pageSize, int.Parse(customerIdLoggedIn), Constants.OrderStatus.Pending, ConnectionString);
             if (ordersServiceResult.HasError) return BadRequest(new { errorContent = ordersServiceResult.ErrorContent });
 
-            var totalNumberOfOrdersServiceResult = await _ordersService.FetchTotalNumberOfOrdersByOrderStatus(Constants.OrderStatus.Pending, ConnectionString, int.Parse(customerIdLoggedIn));
+            var totalNumberOfOrdersServiceResult = await _ordersService.FetchTotalNumberOfOrdersByOrderStatusAsync(Constants.OrderStatus.Pending, ConnectionString, int.Parse(customerIdLoggedIn));
 
             var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfOrdersServiceResult.Result / pageSize);
             ViewData["OrderCount"] = (int)totalNumberOfPages;
@@ -49,10 +49,10 @@ namespace FlameAndWax.Customer.Controllers
         public async Task<IActionResult> PageOrders(string orderStatus = nameof(Constants.OrderStatus.Pending), int pageNumber = 1, int pageSize = 3)
         {
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
-            var categorizedOrdersServiceResult = await _ordersService.FetchOrdersByStatus(pageNumber, pageSize, int.Parse(customerIdLoggedIn), ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString);
+            var categorizedOrdersServiceResult = await _ordersService.FetchOrdersByStatusAsync(pageNumber, pageSize, int.Parse(customerIdLoggedIn), ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString);
             if (categorizedOrdersServiceResult.HasError) return BadRequest(new { errorContent = categorizedOrdersServiceResult.ErrorContent });
 
-            var totalNumberOfOrdersServiceResult = await _ordersService.FetchTotalNumberOfOrdersByOrderStatus(ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString, int.Parse(customerIdLoggedIn));
+            var totalNumberOfOrdersServiceResult = await _ordersService.FetchTotalNumberOfOrdersByOrderStatusAsync(ServiceHelper.ConvertStringtoOrderStatus(orderStatus), ConnectionString, int.Parse(customerIdLoggedIn));
 
             var totalNumberOfPages = Math.Ceiling((decimal)totalNumberOfOrdersServiceResult.Result / pageSize);
             ViewData["OrderCount"] = (int)totalNumberOfPages;

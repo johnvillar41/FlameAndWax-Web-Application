@@ -6,9 +6,10 @@ namespace FlameAndWax.Services.Repositories.Interfaces
 {
     public interface ICustomerRepository : IBaseRepository<CustomerModel>
     {
-        Task<int> LoginCustomerAccount(CustomerModel loginCustomer, string connectionString);
-        Task ChangeCustomerStatus(int customerId, CustomerAccountStatus customerStatus, string connectionString);
-        Task<bool> CheckIfCustomerHasShippingAddress(int customerId, string connectionString);
-        Task UpdateShippingAddressId(int customerId, int shippingAddressId, string connectionStrin);
+        Task<int> LoginCustomerAccountAsync(CustomerModel loginCustomer, string connectionString);
+        Task ChangeCustomerStatusAsync(int customerId, CustomerAccountStatus customerStatus, string connectionString);
+        Task<bool> CheckIfCustomerHasShippingAddressAsync(int customerId, string connectionString);
+        Task UpdateShippingAddressIdAsync(int customerId, int shippingAddressId, string connectionStrin);
+        Task<bool> UpdateStatusCustomerAccountAsync(string username, string connectionString, string code);
     }
 }

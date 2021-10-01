@@ -7,8 +7,8 @@ namespace FlameAndWax.Services.Repositories.Interfaces
 {
     public interface IOrderRepository : IBaseRepository<OrderModel>
     {
-        Task<IEnumerable<OrderModel>> FetchPaginatedCategorizedOrders(int pageNumber, int pagSize, int customerId, OrderStatus category, string connectionString);
-        Task<int> FetchTotalNumberOfOrders(OrderStatus? orderStatus, string connection, int customerId);
-        Task<IEnumerable<OrderModel>> FetchAllOrders(int pageNumber,int pageSize,string connectionString);
+        Task<IEnumerable<OrderModel>> FetchPaginatedCategorizedOrdersAsync(int pageNumber, int pagSize, int customerId, OrderStatus category, string connectionString);
+        Task<int> FetchTotalNumberOfOrdersAsync(OrderStatus? orderStatus, string connection, int customerId);
+        Task<IEnumerable<OrderModel>> FetchAllOrdersAsync(int pageNumber,int pageSize,string connectionString);
     }
 }

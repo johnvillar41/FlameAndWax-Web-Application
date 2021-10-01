@@ -38,38 +38,45 @@ namespace FlameAndWax.Customer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ProcessLogin(LoginViewModel loginCredentials, string returnUrl)
         {
-            var isAuthenticatedServiceResult = await _accountService.Login(new CustomerModel { Username = loginCredentials.Username, Password = loginCredentials.Password }, ConnectionString);
-            if (isAuthenticatedServiceResult.HasError) return BadRequest(new { errorContent = isAuthenticatedServiceResult.ErrorContent });
+            var isAuthenticatedServiceResult = await _accountService.LoginAsync(
+                new CustomerModel
+                {
+                    Username = loginCredentials.Username,
+                    Password = loginCredentials.Password,
+                    Code = loginCredentials.Code
+                }, ConnectionString);
+            if (isAuthenticatedServiceResult.Result == -1)
+                return Unauthorized(isAuthenticatedServiceResult.ErrorContent);
+            if (isAuthenticatedServiceResult.HasError)
+                return BadRequest(isAuthenticatedServiceResult.ErrorContent);
 
-            if (isAuthenticatedServiceResult.Result != -1)
+            var claims = new List<Claim>
             {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, loginCredentials.Username),
-                    new Claim(ClaimTypes.Role, nameof(Constants.Roles.Customer)),
-                    new Claim(ClaimTypes.NameIdentifier, isAuthenticatedServiceResult.Result.ToString())
-                };
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                new Claim(ClaimTypes.Name, loginCredentials.Username),
+                new Claim(ClaimTypes.Role, nameof(Constants.Roles.Customer)),
+                new Claim(ClaimTypes.NameIdentifier, isAuthenticatedServiceResult.Result.ToString())
+            };
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                var authProperties = new AuthenticationProperties
-                {
-                    AllowRefresh = true,
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                    IsPersistent = false,
-                };
+            var authProperties = new AuthenticationProperties
+            {
+                AllowRefresh = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                IsPersistent = false,
+            };
 
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
 
-                if (Url.IsLocalUrl(returnUrl))
-                {
-                    return Json(returnUrl);
-                }
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Ok(returnUrl);
             }
+
             returnUrl = "/Home/Index";
-            return Json(returnUrl);
+            return Ok(returnUrl);
         }
 
         public async Task<IActionResult> ProcessLogout()

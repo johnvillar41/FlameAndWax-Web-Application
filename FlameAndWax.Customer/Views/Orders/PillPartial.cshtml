@@ -1,0 +1,27 @@
+@model Constants.OrderStatus
+@{
+    switch (Model)
+    {
+        case Constants.OrderStatus.Pending:
+            <td> <span class="badge badge-pill badge-info">@Model.ToString()&nbsp;<i class="fas fa-spinner"></i></span></td>
+            break;
+        case Constants.OrderStatus.Finished:
+            <td> <span class="badge badge-pill badge-success">@Model.ToString()&nbsp;<i
+                class="fas fa-check-circle"></i></span></td>
+            break;
+        case Constants.OrderStatus.Processing:
+            <td> <span class="badge badge-pill badge-warning">@Model.ToString()&nbsp;<i
+                class="fas fa-angle-double-right"></i></span></td>
+            break;
+        case Constants.OrderStatus.Shipping:
+            <td> <span class="badge badge-pill badge-primary">@Model.ToString()&nbsp;<i
+                class="fas fa-shipping-fast"></i></span></td>
+            break;
+        case Constants.OrderStatus.Cancelled:
+            <td> <span class="badge badge-pill badge-secondary">@Model.ToString()&nbsp;<i
+                class="fas fa-times-circle"></i></span></td>
+            break;
+        default:
+            throw new NotImplementedException();
+    }
+}

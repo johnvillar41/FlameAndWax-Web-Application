@@ -5,7 +5,7 @@ namespace FlameAndWax.Services.Repositories.Interfaces
 {
     public interface IEmployeeRepository : IBaseRepository<EmployeeModel>
     {
-        Task<int> LoginEmployeeAccount(EmployeeModel employeeModel, string connectionString);
-        Task<int> FetchTotalEmployeesCount(string connectionString);
+        Task<int> LoginEmployeeAccountAsync(EmployeeModel employeeModel, string connectionString);
+        Task<int> FetchTotalEmployeesCountAsync(string connectionString);
     }
 }
