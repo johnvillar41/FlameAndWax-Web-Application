@@ -59,11 +59,10 @@ namespace FlameAndWax.Customer.Controllers
             var registerServiceResult = await _accountService.RegisterAsync(customerModel, ConnectionString);
             if (registerServiceResult.HasError) return BadRequest(new { errorContent = registerServiceResult.ErrorContent });
 
-            var task = Task.Run(() =>
+            await Task.Run(() =>
             {
                 emailSender.SendCode(code);
             });
-            task.Wait();
 
             return Ok();
         }
