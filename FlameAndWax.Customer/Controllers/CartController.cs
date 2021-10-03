@@ -71,16 +71,15 @@ namespace FlameAndWax.Customer.Controllers
         {
             var cart = JsonConvert.DeserializeObject<CartViewModel>(TempData["CartViewModel"].ToString());
 
-            if (cart.CartProducts == null) return RedirectToAction("Index", "Error", new { ErrorContent = "Cart Products is null" });
+            if (cart.CartProducts == null) 
+                return BadRequest("Cart Products is null");
 
             var userLoggedInID = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.NameIdentifier).Value;
             var userLoggedInUsername = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;
 
-            var cartItems = cart.CartProducts;
-            var orderDetails = new List<OrderDetailModel>();
-            var result = await BuildOrderDetails(orderDetails, cartItems, userLoggedInUsername);
-            if (result != null) return result;
-            var totalOrderCost = orderDetails.Select(x => x.TotalPrice).Sum();
+            var taskOrderDetails = BuildOrderDetails(cart.CartProducts, userLoggedInUsername);
+            var resultOrderDetails = await Task.WhenAll(taskOrderDetails);
+            var totalOrderCost = resultOrderDetails.Select(x => x.TotalPrice).Sum();
 
             var modeOfPayment = ServiceHelper.BuildModeOfPayment(cart.ModeOfPayment.ToString());
             var courierType = ServiceHelper.BuildCourier(cart.Courier.ToString());
@@ -91,12 +90,13 @@ namespace FlameAndWax.Customer.Controllers
                 DateOrdered = DateTime.UtcNow,
                 TotalCost = totalOrderCost,
                 ModeOfPayment = modeOfPayment,
-                OrderDetails = orderDetails,
+                OrderDetails = resultOrderDetails,
                 Courier = courierType
             };
             var primaryKeyServiceResult = await _cartService.CheckoutOrderAsync(order, userLoggedInUsername, ConnectionString);
 
-            if (primaryKeyServiceResult.HasError) return BadRequest(new { errorContent = primaryKeyServiceResult.ErrorContent });
+            if (primaryKeyServiceResult.HasError) 
+                return BadRequest(primaryKeyServiceResult.ErrorContent);
 
             Cart.ClearCartItems(userLoggedInUsername);
             return Ok("Successfully Inserted Order!");
@@ -150,30 +150,26 @@ namespace FlameAndWax.Customer.Controllers
             var cartItemCount = cartItems.Count();
             return Ok(cartItemCount);
         }
-        private async Task<ObjectResult> BuildOrderDetails(
-            List<OrderDetailModel> orderDetails,
-            List<ProductViewModel> cartItems,
-            string userLoggedInUsername)
+        private List<Task<OrderDetailModel>> BuildOrderDetails(List<ProductViewModel> cartItems, string userLoggedInUsername)
         {
-            foreach (var cartItem in cartItems)
-            {
-                var subTotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);
+            var taskOrderDetails = cartItems.Select(async cartItem =>
+            {                
                 var productPriceServiceResult = await _cartService.FetchProductPriceAsync(cartItem.ProductId, ConnectionString);
-                if (productPriceServiceResult.HasError) return BadRequest(productPriceServiceResult.ErrorContent);
-                orderDetails.Add(
-                    new OrderDetailModel
+                if (productPriceServiceResult.HasError)
+                    throw new Exception(productPriceServiceResult.ErrorContent);
+
+                return new OrderDetailModel
+                {
+                    Product = new ProductModel
                     {
-                        Product = new ProductModel
-                        {
-                            ProductId = cartItem.ProductId,
-                            ProductPrice = productPriceServiceResult.Result
-                        },
-                        TotalPrice = subTotalCost,
-                        Quantity = cartItem.QuantityOrdered,
-                    }
-                );
-            }
-            return null;
+                        ProductId = cartItem.ProductId,
+                        ProductPrice = productPriceServiceResult.Result
+                    },
+                    TotalPrice = productPriceServiceResult.Result * cartItem.QuantityOrdered,
+                    Quantity = cartItem.QuantityOrdered,
+                };
+            }).ToList();
+            return taskOrderDetails;
         }
     }
 }

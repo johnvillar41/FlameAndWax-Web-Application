@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace FlameAndWax.Customer.Controllers
 {
@@ -71,7 +72,7 @@ namespace FlameAndWax.Customer.Controllers
 
 
         public IActionResult AddToCart(int _productId)
-        {
+        {            
             if (!User.Identity.IsAuthenticated) return Unauthorized($"/Account/Login/?returnUrl=/Products/Details?productId={_productId}");
 
             var userLoggedIn = User.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Name).Value;

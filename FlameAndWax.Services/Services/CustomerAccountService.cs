@@ -29,7 +29,7 @@ namespace FlameAndWax.Services.Services.Interfaces
                 switch (isLoggedIn)
                 {
                     case -1: return ServiceHelper.BuildServiceResult<int>(-1, true, "Account still pending");
-                    case -2: return ServiceHelper.BuildServiceResult<int>(-1, true, "User not found!");
+                    case -2: return ServiceHelper.BuildServiceResult<int>(-2, true, "User not found!");
                     default: return ServiceHelper.BuildServiceResult<int>(isLoggedIn, false, "Login Successfull");
                 }
             }
