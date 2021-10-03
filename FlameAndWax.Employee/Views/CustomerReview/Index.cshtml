@@ -1,55 +1,59 @@
 @using FlameAndWax.Data.Constants
 @model IEnumerable<ProductViewModel>
 
-<div class="row">
+<div class="card-columns">
     @foreach (var item in Model)
     {
         var urlPicture = Constants.BASE_URL_API_IMAGES + item.PictureLink;
-        <div class="col-lg-3 col-md-4 pb-4">
-            <div class="card">
-                <img src="@Url.Content(urlPicture)" class="card-img-top cardImageHorizontal" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">@item.ProductName</h5>
-                </div>
-                <ul class="list-group list-group-flush">
-                    @if (item.CustomerReviews.Count() == 0)
+        <div class="card">
+            <img src="@Url.Content(urlPicture)" class="card-img-top cardImageHorizontal" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">@item.ProductName</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                @if (item.CustomerReviews.Count() == 0)
+                {
+                    <li class="list-group-item">No Comments Yet!</li>
+                }
+                else
+                {
+                    @foreach (var comment in item.CustomerReviews)
                     {
-                        <li class="list-group-item">No Comments Yet!</li>
-                    }
-                    else
-                    {
-                        @foreach (var comment in item.CustomerReviews)
-                        {
-                            var customerImageLink = Constants.BASE_URL_API_IMAGES + comment.ProfilePictureLink;
-                            <li class="list-group-item">
-                                <div class="d-flex flex-row">
+                        var customerImageLink = Constants.BASE_URL_API_IMAGES + comment.ProfilePictureLink;
+                        <li class="list-group-item">
+                            <div class="d-flex flex-row">
+                                <div class="my-auto">
+                                    <img src="@Url.Content(customerImageLink)" class="circle" />
+                                </div>
+                                <div class="d-flex flex-column ml-1">
                                     <div class="my-auto">
-                                        <img src="@Url.Content(customerImageLink)" class="circle" />
+                                        <h6 class="my-auto" id="exampleModalScrollableTitle">
+                                            <strong>Name: </strong>
+                                            @comment.Fullname
+                                        </h6>
                                     </div>
-                                    <div class="d-flex flex-column ml-1">
-                                        <div class="my-auto">
-                                            <h6 class="my-auto" id="exampleModalScrollableTitle"><strong>Name: </strong>
-                                                @comment.Fullname</h6>
-                                        </div>
-                                        <div class="my-auto">
-                                            <h6 class="my-auto" id="exampleModalScrollableTitle"><strong>Comment:</strong>
-                                                @comment.ProductReview</h6>
-                                        </div>
-                                        <div class="my-auto">
-                                            <h6 class="my-auto" id="exampleModalScrollableTitle"><strong>Score:</strong>
-                                                <!--TODO-->5/5</h6>
-                                        </div>
+                                    <div class="my-auto">
+                                        <h6 class="my-auto" id="exampleModalScrollableTitle">
+                                            <strong>Comment:</strong>
+                                            @comment.ProductReview
+                                        </h6>
+                                    </div>
+                                    <div class="my-auto">
+                                        <h6 class="my-auto" id="exampleModalScrollableTitle">
+                                            <strong>Score:</strong>
+                                            <!--TODO-->5/5
+                                        </h6>
                                     </div>
                                 </div>
-                            </li>
-                        }
+                            </div>
+                        </li>
                     }
+                }
 
-                </ul>
-                <div class="card-body">
-                    <a href="#" class="card-link">Card link</a>
-                    <a href="#" class="card-link">Another link</a>
-                </div>
+            </ul>
+            <div class="card-body">
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
             </div>
         </div>
     }
