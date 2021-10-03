@@ -165,7 +165,7 @@ namespace FlameAndWax.Customer.Controllers
                         ProductId = cartItem.ProductId,
                         ProductPrice = productPriceServiceResult.Result
                     },
-                    TotalPrice = cartItem.ProductSubTotalPrice,
+                    TotalPrice = productPriceServiceResult.Result * cartItem.QuantityOrdered,
                     Quantity = cartItem.QuantityOrdered,
                 };
             }).ToList();
