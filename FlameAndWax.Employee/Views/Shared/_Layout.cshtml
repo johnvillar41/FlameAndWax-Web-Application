@@ -12,19 +12,18 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: #e4e2da; min-height:78px;">
-        <a asp-controller="Account" asp-action="Logout" class="navbar-nav ml-auto p-2 btn btn-gold">LogOut <i
-                class="fas fa-sign-out-alt"></i></a>
-    </nav>
     <div class="wrapper">
         @await Html.PartialAsync("_NavbarPartial")
-        <div class="marginBodyTop container-fluid">
-            <div class="mt-4">
+        <div class="mt-1 container-fluid">
+            <div class="d-flex justify-content-end">
                 <button type="button" id="sidebarCollapse" class="btn btn-gold mb-1">
-                    <span><i class="fas fa-bars"></i></span>
+                    <span><i class="fas fa-bars"></i> Menu</span>
                 </button>
-                @RenderBody()
+                <a asp-controller="Account" asp-action="Logout" class="navbar-nav ml-auto p-2 btn btn-gold">
+                    LogOut <i class="fas fa-sign-out-alt"></i>
+                </a>
             </div>
+            @RenderBody()
         </div>
     </div>
 
