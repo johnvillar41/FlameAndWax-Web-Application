@@ -153,8 +153,7 @@ namespace FlameAndWax.Customer.Controllers
         private List<Task<OrderDetailModel>> BuildOrderDetails(List<ProductViewModel> cartItems, string userLoggedInUsername)
         {
             var taskOrderDetails = cartItems.Select(async cartItem =>
-            {
-                var subTotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);
+            {                
                 var productPriceServiceResult = await _cartService.FetchProductPriceAsync(cartItem.ProductId, ConnectionString);
                 if (productPriceServiceResult.HasError)
                     throw new Exception(productPriceServiceResult.ErrorContent);
@@ -166,7 +165,7 @@ namespace FlameAndWax.Customer.Controllers
                         ProductId = cartItem.ProductId,
                         ProductPrice = productPriceServiceResult.Result
                     },
-                    TotalPrice = subTotalCost,
+                    TotalPrice = cartItem.ProductSubTotalPrice,
                     Quantity = cartItem.QuantityOrdered,
                 };
             }).ToList();
