@@ -156,6 +156,8 @@ namespace FlameAndWax.Customer.Controllers
             {
                 var subTotalCost = Cart.CalculateTotalCartCost(userLoggedInUsername, cartItem.QuantityOrdered);
                 var productPriceServiceResult = await _cartService.FetchProductPriceAsync(cartItem.ProductId, ConnectionString);
+                if (productPriceServiceResult.HasError)
+                    throw new Exception(productPriceServiceResult.ErrorContent);
 
                 return new OrderDetailModel
                 {
