@@ -5,26 +5,28 @@
 <link rel="stylesheet" href="~/css/login.css" />
 <link href="~/fontawesome/css/all.css" rel="stylesheet" />
 <link href="~/sweetalert/sweetalert.css" rel="stylesheet" />
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-<div class="container">
-    <div class="form">
-        <i class="fas fa-fire"></i>
-        <h1>Login</h1>
-        <p>Login To Copat to access your account</p>
-        <form asp-controller="Account" asp-action="ProcessLogin" id="formLogin" method="POST" data-ajax="true"
-              data-ajax-complete="loginComplete">
-            <div class="input">
-                <input type="text" asp-for="@Model.Username">
-                <label class="label" >Username </label>
+<body class="text-center">
+    <form class="form-signin" asp-controller="Account" asp-action="ProcessLogin" id="formLogin" method="POST" data-ajax="true"
+          data-ajax-complete="loginComplete">
+        <div class="card p-4">
+            <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="text" id="inputEmail" class="form-control" placeholder="Username" asp-for="@Model.Username" required="" autofocus="">
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" asp-for="@Model.Password" required="">
+            <div class="checkbox mb-3 mt-2">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
             </div>
-            <div class="password">
-                <input type="password" asp-for="@Model.Password">
-                <label class="password">Password </label>
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-    </div>    
-</div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <p class="mt-5 mb-3 text-muted">© 2017-2019</p>
+        </div>
+    </form>
+</body>
 
 <script src="~/sweetalert/sweetalert.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
