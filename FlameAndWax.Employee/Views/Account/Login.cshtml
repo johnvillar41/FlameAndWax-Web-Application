@@ -7,27 +7,44 @@
 <link href="~/sweetalert/sweetalert.css" rel="stylesheet" />
 <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-<body class="text-center">
-    <form class="form-signin" asp-controller="Account" asp-action="ProcessLogin" id="formLogin" method="POST" data-ajax="true"
-          data-ajax-complete="loginComplete">
-        <div class="card p-4">
-            <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-            <label for="inputEmail" class="sr-only">Email address</label>
-            <input type="text" id="inputEmail" class="form-control" placeholder="Username" asp-for="@Model.Username" required="" autofocus="">
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" asp-for="@Model.Password" required="">
-            <div class="checkbox mb-3 mt-2">
-                <label>
-                    <input type="checkbox" value="remember-me"> Remember me
-                </label>
+<div class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+    <div class="container">
+        <div class="card login-card">
+            <div class="row no-gutters">
+                <div class="col-md-5">
+                    <img src="https://www.bootstrapdash.com/demo/login-template-free-2/assets/images/login.jpg" alt="login" class="login-card-img">
+                    <p class="text-white font-weight-medium text-center flex-grow align-self-end footer-link text-small">
+                        Free <a href="https://www.bootstrapdash.com/" target="_blank" class="text-white">Bootstrap dashboard templates</a> from Bootstrapdash
+                    </p>
+                </div>
+                <div class="col-md-7">
+                    <div class="card-body">
+                        <div class="brand-wrapper">
+                            <img src="https://www.bootstrapdash.com/demo/login-template-free-2/assets/images/logo.svg" alt="logo" class="logo">
+                        </div>
+                        <p class="login-card-description">Sign in to your account</p>
+                        <form action="#!">
+                            <div class="form-group">
+                                <label for="email" class="sr-only">Email</label>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Email address">
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="password" class="sr-only">Password</label>
+                                <input type="password" name="password" id="password" class="form-control" placeholder="***********">
+                            </div>
+                            <input name="login" id="login" class="btn btn-block login-btn mb-4" type="button" value="Login">
+                        </form>
+                        <nav class="login-card-footer-nav">
+                            <a href="#!">Terms of use.</a>
+                            <a href="#!">Privacy policy</a>
+                        </nav>
+                    </div>
+                  
+                </div>
             </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-            <p class="mt-5 mb-3 text-muted">© 2017-2019</p>
         </div>
-    </form>
-</body>
-
+    </div>
+</div>
 <script src="~/sweetalert/sweetalert.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
