@@ -46,3 +46,20 @@
     color: #0d2366;
     margin-bottom: 60px;
 }
+
+.btn-gold {
+    background-color: rgba(166, 130, 69, 1);
+}
+
+    .btn-gold:hover {
+        color: #fff;
+        background-color: #856838;        
+    }
+
+.btn-light-gold {
+    background-color: #e4e2da;
+}
+
+    .btn-light-gold:hover {
+        background-color: #cccac4;
+    }
