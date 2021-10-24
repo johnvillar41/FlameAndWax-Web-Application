@@ -12,17 +12,23 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-light bg-light d-flex justify-content-end">
+        <a class="navbar-brand" href="#">
+            <img src="about.png" width="30" height="30" alt="">
+        </a>
+        <button type="button" id="sidebarCollapse" class="btn btn-gold mb-1 hamburger">
+            <span><i class="fas fa-bars"></i> Menu</span>
+        </button>
+        <a asp-controller="Account" asp-action="Logout" class="navbar-nav ml-auto p-2 btn btn-gold">
+            LogOut <i class="fas fa-sign-out-alt"></i>
+        </a>
+
+    </nav>
+
     <div class="wrapper">
+
         @await Html.PartialAsync("_NavbarPartial")
         <div class="mt-1 container-fluid">
-            <div class="d-flex justify-content-end">
-                <button type="button" id="sidebarCollapse" class="btn btn-gold mb-1">
-                    <span><i class="fas fa-bars"></i> Menu</span>
-                </button>
-                <a asp-controller="Account" asp-action="Logout" class="navbar-nav ml-auto p-2 btn btn-gold">
-                    LogOut <i class="fas fa-sign-out-alt"></i>
-                </a>
-            </div>
             @RenderBody()
         </div>
     </div>
