@@ -35,19 +35,8 @@ loginComplete = function (xhr) {
         displayToastMixin('User not found!', false);
     }
 }
-$(document).ready(function () {
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar').toggleClass('active');
-    });
-});
-$('body').click(function (e) {
-    if ($('.sidebar').hasClass('active')) {
-        $(".sidebar").toggleClass('inactive')
-    } else {
-        $(".sidebar").toggleClass('active')
-    }
-});
-$('#sidebarCollapse').click(function () {
+
+$('#sidebarCollapse').click(function (e) {
     if ($('.sidebar').hasClass('active')) {
         $(".sidebar").toggleClass('inactive')
     } else {
