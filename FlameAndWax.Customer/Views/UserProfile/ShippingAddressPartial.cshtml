@@ -9,8 +9,17 @@
     <div class="col-12">
         <div class="card p-4">
             <div class="row">
-                <div class="col-12 mt-4 mb-2">
+                <div class="col-10 mt-4 mb-2">
                     <h2>Shipping Address</h2>
+                </div>
+                <div class="col-2 mt-4 mb-2">
+                    @if (Model.Address != null)
+                    {
+                        <button class="btn btn-block btn-gold"
+                                data-toggle="modal" data-target="#addNewAddressModal">
+                            Add new Shipping Address <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                    }
                 </div>
             </div>
             <div class="row">
@@ -18,8 +27,9 @@
                     <div class="form-group">
                         <div class="col-xs-6">
                             <h5>Address</h5>
+                            <input type="hidden" asp-for="@Model.ShippingAddressId" />
                             <input form="ShippingAddressForm" id="fullname" type="text" class="form-control"
-                                   asp-for="@Model.Address" placeholder="Enter Address" title="enter your first name if any."
+                                   asp-for="@Model.Address" placeholder="Enter Address"
                                    required>
                         </div>
                     </div>
@@ -70,3 +80,70 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="addNewAddressModal" tabindex="-1" role="dialog" aria-labelledby="addNewAddressModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="form-group">
+                            <div class="col-xs-6">
+                                <h5>Address</h5>
+                                <input type="hidden" asp-for="@Model.ShippingAddressId" />
+                                <input form="ShippingAddressForm" id="fullname" type="text" class="form-control"
+                                       asp-for="@Model.Address" value="" placeholder="Enter Address"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <h5>Postal Code</h5>
+                                    <input form="ShippingAddressForm" id="contactNumber" value="" type="text" class="form-control"
+                                           asp-for="@Model.PostalCode" placeholder="Enter Postal Number"
+                                           title="enter your phone number if any." required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-xs-6">
+                                <h5>City</h5>
+                                <input form="ShippingAddressForm" id="email" value="" type="text" class="form-control" asp-for="@Model.City"
+                                       placeholder="Enter City" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-6">
+                                <h5>Region</h5>
+                                <input form="ShippingAddressForm" id="username" value="" type="text" class="form-control"
+                                       asp-for="@Model.Region" placeholder="Enter Region" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-6">
+                                <h5>Country</h5>
+                                <input form="ShippingAddressForm" id="password" type="text" class="form-control"
+                                       asp-for="@Model.Country" placeholder="Enter Country" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-gold">Add Address</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
