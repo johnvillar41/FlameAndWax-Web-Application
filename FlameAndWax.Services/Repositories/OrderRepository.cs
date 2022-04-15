@@ -219,20 +219,20 @@ namespace FlameAndWax.Services.Repositories
             return totalNumberOfProducts;
         }
 
-        public async Task<IEnumerable<OrderModel>> FetchAllOrdersAsync(int pageNumber, int pageSize, string connectionString)
+        public async Task<IEnumerable<OrderModel>> FetchAllOrdersAsync(int pageNumber, int pageSize, int customerId, string connectionString)
         {
             List<OrderModel> orders = new List<OrderModel>();
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
-            var queryString = "SELECT * FROM OrdersTable ORDER BY OrderId OFFSET (@PageNumber - 1) * @PageSize ROWS FETCH NEXT @PageSize ROWS ONLY";
+            var queryString = "SELECT * FROM OrdersTable ORDER BY OrderId OFFSET (@PageNumber - 1) * @PageSize ROWS FETCH NEXT @PageSize ROWS ONLY WHERE CustomerId = @CustomerId";
             using SqlCommand command = new SqlCommand(queryString, connection);
             command.Parameters.AddWithValue("@PageNumber", pageNumber);
             command.Parameters.AddWithValue("@PageSize", pageSize);
+            command.Parameters.AddWithValue("@CustomerId", customerId);
             using SqlDataReader reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
                 var orderId = int.Parse(reader["OrderId"].ToString());
-                var customerId = int.Parse(reader["CustomerId"].ToString());
                 var employeeId = -1;
                 EmployeeModel employee = new EmployeeModel();
                 if (!reader.IsDBNull(2))

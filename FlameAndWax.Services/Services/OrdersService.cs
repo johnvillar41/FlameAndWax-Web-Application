@@ -18,11 +18,11 @@ namespace FlameAndWax.Services.Services
             _orderRepository = orderRepository;
         }
 
-        public async Task<PagedServiceResult<IEnumerable<OrderModel>>> FetchAllOrdersAsync(OrderStatus? orderStatus, int pageNumber, int pageSize, string connectionString)
+        public async Task<PagedServiceResult<IEnumerable<OrderModel>>> FetchAllOrdersAsync(OrderStatus? orderStatus, int pageNumber, int pageSize, int customerId, string connectionString)
         {
             try
             {
-                var orders = await _orderRepository.FetchAllOrdersAsync(pageNumber, pageSize, connectionString);
+                var orders = await _orderRepository.FetchAllOrdersAsync(pageNumber, pageSize, customerId, connectionString);
                 var serviceResult = ServiceHelper.BuildServiceResult<IEnumerable<OrderModel>>(orders, false, null);
                 return ServiceHelper.BuildPagedResult<IEnumerable<OrderModel>>(serviceResult, -1, -1);
             }

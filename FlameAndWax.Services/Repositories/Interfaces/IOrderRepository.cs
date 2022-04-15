@@ -9,6 +9,6 @@ namespace FlameAndWax.Services.Repositories.Interfaces
     {
         Task<IEnumerable<OrderModel>> FetchPaginatedCategorizedOrdersAsync(int pageNumber, int pagSize, int customerId, OrderStatus category, string connectionString);
         Task<int> FetchTotalNumberOfOrdersAsync(OrderStatus? orderStatus, string connection, int customerId);
-        Task<IEnumerable<OrderModel>> FetchAllOrdersAsync(int pageNumber,int pageSize,string connectionString);
+        Task<IEnumerable<OrderModel>> FetchAllOrdersAsync(int pageNumber, int pageSize, int customerId, string connectionString);
     }
 }
