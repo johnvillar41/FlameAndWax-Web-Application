@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlameAndWax.Services.Services
 {
-    public class ImageService : IImagesService
+    public class ImageService : IImageService
     {
         public Task AddImageAsync(string imageName)
         {

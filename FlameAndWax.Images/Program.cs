@@ -1,3 +1,4 @@
+using FlameAndWax.Data.Constants;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -21,6 +22,7 @@ namespace FlameAndWax.Images
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls(Constants.BASE_URL_CUSTOMER);
                 });
     }
 }
