@@ -20,7 +20,7 @@
                             @{
                                 var imageSource = Model.ProfilePictureLink == null ? "" :
                                 Constants.BASE_URL_API_IMAGES + Url.Content(Model.ProfilePictureLink);
-                                var urlPicture = Constants.BASE_URL_API_IMAGES + imageSource;
+                                var urlPicture = imageSource;
                             }
                             <img src="@urlPicture" id="profilePicture" class="avatar img-circle img-thumbnail" alt="avatar">
                             <h6>Upload a different photo...</h6>

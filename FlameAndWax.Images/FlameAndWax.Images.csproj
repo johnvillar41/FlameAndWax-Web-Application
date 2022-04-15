@@ -8,5 +8,9 @@
     <ProjectReference Include="..\FlameAndWax.Services\FlameAndWax.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\customers\" />
+  </ItemGroup>
+
 
 </Project>

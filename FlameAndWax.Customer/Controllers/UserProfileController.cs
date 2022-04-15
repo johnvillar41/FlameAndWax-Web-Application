@@ -13,6 +13,8 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace FlameAndWax.Customer.Controllers
 {
@@ -63,14 +65,11 @@ namespace FlameAndWax.Customer.Controllers
         {
             var userId = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
             var customerModel = new CustomerModel();
-            if (userProfile.ProfilePictureFile != null)
+            var imageLink = await BuildProfilePictureLink(userProfile.ProfilePictureFile);
+            customerModel = new CustomerModel
             {
-                var imageLink = await BuildProfilePictureLink(userProfile.ProfilePictureFile);
-                customerModel = new CustomerModel
-                {
-                    ProfilePictureLink = imageLink
-                };
-            }
+                ProfilePictureLink = imageLink[0]
+            };
 
             customerModel.CustomerId = int.Parse(userId);
             customerModel.CustomerName = userProfile.Fullname;
@@ -82,8 +81,8 @@ namespace FlameAndWax.Customer.Controllers
             var customerServiceResult = await _userProfileService.FetchAccountDetailAsync(int.Parse(userId), ConnectionString);
             if (customerServiceResult.HasError) return BadRequest(new { errorContent = customerServiceResult.ErrorContent });
 
-            if (userProfile.ProfilePictureFile != null)
-                DeleteOldProfilePicture(customerServiceResult.Result.ProfilePictureLink);
+            if (customerServiceResult.Result.ProfilePictureLink != null)
+                await DeleteOldProfilePicture(customerServiceResult.Result.ProfilePictureLink);
 
             var modifyServiceResult = await _userProfileService.ModifyAccountDetailsAsync(customerModel, int.Parse(userId), ConnectionString);
             if (modifyServiceResult.HasError) return BadRequest(new { errorContent = modifyServiceResult.ErrorContent });
@@ -116,7 +115,7 @@ namespace FlameAndWax.Customer.Controllers
             return PartialView("ShippingAddressPartial", shippingAddressViewModel);
         }
 
-        private async Task<string> BuildProfilePictureLink(IFormFile profilePictureFile)
+        private async Task<string[]> BuildProfilePictureLink(IFormFile profilePictureFile)
         {
             var fileExtension = Path.GetExtension(profilePictureFile.FileName);
             var guid = Guid.NewGuid();
@@ -124,23 +123,34 @@ namespace FlameAndWax.Customer.Controllers
                 fileExtension.Equals(".PNG", StringComparison.CurrentCultureIgnoreCase) ||
                 fileExtension.Equals(".JPEG", StringComparison.CurrentCultureIgnoreCase))
             {
-                var saveImage = Path.Combine(_webHostEnvironment.WebRootPath, @"images\customers", $"{guid}{profilePictureFile.FileName}");
-                var stream = new FileStream(saveImage, FileMode.Create);
-                await profilePictureFile.CopyToAsync(stream);
-                return @$"\images\customers\{guid}{profilePictureFile.FileName}";
+                using var httpClient = new HttpClient();
+                var form = new MultipartFormDataContent();
+                var ms = new MemoryStream();
+                profilePictureFile.CopyTo(ms);
+                var fileBytes = ms.ToArray();
+
+                form.Add(new ByteArrayContent(fileBytes, 0, fileBytes.Length), "profilePictureFile", profilePictureFile.FileName);
+                using HttpResponseMessage response = await httpClient.PostAsync($"{Constants.BASE_URL_API_IMAGES}/api/Images", form);
+
+                response.EnsureSuccessStatusCode();
+
+                dynamic jsonResult = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result.ToString());
+                var filePath = jsonResult.filePath;
+                var fileName = jsonResult.fileName;
+                var basePath = jsonResult.basePath;
+
+                return new string[3] { filePath, fileName, basePath };
             }
-            return string.Empty;
+            return null;
         }
 
-        private void DeleteOldProfilePicture(string imageToDelete)
+        private static async Task<bool> DeleteOldProfilePicture(string imageToDelete)
         {
-            var fileToDelete = _webHostEnvironment.WebRootPath + imageToDelete;
-            FileInfo fileInfo = new FileInfo(fileToDelete);
-            if (fileInfo != null && fileInfo.Exists)
-            {
-                fileInfo.Delete();
-            }
-            GC.Collect();
+            using var httpClient = new HttpClient();
+            var form = new MultipartFormDataContent();
+            form.Add(new StringContent(imageToDelete));
+            using HttpResponseMessage response = await httpClient.PostAsync($"{Constants.BASE_URL_API_IMAGES}/api/Images/DeleteProfilePicture", form);
+            return response.IsSuccessStatusCode;
         }
     }
 }

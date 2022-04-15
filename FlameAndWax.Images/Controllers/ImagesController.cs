@@ -2,6 +2,7 @@
 using FlameAndWax.Services.Services;
 using FlameAndWax.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -30,13 +31,40 @@ namespace FlameAndWax.Images.Controllers
         {
             var basePath = Path.Combine(_webHostEnvironment.WebRootPath, @"images\products");
             return Ok(basePath);
-        }      
+        }
         [HttpGet]
         [Route("BaseUrl")]
         public IActionResult BaseUrl()
         {
             var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}"; ;
             return Ok(baseUrl);
+        }
+        [HttpPost]
+        public async Task<IActionResult> SaveProfilePicture(IFormFile profilePictureFile)
+        {
+            var guid = Guid.NewGuid();
+            var saveImage = Path.Combine(_webHostEnvironment.WebRootPath, @"images\customers", $"{guid}{profilePictureFile.FileName}");
+            var stream = new FileStream(saveImage, FileMode.Create);
+            await profilePictureFile.CopyToAsync(stream);
+            return Ok(new
+            {
+                BasePath = _webHostEnvironment.WebRootPath,
+                FilePath = @$"\images\customers\{guid}{profilePictureFile.FileName}",
+                FileName = $"{guid}{profilePictureFile.FileName}"
+            });
+        }
+        [HttpPost]
+        [Route("DeleteProfilePicture")]
+        public IActionResult DeleteProfilePicture([FromForm] string imageToDelete)
+        {
+            var fileToDelete = _webHostEnvironment.WebRootPath + imageToDelete;
+            FileInfo fileInfo = new FileInfo(fileToDelete);
+            if (fileInfo != null && fileInfo.Exists)
+            {                
+                fileInfo.Delete();
+            }
+            GC.Collect();
+            return Ok();
         }
     }
 }
