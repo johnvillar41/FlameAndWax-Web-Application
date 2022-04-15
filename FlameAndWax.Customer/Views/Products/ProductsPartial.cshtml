@@ -43,7 +43,7 @@
                 else
                 {
 
-                    <img src="@Url.Content(product.PhotoLink)" class="topCommentProduct card-img-top">
+                    <img src="@(Constants.BASE_URL_API_IMAGES + Url.Content(product.PhotoLink))" class="topCommentProduct card-img-top">
                 }
                 <div class="card-body">
                     <h5 class="card-title">@product.ProductName</h5>

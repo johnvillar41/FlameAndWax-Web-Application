@@ -15,7 +15,7 @@
             <span class="sr-only">Loading...</span>
         </div>
         <div class="card">
-            <img src="@Url.Content(product.PhotoLink)" class="topCommentProduct card-img-top">
+            <img src="@(Constants.BASE_URL_API_IMAGES + Url.Content(product.PhotoLink))" class="topCommentProduct card-img-top">
             <div class="card-body">
                 <a class="badge badge-danger text-white">New Arrivals <i class="fab fa-hotjar"></i></a>
                 <h5 class="card-title">@product.ProductName</h5>

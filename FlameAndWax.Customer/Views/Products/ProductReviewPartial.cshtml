@@ -48,7 +48,7 @@
                 <div class="row">
                     <div class="col-12">
                         <!-- Customer Picture (Rounded) -->
-                        <img src="@Url.Content(customerReview.Customer.ProfilePictureLink)"
+                        <img src="@(Constants.BASE_URL_API_IMAGES + Url.Content(customerReview.Customer.ProfilePictureLink))"
                              class="circle float-left" alt="customer pic">
                         <!-- Customer Name + Score Badge-->
                         <div class="my-auto float-left">

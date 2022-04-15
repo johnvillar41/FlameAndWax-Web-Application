@@ -25,11 +25,11 @@
                     var scoreValue = (int)item.ReviewScore;
                     <div class="col-md-4">
                         <div class="card mb-2">
-                            <img class="card-img-top topCommentProduct" src="@Url.Content(item.ProductPictureLink)"
+                            <img class="card-img-top topCommentProduct" src="@(Constants.BASE_URL_API_IMAGES + Url.Content(item.ProductPictureLink))"
                             alt="Card image cap">
                             <div class="card-body">
                                 <h4 class="card-title">@item.ReviewScore</h4>
-                                <img class="circle" src="@Url.Content(item.Customer.ProfilePictureLink)" />
+                                <img class="circle" src="@(Constants.BASE_URL_API_IMAGES + Url.Content(item.Customer.ProfilePictureLink))" />
                                 <span class="badge badge-success">@scoreValue/5</span>
                                 <h5>@item.Customer.CustomerName</h5>
                             </div>
@@ -51,11 +51,11 @@
                     var scoreValue = (int)item.ReviewScore;
                     <div class="col-md-4">
                         <div class="card mb-2">
-                            <img class="card-img-top topCommentProduct" src="@Url.Content(item.ProductPictureLink)"
+                            <img class="card-img-top topCommentProduct" src="@(Constants.BASE_URL_API_IMAGES + Url.Content(item.ProductPictureLink))"
                             alt="Card image cap">
                             <div class="card-body">                                
                                 <h4 class="card-title">@item.ReviewScore</h4>
-                                <img class="circle" src="@Url.Content(item.Customer.ProfilePictureLink)" />
+                                <img class="circle" src="@(Constants.BASE_URL_API_IMAGES + Url.Content(item.Customer.ProfilePictureLink))" />
                                 <span class="badge badge-success">@scoreValue/5</span>
                                 <h5>@item.Customer.CustomerName</h5>
                             </div>

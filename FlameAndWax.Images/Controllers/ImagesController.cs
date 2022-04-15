@@ -35,7 +35,7 @@ namespace FlameAndWax.Images.Controllers
         [Route("BaseUrl")]
         public IActionResult BaseUrl()
         {
-            var baseUrl = Constants.BASE_URL_API_IMAGES;
+            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}"; ;
             return Ok(baseUrl);
         }
     }

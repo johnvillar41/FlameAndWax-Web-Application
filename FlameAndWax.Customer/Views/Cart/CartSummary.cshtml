@@ -16,7 +16,7 @@
         <div class="card mb-3">
             <div class="row no-gutters">
                 <div class="col-md-3">
-                    <img src="@Url.Content(item.PhotoLink)" class="card-img" alt="...">
+                    <img src="@(Constants.BASE_URL_API_IMAGES + Url.Content(item.PhotoLink))" class="card-img" alt="...">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">

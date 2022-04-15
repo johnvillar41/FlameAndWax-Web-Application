@@ -32,7 +32,7 @@
                                 <td style="vertical-align:middle;">
                                     <div class="row">
                                         <div class="col-lg-6 col-sm-12">
-                                            <img src="@Url.Content(Model.CartProducts[i].PhotoLink)" class="img-thumbnail" />
+                                            <img src="@(Constants.BASE_URL_API_IMAGES + Url.Content(Model.CartProducts[i].PhotoLink))" class="img-thumbnail" />
                                         </div>
                                         <div class="col-lg-6 col-sm-12 my-auto text-left">
 

@@ -93,7 +93,7 @@
                                     {
                                         <tr>
                                             <td class="hideColumnPhoneSize">
-                                                <div class="col-3"><img src="@Url.Content(orderDetail.ProductPictureLink)"
+                                                <div class="col-3"><img src="@(Constants.BASE_URL_API_IMAGES + Url.Content(orderDetail.ProductPictureLink))"
                                                 class="img-thumbnail img-fluid" /></div>
                                             </td>
                                             <td>@orderDetail.ProductId</td>
