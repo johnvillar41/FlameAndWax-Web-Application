@@ -48,7 +48,7 @@ namespace FlameAndWax.Customer.Controllers
                 CustomerName = newUser.Fullname,
                 ContactNumber = newUser.ContactNumber,
                 Email = newUser.Email,
-                Address = null,
+                Addresses = null,
                 Username = newUser.Username,
                 Password = newUser.Password,
                 Status = CustomerAccountStatus.Pending,

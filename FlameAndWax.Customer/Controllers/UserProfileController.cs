@@ -55,7 +55,7 @@ namespace FlameAndWax.Customer.Controllers
             }
 
             var userProfile = new UserProfileViewModel(accountDetailServiceResult.Result);
-
+            
             return View(userProfile);
         }
 
@@ -114,7 +114,26 @@ namespace FlameAndWax.Customer.Controllers
 
             return PartialView("ShippingAddressPartial", shippingAddressViewModel);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddShippingAddress(ShippingAddressViewModel newAddress)
+        {
+            var userId = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
+            var shippingAddressModel = new ShippingAddressModel
+            {
+                ShippingAddressId = newAddress.ShippingAddressId,
+                CustomerId = int.Parse(userId),
+                Address = newAddress.Address,
+                PostalCode = newAddress.PostalCode,
+                City = newAddress.City,
+                Region = newAddress.Region,
+                Country = newAddress.Country
+            };
+            var shippingAddressServiceResult = await _userProfileService.AddNewShippingAddressAsync(shippingAddressModel, ConnectionString);
+            if (shippingAddressServiceResult.HasError) return BadRequest();
 
+            return Ok();
+        }
         private async Task<string[]> BuildProfilePictureLink(IFormFile profilePictureFile)
         {
             var fileExtension = Path.GetExtension(profilePictureFile.FileName);
@@ -143,7 +162,7 @@ namespace FlameAndWax.Customer.Controllers
             }
             return null;
         }
-
+       
         private static async Task<bool> DeleteOldProfilePicture(string imageToDelete)
         {
             using var httpClient = new HttpClient();

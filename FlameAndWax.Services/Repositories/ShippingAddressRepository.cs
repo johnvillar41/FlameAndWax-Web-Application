@@ -38,6 +38,11 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
+        public Task<IEnumerable<ShippingAddressModel>> FetchAll(int customerId, string connectionString)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task<ShippingAddressModel> FetchAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);

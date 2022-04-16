@@ -99,7 +99,7 @@ namespace FlameAndWax.Data.Repositories
                     Username = reader["Username"].ToString(),
                     ProfilePictureLink = reader["ProfilePictureLink"].ToString(),
                     Status = ServiceHelper.ConvertStringToCustomerAccountStatus(reader["Status"].ToString()),
-                    Address = shippingAddressModel
+                    Addresses = await _shippingAddressRepository.FetchAll(int.Parse(reader["CustomerId"].ToString()), connectionString)
                 };
             }
             return null;
@@ -129,7 +129,7 @@ namespace FlameAndWax.Data.Repositories
                         Password = reader["Password"].ToString(),
                         ProfilePictureLink = reader["ProfilePictureLink"].ToString(),
                         Status = ServiceHelper.ConvertStringToCustomerAccountStatus(reader["Status"].ToString()),
-                        Address = await _shippingAddressRepository.FetchAsync(int.Parse(reader["ShippingAddressId"].ToString()), connectionString)
+                        Addresses = await _shippingAddressRepository.FetchAll(int.Parse(reader["CustomerId"].ToString()), connectionString)
                     }
                 );
             }

@@ -5,6 +5,9 @@
 </form>
 <input form="ShippingAddressForm" type="hidden" value="@Model.ShippingAddressId" asp-for="@Model.ShippingAddressId" />
 
+<form asp-controller="UserProfile" asp-action="AddShippingAddress" id="AddNewShippingAddressForm" data-ajax="true" data-ajax-complete="saveAddress"
+      data-ajax-update="#address"></form>
+
 <div class="row p-2">
     <div class="col-12">
         <div class="card p-4">
@@ -98,7 +101,7 @@
                             <div class="col-xs-6">
                                 <h5>Address</h5>
                                 <input type="hidden" asp-for="@Model.ShippingAddressId" />
-                                <input form="ShippingAddressForm" id="fullname" type="text" class="form-control"
+                                <input form="AddNewShippingAddressForm" id="fullname" type="text" class="form-control"
                                        asp-for="@Model.Address" value="" placeholder="Enter Address"
                                        required>
                             </div>
@@ -107,7 +110,7 @@
                             <div class="form-group">
                                 <div class="col-xs-6">
                                     <h5>Postal Code</h5>
-                                    <input form="ShippingAddressForm" id="contactNumber" value="" type="text" class="form-control"
+                                    <input form="AddNewShippingAddressForm" id="contactNumber" value="" type="text" class="form-control"
                                            asp-for="@Model.PostalCode" placeholder="Enter Postal Number"
                                            title="enter your phone number if any." required>
                                 </div>
@@ -117,21 +120,21 @@
 
                             <div class="col-xs-6">
                                 <h5>City</h5>
-                                <input form="ShippingAddressForm" id="email" value="" type="text" class="form-control" asp-for="@Model.City"
+                                <input form="AddNewShippingAddressForm" id="email" value="" type="text" class="form-control" asp-for="@Model.City"
                                        placeholder="Enter City" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
                                 <h5>Region</h5>
-                                <input form="ShippingAddressForm" id="username" value="" type="text" class="form-control"
+                                <input form="AddNewShippingAddressForm" id="username" value="" type="text" class="form-control"
                                        asp-for="@Model.Region" placeholder="Enter Region" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
                                 <h5>Country</h5>
-                                <input form="ShippingAddressForm" id="password" type="text" class="form-control"
+                                <input form="AddNewShippingAddressForm" id="password" type="text" class="form-control"
                                        asp-for="@Model.Country" placeholder="Enter Country" required>
                             </div>
                         </div>
@@ -140,7 +143,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-gold">Add Address</button>
+                <button type="submit" form="AddNewShippingAddressForm" class="btn btn-gold">Add Address</button>
             </div>
         </div>
     </div>

@@ -113,7 +113,7 @@ namespace FlameAndWax.Customer.Controllers
             var userProfileServiceResult = await _userProfileService.FetchAccountDetailAsync(int.Parse(userLoggedInID), ConnectionString);
             if (userProfileServiceResult.HasError) return BadRequest(userProfileServiceResult.ErrorContent);
 
-            CartSummaryViewModel cartSummary = new CartSummaryViewModel(totalCost, cart, userProfileServiceResult.Result.Address);
+            CartSummaryViewModel cartSummary = new CartSummaryViewModel(totalCost, cart, userProfileServiceResult.Result.Addresses.FirstOrDefault());
             return View(cartSummary);
         }
 

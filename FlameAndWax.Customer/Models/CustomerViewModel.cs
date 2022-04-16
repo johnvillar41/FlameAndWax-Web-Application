@@ -1,4 +1,5 @@
 ﻿using FlameAndWax.Data.Models;
+using System.Linq;
 
 namespace FlameAndWax.Customer.Models
 {
@@ -15,7 +16,7 @@ namespace FlameAndWax.Customer.Models
             CustomerName = customerModel.CustomerName;
             ContactNumber = customerModel.ContactNumber;
             ProfilePictureLink = customerModel.ProfilePictureLink;
-            Address = customerModel.Address.Address;
+            Address = customerModel.Addresses.FirstOrDefault().Address;
         }
         public CustomerViewModel()
         {

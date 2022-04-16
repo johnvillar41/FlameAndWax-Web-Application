@@ -39,7 +39,7 @@
                 @await Html.PartialAsync("ProfilePartial", Model)
             </div>
             <div class="tab-pane fade show active" id="address" role="tabpanel" aria-labelledby="profile-tab">
-                @await Html.PartialAsync("ShippingAddressPartial", @Model.Address)
+                @await Html.PartialAsync("ShippingAddressPartial", @Model.Addresses.FirstOrDefault())
             </div>
         }
         else
@@ -48,7 +48,7 @@
                 @await Html.PartialAsync("ProfilePartial", Model)
             </div>
             <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="profile-tab">
-                @await Html.PartialAsync("ShippingAddressPartial", @Model.Address)
+                @await Html.PartialAsync("ShippingAddressPartial", @Model.Addresses.FirstOrDefault())
             </div>
         }
     </div>

@@ -1,4 +1,5 @@
-﻿using static FlameAndWax.Data.Constants.Constants;
+﻿using System.Collections.Generic;
+using static FlameAndWax.Data.Constants.Constants;
 namespace FlameAndWax.Data.Models
 {
     public class CustomerModel
@@ -11,7 +12,7 @@ namespace FlameAndWax.Data.Models
         public string Password { get; set; }
         public string ProfilePictureLink { get; set; }
         public CustomerAccountStatus Status { get; set; }
-        public ShippingAddressModel Address { get; set; }
+        public IEnumerable<ShippingAddressModel> Addresses { get; set; }
         public string Code { get; set; }
     }
 }
