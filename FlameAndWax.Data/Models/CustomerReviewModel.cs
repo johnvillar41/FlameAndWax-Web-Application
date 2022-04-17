@@ -8,8 +8,8 @@ namespace FlameAndWax.Data.Models
         public int ReviewId { get; set; }
         public ProductModel Product { get; set; }
         public CustomerModel Customer { get; set; }
-        public ReviewScore ReviewScore { get; set; }
+        public int ReviewScore { get; set; }
         public string ReviewDetail { get; set; }
-        public DateTime Date { get; set; }
-    }    
+        public DateTime Date { get; set; }        
+    }
 }
