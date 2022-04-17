@@ -38,9 +38,31 @@ namespace FlameAndWax.Services.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        public Task<IEnumerable<ShippingAddressModel>> FetchAll(int customerId, string connectionString)
+        public async Task<IEnumerable<ShippingAddressModel>> FetchAll(int customerId, string connectionString)
         {
-            throw new System.NotImplementedException();
+            List<ShippingAddressModel> shippingAddresses = new List<ShippingAddressModel>();
+            using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            var sqlQuery = "SELECT * FROM ShippingAddressTable WHERE CustomerId = @CustomerId";
+            using SqlCommand command = new SqlCommand(sqlQuery, connection);
+            command.Parameters.AddWithValue("@CustomerId", customerId);
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+            while(await reader.ReadAsync())
+            {
+                shippingAddresses.Add(
+                        new ShippingAddressModel()
+                        {
+                            ShippingAddressId = int.Parse(reader["ShippingAddressId"].ToString()),
+                            CustomerId = int.Parse(reader["CustomerId"].ToString()),
+                            Address = reader["Address"].ToString(),
+                            PostalCode = int.Parse(reader["PostalCode"].ToString()),
+                            City = reader["City"].ToString(),
+                            Region = reader["Region"].ToString(),
+                            Country = reader["Country"].ToString()
+                        }
+                    );
+            }
+            return shippingAddresses;
         }
 
         public async Task<ShippingAddressModel> FetchAsync(int id, string connectionString)
