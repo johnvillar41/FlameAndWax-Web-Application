@@ -1,4 +1,5 @@
-﻿using FlameAndWax.Data.Constants;
+﻿using Dapper;
+using FlameAndWax.Data.Constants;
 using FlameAndWax.Data.Models;
 using FlameAndWax.Services.Helpers;
 using FlameAndWax.Services.Repositories.Interfaces;
@@ -15,124 +16,56 @@ namespace FlameAndWax.Services.Repositories
         public async Task<int> AddAsync(EmployeeModel Data, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
-            using SqlCommand command = new SqlCommand("AddNewEmployee", connection);
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@FirstName", Data.FirstName);
-            command.Parameters.AddWithValue("@LastName", Data.LastName);
-            command.Parameters.AddWithValue("@Email", Data.Email);
-            command.Parameters.AddWithValue("@PhotoLink", Data.PhotoLink);
-            command.Parameters.AddWithValue("@Bday", Data.DateBirth);
-            command.Parameters.AddWithValue("@HireDate", Data.HireDate);
-            command.Parameters.AddWithValue("@City", Data.City);
-            command.Parameters.AddWithValue("@Username", Data.Username);
-            command.Parameters.AddWithValue("@Password", Data.Password);
-            command.Parameters.AddWithValue("@Status", Data.Status);
-            using SqlDataReader reader = await command.ExecuteReaderAsync();
-            if (await reader.ReadAsync())
-            {
-                return int.Parse(reader["pk"].ToString());
-            }
-            return -1;
+            var result = await connection.ExecuteScalarAsync<int>("AddNewEmployee",
+                Data, commandType: CommandType.StoredProcedure);
+            return result;
         }
 
         public async Task DeleteAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
-            using SqlCommand command = new SqlCommand("DeleteEmployee", connection);
-            command.Parameters.AddWithValue("@id", id);
-            await command.ExecuteNonQueryAsync();
+            await connection.ExecuteAsync("DeleteEmployee",
+                new { id }, commandType: CommandType.StoredProcedure);
         }
 
         public async Task<EmployeeModel> FetchAsync(int id, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
-            using SqlCommand command = new SqlCommand("FetchEmployee", connection);
-            command.CommandType = System.Data.CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@id", id);
-            SqlDataReader reader = await command.ExecuteReaderAsync();
-            if (await reader.ReadAsync())
-            {
-                return new EmployeeModel
-                {
-                    EmployeeId = int.Parse(reader["EmployeeId"].ToString()),
-                    FirstName = reader["FirstName"].ToString(),
-                    LastName = reader["LastName"].ToString(),
-                    Email = reader["Email"].ToString(),
-                    PhotoLink = reader["PhotoLink"].ToString(),
-                    DateBirth = DateTime.Parse(reader["BirthDate"].ToString()),
-                    HireDate = DateTime.Parse(reader["HireDate"].ToString()),
-                    City = reader["City"].ToString(),
-                    Username = reader["Username"].ToString(),
-                    Password = reader["Password"].ToString(),
-                    Status = ServiceHelper.ConvertStringToEmployeeAccountStatus(reader["Status"].ToString())
-                };
-            }
-            return null;
+            var employee = await connection.QueryFirstOrDefaultAsync<EmployeeModel>("FetchEmployee",
+                new { id }, commandType: CommandType.StoredProcedure);
+            return employee;
         }
 
         public async Task<IEnumerable<EmployeeModel>> FetchPaginatedResultAsync(int pageNumber, int pageSize, string connectionString)
         {
-            List<EmployeeModel> employeeModels = new List<EmployeeModel>();
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
-            using SqlCommand command = new SqlCommand("FetchPaginatedResultEmployee", connection);
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@PageNumber", pageNumber);
-            command.Parameters.AddWithValue("@PageSize", pageSize);
-            using SqlDataReader reader = await command.ExecuteReaderAsync();
-            while (await reader.ReadAsync())
-            {
-                employeeModels.Add(
-                    new EmployeeModel
-                    {
-                        EmployeeId = int.Parse(reader["EmployeeId"].ToString()),
-                        FirstName = reader["FirstName"].ToString(),
-                        LastName = reader["LastName"].ToString(),
-                        Email = reader["Email"].ToString(),
-                        PhotoLink = reader["PhotoLink"].ToString(),
-                        DateBirth = DateTime.Parse(reader["BirthDate"].ToString()),
-                        HireDate = DateTime.Parse(reader["HireDate"].ToString()),
-                        City = reader["City"].ToString(),
-                        Username = reader["Username"].ToString(),
-                        Password = reader["Password"].ToString(),
-                        Status = ServiceHelper.ConvertStringToEmployeeAccountStatus(reader["Status"].ToString())
-                    }
-                );
-            }
-            return employeeModels;
+            var employees = await connection.QueryAsync<EmployeeModel>("FetchPaginatedResultEmployee",
+                new
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                }, commandType: CommandType.StoredProcedure);
+            return employees;
         }
 
         public async Task<int> FetchTotalEmployeesCountAsync(string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
-            using SqlCommand command = new SqlCommand("FetchTotalEmployeeCount", connection);
-            command.CommandType = CommandType.StoredProcedure;
-            using SqlDataReader reader = await command.ExecuteReaderAsync();
-            if (await reader.ReadAsync())
-            {
-                return int.Parse(reader["total"].ToString());
-            }
-            return 0;
+            var employeeCount = await connection.ExecuteScalarAsync<int>("FetchTotalEmployeeCount", commandType: CommandType.StoredProcedure);
+            return employeeCount;
         }
 
         public async Task<int> LoginEmployeeAccountAsync(EmployeeModel employeeModel, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            await connection.OpenAsync();
             var queryString = "SELECT EmployeeId FROM EmployeesTable WHERE Username = @user AND Password = @pass";
-            using SqlCommand command = new SqlCommand(queryString, connection);
-            command.Parameters.AddWithValue("@user", employeeModel.Username);
-            command.Parameters.AddWithValue("@pass", employeeModel.Password);
-            using SqlDataReader reader = await command.ExecuteReaderAsync();
-            if (await reader.ReadAsync())
-            {
-                return int.Parse(reader["EmployeeId"].ToString());
-            }
-            return -1;
+            var employeeId = await connection.ExecuteScalarAsync<int>(queryString,
+                new
+                {
+                    user = employeeModel.Username,
+                    pass = employeeModel.Password
+                });
+            return employeeId;
         }
 
         public Task UpdateAsync(EmployeeModel data, int id, string connectionString)
