@@ -74,7 +74,7 @@ namespace FlameAndWax.Data.Repositories
             var customer = await connection.QueryFirstOrDefaultAsync<CustomerModel>("FetchCustomer",
                 new
                 {
-                    CustomerId = id
+                    id
                 }, commandType: CommandType.StoredProcedure);
             return customer;
         }
@@ -167,14 +167,14 @@ namespace FlameAndWax.Data.Repositories
                 return false;
 
             var transaction = userCode.Item2;
-            var connection = userCode.Item3;
+            //var connection = userCode.Item3;
+            using var connection = new SqlConnection(connectionString);
             var queryString = "UPDATE CustomerTable SET Status = 'Active' WHERE Username = @Username";
             await connection.ExecuteAsync(queryString,
                 new
                 {
                     Username = username
-                }, transaction);
-            transaction.Commit();
+                }, transaction);           
             return true;
         }
         private async Task<Tuple<string, IDbTransaction, SqlConnection>> GetUserCode(string username, string connectionString)
