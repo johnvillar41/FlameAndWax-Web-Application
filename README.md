@@ -13,7 +13,6 @@
   - Cart
   - Comment Reviews
   - Profile
-  - 
 # Screenshots
 
 ![CHEESE!](flamewax5.PNG)
