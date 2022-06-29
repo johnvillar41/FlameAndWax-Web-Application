@@ -86,7 +86,7 @@ namespace FlameAndWax.Customer.Controllers
             var customerIdLoggedIn = User.Claims.FirstOrDefault(userId => userId.Type == ClaimTypes.NameIdentifier).Value;
             var customerReview = new CustomerReviewModel
             {
-                ReviewScore = (Constants.ReviewScore)(int)ServiceHelper.BuildReviewScore(rate),
+                ReviewScore = (int)ServiceHelper.BuildReviewScore(rate),
                 ReviewDetail = reviewDetail,
                 Customer = new CustomerModel { CustomerId = int.Parse(customerIdLoggedIn) },
                 Product = new ProductModel { ProductId = productId }

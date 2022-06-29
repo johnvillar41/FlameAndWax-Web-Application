@@ -4,6 +4,6 @@
     {
         public int ProductGalleryId { get; set; }
         public int ProductId { get; set; }
-        public string PhotoLink { get; set; }
+        public string ProductPhotoLink { get; set; }
     }
 }

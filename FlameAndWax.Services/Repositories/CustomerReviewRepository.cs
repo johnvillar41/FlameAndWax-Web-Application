@@ -77,8 +77,32 @@ namespace FlameAndWax.Services.Repositories
         public async Task<IEnumerable<CustomerReviewModel>> FetchTopCommentsAsync(string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
-            var customerReviews = await connection.QueryAsync<CustomerReviewModel>("FetchTopComments",
-               commandType: CommandType.StoredProcedure);
+            var customerReviews = await connection
+                .QueryAsync<CustomerReviewModel, ProductModel, CustomerModel, ShippingAddressModel, ProductGalleryModel, CustomerReviewModel>("FetchTopComments",
+               (customerReview, product, customer, shippingAddress, productGallery) =>
+               {
+                   customerReview.Customer = customer;
+                   customerReview.Product = product;
+                   customerReview.Customer.Addresses = new List<ShippingAddressModel>();
+                   ((List<ShippingAddressModel>)customerReview.Customer.Addresses).Add(new ShippingAddressModel()
+                   {
+                       ShippingAddressId = shippingAddress.ShippingAddressId,
+                       CustomerId = customer.CustomerId,
+                       Address = shippingAddress.Address,
+                       PostalCode = shippingAddress.PostalCode,
+                       City = shippingAddress.City,
+                       Region = shippingAddress.Region,
+                       Country = shippingAddress.Country
+                   });
+                   customerReview.Product.ProductGallery = new List<ProductGalleryModel>();
+                   ((List<ProductGalleryModel>)customerReview.Product.ProductGallery).Add(new ProductGalleryModel()
+                   {
+                       ProductGalleryId = productGallery.ProductGalleryId,
+                       ProductId = productGallery.ProductId,
+                       ProductPhotoLink = productGallery.ProductPhotoLink
+                   });
+                   return customerReview;
+               }, commandType: CommandType.StoredProcedure, splitOn: "ProductId, CustomerId, ShippingAddressId, ProductGalleryId");
             return customerReviews;
         }
 

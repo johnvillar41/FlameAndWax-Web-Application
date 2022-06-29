@@ -21,7 +21,7 @@ namespace FlameAndWax.Customer.Models
             ProductDescription = productModel.ProductDescription;
             ProductPrice = productModel.ProductPrice;
             ProductSubTotalPrice = productModel.ProductPrice;
-            PhotoLink = productModel.ProductGallery.FirstOrDefault().PhotoLink;
+            PhotoLink = productModel.ProductGallery.FirstOrDefault().ProductPhotoLink;
             StockQuantity = (productModel.QuantityPerUnit * productModel.UnitsInStock) - productModel.UnitsInOrder;
             QuantityPerUnit = productModel.QuantityPerUnit;
             QuantityOrdered = 1;

@@ -16,7 +16,11 @@ namespace FlameAndWax.Customer.Models
             CustomerName = customerModel.CustomerName;
             ContactNumber = customerModel.ContactNumber;
             ProfilePictureLink = customerModel.ProfilePictureLink;
-            Address = customerModel.Addresses.FirstOrDefault().Address;
+            if (customerModel.Addresses == null)
+                Address = "Shipping Address is null";
+
+            else
+                Address = customerModel.Addresses.FirstOrDefault().Address;
         }
         public CustomerViewModel()
         {

@@ -25,7 +25,7 @@ namespace FlameAndWax.Services.Repositories
                         {
                             ProductGalleryId = int.Parse(reader["ProductGalleryId"].ToString()),
                             ProductId = int.Parse(reader["ProductId"].ToString()),
-                            PhotoLink = reader["ProductPhotoLink"].ToString()
+                            ProductPhotoLink = reader["ProductPhotoLink"].ToString()
                         }
                     );
             }

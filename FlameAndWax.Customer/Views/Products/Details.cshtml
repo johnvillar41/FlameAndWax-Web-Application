@@ -12,7 +12,7 @@
                         <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" style="min-width:100%; max-height:400px; background-color:black;">
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img src="@(Constants.BASE_URL_API_IMAGES + Url.Content(Model.ProductGallery.FirstOrDefault().PhotoLink))" class="d-block rounded mx-auto" style="height:auto; max-height:400px; width:contain; max-width:contain;" alt="Responsive image">
+                                    <img src="@(Constants.BASE_URL_API_IMAGES + Url.Content(Model.ProductGallery.FirstOrDefault().ProductPhotoLink))" class="d-block rounded mx-auto" style="height:auto; max-height:400px; width:contain; max-width:contain;" alt="Responsive image">
                                 </div>
                                 @{
                                     var productGalleries = Model.ProductGallery as List<ProductGalleryModel>;
@@ -20,7 +20,7 @@
                                 @for (int i = 1; i < productGalleries.Count(); i++)
                                 {
                                     <div class="carousel-item">
-                                        <img src="@(Constants.BASE_URL_API_IMAGES + Url.Content(productGalleries[i].PhotoLink))" class="d-block rounded mx-auto" style="height: auto; max-height: 400px; width: contain; max-width: contain; " alt="Responsive image">
+                                        <img src="@(Constants.BASE_URL_API_IMAGES + Url.Content(productGalleries[i].ProductPhotoLink))" class="d-block rounded mx-auto" style="height: auto; max-height: 400px; width: contain; max-width: contain; " alt="Responsive image">
                                     </div>
                                 }
                             </div>

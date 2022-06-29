@@ -19,9 +19,9 @@ namespace FlameAndWax.Customer.Models
             ReviewId = customerReviewModel.ReviewId;
             ProductId = customerReviewModel.Product.ProductId;
             ReviewDetail = customerReviewModel.ReviewDetail;
-            ReviewScore = customerReviewModel.ReviewScore;
+            ReviewScore = (ReviewScore)customerReviewModel.ReviewScore;
             Customer = new CustomerViewModel(customerReviewModel.Customer);
-            ProductPictureLink = customerReviewModel.Product.ProductGallery.FirstOrDefault().PhotoLink;
+            ProductPictureLink = customerReviewModel.Product.ProductGallery.FirstOrDefault().ProductPhotoLink;
             Date = customerReviewModel.Date;
         }
         public CustomerReviewViewModel()

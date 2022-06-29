@@ -20,7 +20,7 @@ namespace FlameAndWax.Employee.Models
             ProductId = product.ProductId;
             ProductName = product.ProductName;
             ProductDescription = product.ProductDescription;
-            PictureLink = product.ProductGallery.FirstOrDefault().PhotoLink;
+            PictureLink = product.ProductGallery.FirstOrDefault().ProductPhotoLink;
             ProductPrice = product.ProductPrice;
             QuantityPerUnit = product.QuantityPerUnit;
             Stocks = product.UnitsInStock;
@@ -32,7 +32,7 @@ namespace FlameAndWax.Employee.Models
             ProductId = productModel.ProductId;
             ProductName = productModel.ProductName;
             ProductDescription = productModel.ProductDescription;
-            PictureLink = productModel.ProductGallery.FirstOrDefault().PhotoLink;
+            PictureLink = productModel.ProductGallery.FirstOrDefault().ProductPhotoLink;
             ProductPrice = productModel.ProductPrice;
             QuantityPerUnit = productModel.QuantityPerUnit;
             Stocks = productModel.UnitsInStock;
