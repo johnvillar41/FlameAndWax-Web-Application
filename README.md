@@ -13,16 +13,24 @@
   - Cart
   - Comment Reviews
   - Profile
-
+  - 
 # Screenshots
-<b>Main Screen</b>
-![CHEESE!](Login.png)
-<b>Parameters</b>
-![CHEESE!](Parameters.png)
-<b>Dashboard</b>
-![CHEESE!](Dashboard.png)
-<b>TextProcessing Accuracy Percentage</b>
-![CHEESE!](TextAccuracy.png)
-<b>Confusion Matrix Percentage</b>
-![CHEESE!](Confusion.png)
+
+![CHEESE!](flamewax5.PNG)
+
+![CHEESE!](flamewax6.PNG)
+
+![CHEESE!](flamewax8.PNG)
+
+![CHEESE!](flamewax9.PNG)
+
+![CHEESE!](flamewax_1.PNG)
+
+![CHEESE!](flamewax_2.PNG)
+
+![CHEESE!](flamewax_3.PNG)
+
+![CHEESE!](flamewax_4.PNG)
+
+![CHEESE!](flamewax_7.PNG)
 <br/>
