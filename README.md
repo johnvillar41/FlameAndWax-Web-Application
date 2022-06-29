@@ -1,19 +1,18 @@
-# A web based application that computes for the polarity of comment reviews. (Created using .NetCore Web and MSSql)
+# A web based application for e-commerce application FlameAndWax (Created using .NetCore Web and MSSql)
   
 <br/>
 
 # Purpose
-  - The purpose of this application if to automize the calculation of polarities for comment reviews
-  - Design and implement a web-based sentiment analysis tool with a dashboard applying the proposed Hybrid Approach Algorithm
+  - The purpose of this application is to create an application for e-commerce 
   
 <br/>
   
 # Features
-  - Upload Excel file containing comment reviews
-  - Add Parameters for File upload determining which type of algorithm is to be used to polarize comment reviews
-  - Dashboard containing: Comment Tables, Word Frequencies, Review Classfication, Keyword Cloud
-  - Modal for Accuracy Percentage
-  - Modal for Confusion Matrix Percentage
+  - Login
+  - Registration
+  - Cart
+  - Comment Reviews
+  - Profile
 
 # Screenshots
 <b>Main Screen</b>
