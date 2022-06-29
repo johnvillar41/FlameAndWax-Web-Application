@@ -30,20 +30,21 @@ namespace FlameAndWax.Services.Helpers
         }
         public string RandomString()
         {
-            int size = 5;
-            bool lowerCase = false;
-            var builder = new StringBuilder(size);
+            //int size = 5;
+            //bool lowerCase = false;
+            //var builder = new StringBuilder(size);
 
-            char offset = lowerCase ? 'a' : 'A';
-            const int lettersOffset = 26;
-            Random _random = new Random();
-            for (var i = 0; i < size; i++)
-            {
-                var @char = (char)_random.Next(offset, offset + lettersOffset);
-                builder.Append(@char);
-            }
+            //char offset = lowerCase ? 'a' : 'A';
+            //const int lettersOffset = 26;
+            //Random _random = new Random();
+            //for (var i = 0; i < size; i++)
+            //{
+            //    var @char = (char)_random.Next(offset, offset + lettersOffset);
+            //    builder.Append(@char);
+            //}
 
-            return lowerCase ? builder.ToString().ToLower() : builder.ToString();
+            //return lowerCase ? builder.ToString().ToLower() : builder.ToString();
+            return "Hello";
         }
     }
 }

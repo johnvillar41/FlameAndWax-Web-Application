@@ -24,13 +24,13 @@ namespace FlameAndWax.Data.Repositories
             var id = await connection.QueryFirstOrDefaultAsync<int>("AddNewCustomer",
                 new
                 {
-                    Data.CustomerName,
-                    Data.ContactNumber,
-                    Data.Email,
-                    Data.Username,
-                    Data.Password,
-                    Status = CustomerAccountStatus.Pending.ToString(),
-                    Data.Code
+                    name = Data.CustomerName,
+                    number = Data.ContactNumber,
+                    email = Data.Email,
+                    username = Data.Username,
+                    password = Data.Password,
+                    status = CustomerAccountStatus.Pending.ToString(),
+                    code = Data.Code
                 }, commandType: CommandType.StoredProcedure);
             return id;
         }
@@ -106,15 +106,16 @@ namespace FlameAndWax.Data.Repositories
                 {
                     loginCustomer.Username,
                     loginCustomer.Password
-                }, commandType: CommandType.StoredProcedure);
-
-            var customerId = result.CustomerId;
-            var status = result.Status;
+                }, commandType: CommandType.StoredProcedure);            
 
             if (result == null)
                 return -2;
+
+            var status = result.Status;
             if (status.Equals(nameof(CustomerAccountStatus.Pending)))
                 return -1;
+
+            var customerId = result.CustomerId;          
             return customerId;
         }
 
@@ -173,19 +174,20 @@ namespace FlameAndWax.Data.Repositories
                 {
                     Username = username
                 }, transaction);
-            await connection.BeginTransactionAsync();
+            transaction.Commit();
             return true;
         }
         private async Task<Tuple<string, IDbTransaction, SqlConnection>> GetUserCode(string username, string connectionString)
         {
             using SqlConnection connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
             using var transaction = await connection.BeginTransactionAsync();
             var queryString = "SELECT Code FROM CustomerTable WHERE Username = @Username";
             var result = await connection.QueryFirstOrDefaultAsync<string>(queryString,
                 new
                 {
                     Username = username
-                }, commandType: CommandType.StoredProcedure, transaction: transaction);
+                }, transaction: transaction);
             var tuple = new Tuple<string, IDbTransaction, SqlConnection>(result, transaction, connection);
             return tuple;
         }
